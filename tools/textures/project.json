@@ -1,0 +1,41 @@
+{
+  "name": "textures",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "tools/textures/src",
+  "projectType": "application",
+  "tags": ["type:tool", "scope:shared"],
+  "targets": {
+    "validate": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "inputs": [
+        "{workspaceRoot}/assets/textures/**/*",
+        "{workspaceRoot}/assets/LICENSES.md",
+        "{projectRoot}/src/**/*.ts"
+      ],
+      "options": { "command": "tsx tools/textures/src/cli.ts validate" }
+    },
+    "atlas": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["validate"],
+      "cache": true,
+      "inputs": ["{workspaceRoot}/assets/textures/**/*", "{projectRoot}/src/**/*.ts"],
+      "outputs": [
+        "{workspaceRoot}/dist/assets/textures/atlas.png",
+        "{workspaceRoot}/dist/assets/textures/atlas.json"
+      ],
+      "options": { "command": "tsx tools/textures/src/cli.ts atlas" }
+    },
+    "credits": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["validate"],
+      "inputs": ["{workspaceRoot}/assets/textures/manifest.json", "{projectRoot}/src/**/*.ts"],
+      "outputs": ["{workspaceRoot}/dist/assets/textures/credits.json"],
+      "options": { "command": "tsx tools/textures/src/cli.ts credits" }
+    },
+    "placeholders": {
+      "executor": "nx:run-commands",
+      "options": { "command": "tsx tools/textures/src/cli.ts placeholders" }
+    }
+  }
+}

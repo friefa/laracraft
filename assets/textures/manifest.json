@@ -1,0 +1,234 @@
+{
+  "$schema": "./manifest.schema.json",
+  "version": 1,
+  "packs": {
+    "placeholder": {
+      "title": "laracraft placeholder textures",
+      "description": "Procedurally generated programmer art (tools/textures/src/lib/placeholders.ts). Fallback for every texture a real pack does not provide.",
+      "dir": "placeholder"
+    }
+  },
+  "textures": [
+    {
+      "pack": "placeholder",
+      "name": "cobblestone",
+      "file": "assets/textures/placeholder/cobblestone.png",
+      "source": {
+        "kind": "own"
+      },
+      "authors": ["laracraft contributors"],
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "modifications": "none",
+      "shareAlike": false
+    },
+    {
+      "pack": "placeholder",
+      "name": "dirt",
+      "file": "assets/textures/placeholder/dirt.png",
+      "source": {
+        "kind": "own"
+      },
+      "authors": ["laracraft contributors"],
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "modifications": "none",
+      "shareAlike": false
+    },
+    {
+      "pack": "placeholder",
+      "name": "glass",
+      "file": "assets/textures/placeholder/glass.png",
+      "source": {
+        "kind": "own"
+      },
+      "authors": ["laracraft contributors"],
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "modifications": "none",
+      "shareAlike": false
+    },
+    {
+      "pack": "placeholder",
+      "name": "grass_block_side",
+      "file": "assets/textures/placeholder/grass_block_side.png",
+      "source": {
+        "kind": "own"
+      },
+      "authors": ["laracraft contributors"],
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "modifications": "none",
+      "shareAlike": false
+    },
+    {
+      "pack": "placeholder",
+      "name": "grass_block_top",
+      "file": "assets/textures/placeholder/grass_block_top.png",
+      "source": {
+        "kind": "own"
+      },
+      "authors": ["laracraft contributors"],
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "modifications": "none",
+      "shareAlike": false
+    },
+    {
+      "pack": "placeholder",
+      "name": "gravel",
+      "file": "assets/textures/placeholder/gravel.png",
+      "source": {
+        "kind": "own"
+      },
+      "authors": ["laracraft contributors"],
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "modifications": "none",
+      "shareAlike": false
+    },
+    {
+      "pack": "placeholder",
+      "name": "missing",
+      "file": "assets/textures/placeholder/missing.png",
+      "source": {
+        "kind": "own"
+      },
+      "authors": ["laracraft contributors"],
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "modifications": "none",
+      "shareAlike": false
+    },
+    {
+      "pack": "placeholder",
+      "name": "oak_log",
+      "file": "assets/textures/placeholder/oak_log.png",
+      "source": {
+        "kind": "own"
+      },
+      "authors": ["laracraft contributors"],
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "modifications": "none",
+      "shareAlike": false
+    },
+    {
+      "pack": "placeholder",
+      "name": "oak_log_top",
+      "file": "assets/textures/placeholder/oak_log_top.png",
+      "source": {
+        "kind": "own"
+      },
+      "authors": ["laracraft contributors"],
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "modifications": "none",
+      "shareAlike": false
+    },
+    {
+      "pack": "placeholder",
+      "name": "oak_planks",
+      "file": "assets/textures/placeholder/oak_planks.png",
+      "source": {
+        "kind": "own"
+      },
+      "authors": ["laracraft contributors"],
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "modifications": "none",
+      "shareAlike": false
+    },
+    {
+      "pack": "placeholder",
+      "name": "obsidian",
+      "file": "assets/textures/placeholder/obsidian.png",
+      "source": {
+        "kind": "own"
+      },
+      "authors": ["laracraft contributors"],
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "modifications": "none",
+      "shareAlike": false
+    },
+    {
+      "pack": "placeholder",
+      "name": "redstone_block",
+      "file": "assets/textures/placeholder/redstone_block.png",
+      "source": {
+        "kind": "own"
+      },
+      "authors": ["laracraft contributors"],
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "modifications": "none",
+      "shareAlike": false
+    },
+    {
+      "pack": "placeholder",
+      "name": "redstone_lamp",
+      "file": "assets/textures/placeholder/redstone_lamp.png",
+      "source": {
+        "kind": "own"
+      },
+      "authors": ["laracraft contributors"],
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "modifications": "none",
+      "shareAlike": false
+    },
+    {
+      "pack": "placeholder",
+      "name": "sand",
+      "file": "assets/textures/placeholder/sand.png",
+      "source": {
+        "kind": "own"
+      },
+      "authors": ["laracraft contributors"],
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "modifications": "none",
+      "shareAlike": false
+    },
+    {
+      "pack": "placeholder",
+      "name": "stone",
+      "file": "assets/textures/placeholder/stone.png",
+      "source": {
+        "kind": "own"
+      },
+      "authors": ["laracraft contributors"],
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "modifications": "none",
+      "shareAlike": false
+    },
+    {
+      "pack": "placeholder",
+      "name": "stone_bricks",
+      "file": "assets/textures/placeholder/stone_bricks.png",
+      "source": {
+        "kind": "own"
+      },
+      "authors": ["laracraft contributors"],
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "modifications": "none",
+      "shareAlike": false
+    },
+    {
+      "pack": "placeholder",
+      "name": "white_wool",
+      "file": "assets/textures/placeholder/white_wool.png",
+      "source": {
+        "kind": "own"
+      },
+      "authors": ["laracraft contributors"],
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "modifications": "none",
+      "shareAlike": false
+    }
+  ]
+}
