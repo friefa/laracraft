@@ -21,3 +21,4 @@ pnpm exec nx run-many -t lint test typecheck build
 - [Entscheidungen (ADRs)](docs/adr/README.md)
 - [Roadmap](docs/ROADMAP.md)
 - [Offene Fragen an den PO](docs/OPEN-QUESTIONS.md)
+- [M0-Bericht](docs/milestones/M0.md)

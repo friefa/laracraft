@@ -8,7 +8,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 const config: CapacitorConfig = {
   appId: 'app.laracraft',
   appName: 'laracraft',
-  webDir: '../../dist/apps/laracraft/browser',
+  webDir: '../../dist/apps/laracraft',
 };
 
 export default config;

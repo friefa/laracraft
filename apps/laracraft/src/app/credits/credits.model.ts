@@ -25,7 +25,7 @@ export interface Credits {
 }
 
 export const CREDITS_URL = 'assets/textures/credits.json';
-/** Emitted by the Angular build (`extractLicenses`); copied next to the app by `bundle-licenses`. */
+/** Emitted by the Angular build (`extractLicenses`); written next to index.html (outputPath.browser is empty). */
 export const THIRD_PARTY_LICENSES_URL = '3rdpartylicenses.txt';
 
 /** Light structural check so a stale or foreign file shows the error state instead of crashing. */

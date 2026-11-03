@@ -4,7 +4,7 @@ Legende: ✅ fertig · 🔄 in Arbeit · ⏳ offen · ⛔ blockiert (wartet auf 
 Jedes Paket = ein Agent, eine Lib bzw. ein klar umrissenes Feature. Kein Merge ohne Review durch den Lead Developer.
 Kritische Logik (Formate, Build-Order, DSL) bekommt zusätzlich einen unabhängigen Review-Agenten.
 
-## M0 – Fundament
+## M0 – Fundament ✅ (Bericht: [milestones/M0.md](milestones/M0.md))
 
 Ziel: Monorepo, CI für Web/iOS/Android, Core-Model, Blockregistry (~150 Blöcke), Textur-Pipeline mit Lizenz-Manifest.
 
@@ -14,11 +14,11 @@ Ziel: Monorepo, CI für Web/iOS/Android, Core-Model, Blockregistry (~150 Blöcke
 | P0.2  | `core-model` Verträge + Implementierung: Blockstate, Registry-Typen, Palette, ChunkedVolume, BuildDocument, ChangeSet, Format v1 | Lead             | P0.1         | ✅     |
 | P0.2r | Unabhängiger Review von P0.2 gegen Spezifikation (ADR-0001): 12 Befunde, alle behoben                                            | Review-Agent     | P0.2         | ✅     |
 | P0.3  | Blockregistry-Daten (~150 Java-Blöcke inkl. Redstone-Grundteile) + Invarianten-Tests                                             | Agent „registry“ | P0.2         | ✅     |
-| P0.3r | Fachlicher Review der Registry-Daten gegen Java Edition (Properties, Placement, Support)                                         | Review-Agent     | P0.3         | 🔄     |
+| P0.3r | Fachlicher Review der Registry-Daten gegen Java Edition (Properties, Placement, Support)                                         | Review-Agent     | P0.3         | ✅     |
 | P0.4  | Textur-Pipeline: Manifest + Schema, Validator, Atlas-Builder, Credits-Generator, Platzhalter-Texturen, Lizenzrecherche           | Agent „textures“ | P0.1         | ✅     |
 | P0.4b | Import der freigegebenen Textur-Quelle (z. B. Pixel Perfection) inkl. Manifest-Einträgen                                         | Agent „textures“ | ADR-0003 ✔︎   | ⛔     |
 | P0.5  | Capacitor (Android/iOS) + GitHub-Actions-CI (Lint, Typecheck, Test, Web-, Android-, iOS-Build), Dependabot                       | Agent „ci“       | P0.1         | ✅     |
-| P0.6  | App-Shell: i18n (de/en, Laufzeit), Disclaimer, Credits-Seite aus `credits.json`                                                  | Agent „shell“    | P0.4, P0.5   | 🔄     |
+| P0.6  | App-Shell: i18n (de/en, Laufzeit), Disclaimer, Credits-Seite aus `credits.json`                                                  | Agent „shell“    | P0.4, P0.5   | ✅     |
 
 **Schnittstellen M0:** `libs/core-model/src/index.ts` (Lead), `assets/textures/manifest.json` + `atlas.json` (P0.4),
 `credits.json` (P0.4 → P0.6).
