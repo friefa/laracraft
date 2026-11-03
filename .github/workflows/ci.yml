@@ -46,11 +46,11 @@ jobs:
 
       - name: Affected lint, typecheck, test, build
         if: github.event_name == 'pull_request'
-        run: pnpm exec nx affected -t lint typecheck test build
+        run: pnpm exec nx affected -t lint typecheck test build validate
 
       - name: All lint, typecheck, test, build
         if: github.event_name != 'pull_request'
-        run: pnpm exec nx run-many -t lint typecheck test build
+        run: pnpm exec nx run-many -t lint typecheck test build validate
 
       - name: Upload web build
         uses: actions/upload-artifact@v5

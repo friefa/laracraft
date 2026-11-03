@@ -26,6 +26,27 @@ Pflichten wir in App, Store und Repo haben (Attribution, Share-Alike).
    CC BY-SA 4.0, je nachdem, ob sie aus Pixel-Perfection-Texturen abgeleitet ist).
 6. **Bis zur Freigabe** arbeitet die Pipeline mit selbst generierten Platzhalter-Texturen (CC0).
 
+## Rechercheergebnis (P0.4, Details in `docs/research/texture-sources.md`)
+
+- **Pixel Perfection** von Hugh „XSSheep“ Rutland: **CC BY-SA 4.0** (belegt über VoxeLibre `LEGAL.md` und den
+  Luanti-Port; die Originalseite war nur indirekt einsehbar).
+- **VoxeLibre ist nicht einheitlich Pixel Perfection.** Concrete, glasierte Keramik, neuere Holzarten und Teile der
+  Redstone-Texturen (Mesecons, CC BY-SA 3.0) stammen von anderen Autoren, teils mit unklarer Herkunft.
+  **Folge:** Wir importieren nur aus dem Original bzw. dem Luanti-Port (gepinnter Commit), nicht pauschal aus VoxeLibre.
+  Jede Zusatzdatei braucht eine Einzelprüfung, sonst zeichnen wir sie selbst oder nutzen den Platzhalter.
+- Pixel Perfection 1.11 deckt nur Blöcke bis Minecraft 1.11 ab. Concrete/Concrete Powder u. a. müssen wir
+  selbst ergänzen.
+- **DRM-Risiko:** CC BY-SA 4.0 §2(a)(5)(C) verbietet technische Schutzmaßnahmen, die die Lizenzrechte
+  einschränken, und App-Store-Apps sind verschlüsselt. **Gegenmaßnahme:** Texturen und Atlas zusätzlich DRM-frei
+  veröffentlichen (Download-Link in den Credits). Vor Store-Release juristisch prüfen.
+- Unklar: ob Pixel Perfection reine Eigenarbeit ist und nicht von Mojang-Texturen abgepaust wurde. Das ist eine
+  Restunsicherheit, die wir nicht selbst ausräumen können.
+- Vorgeschlagener Credits-Text: „Block textures based on "Pixel Perfection" by Hugh "XSSheep" Rutland, licensed
+  under CC BY-SA 4.0. Modified by laracraft contributors: renamed and packed into a texture atlas. The texture atlas
+  is distributed under CC BY-SA 4.0.“
+- Alternativen: Kenney Voxel Pack (CC0, aber anderer Stil, keine Redstone-Teile), komplett eigene Texturen (CC0,
+  schrittweise hinter dem Platzhalter-Fallback).
+
 ## Marke
 
 „für Minecraft“ ist erlaubt, „offiziell“ und Logos nicht. Der Disclaimer „Nicht offiziell. Nicht mit Mojang oder
