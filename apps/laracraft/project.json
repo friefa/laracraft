@@ -80,6 +80,34 @@
         "staticFilePath": "dist/apps/laracraft/browser",
         "spa": true
       }
+    },
+    "cap-sync": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["build"],
+      "cache": false,
+      "options": {
+        "cwd": "apps/laracraft",
+        "command": "cap sync"
+      }
+    },
+    "android-build": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["cap-sync"],
+      "cache": false,
+      "outputs": ["{projectRoot}/android/app/build/outputs/apk"],
+      "options": {
+        "cwd": "apps/laracraft/android",
+        "command": "./gradlew assembleDebug"
+      }
+    },
+    "ios-build": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["cap-sync"],
+      "cache": false,
+      "options": {
+        "cwd": "apps/laracraft/ios/App",
+        "command": "xcodebuild -project App.xcodeproj -scheme App -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath build/DerivedData CODE_SIGNING_ALLOWED=NO build"
+      }
     }
   }
 }

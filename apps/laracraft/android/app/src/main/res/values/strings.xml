@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">laracraft</string>
+    <string name="title_activity_main">laracraft</string>
+    <string name="package_name">app.laracraft</string>
+    <string name="custom_url_scheme">app.laracraft</string>
+</resources>
