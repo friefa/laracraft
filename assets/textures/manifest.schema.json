@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://laracraft.dev/schemas/texture-manifest-v1.json",
+  "title": "laracraft texture license manifest",
+  "description": "Every file under assets/textures must have exactly one entry. Validated by `nx run textures:validate`, which additionally checks files on disk, image sizes, license/ShareAlike consistency and forbidden (Mojang) paths.",
+  "type": "object",
+  "required": ["version", "packs", "textures"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "version": { "const": 1 },
+    "packs": {
+      "description": "Texture packs keyed by snake_case id. A pack's files live in assets/textures/<dir>/.",
+      "type": "object",
+      "propertyNames": { "pattern": "^[a-z0-9]+(_[a-z0-9]+)*$" },
+      "additionalProperties": {
+        "type": "object",
+        "required": ["title", "description", "dir"],
+        "additionalProperties": false,
+        "properties": {
+          "title": { "type": "string", "minLength": 1 },
+          "description": { "type": "string", "minLength": 1 },
+          "dir": { "type": "string", "minLength": 1 },
+          "homepage": { "type": "string", "format": "uri" }
+        }
+      }
+    },
+    "textures": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/texture" }
+    }
+  },
+  "$defs": {
+    "texture": {
+      "type": "object",
+      "required": [
+        "pack",
+        "name",
+        "file",
+        "source",
+        "authors",
+        "license",
+        "licenseUrl",
+        "modifications",
+        "shareAlike"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "pack": { "type": "string", "description": "Key into `packs`." },
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(_[a-z0-9]+)*$",
+          "description": "laracraft texture name, unique within the pack (e.g. grass_block_side)."
+        },
+        "file": {
+          "type": "string",
+          "pattern": "^assets/textures/.+\\.png$",
+          "description": "Path relative to the repository root."
+        },
+        "source": {
+          "type": "object",
+          "required": ["kind"],
+          "additionalProperties": false,
+          "properties": {
+            "kind": { "enum": ["own", "third-party"] },
+            "url": {
+              "type": "string",
+              "format": "uri",
+              "description": "Where the original was obtained. Required (https) for third-party."
+            },
+            "packName": {
+              "type": "string",
+              "description": "Title of the original work. Required for third-party."
+            },
+            "version": { "type": "string" },
+            "commit": { "type": "string" },
+            "originalPath": {
+              "type": "string",
+              "description": "Path of the file in the upstream source."
+            }
+          },
+          "if": { "properties": { "kind": { "const": "third-party" } } },
+          "then": { "required": ["kind", "url", "packName"] }
+        },
+        "authors": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "license": {
+          "enum": ["CC0-1.0", "CC-BY-3.0", "CC-BY-4.0", "CC-BY-SA-3.0", "CC-BY-SA-4.0", "MIT"],
+          "description": "SPDX license identifier (allow-list)."
+        },
+        "licenseUrl": { "type": "string", "format": "uri" },
+        "modifications": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Changes made relative to the source; \"none\" if verbatim."
+        },
+        "shareAlike": {
+          "type": "boolean",
+          "description": "Must be true exactly for CC-BY-SA-* licenses."
+        }
+      }
+    }
+  }
+}
