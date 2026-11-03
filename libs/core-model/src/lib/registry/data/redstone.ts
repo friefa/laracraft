@@ -143,7 +143,7 @@ export const REDSTONE_BLOCKS: readonly BlockDefinition[] = [
     support: BELOW,
     // Turns off when the block it stands on is powered.
     placement: rules(['lit', 'neighbors']),
-    lightByProperty: { property: 'lit', levels: { true: 15, false: 0 } },
+    lightByProperty: { property: 'lit', levels: { true: 7, false: 0 } },
     redstone: { role: 'source' },
     tags: ['redstone', 'torch'],
   }),
@@ -155,6 +155,7 @@ export const REDSTONE_BLOCKS: readonly BlockDefinition[] = [
     lightEmission: 7,
     textures: { all: 'redstone_torch' },
     properties: { facing: horizontalFacing(), lit: bool(true) },
+    lightByProperty: { property: 'lit', levels: { true: 7, false: 0 } },
     // Hangs on the block opposite of `facing`; `facing` = clicked face.
     support: { kind: 'facing', property: 'facing' },
     placement: rules(['facing', 'clickedFace'], ['lit', 'neighbors']),
@@ -268,6 +269,7 @@ export const REDSTONE_BLOCKS: readonly BlockDefinition[] = [
   cube('redstone_lamp', 'redstone', {
     properties: { lit: bool() },
     placement: rules(['lit', 'neighbors']),
+    lightByProperty: { property: 'lit', levels: { true: 15, false: 0 } },
     redstone: { role: 'actuator' },
     tags: ['redstone', 'lamp', 'light'],
   }),

@@ -41,7 +41,24 @@ Ziel: Bau laden, flüssig rendern, mit Touch und Maus bearbeiten, Undo/Redo, lok
 | P1.9  | Performance-Messung 50 000 Blöcke auf Referenzgeräten → `docs/PERFORMANCE.md`, CI-Budgets (Mesh-Zeit, Speicher, Bundle)                                                    | renderer + CI     | P1.1–P1.3        | –           |
 | P1.r  | Unabhängiger Review: Mesher (Korrektheit Face-Culling/Greedy) und Blockstate-Transformationen                                                                              | Review-Agent      | P1.1, P1.5       | –           |
 
+| P1.10 | Registry auf aktuelle Java-Version 26.x heben (neue Blöcke/Properties seit 1.21.11), `dataVersion` aktualisieren, Review | core-model | P0.3 | alle |
+
 Kritischer Pfad M1: P1.0 → P1.1 → P1.3 → P1.7 (Touch-Risiko so früh wie möglich auf Geräte bringen).
+
+## Bekannte Lücken nach M0 (Backlog für M2)
+
+Aus dem fachlichen Review der Registry (P0.3r), vor Start der Build-Order-Engine zu lösen (**P2.0, Lead: Vertrag**):
+
+- `solid` ist ein einzelnes Boolean. Java unterscheidet Tragfähigkeit pro Fläche und Art: volle Fläche
+  (Knöpfe, Wandfackeln, Leitern), „rigid“ Oberseite (Schienen, Repeater, Comparator), Mittel-Auflage (Fackel,
+  Laterne, Druckplatte auf Zaun/Mauer), Redstone-Staub (auch auf Trichter, oberen Stufen). Ersatz durch
+  Support-Profile pro Fläche.
+- Redstone-Staub Punkt vs. Kreuz (Rechtsklick nach dem Setzen), Schienen-Ausrichtung ohne Nachbarn
+  (Blickachse), Tür-Scharnier (Klickposition), Falltür-`facing` je nach geklickter Fläche, Laterne `hanging` bei
+  Seitenklick, Kisten nebeneinander (Schleichen), Betonpulver härtet neben Wasser aus.
+- Optik: Spender/Werfer-Frontseite vertikal, Ofen `lit`-Licht, Tür-Seitentextur.
+- Texturen: Registry nutzt 175 Texturnamen, 17 Platzhalter existieren; der Rest fällt bis zur Freigabe von
+  ADR-0003 auf `missing` zurück.
 
 ## M2–M5 (Grobplanung)
 

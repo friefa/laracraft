@@ -92,10 +92,10 @@ export type SupportRule =
  * Each entry names a property and where its value comes from.
  * - `playerFacing`: horizontal look direction of the player (stairs `facing`).
  * - `playerFacingOpposite`: opposite of look direction (repeater/comparator
- *   `facing` points towards the player, observer `facing`, …). Must be verified
- *   per block against Java Edition behaviour.
- * - `playerLook3d`: full 3D look direction incl. up/down (pistons, dispensers,
- *   droppers, observers use `…Opposite`).
+ *   `facing` points towards the player, furnace, chest). Must be verified per
+ *   block against Java Edition behaviour.
+ * - `playerLook3d`: full 3D look direction incl. up/down (observer `facing`).
+ * - `playerLook3dOpposite`: opposite of the 3D look (pistons, dispensers, droppers, barrels).
  * - `clickedFace`: the face of the neighbour that was clicked, i.e. the direction
  *   from the clicked neighbour to the new block (wall torch, ladder, logs `axis`).
  * - `clickedFaceOpposite`: opposite of `clickedFace`, pointing into the clicked
@@ -142,8 +142,10 @@ export interface PlacementRule {
 
 /**
  * build-order: redstone role. `triggersOnPlace` marks components that can fire
- * or change state the moment they are placed or updated (observers, pistons
- * next to power, dispensers/droppers, TNT next to power).
+ * or change state the moment they are placed or when a neighbour is placed or
+ * changed afterwards (pistons and TNT next to power, dispensers/droppers, and
+ * observers, which do NOT pulse on their own placement since Java 1.13 but fire
+ * when the watched block is placed or changed).
  */
 export type RedstoneRole =
   | 'source' // lever, button, redstone block, torch, daylight detector, pressure plate…
