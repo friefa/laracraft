@@ -29,11 +29,31 @@ export function createBlockRegistry(
         throw new RegistryError(`${def.id}.${name} default "${prop.default}" not in values`);
       }
     }
-    for (const rule of def.placement ?? []) {
-      if (!(rule.property in def.properties)) {
+    const placement = def.placement ?? [];
+    placement.forEach((rule, i) => {
+      const prop = Object.hasOwn(def.properties, rule.property)
+        ? def.properties[rule.property]
+        : undefined;
+      if (!prop) {
         throw new RegistryError(`${def.id} placement refers to unknown property ${rule.property}`);
       }
-    }
+      if (
+        rule.value !== undefined &&
+        (rule.source !== 'fixed' || !prop.values.includes(rule.value))
+      ) {
+        throw new RegistryError(`${def.id}.${rule.property} has an invalid fixed value`);
+      }
+      if (rule.when) {
+        const cond = Object.hasOwn(def.properties, rule.when.property)
+          ? def.properties[rule.when.property]
+          : undefined;
+        if (!cond || !cond.values.includes(rule.when.value)) {
+          throw new RegistryError(`${def.id}.${rule.property} has an invalid 'when' condition`);
+        }
+      } else if (placement.slice(i + 1).some((r) => r.property === rule.property)) {
+        throw new RegistryError(`${def.id}.${rule.property}: unconditional rule must come last`);
+      }
+    });
     byId.set(def.id, def);
   }
   const all = Object.freeze([...byId.values()]);

@@ -70,6 +70,7 @@ export interface BlockOptions {
   textures?: BlockTextures;
   modelId?: string;
   lightEmission?: number;
+  lightByProperty?: { property: string; levels: Record<string, number> };
   solid?: boolean;
   gravity?: boolean;
   fluid?: boolean;
@@ -96,6 +97,7 @@ export function block(path: string, o: BlockOptions): BlockDefinition {
       ...(shape === 'none' ? {} : { textures: o.textures ?? { all: path } }),
       ...(o.modelId ? { modelId: o.modelId } : {}),
       ...(o.lightEmission ? { lightEmission: o.lightEmission } : {}),
+      ...(o.lightByProperty ? { lightByProperty: o.lightByProperty } : {}),
     },
     solid: o.solid ?? shape === 'full',
     physics: {
@@ -348,7 +350,7 @@ export const fenceGate = (
  * Face-attached block (button, lever). `face` comes from the clicked face
  * (top → floor, bottom → ceiling, side → wall). Java: on walls `facing` = the
  * clicked face (points away from the wall); on floor/ceiling `facing` = the
- * player's look direction. Single-source contract: we record `clickedFace`.
+ * player's look direction.
  */
 export const faceAttached = (
   path: string,
@@ -368,7 +370,12 @@ export const faceAttached = (
       powered: bool(),
     },
     support: { kind: 'face', faceProperty: 'face', facingProperty: 'facing' },
-    placement: rules(['face', 'clickedFace'], ['facing', 'clickedFace'], ['powered', 'fixed']),
+    placement: [
+      { property: 'face', source: 'clickedFace' },
+      { property: 'facing', source: 'clickedFace', when: { property: 'face', value: 'wall' } },
+      { property: 'facing', source: 'playerFacing' },
+      { property: 'powered', source: 'fixed' },
+    ],
     redstone: { role: 'source' },
   });
 

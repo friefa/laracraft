@@ -9,7 +9,6 @@ import {
   pillar,
   pressurePlate,
   range,
-  rules,
   slab,
   stairs,
   trapdoor,
@@ -22,9 +21,7 @@ export type WoodType = (typeof WOOD_TYPES)[number];
 
 /**
  * Leaves. Java: `distance` 1–7 (default 7), `persistent` (default false),
- * `waterlogged`. NOTE: player-placed leaves are always `persistent=true`, which
- * the contract cannot express (no "fixed to non-default value" source); see
- * report. Java's LeavesBlock overrides its support shape to empty, so torches,
+ * `waterlogged`. Player-placed leaves are always `persistent=true`. Java's LeavesBlock overrides its support shape to empty, so torches,
  * buttons etc. cannot attach to leaves (`solid: false`) although they render
  * as full cutout cubes.
  */
@@ -34,7 +31,10 @@ const leaves = (wood: WoodType): BlockDefinition =>
     layer: 'cutout',
     solid: false,
     properties: { distance: range(1, 7, 7), persistent: bool(), waterlogged: waterlogged() },
-    placement: rules(['distance', 'neighbors']),
+    placement: [
+      { property: 'distance', source: 'neighbors' },
+      { property: 'persistent', source: 'fixed', value: 'true' },
+    ],
     tags: [wood, 'leaves', 'foliage', 'tree'],
   });
 

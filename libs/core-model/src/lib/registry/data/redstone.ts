@@ -143,6 +143,7 @@ export const REDSTONE_BLOCKS: readonly BlockDefinition[] = [
     support: BELOW,
     // Turns off when the block it stands on is powered.
     placement: rules(['lit', 'neighbors']),
+    lightByProperty: { property: 'lit', levels: { true: 15, false: 0 } },
     redstone: { role: 'source' },
     tags: ['redstone', 'torch'],
   }),
@@ -258,10 +259,9 @@ export const REDSTONE_BLOCKS: readonly BlockDefinition[] = [
       enabled: bool(true),
       facing: prop(['down', 'north', 'south', 'west', 'east'], 'down'),
     },
-    // NOTE: hopper `facing` is the OPPOSITE of the clicked face (points into the
-    // clicked block), `down` when a top/bottom face was clicked. The contract has
-    // no `clickedFaceOpposite`; consumers must special-case hopper here.
-    placement: rules(['facing', 'clickedFace'], ['enabled', 'neighbors']),
+    // Hopper `facing` points into the clicked block; clicking a top/bottom face
+    // yields `down` (`up` is not allowed → property default).
+    placement: rules(['facing', 'clickedFaceOpposite'], ['enabled', 'neighbors']),
     redstone: { role: 'container' },
     tags: ['hopper', 'redstone', 'item', 'funnel'],
   }),

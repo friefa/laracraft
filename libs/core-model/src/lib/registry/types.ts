@@ -47,6 +47,11 @@ export type BlockTextures =
   | { readonly all: string }
   | { readonly top: string; readonly bottom: string; readonly side: string }
   | { readonly end: string; readonly side: string } // logs, pillars (axis-aware)
+  /**
+   * Explicit faces. For directional full blocks (furnace, observer, piston,
+   * dispenser, barrel …) faces are given for the state `facing=north` and the
+   * renderer rotates them according to the actual `facing`.
+   */
   | { readonly faces: Readonly<Partial<Record<Direction | 'side', string>>> };
 
 /** A blockstate property and its allowed values (first entry is NOT implied default). */
@@ -91,14 +96,21 @@ export type SupportRule =
  *   per block against Java Edition behaviour.
  * - `playerLook3d`: full 3D look direction incl. up/down (pistons, dispensers,
  *   droppers, observers use `…Opposite`).
- * - `clickedFace`: the face of the neighbour that was clicked (wall torch, ladder,
- *   hopper output, logs `axis`).
+ * - `clickedFace`: the face of the neighbour that was clicked, i.e. the direction
+ *   from the clicked neighbour to the new block (wall torch, ladder, logs `axis`).
+ * - `clickedFaceOpposite`: opposite of `clickedFace`, pointing into the clicked
+ *   block (hopper `facing`; values the property does not allow, e.g. `up`, fall
+ *   back to the property default).
  * - `clickedHalf`: upper/lower half of the clicked face (stairs/slabs/trapdoors `half`/`type`).
  * - `neighbors`: derived from neighbours after placement (fences, panes, walls,
  *   redstone wire connections, stair `shape`) — not player-controlled.
  * - `interaction`: set by right-clicking after placement (repeater `delay`,
  *   comparator `mode`, note block `note`).
- * - `fixed`: always the default when placed (e.g. `powered=false`).
+ * - `fixed`: always the same value when placed: `PlacementRule.value`, or the
+ *   property default when omitted (e.g. `powered=false`, leaves `persistent=true`).
+ * - `environment`: set by the world at the position (`waterlogged` from water).
+ *   Properties without any rule are treated like `fixed` with the default,
+ *   except `waterlogged`, which is implicitly `environment`.
  */
 export type PlacementSource =
   | 'playerFacing'
@@ -106,14 +118,26 @@ export type PlacementSource =
   | 'playerLook3d'
   | 'playerLook3dOpposite'
   | 'clickedFace'
+  | 'clickedFaceOpposite'
   | 'clickedHalf'
   | 'neighbors'
   | 'interaction'
-  | 'fixed';
+  | 'fixed'
+  | 'environment';
 
+/**
+ * Several rules for the same property are allowed when each has a `when`
+ * condition (e.g. lever `facing` = `clickedFace` when `face=wall`, otherwise
+ * `playerFacing`). The first rule whose condition matches wins; a rule without
+ * `when` is the fallback and must come last.
+ */
 export interface PlacementRule {
   readonly property: string;
   readonly source: PlacementSource;
+  /** Only for `source: 'fixed'`: the value set on placement (default: property default). */
+  readonly value?: string;
+  /** Rule applies only when another property of the same state has this value. */
+  readonly when?: { readonly property: string; readonly value: string };
 }
 
 /**
@@ -172,6 +196,11 @@ export interface BlockDefinition {
     readonly modelId?: string;
     /** Emits light (for future lighting); 0–15. */
     readonly lightEmission?: number;
+    /** Light per property value (e.g. redstone lamp `lit=true` → 15); overrides `lightEmission`. */
+    readonly lightByProperty?: {
+      readonly property: string;
+      readonly levels: Readonly<Record<string, number>>;
+    };
   };
   /** Whether the full block face can support attachments (torches, buttons…). */
   readonly solid: boolean;

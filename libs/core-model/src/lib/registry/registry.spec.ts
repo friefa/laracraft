@@ -63,3 +63,35 @@ describe('registry hostile input', () => {
     expect(resolveBlockState(reg, { id: 'Bad Id', properties: {} }).ok).toBe(false);
   });
 });
+
+describe('placement rule validation', () => {
+  it('validates fixed values and when-conditions', () => {
+    const base = { ...stairs, placement: [] };
+    expect(() =>
+      createBlockRegistry('t', [
+        { ...base, placement: [{ property: 'half', source: 'fixed', value: 'middle' }] },
+      ]),
+    ).toThrow(/fixed value/);
+    expect(() =>
+      createBlockRegistry('t', [
+        {
+          ...base,
+          placement: [
+            { property: 'facing', source: 'playerFacing' },
+            { property: 'facing', source: 'clickedFace', when: { property: 'half', value: 'top' } },
+          ],
+        },
+      ]),
+    ).toThrow(/must come last/);
+    expect(() =>
+      createBlockRegistry('t', [
+        {
+          ...base,
+          placement: [
+            { property: 'facing', source: 'clickedFace', when: { property: 'nope', value: 'x' } },
+          ],
+        },
+      ]),
+    ).toThrow(/when/);
+  });
+});
