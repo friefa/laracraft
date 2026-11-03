@@ -7,3 +7,4 @@ export * from './lib/document/palette';
 export * from './lib/document/chunked-volume';
 export * from './lib/document/build-document';
 export * from './lib/serialization/format';
+export * from './lib/registry/java-registry';
