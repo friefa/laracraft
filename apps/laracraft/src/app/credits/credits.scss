@@ -1,0 +1,50 @@
+.group {
+  margin-bottom: var(--lc-space);
+  padding: var(--lc-space);
+  background: var(--lc-surface);
+  border: 1px solid var(--lc-border);
+  border-radius: var(--lc-radius);
+
+  h3 {
+    margin-top: 0;
+  }
+}
+
+.version,
+.count {
+  color: var(--lc-muted);
+  font-size: 0.875rem;
+  font-weight: normal;
+}
+
+dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.25rem 0.75rem;
+  margin: 0;
+}
+
+dt {
+  font-weight: 600;
+}
+
+dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.share-alike {
+  margin-bottom: 0;
+  padding-left: 0.75rem;
+  border-left: 3px solid var(--lc-accent);
+}
+
+.state.error {
+  color: var(--lc-danger);
+}
+
+button {
+  min-height: 2.75rem;
+  padding: 0 1rem;
+  font: inherit;
+}
