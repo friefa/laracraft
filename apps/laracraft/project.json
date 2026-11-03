@@ -9,6 +9,8 @@
     "build": {
       "executor": "@angular/build:application",
       "outputs": ["{options.outputPath}"],
+      "dependsOn": ["^build", "textures:credits", "textures:atlas"],
+      "inputs": ["production", "^production", { "dependentTasksOutputFiles": "**/*.{json,png}" }],
       "defaultConfiguration": "production",
       "options": {
         "outputPath": "dist/apps/laracraft",
@@ -19,6 +21,11 @@
           {
             "glob": "**/*",
             "input": "apps/laracraft/public"
+          },
+          {
+            "glob": "**/*",
+            "input": "dist/assets/textures",
+            "output": "assets/textures"
           }
         ],
         "styles": ["apps/laracraft/src/styles.scss"]
@@ -81,9 +88,17 @@
         "spa": true
       }
     },
-    "cap-sync": {
+    "bundle-licenses": {
       "executor": "nx:run-commands",
       "dependsOn": ["build"],
+      "cache": false,
+      "options": {
+        "command": "node -e \"const fs=require('fs');const d='dist/apps/laracraft/';if(fs.existsSync(d+'3rdpartylicenses.txt'))fs.copyFileSync(d+'3rdpartylicenses.txt',d+'browser/3rdpartylicenses.txt')\""
+      }
+    },
+    "cap-sync": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["bundle-licenses"],
       "cache": false,
       "options": {
         "cwd": "apps/laracraft",

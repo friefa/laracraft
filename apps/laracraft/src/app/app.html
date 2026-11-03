@@ -1,5 +1,31 @@
-<main>
-  <h1>laracraft</h1>
+<!-- A button, not href="#main": with <base href="/"> a fragment link would navigate home. -->
+<button type="button" class="skip-link" (click)="main.focus()">
+  {{ 'app.skipToContent' | transloco }}
+</button>
+
+<header class="app-header">
+  <a class="brand" routerLink="/" [attr.aria-label]="'app.homeLink' | transloco"
+    >{{ 'app.name' | transloco }}</a
+  >
+  <div class="lang-switch">
+    <label for="lang-select">{{ 'lang.label' | transloco }}</label>
+    <select id="lang-select" (change)="onLangChange($event)">
+      @for (l of language.langs; track l) {
+      <option [value]="l" [selected]="l === language.lang()" [attr.lang]="l">
+        {{ 'lang.' + l | transloco }}
+      </option>
+      }
+    </select>
+  </div>
+</header>
+
+<main #main class="app-main" tabindex="-1">
   <router-outlet />
 </main>
-<footer class="disclaimer">Nicht offiziell. Nicht mit Mojang oder Microsoft verbunden.</footer>
+
+<footer class="app-footer">
+  <p class="disclaimer">{{ 'footer.disclaimer' | transloco }}</p>
+  <nav [attr.aria-label]="'footer.navLabel' | transloco">
+    <a routerLink="/credits">{{ 'footer.credits' | transloco }}</a>
+  </nav>
+</footer>

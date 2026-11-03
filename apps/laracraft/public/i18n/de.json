@@ -1,0 +1,43 @@
+{
+  "app": {
+    "name": "laracraft",
+    "skipToContent": "Zum Inhalt springen",
+    "homeLink": "laracraft – Startseite"
+  },
+  "lang": {
+    "label": "Sprache",
+    "de": "Deutsch",
+    "en": "English"
+  },
+  "footer": {
+    "disclaimer": "Nicht offiziell. Nicht mit Mojang oder Microsoft verbunden.",
+    "navLabel": "Rechtliches",
+    "credits": "Credits"
+  },
+  "home": {
+    "title": "laracraft",
+    "tagline": "Bauwerke für die Minecraft Java Edition planen, ansehen und Schritt für Schritt nachbauen."
+  },
+  "credits": {
+    "title": "Credits",
+    "intro": "laracraft wird durch die folgenden Werke und ihre Urheber möglich.",
+    "texturesHeading": "Texturen",
+    "loading": "Credits werden geladen …",
+    "error": "Die Credits konnten nicht geladen werden.",
+    "retry": "Erneut versuchen",
+    "empty": "Noch sind keine Texturen enthalten.",
+    "authors": "Urheber",
+    "license": "Lizenz",
+    "source": "Quelle",
+    "ownWork": "Eigenes Werk",
+    "version": "Version",
+    "modifications": "Änderungen",
+    "modificationsNone": "keine",
+    "textureCount": "Texturen: {{ count }}",
+    "shareAlike": "ShareAlike: Diese Texturen und der daraus erstellte Textur-Atlas werden unter derselben Lizenz weitergegeben.",
+    "ossHeading": "Open-Source-Software",
+    "ossText": "laracraft basiert auf Open-Source-Software. Deren Lizenzhinweise sind Teil jedes Builds.",
+    "ossLink": "Lizenzen von Drittanbietern",
+    "disclaimerHeading": "Hinweis"
+  }
+}

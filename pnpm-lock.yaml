@@ -35,6 +35,9 @@ importers:
       '@capacitor/ios':
         specifier: ^8.6.0
         version: 8.6.0(@capacitor/core@8.6.0)
+      '@jsverse/transloco':
+        specifier: ^8.4.0
+        version: 8.4.0(@angular/core@22.2.4(@angular/compiler@22.2.4)(rxjs@7.8.2))(rxjs@7.8.2)(typescript@6.0.3)
       fflate:
         specifier: ^0.8.3
         version: 0.8.3
@@ -1473,6 +1476,19 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
+  '@jsverse/transloco-utils@8.4.0':
+    resolution: {integrity: sha512-0gJIpjX15a1UmBmwxHI3fXDu0VElU4FaunbYv6O13DOkhdSY8eV6Whdljokv5dJqXSLKdMxI624upkN13enKJg==}
+    engines: {node: '>=18'}
+
+  '@jsverse/transloco@8.4.0':
+    resolution: {integrity: sha512-dGeD2gkYqnSgbG/j6ILXCafgnrGbwcfgpL48m42DoemXutkuN2k/TFskaU27yNM9BeeaNX7zqQtFGdKmz/2wXw==}
+    peerDependencies:
+      '@angular/core': '>=16.0.0'
+      rxjs: '>=6.0.0'
+
+  '@jsverse/utils@1.0.0-beta.5':
+    resolution: {integrity: sha512-z7IdlV6BdSeF3Veii8Yyk64KuyTjNIQnFaW5PAhmDx0wN29lB2BFp8WO6+tJPLPjtlz2yKeNrjkp1XqnMPaeHA==}
+
   '@listr2/prompt-adapter-inquirer@4.2.7':
     resolution: {integrity: sha512-k180vxSv2KqmnDxoato6pCqEJsov4U5C0EVmldZkAdNeVBxY48A/LM6TCNPGIzDK/iZSfsZP0Mw+gbWc5hXLyA==}
     engines: {node: '>=22.13.0'}
@@ -2716,6 +2732,15 @@ packages:
   cosmiconfig@7.1.0:
     resolution: {integrity: sha512-AdmX6xUzdNASswsFtmwSt7Vj8po9IuqXm0UXz7QKPuEUmPB4XyjGfaAr2PSuELMwkRMVH1EpIkX5bTZGRB3eCA==}
     engines: {node: '>=10'}
+
+  cosmiconfig@8.3.6:
+    resolution: {integrity: sha512-kcZ6+W5QzcJ3P1Mt+83OUv/oHFqZHIx8DuxG6eZ5RGMERoLqp4BuGjhHLYGK+Kf5XVkQvqBSmAy/nGWN3qDgEA==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      typescript: '>=4.9.5'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
 
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
@@ -6040,6 +6065,25 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.6.0
 
+  '@jsverse/transloco-utils@8.4.0(typescript@6.0.3)':
+    dependencies:
+      cosmiconfig: 8.3.6(typescript@6.0.3)
+      tslib: 2.9.1
+    transitivePeerDependencies:
+      - typescript
+
+  '@jsverse/transloco@8.4.0(@angular/core@22.2.4(@angular/compiler@22.2.4)(rxjs@7.8.2))(rxjs@7.8.2)(typescript@6.0.3)':
+    dependencies:
+      '@angular/core': 22.2.4(@angular/compiler@22.2.4)(rxjs@7.8.2)
+      '@jsverse/transloco-utils': 8.4.0(typescript@6.0.3)
+      '@jsverse/utils': 1.0.0-beta.5
+      rxjs: 7.8.2
+      tslib: 2.9.1
+    transitivePeerDependencies:
+      - typescript
+
+  '@jsverse/utils@1.0.0-beta.5': {}
+
   '@listr2/prompt-adapter-inquirer@4.2.7(@inquirer/prompts@8.7.2(@types/node@24.19.2))(@types/node@24.19.2)(listr2@11.1.0)':
     dependencies:
       '@inquirer/prompts': 8.7.2(@types/node@24.19.2)
@@ -7158,6 +7202,15 @@ snapshots:
       parse-json: 5.2.0
       path-type: 4.0.0
       yaml: 1.10.3
+
+  cosmiconfig@8.3.6(typescript@6.0.3):
+    dependencies:
+      import-fresh: 3.3.1
+      js-yaml: 4.3.2
+      parse-json: 5.2.0
+      path-type: 4.0.0
+    optionalDependencies:
+      typescript: 6.0.3
 
   cross-spawn@7.0.6:
     dependencies:
