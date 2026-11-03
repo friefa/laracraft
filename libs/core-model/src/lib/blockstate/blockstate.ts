@@ -39,7 +39,8 @@ export function parseBlockState(input: string): BlockState {
   if (!id.includes(':')) id = `minecraft:${id}`;
   if (!ID_RE.test(id)) throw new BlockStateParseError(input, 'malformed id');
 
-  const properties: Record<string, string> = {};
+  // Null prototype: keys like `__proto__` or `constructor` are plain data here.
+  const properties: Record<string, string> = Object.create(null) as Record<string, string>;
   if (bracket !== -1) {
     if (!trimmed.endsWith(']')) throw new BlockStateParseError(input, 'missing closing "]"');
     const body = trimmed.slice(bracket + 1, -1);
@@ -51,7 +52,7 @@ export function parseBlockState(input: string): BlockState {
         const value = pair.slice(eq + 1).trim();
         if (!KEY_RE.test(key)) throw new BlockStateParseError(input, `bad key "${key}"`);
         if (!VALUE_RE.test(value)) throw new BlockStateParseError(input, `bad value "${value}"`);
-        if (Object.prototype.hasOwnProperty.call(properties, key)) {
+        if (Object.hasOwn(properties, key)) {
           throw new BlockStateParseError(input, `duplicate key "${key}"`);
         }
         properties[key] = value;
@@ -72,6 +73,23 @@ export function stringifyBlockState(state: BlockState): BlockStateString {
 /** Normalizes any accepted blockstate spelling to its canonical form. */
 export function canonicalBlockState(input: string): BlockStateString {
   return stringifyBlockState(parseBlockState(input));
+}
+
+/**
+ * Checks that an object-form state is well-formed (same rules as the parser).
+ * Use before trusting a `BlockState` that did not come from {@link parseBlockState}.
+ */
+export function isWellFormedBlockState(state: BlockState): boolean {
+  if (typeof state.id !== 'string' || !ID_RE.test(state.id)) return false;
+  if (typeof state.properties !== 'object' || state.properties === null) return false;
+  for (const key of Object.keys(state.properties)) {
+    const value: unknown = state.properties[key];
+    if (!KEY_RE.test(key) || typeof value !== 'string' || !VALUE_RE.test(value)) return false;
+  }
+  return (
+    Object.getPrototypeOf(state.properties) === Object.prototype ||
+    Object.getPrototypeOf(state.properties) === null
+  );
 }
 
 export function withProperties(

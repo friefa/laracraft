@@ -2,6 +2,7 @@ import {
   type BlockId,
   type BlockState,
   type BlockStateString,
+  isWellFormedBlockState,
   parseBlockState,
   stringifyBlockState,
 } from '../blockstate/blockstate';
@@ -63,11 +64,12 @@ export function resolveBlockState(
   } catch (e) {
     return { ok: false, error: (e as Error).message };
   }
+  if (!isWellFormedBlockState(state)) return { ok: false, error: 'Malformed blockstate object' };
   const def = registry.get(state.id);
   if (!def) return { ok: false, error: `Unknown block ${state.id}` };
-  const properties: Record<string, string> = {};
+  const properties: Record<string, string> = Object.create(null) as Record<string, string>;
   for (const [key, value] of Object.entries(state.properties)) {
-    const prop = def.properties[key];
+    const prop = Object.hasOwn(def.properties, key) ? def.properties[key] : undefined;
     if (!prop) return { ok: false, error: `${state.id} has no property "${key}"` };
     if (!prop.values.includes(value)) {
       return { ok: false, error: `${state.id}.${key} does not allow "${value}"` };
@@ -75,7 +77,7 @@ export function resolveBlockState(
     properties[key] = value;
   }
   for (const [key, prop] of Object.entries(def.properties)) {
-    if (!(key in properties)) properties[key] = prop.default;
+    if (!Object.hasOwn(properties, key)) properties[key] = prop.default;
   }
   return { ok: true, state: stringifyBlockState({ id: state.id, properties }) };
 }

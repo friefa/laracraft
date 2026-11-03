@@ -48,3 +48,18 @@ describe('registry', () => {
     ).toThrow(/default/);
   });
 });
+
+describe('registry hostile input', () => {
+  const reg = createBlockRegistry('test', [stairs]);
+  it.each(['oak_stairs[constructor=x]', 'oak_stairs[hasownproperty=x]', 'oak_stairs[__proto__=x]'])(
+    'returns an error instead of throwing for %j',
+    (input) => {
+      expect(resolveBlockState(reg, input).ok).toBe(false);
+    },
+  );
+  it('validates object-form input', () => {
+    const properties = JSON.parse('{"__proto__":{"a":1}}') as Record<string, string>;
+    expect(resolveBlockState(reg, { id: 'minecraft:oak_stairs', properties }).ok).toBe(false);
+    expect(resolveBlockState(reg, { id: 'Bad Id', properties: {} }).ok).toBe(false);
+  });
+});

@@ -24,3 +24,10 @@ describe('blockstate', () => {
     expect(() => parseBlockState(input)).toThrow();
   });
 });
+
+describe('blockstate hostile input', () => {
+  it('keeps __proto__ as plain data and detects duplicates', () => {
+    expect(canonicalBlockState('stone[__proto__=a]')).toBe('minecraft:stone[__proto__=a]');
+    expect(() => parseBlockState('stone[__proto__=a,__proto__=b]')).toThrow(/duplicate/);
+  });
+});

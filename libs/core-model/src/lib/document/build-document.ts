@@ -1,6 +1,6 @@
 import type { BlockStateString } from '../blockstate/blockstate';
 import type { Vec3 } from '../math/vec3';
-import { ChunkedVolume } from './chunked-volume';
+import { ChunkedVolume, isValidCoordinate } from './chunked-volume';
 import { BlockPalette } from './palette';
 
 /** Edition the document targets. Only `java` is supported; Bedrock is a later hint layer. */
@@ -58,7 +58,7 @@ export class BuildDocument {
     const index = this.palette.intern(state);
     const previous = this.volume.set(pos.x, pos.y, pos.z, index);
     if (previous === index) return undefined;
-    return { pos, before: this.palette.stateAt(previous), after: state };
+    return { pos, before: this.palette.stateAt(previous), after: this.palette.stateAt(index) };
   }
 
   /**
@@ -67,6 +67,14 @@ export class BuildDocument {
    * dropped), which is what belongs on the undo stack.
    */
   apply(changeSet: ChangeSet): ChangeSet {
+    // Validate everything first so a failing change set leaves the document untouched.
+    for (const change of changeSet.changes) {
+      const { x, y, z } = change.pos;
+      if (!isValidCoordinate(x) || !isValidCoordinate(y) || !isValidCoordinate(z)) {
+        throw new RangeError(`Invalid block coordinate (${x}, ${y}, ${z})`);
+      }
+      this.palette.intern(change.after);
+    }
     const applied: BlockChange[] = [];
     for (const change of changeSet.changes) {
       const c = this.setBlock(change.pos, change.after);

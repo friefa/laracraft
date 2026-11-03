@@ -1,13 +1,7 @@
 import type { BlockStateString } from '../blockstate/blockstate';
-import { BuildDocument, invertChangeSet, type BuildMetadata } from './build-document';
+import { META } from '../../testing/fixtures';
+import { BuildDocument, invertChangeSet } from './build-document';
 
-export const META: BuildMetadata = {
-  name: 'test',
-  dataVersion: 4189,
-  edition: 'java',
-  createdAt: '2026-01-01T00:00:00Z',
-  updatedAt: '2026-01-01T00:00:00Z',
-};
 const STONE = 'minecraft:stone' as BlockStateString;
 const DIRT = 'minecraft:dirt' as BlockStateString;
 const AIR = 'minecraft:air' as BlockStateString;

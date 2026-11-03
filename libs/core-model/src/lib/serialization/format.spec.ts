@@ -1,6 +1,6 @@
 import type { BlockStateString } from '../blockstate/blockstate';
 import { BuildDocument } from '../document/build-document';
-import { META } from '../document/build-document.spec';
+import { META } from '../../testing/fixtures';
 import { decodeBase64, encodeBase64 } from './base64';
 import {
   BuildFormatError,

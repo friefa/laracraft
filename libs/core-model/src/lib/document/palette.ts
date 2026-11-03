@@ -1,4 +1,4 @@
-import { AIR, type BlockStateString } from '../blockstate/blockstate';
+import { AIR, canonicalBlockState, type BlockStateString } from '../blockstate/blockstate';
 
 /** Index into a {@link BlockPalette}. Index 0 is always `minecraft:air`. */
 export type PaletteIndex = number;
@@ -17,19 +17,40 @@ export class BlockPalette {
   private readonly states: BlockStateString[] = [AIR];
   private readonly indexByState = new Map<BlockStateString, PaletteIndex>([[AIR, AIR_INDEX]]);
 
-  /** Returns the index for a state, adding it if necessary. State must be canonical. */
+  /**
+   * Returns the index for a state, adding it if necessary. Non-canonical
+   * spellings (`stone`, unsorted keys) are canonicalized, so two spellings of
+   * the same state always share one index. Throws on malformed input.
+   */
   intern(state: BlockStateString): PaletteIndex {
     const existing = this.indexByState.get(state);
     if (existing !== undefined) return existing;
-    if (this.states.length >= MAX_PALETTE_SIZE) throw new RangeError('Palette is full');
-    const index = this.states.length;
-    this.states.push(state);
+    const canonical = canonicalBlockState(state);
+    let index = this.indexByState.get(canonical);
+    if (index === undefined) {
+      if (this.states.length >= MAX_PALETTE_SIZE) throw new RangeError('Palette is full');
+      index = this.states.length;
+      this.states.push(canonical);
+      this.indexByState.set(canonical, index);
+    }
+    // Remember the alias for fast lookups (bounded by distinct inputs seen).
     this.indexByState.set(state, index);
     return index;
   }
 
   indexOf(state: BlockStateString): PaletteIndex | undefined {
-    return this.indexByState.get(state);
+    const direct = this.indexByState.get(state);
+    if (direct !== undefined) return direct;
+    try {
+      return this.indexByState.get(canonicalBlockState(state));
+    } catch {
+      return undefined;
+    }
+  }
+
+  /** Number of additional distinct states that still fit. */
+  get remainingCapacity(): number {
+    return MAX_PALETTE_SIZE - this.states.length;
   }
 
   stateAt(index: PaletteIndex): BlockStateString {
