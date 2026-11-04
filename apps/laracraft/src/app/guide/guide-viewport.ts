@@ -21,6 +21,7 @@ import type {
   SceneBuildRenderer,
   ViewInsets,
 } from '@laracraft/renderer';
+import { skyColor } from '../editor/renderer-loader';
 import type { StepVisuals } from './step-visuals';
 
 /**
@@ -159,7 +160,9 @@ export class GuideViewport {
         registry: createJavaBlockRegistry(),
         // Resolve against <base href>, not the current route (/build/:id/guide).
         atlasUrl: new URL('assets/textures/atlas.json', this.document.baseURI).href,
-      });
+        // Same calm backdrop as the editor (--lc-sky); extra option of the scene renderer.
+        background: skyColor(this.document, this.canvas().nativeElement),
+      } as Parameters<CreateBuildRendererFn>[0]);
       if (this.destroyed) {
         renderer.dispose();
         return;
