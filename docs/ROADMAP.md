@@ -16,7 +16,7 @@ Ziel: Monorepo, CI für Web/iOS/Android, Core-Model, Blockregistry (~150 Blöcke
 | P0.3  | Blockregistry-Daten (~150 Java-Blöcke inkl. Redstone-Grundteile) + Invarianten-Tests                                             | Agent „registry“ | P0.2         | ✅     |
 | P0.3r | Fachlicher Review der Registry-Daten gegen Java Edition (Properties, Placement, Support)                                         | Review-Agent     | P0.3         | ✅     |
 | P0.4  | Textur-Pipeline: Manifest + Schema, Validator, Atlas-Builder, Credits-Generator, Platzhalter-Texturen, Lizenzrecherche           | Agent „textures“ | P0.1         | ✅     |
-| P0.4b | Import Pixel Perfection Legacy (ADR-0003) inkl. Manifest-Einträgen mit Autorenschaft pro Datei                                   | Agent „textures“ | ADR-0003 ✅  | 🔄     |
+| P0.4b | Import Pixel Perfection Legacy (ADR-0003) inkl. Manifest-Einträgen mit Autorenschaft pro Datei                                   | Agent „textures“ | ADR-0003 ✅  | ✅     |
 | P0.5  | Capacitor (Android/iOS) + GitHub-Actions-CI (Lint, Typecheck, Test, Web-, Android-, iOS-Build), Dependabot                       | Agent „ci“       | P0.1         | ✅     |
 | P0.6  | App-Shell: i18n (de/en, Laufzeit), Disclaimer, Credits-Seite aus `credits.json`                                                  | Agent „shell“    | P0.4, P0.5   | ✅     |
 
@@ -58,8 +58,10 @@ Aus dem fachlichen Review der Registry (P0.3r), vor Start der Build-Order-Engine
   (Blickachse), Tür-Scharnier (Klickposition), Falltür-`facing` je nach geklickter Fläche, Laterne `hanging` bei
   Seitenklick, Kisten nebeneinander (Schleichen), Betonpulver härtet neben Wasser aus.
 - Optik: Spender/Werfer-Frontseite vertikal, Ofen `lit`-Licht, Tür-Seitentextur.
-- Texturen: Registry nutzt 175 Texturnamen, 17 Platzhalter existieren; der Rest fällt bis zur Freigabe von
-  ADR-0003 auf `missing` zurück.
+- Texturen (P0.4b importiert 174/175 aus Pixel Perfection Legacy): `chest` fehlt (Entity-Textur, braucht eigenes
+  Modell); Observer-Front (Smiley) im Stil ersetzen; Graustufen-Texturen (Gras oben, Laub, Wasser, Redstone)
+  brauchen Biome-/Power-Tinting im Renderer (M1); Animations-Timing (`.mcmeta`) wurde nicht übernommen; DRM-freier
+  Download von Texturen + Atlas (CC BY-SA, ADR-0003) bis zum Store-Release (M5).
 
 ## M2–M5 (Grobplanung)
 
