@@ -55,12 +55,6 @@
       "exported": "“{{ name }}” exported."
     }
   },
-  "build": {
-    "loading": "Loading build…",
-    "blocks": "Blocks: {{ count }}",
-    "placeholder": "The editor is coming soon.",
-    "back": "Back to my builds"
-  },
   "storage": {
     "errors": {
       "unavailable": "Storage is not available on this device. Private browsing may prevent saving.",
@@ -234,6 +228,113 @@
       "unsupported-state": "This block state cannot be placed like this in survival.",
       "unreachable": "No position found from which this block can be reached.",
       "cycle": "Circular dependency – the order was chosen heuristically."
+    }
+  },
+  "editor": {
+    "back": "Back to my builds",
+    "loading": "Loading build…",
+    "canvasLabel": "3D view of “{{ name }}”. Tap a block to use the active tool; drag to turn the camera.",
+    "undo": "Undo",
+    "redo": "Redo",
+    "more": "More",
+    "dismiss": "Dismiss",
+    "toolbar": "Tools",
+    "menu": {
+      "export": "Export file",
+      "guide": "Instruction mode",
+      "frame": "Show whole build",
+      "credits": "Credits and disclaimer"
+    },
+    "tool": {
+      "place": "Place",
+      "remove": "Remove",
+      "pickBlock": "Pick block",
+      "select": "Select"
+    },
+    "selection": {
+      "label": "Selection",
+      "fill": "Fill",
+      "replace": "Replace",
+      "rotateLeft": "Rotate −90°",
+      "rotateRight": "Rotate +90°",
+      "mirrorX": "Mirror along X",
+      "mirrorZ": "Mirror along Z",
+      "copy": "Copy",
+      "cut": "Cut",
+      "delete": "Delete",
+      "paste": "Paste",
+      "confirmPaste": "Place copy here"
+    },
+    "hint": {
+      "empty": "Tap anywhere to place the first block.",
+      "select": "Tap two blocks to select the box between them.",
+      "replace": "Tap a block inside the selection to replace it everywhere in the selection.",
+      "paste": "Tap where the copy should go, then tap again or confirm."
+    },
+    "layer": {
+      "label": "Layer",
+      "all": "All layers",
+      "value": "Up to layer Y {{ y }}"
+    },
+    "palette": {
+      "open": "Choose block (active: {{ name }})",
+      "title": "Blocks",
+      "close": "Close",
+      "search": "Search blocks",
+      "categories": "Categories",
+      "results": "Blocks",
+      "favorites": "Favourites",
+      "recent": "Recent",
+      "all": "All",
+      "favorite": "Favourite: {{ name }}",
+      "noFavorites": "No favourites yet. Tap the star next to a block.",
+      "noRecent": "No recently used blocks yet.",
+      "noResults": "No blocks found."
+    },
+    "category": {
+      "building": "Building",
+      "natural": "Natural",
+      "wood": "Wood",
+      "stone": "Stone",
+      "colored": "Colored",
+      "glass": "Glass",
+      "decoration": "Decoration",
+      "lighting": "Lighting",
+      "redstone": "Redstone",
+      "transport": "Transport",
+      "utility": "Utility",
+      "fluid": "Fluids",
+      "technical": "Technical"
+    },
+    "save": {
+      "saved": "Saved",
+      "dirty": "Unsaved changes",
+      "saving": "Saving…",
+      "error": "Not saved",
+      "retry": "Try again"
+    },
+    "status": {
+      "copied": "Selection copied.",
+      "exported": "“{{ name }}” exported."
+    },
+    "errors": {
+      "volume": "That edit is too large: {{ volume }} blocks (limit {{ limit }}). Select a smaller area.",
+      "unknown": "That did not work. Please try again.",
+      "renderer": {
+        "webgl": "3D view is not available: this device or browser does not support WebGL 2 or it is turned off.",
+        "failed": "The 3D view could not be started. Reload the page to try again."
+      }
+    },
+    "action": {
+      "place": "Place block",
+      "remove": "Remove block",
+      "fill": "Fill",
+      "replace": "Replace",
+      "rotate": "Rotate",
+      "mirror": "Mirror",
+      "paste": "Paste",
+      "delete": "Delete",
+      "cut": "Cut"
     }
   }
 }

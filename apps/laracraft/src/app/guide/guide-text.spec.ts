@@ -75,7 +75,7 @@ describe('GuideText', () => {
     expect(lines(stairs).join()).not.toContain('jumping');
     expect(lines(repeater)).toContain('Then right-click it 2×');
     await language.use('de');
-    expect(lines(stairs)).toContain('Klicke auf die Nordseite von Stone');
+    expect(lines(stairs)).toContain('Klicke auf die Nordseite von Stein');
     expect(lines(repeater)).toContain('Danach 2× rechtsklicken');
     expect(lines(repeater)).toContain('Im Sprung setzen (am höchsten Punkt)');
     const temp = FIXTURE_PLAN.steps[0]?.actions[2] as PlaceAction;

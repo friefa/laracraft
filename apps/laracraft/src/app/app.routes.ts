@@ -11,9 +11,8 @@ export const appRoutes: Route[] = [
     loadComponent: () => import('./guide/guide-page').then((m) => m.GuidePage),
   },
   {
-    // Placeholder until the editor page lands (M1).
     path: 'build/:id',
-    loadComponent: () => import('./builds/build-placeholder').then((m) => m.BuildPlaceholderPage),
+    loadComponent: () => import('./editor/editor-page').then((m) => m.EditorPage),
   },
   {
     path: 'credits',

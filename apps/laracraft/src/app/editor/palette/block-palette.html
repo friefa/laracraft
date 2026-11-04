@@ -1,0 +1,76 @@
+<dialog #sheet class="sheet" aria-labelledby="palette-title" (close)="onClosed()">
+  <div class="head">
+    <h2 id="palette-title">{{ 'editor.palette.title' | transloco }}</h2>
+    <button
+      type="button"
+      class="icon-button"
+      data-action="close-palette"
+      [attr.aria-label]="'editor.palette.close' | transloco"
+      (click)="close()"
+    >
+      <lc-icon name="close" />
+    </button>
+  </div>
+
+  <div class="search">
+    <lc-icon name="search" />
+    <input
+      #search
+      type="search"
+      autocomplete="off"
+      enterkeyhint="search"
+      [attr.aria-label]="'editor.palette.search' | transloco"
+      [placeholder]="'editor.palette.search' | transloco"
+      [value]="query()"
+      (input)="onSearch($event)"
+    />
+  </div>
+
+  <div class="tabs" role="group" [attr.aria-label]="'editor.palette.categories' | transloco">
+    @for (t of tabs(); track t) {
+    <button
+      type="button"
+      class="tab"
+      [attr.data-tab]="t"
+      [attr.aria-pressed]="!query().trim() && tab() === t"
+      (click)="selectTab(t)"
+    >
+      {{ tabLabel(t) | transloco }}
+    </button>
+    }
+  </div>
+
+  <ul class="grid" [attr.aria-label]="'editor.palette.results' | transloco">
+    @for (def of visible(); track def.id) { @let fav = isFavorite(def); @let label = name(def);
+    <li class="item">
+      <button
+        type="button"
+        class="block"
+        [attr.data-block]="def.id"
+        [attr.aria-pressed]="def.id === activeId()"
+        (click)="choose(def)"
+      >
+        <lc-block-icon [block]="def" />
+        <span class="label">{{ label }}</span>
+      </button>
+      <button
+        type="button"
+        class="fav icon-button"
+        [class.on]="fav"
+        [attr.data-fav]="def.id"
+        [attr.aria-pressed]="fav"
+        [attr.aria-label]="'editor.palette.favorite' | transloco: { name: label }"
+        (click)="toggleFavorite(def)"
+      >
+        <lc-icon name="star" [filled]="fav" />
+      </button>
+    </li>
+    } @empty {
+    <li class="empty">
+      {{ (query().trim() ? 'editor.palette.noResults' : tab() === 'favorites' ?
+      'editor.palette.noFavorites' : tab() === 'recent' ? 'editor.palette.noRecent' :
+      'editor.palette.noResults') | transloco }}
+    </li>
+    }
+  </ul>
+</dialog>
