@@ -34,6 +34,7 @@ import {
   type ValidationIssue,
 } from '../types';
 import {
+  blockCentre,
   distance,
   eyePosition,
   faceCentre,
@@ -439,11 +440,24 @@ class PlanValidator {
     }
   }
 
-  /** reachability: eye-to-face distance, visible face, free and supported stand position. */
+  /**
+   * reachability: eye-to-face distance, visible face, free and supported stand position.
+   *
+   * Jumping placements (`jump: true`) use the eye at the jump apex
+   * (EYE_HEIGHT + JUMP_HEIGHT) for distance, face visibility and look geometry, and
+   * need head clearance: standAt, standAt+1 and standAt+2 are air (fluids count as
+   * occupied). The ground below standAt must be non-air, non-fluid in both cases.
+   *
+   * A full block may not be placed into the space the player's body occupies:
+   * standAt / standAt+1 when standing; standAt / standAt+1 / standAt+2 while jumping.
+   * The one exception is pillaring: while jumping, the block at standAt (the space the
+   * feet just left) may be placed by clicking the top face of the block below standAt.
+   */
   private checkReachability(action: PlaceAction, def: BlockDefinition | undefined): void {
     const { pos, standAt, clickOn } = action;
+    const jump = action.jump === true;
     if (isDirection(clickOn.face)) {
-      const eye = eyePosition(standAt);
+      const eye = eyePosition(standAt, jump);
       const centre = faceCentre(clickOn.pos, clickOn.face);
       if (!withinReach(eye, centre, this.reach)) {
         const d = distance(eye, centre).toFixed(2);
@@ -461,11 +475,26 @@ class PlanValidator {
     if (this.occupied(standAt) || this.occupied(head)) {
       this.report('reachability', pos, `Stand position ${fmt(standAt)} is not two blocks of air`);
     }
+    if (jump && this.occupied(above(head))) {
+      this.report(
+        'reachability',
+        pos,
+        `No head room to jump at ${fmt(standAt)}: ${fmt(above(head))} is not air`,
+      );
+    }
     if (!this.occupiedNonFluid(below(standAt))) {
       this.report('reachability', pos, `Nothing to stand on below ${fmt(standAt)}`);
     }
-    if (def?.render.shape === 'full' && (equalsVec3(pos, standAt) || equalsVec3(pos, head))) {
-      this.report('reachability', pos, 'A full block cannot be placed inside the player');
+    if (def?.render.shape === 'full') {
+      const body = jump ? [standAt, head, above(head)] : [standAt, head];
+      const pillaring =
+        jump &&
+        equalsVec3(pos, standAt) &&
+        clickOn.face === 'up' &&
+        equalsVec3(clickOn.pos, below(standAt));
+      if (!pillaring && body.some((p) => equalsVec3(pos, p))) {
+        this.report('reachability', pos, 'A full block cannot be placed inside the player');
+      }
     }
   }
 
@@ -541,7 +570,7 @@ class PlanValidator {
 
     // The declared look direction must be achievable while aiming at the clicked face.
     if (usesHorizontal || uses3d) {
-      const eye = eyePosition(action.standAt);
+      const eye = eyePosition(action.standAt, action.jump === true);
       const half =
         action.clickOn.face === 'up' || action.clickOn.face === 'down'
           ? undefined
@@ -654,6 +683,7 @@ class PlanValidator {
     if (this.fluidsStarted && this.touchesFluid(pos)) {
       this.report('fluids-last', pos, `Removal at ${fmt(pos)} next to a fluid lets it flow`);
     }
+    if (action.standAt) this.checkRemovalReach(pos, action.standAt);
 
     const removed: Vec3[] = [pos];
     this.world.delete(key);
@@ -663,6 +693,27 @@ class PlanValidator {
       removed.push(part.pos);
     }
     for (const r of removed) this.checkNeighboursAfterRemoval(r);
+  }
+
+  /**
+   * reachability for removals (only when `standAt` is given): standAt and standAt+1
+   * are air, something solid is below, and the standing eye is within reach of the
+   * block. Breaking can target any visible point of the block; the block centre is
+   * used as an approximation of that point (no visibility check).
+   */
+  private checkRemovalReach(pos: Vec3, standAt: Vec3): void {
+    if (this.occupied(standAt) || this.occupied(above(standAt))) {
+      this.report('reachability', pos, `Stand position ${fmt(standAt)} is not two blocks of air`);
+    }
+    if (!this.occupiedNonFluid(below(standAt))) {
+      this.report('reachability', pos, `Nothing to stand on below ${fmt(standAt)}`);
+    }
+    const eye = eyePosition(standAt);
+    const centre = blockCentre(pos);
+    if (!withinReach(eye, centre, this.reach)) {
+      const d = distance(eye, centre).toFixed(2);
+      this.report('reachability', pos, `Block to break is ${d} blocks away (reach ${this.reach})`);
+    }
   }
 
   /** Any of the six neighbours holds (or will hold, per the build) a fluid. */

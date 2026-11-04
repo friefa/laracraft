@@ -47,6 +47,7 @@ export interface PlaceOptions {
   clickOn?: { pos: Vec3; face: Direction };
   clickHalf?: 'top' | 'bottom';
   sneak?: boolean;
+  jump?: boolean;
   interactions?: number;
   temporary?: boolean;
 }
@@ -67,13 +68,20 @@ export function place(pos: Vec3, state: string, o: PlaceOptions = {}): PlaceActi
     clickOn: o.clickOn ?? { pos: v(pos.x, pos.y - 1, pos.z), face: 'up' },
     ...(o.clickHalf ? { clickHalf: o.clickHalf } : {}),
     ...(o.sneak ? { sneak: true } : {}),
+    ...(o.jump ? { jump: true } : {}),
     ...(o.interactions !== undefined ? { interactions: o.interactions } : {}),
     ...(o.temporary ? { temporary: true } : {}),
   };
 }
 
-export function remove(pos: Vec3, state: string): RemoveAction {
-  return { kind: 'remove', pos, state: st(state), reason: 'temporary-support' };
+export function remove(pos: Vec3, state: string, standAt?: Vec3): RemoveAction {
+  return {
+    kind: 'remove',
+    pos,
+    state: st(state),
+    reason: 'temporary-support',
+    ...(standAt ? { standAt } : {}),
+  };
 }
 
 export function step(phase: BuildPhase, ...actions: StepAction[]): BuildStep {
