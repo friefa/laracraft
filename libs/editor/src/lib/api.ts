@@ -5,6 +5,7 @@ import type {
   BuildDocument,
   ChangeSet,
   Direction,
+  HorizontalDirection,
   Vec3,
 } from '@laracraft/core-model';
 
@@ -48,6 +49,11 @@ export interface ToolContext {
   commit(changeSet: ChangeSet): void;
   /** Non-committed preview of upcoming changes (paste, fill) for the renderer. */
   setPreview(changes: readonly { pos: Vec3; state: BlockStateString }[]): void;
+  /**
+   * Horizontal direction the camera looks at (set by the app). Used to orient
+   * placed blocks like Java (stairs, furnaces …). Undefined: palette state is kept.
+   */
+  readonly lookHorizontal?: HorizontalDirection;
 }
 
 export interface EditorTool {
