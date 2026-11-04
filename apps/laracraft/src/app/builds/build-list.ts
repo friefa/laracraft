@@ -17,9 +17,9 @@ import { MAX_NAME_LENGTH } from '@laracraft/core-model';
 import { LanguageService } from '../i18n/language.service';
 import { BuildStore } from '../storage/build-store';
 import {
-  BuildStoreErrorCode,
   BuildSummary,
   MAX_IMPORT_BYTES,
+  STORAGE_ERROR_KEYS,
   buildFileName,
   buildStoreErrorCode,
 } from '../storage/build-store.types';
@@ -34,17 +34,6 @@ interface Message {
   readonly key: string;
   readonly params?: Record<string, unknown>;
 }
-
-const ERROR_KEYS: Record<BuildStoreErrorCode, string> = {
-  unavailable: 'storage.errors.unavailable',
-  quota: 'storage.errors.quota',
-  'not-found': 'storage.errors.notFound',
-  'invalid-name': 'storage.errors.invalidName',
-  'too-large': 'storage.errors.tooLarge',
-  'invalid-file': 'storage.errors.invalidFile',
-  'unsupported-version': 'storage.errors.unsupportedVersion',
-  unknown: 'storage.errors.unknown',
-};
 
 /** Home page: the builds stored on this device ("My builds"). */
 @Component({
@@ -221,7 +210,7 @@ export class BuildListPage {
       const code = buildStoreErrorCode(err);
       if (code === 'unknown') console.error(err);
       this.error.set({
-        key: ERROR_KEYS[code],
+        key: STORAGE_ERROR_KEYS[code],
         params: { max: Math.round(MAX_IMPORT_BYTES / (1024 * 1024)) },
       });
     } finally {

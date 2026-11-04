@@ -150,6 +150,18 @@
         "cwd": "apps/laracraft/ios/App",
         "command": "xcodebuild -project App.xcodeproj -scheme App -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath build/DerivedData CODE_SIGNING_ALLOWED=NO build"
       }
+    },
+    "block-names": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "command": "tsx --tsconfig tsconfig.base.json apps/laracraft/scripts/generate-block-names.ts"
+      },
+      "configurations": {
+        "check": {
+          "args": "--check"
+        }
+      }
     }
   }
 }

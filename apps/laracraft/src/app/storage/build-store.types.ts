@@ -48,6 +48,18 @@ export function buildStoreErrorCode(err: unknown): BuildStoreErrorCode {
   return err instanceof BuildStoreError ? err.code : 'unknown';
 }
 
+/** i18n key of the user-facing message for a storage error code. */
+export const STORAGE_ERROR_KEYS: Readonly<Record<BuildStoreErrorCode, string>> = {
+  unavailable: 'storage.errors.unavailable',
+  quota: 'storage.errors.quota',
+  'not-found': 'storage.errors.notFound',
+  'invalid-name': 'storage.errors.invalidName',
+  'too-large': 'storage.errors.tooLarge',
+  'invalid-file': 'storage.errors.invalidFile',
+  'unsupported-version': 'storage.errors.unsupportedVersion',
+  unknown: 'storage.errors.unknown',
+};
+
 /** Default import size limit (20 MB). */
 export const MAX_IMPORT_BYTES = 20 * 1024 * 1024;
 

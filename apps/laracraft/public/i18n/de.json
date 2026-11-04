@@ -55,12 +55,6 @@
       "exported": "„{{ name }}“ exportiert."
     }
   },
-  "build": {
-    "loading": "Bau wird geladen …",
-    "blocks": "Blöcke: {{ count }}",
-    "placeholder": "Der Editor kommt bald.",
-    "back": "Zurück zu meinen Bauten"
-  },
   "storage": {
     "errors": {
       "unavailable": "Auf diesem Gerät steht kein Speicher zur Verfügung. Im privaten Modus kann das Speichern blockiert sein.",
@@ -94,5 +88,112 @@
     "ossText": "laracraft basiert auf Open-Source-Software. Deren Lizenzhinweise sind Teil jedes Builds.",
     "ossLink": "Lizenzen von Drittanbietern",
     "disclaimerHeading": "Hinweis"
+  },
+  "editor": {
+    "back": "Zurück zu meinen Bauten",
+    "loading": "Bau wird geladen …",
+    "canvasLabel": "3D-Ansicht von „{{ name }}“. Tippe auf einen Block, um das aktive Werkzeug zu benutzen; ziehe, um die Kamera zu drehen.",
+    "undo": "Rückgängig",
+    "redo": "Wiederholen",
+    "more": "Mehr",
+    "dismiss": "Schließen",
+    "toolbar": "Werkzeuge",
+    "menu": {
+      "export": "Datei exportieren",
+      "guide": "Anleitungsmodus",
+      "frame": "Ganzen Bau zeigen",
+      "credits": "Credits und Hinweis"
+    },
+    "tool": {
+      "place": "Setzen",
+      "remove": "Entfernen",
+      "pickBlock": "Block aufnehmen",
+      "select": "Auswählen"
+    },
+    "selection": {
+      "label": "Auswahl",
+      "fill": "Füllen",
+      "replace": "Ersetzen",
+      "rotateLeft": "Um −90° drehen",
+      "rotateRight": "Um +90° drehen",
+      "mirrorX": "Entlang X spiegeln",
+      "mirrorZ": "Entlang Z spiegeln",
+      "copy": "Kopieren",
+      "cut": "Ausschneiden",
+      "delete": "Löschen",
+      "paste": "Einfügen",
+      "confirmPaste": "Kopie hier setzen"
+    },
+    "hint": {
+      "empty": "Tippe irgendwohin, um den ersten Block zu setzen.",
+      "select": "Tippe auf zwei Blöcke, um den Bereich dazwischen auszuwählen.",
+      "replace": "Tippe auf einen Block in der Auswahl, um ihn überall in der Auswahl zu ersetzen.",
+      "paste": "Tippe auf die Stelle für die Kopie, dann tippe erneut oder bestätige."
+    },
+    "layer": {
+      "label": "Ebene",
+      "all": "Alle Ebenen",
+      "value": "Bis Ebene Y {{ y }}"
+    },
+    "palette": {
+      "open": "Block wählen (aktiv: {{ name }})",
+      "title": "Blöcke",
+      "close": "Schließen",
+      "search": "Blöcke suchen",
+      "categories": "Kategorien",
+      "results": "Blöcke",
+      "favorites": "Favoriten",
+      "recent": "Zuletzt",
+      "all": "Alle",
+      "favorite": "Favorit: {{ name }}",
+      "noFavorites": "Noch keine Favoriten. Tippe auf den Stern neben einem Block.",
+      "noRecent": "Noch keine zuletzt benutzten Blöcke.",
+      "noResults": "Keine Blöcke gefunden."
+    },
+    "category": {
+      "building": "Baublöcke",
+      "natural": "Natur",
+      "wood": "Holz",
+      "stone": "Stein",
+      "colored": "Farbig",
+      "glass": "Glas",
+      "decoration": "Dekoration",
+      "lighting": "Licht",
+      "redstone": "Redstone",
+      "transport": "Transport",
+      "utility": "Nützliches",
+      "fluid": "Flüssigkeiten",
+      "technical": "Technisch"
+    },
+    "save": {
+      "saved": "Gespeichert",
+      "dirty": "Ungespeicherte Änderungen",
+      "saving": "Wird gespeichert …",
+      "error": "Nicht gespeichert",
+      "retry": "Erneut versuchen"
+    },
+    "status": {
+      "copied": "Auswahl kopiert.",
+      "exported": "„{{ name }}“ exportiert."
+    },
+    "errors": {
+      "volume": "Diese Änderung ist zu groß: {{ volume }} Blöcke (Grenze {{ limit }}). Wähle einen kleineren Bereich.",
+      "unknown": "Das hat nicht geklappt. Bitte versuche es erneut.",
+      "renderer": {
+        "webgl": "3D-Ansicht nicht verfügbar: Dieses Gerät oder dieser Browser unterstützt WebGL 2 nicht oder es ist ausgeschaltet.",
+        "failed": "Die 3D-Ansicht konnte nicht gestartet werden. Lade die Seite neu, um es erneut zu versuchen."
+      }
+    },
+    "action": {
+      "place": "Block setzen",
+      "remove": "Block entfernen",
+      "fill": "Füllen",
+      "replace": "Ersetzen",
+      "rotate": "Drehen",
+      "mirror": "Spiegeln",
+      "paste": "Einfügen",
+      "delete": "Löschen",
+      "cut": "Ausschneiden"
+    }
   }
 }

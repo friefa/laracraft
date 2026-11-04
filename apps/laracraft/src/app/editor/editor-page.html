@@ -1,0 +1,218 @@
+<canvas
+  #canvas
+  class="viewport"
+  role="img"
+  (contextmenu)="$event.preventDefault()"
+  [attr.aria-label]="'editor.canvasLabel' | transloco: { name: name() }"
+></canvas>
+
+<header class="bar top">
+  <a
+    class="icon-button"
+    routerLink="/"
+    data-action="back"
+    [attr.aria-label]="'editor.back' | transloco"
+    ><lc-icon name="back"
+  /></a>
+  <div class="title">
+    <h1>{{ name() || ('editor.loading' | transloco) }}</h1>
+    @if (phase() === 'ready') {
+    <p class="save" [attr.data-state]="autosave.state()" role="status">
+      {{ saveStateKey() | transloco }} @if (autosave.state() === 'error') {
+      <button type="button" class="link" data-action="retry-save" (click)="retrySave()">
+        {{ 'editor.save.retry' | transloco }}
+      </button>
+      }
+    </p>
+    }
+  </div>
+  @if (phase() === 'ready') {
+  <button
+    type="button"
+    class="icon-button"
+    data-action="undo"
+    [disabled]="!canUndo()"
+    [attr.aria-label]="'editor.undo' | transloco"
+    [title]="'editor.undo' | transloco"
+    (click)="run({ kind: 'undo' })"
+  >
+    <lc-icon name="undo" />
+  </button>
+  <button
+    type="button"
+    class="icon-button"
+    data-action="redo"
+    [disabled]="!canRedo()"
+    [attr.aria-label]="'editor.redo' | transloco"
+    [title]="'editor.redo' | transloco"
+    (click)="run({ kind: 'redo' })"
+  >
+    <lc-icon name="redo" />
+  </button>
+  <div #menuRoot class="menu-root">
+    <button
+      type="button"
+      class="icon-button"
+      data-action="more"
+      aria-controls="editor-menu"
+      [attr.aria-expanded]="menuOpen()"
+      [attr.aria-label]="'editor.more' | transloco"
+      (click)="toggleMenu()"
+    >
+      <lc-icon name="more" />
+    </button>
+    @if (menuOpen()) {
+    <ul id="editor-menu" class="menu">
+      <li>
+        <button type="button" data-action="export" (click)="exportBuild()">
+          {{ 'editor.menu.export' | transloco }}
+        </button>
+      </li>
+      <li>
+        <a data-action="guide" [routerLink]="['/build', id(), 'guide']"
+          >{{ 'editor.menu.guide' | transloco }}</a
+        >
+      </li>
+      <li>
+        <button type="button" data-action="frame" (click)="frameFromMenu()">
+          {{ 'editor.menu.frame' | transloco }}
+        </button>
+      </li>
+      <li>
+        <a routerLink="/credits">{{ 'editor.menu.credits' | transloco }}</a>
+      </li>
+    </ul>
+    }
+  </div>
+  }
+</header>
+
+<div class="messages">
+  <p class="visually-hidden" role="status">
+    @if (status(); as s) { {{ s.key | transloco: s.params }} }
+  </p>
+  @if (phase() === 'loading') {
+  <p class="card" role="status">{{ 'editor.loading' | transloco }}</p>
+  } @if (loadError(); as e) {
+  <div class="card error" role="alert" data-error="load">
+    <p>{{ e.key | transloco }}</p>
+    <a routerLink="/">{{ 'editor.back' | transloco }}</a>
+  </div>
+  } @if (rendererError(); as e) {
+  <div class="card error" role="alert" data-error="renderer">
+    <p>{{ e.key | transloco }}</p>
+  </div>
+  } @if (error(); as e) {
+  <div class="card error" role="alert" data-error="action">
+    <p>{{ e.key | transloco: e.params }}</p>
+    <button type="button" class="link" (click)="dismissError()">
+      {{ 'editor.dismiss' | transloco }}
+    </button>
+  </div>
+  } @if (hint(); as h) {
+  <p class="hint">{{ h | transloco }}</p>
+  }
+</div>
+
+@if (phase() === 'ready') { @if (showLayers()) {
+<div class="layers">
+  <lc-icon name="layers" />
+  <input
+    type="range"
+    data-control="layer"
+    [min]="layerMin()"
+    [max]="layerMax()"
+    step="1"
+    [value]="layerValue()"
+    [attr.aria-label]="'editor.layer.label' | transloco"
+    [attr.aria-valuetext]="
+      layer() === null
+        ? ('editor.layer.all' | transloco)
+        : ('editor.layer.value' | transloco: { y: layerValue() })
+    "
+    (input)="onLayerInput($event)"
+  />
+  <span class="layer-value" aria-hidden="true">{{ layer() ?? '∞' }}</span>
+</div>
+}
+
+<footer class="bar bottom">
+  @if (hasSelection() || hasClipboard()) {
+  <div class="row actions" role="toolbar" [attr.aria-label]="'editor.selection.label' | transloco">
+    @if (hasSelection()) { @for (a of selectionActions; track a.label) {
+    <button
+      type="button"
+      class="icon-button"
+      [attr.data-command]="a.label"
+      [disabled]="isActionDisabled(a)"
+      [attr.aria-label]="a.label | transloco"
+      [title]="a.label | transloco"
+      (click)="run(a.command)"
+    >
+      <lc-icon [name]="a.icon" />
+    </button>
+    } } @if (pastePending()) {
+    <button
+      type="button"
+      class="icon-button primary"
+      data-command="confirm-paste"
+      [attr.aria-label]="'editor.selection.confirmPaste' | transloco"
+      [title]="'editor.selection.confirmPaste' | transloco"
+      (click)="run({ kind: 'confirmPaste' })"
+    >
+      <lc-icon name="check" />
+    </button>
+    } @else {
+    <button
+      type="button"
+      class="icon-button"
+      [attr.data-command]="pasteAction.label"
+      [disabled]="isActionDisabled(pasteAction)"
+      [attr.aria-label]="pasteAction.label | transloco"
+      [title]="pasteAction.label | transloco"
+      (click)="run(pasteAction.command)"
+    >
+      <lc-icon [name]="pasteAction.icon" />
+    </button>
+    }
+  </div>
+  }
+  <div class="row">
+    <button
+      type="button"
+      class="active-block"
+      data-action="palette"
+      aria-haspopup="dialog"
+      [attr.aria-label]="'editor.palette.open' | transloco: { name: activeBlock() ? (activeBlock()!.nameKey | transloco) : '' }"
+      (click)="openPalette()"
+    >
+      @if (activeBlock(); as b) {
+      <lc-block-icon [block]="b" />
+      <span class="block-name">{{ b.nameKey | transloco }}</span>
+      }
+    </button>
+    <div class="tools" role="toolbar" [attr.aria-label]="'editor.toolbar' | transloco">
+      @for (t of tools; track t.tool) {
+      <button
+        type="button"
+        class="icon-button tool"
+        [attr.data-tool]="t.tool"
+        [attr.aria-pressed]="tool() === t.tool"
+        [attr.aria-label]="t.label | transloco"
+        [attr.aria-keyshortcuts]="t.shortcut"
+        [title]="(t.label | transloco) + ' (' + t.shortcut + ')'"
+        (click)="run({ kind: 'tool', tool: t.tool })"
+      >
+        <lc-icon [name]="t.icon" />
+      </button>
+      }
+    </div>
+  </div>
+</footer>
+
+<lc-block-palette
+  [registry]="registry"
+  [activeId]="activeBlock()?.id ?? null"
+  (selected)="onBlockSelected($event)"
+/>
+}

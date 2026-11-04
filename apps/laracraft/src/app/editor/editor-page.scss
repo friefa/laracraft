@@ -1,0 +1,244 @@
+// Full-screen editor: covers the app shell (header/footer) while open.
+:host {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: block;
+  overflow: hidden;
+  background: var(--lc-bg);
+}
+
+.viewport {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+}
+
+.bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 0.25rem;
+  padding-left: calc(env(safe-area-inset-left) + 0.5rem);
+  padding-right: calc(env(safe-area-inset-right) + 0.5rem);
+  background: color-mix(in srgb, var(--lc-surface) 88%, transparent);
+  backdrop-filter: blur(6px);
+}
+
+.top {
+  top: 0;
+  align-items: center;
+  padding-top: calc(env(safe-area-inset-top) + 0.25rem);
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--lc-border);
+}
+
+.bottom {
+  bottom: 0;
+  flex-direction: column;
+  padding-top: 0.25rem;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 0.25rem);
+  border-top: 1px solid var(--lc-border);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.title {
+  flex: 1;
+  min-width: 0;
+
+  h1 {
+    margin: 0;
+    overflow: hidden;
+    font-size: 1rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.save {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--lc-muted);
+
+  &[data-state='error'] {
+    color: var(--lc-danger);
+  }
+}
+
+a,
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  text-decoration: none;
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+}
+
+.icon-button {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+
+  &[aria-pressed='true'] {
+    color: var(--lc-bg);
+    background: var(--lc-accent);
+  }
+
+  &.primary {
+    color: var(--lc-bg);
+    background: var(--lc-accent);
+  }
+}
+
+.link {
+  padding: 0;
+  color: var(--lc-accent);
+  text-decoration: underline;
+}
+
+.menu-root {
+  position: relative;
+}
+
+.menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  min-width: 13rem;
+  margin: 0.25rem 0 0;
+  padding: 0.25rem;
+  list-style: none;
+  background: var(--lc-surface);
+  border: 1px solid var(--lc-border);
+  border-radius: var(--lc-radius);
+  box-shadow: 0 4px 16px rgb(0 0 0 / 20%);
+
+  a,
+  button {
+    display: block;
+    width: 100%;
+    padding: 0.625rem 0.75rem;
+    text-align: start;
+  }
+}
+
+.messages {
+  position: absolute;
+  top: calc(env(safe-area-inset-top) + 4rem);
+  left: 50%;
+  display: grid;
+  gap: 0.5rem;
+  width: min(30rem, calc(100% - 2rem));
+  transform: translateX(-50%);
+  pointer-events: none;
+
+  > * {
+    pointer-events: auto;
+  }
+}
+
+.card,
+.hint {
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  background: var(--lc-surface);
+  border: 1px solid var(--lc-border);
+  border-radius: var(--lc-radius);
+
+  p {
+    margin: 0 0 0.25rem;
+  }
+}
+
+.hint {
+  font-size: 0.875rem;
+  text-align: center;
+  color: var(--lc-muted);
+}
+
+.error {
+  color: var(--lc-danger);
+  border-color: currentColor;
+}
+
+.layers {
+  position: absolute;
+  right: calc(env(safe-area-inset-right) + 0.25rem);
+  top: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 0.25rem;
+  background: color-mix(in srgb, var(--lc-surface) 88%, transparent);
+  border-radius: var(--lc-radius);
+  transform: translateY(-50%);
+
+  input {
+    width: 2.75rem;
+    height: min(40dvh, 16rem);
+    margin: 0;
+    writing-mode: vertical-lr;
+    direction: rtl;
+    accent-color: var(--lc-accent);
+  }
+}
+
+.layer-value {
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.active-block {
+  --lc-icon-size: 2rem;
+  display: flex;
+  flex: 0 1 12rem;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  padding: 0.25rem;
+  border-color: var(--lc-border);
+}
+
+.block-name {
+  overflow: hidden;
+  font-size: 0.875rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tools {
+  display: flex;
+  gap: 0.25rem;
+  margin-left: auto;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
