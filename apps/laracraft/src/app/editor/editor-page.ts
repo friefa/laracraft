@@ -54,9 +54,15 @@ import { Icon, type IconName } from './icon';
 import { BlockIcon } from './palette/block-icon';
 import { BlockPalette } from './palette/block-palette';
 import { blockNameKey } from './palette/palette-model';
+import type { HighlightGroup } from '@laracraft/renderer';
 import { type EditorRenderer, RENDERER_FACTORY, RendererLoadError } from './renderer-loader';
 
 /** Quiet period before an autosave (overridable in tests). */
+/** Hover preview outline colours. */
+const HOVER_PLACE_COLOR = 0xffffff;
+const HOVER_REMOVE_COLOR = 0xe53935;
+const HOVER_TARGET_COLOR = 0xffd54f;
+
 export const EDITOR_AUTOSAVE_DELAY = new InjectionToken<number>('EDITOR_AUTOSAVE_DELAY', {
   providedIn: 'root',
   factory: () => 1000,
@@ -162,6 +168,8 @@ export class EditorPage {
   private readonly storage = safeLocalStorage(this.document);
 
   private session: EditorSession | null = null;
+  /** Voxel under the mouse (desktop hover preview); null when not hovering. */
+  private hoverPick: Pick | null = null;
   private renderer: EditorRenderer | null = null;
   /** The id the document was loaded from (saving never follows a later route change). */
   private loadedId: string | null = null;
@@ -309,6 +317,11 @@ export class EditorPage {
     renderer.setGhosts(session.preview);
     const off = renderer.onTap((pick, event) => this.onTap(pick, event));
     this.destroyRef.onDestroy(off);
+    const offHover = renderer.onHover?.((pick) => {
+      this.hoverPick = pick;
+      this.renderPreview();
+    });
+    if (offHover) this.destroyRef.onDestroy(offHover);
   }
 
   private onSessionEvent(session: EditorSession, event: EditorEvent): void {
@@ -329,14 +342,16 @@ export class EditorPage {
         this.renderer?.setSelectionBox(session.selection);
         break;
       case 'preview':
-        this.renderer?.setGhosts(session.preview);
+        this.renderPreview();
         this.pastePending.set(session.pastePosition !== null);
         break;
       case 'tool':
+        this.renderPreview();
         this.tool.set(session.toolId);
         this.pastePending.set(session.pastePosition !== null);
         break;
       case 'activeState':
+        this.renderPreview();
         this.activeState.set(session.activeState);
         break;
       case 'clipboard':
@@ -351,6 +366,41 @@ export class EditorPage {
     const session = this.session;
     const id = this.loadedId;
     return session && id ? this.store.save(id, session.doc) : Promise.resolve();
+  }
+
+  /**
+   * Ghosts and outlines for the renderer: the session's own preview (paste) plus the
+   * hover preview — where and how the active block would be placed, or which block a
+   * remove would delete. Uses the same placement logic as a real tap.
+   */
+  private renderPreview(): void {
+    const session = this.session;
+    const renderer = this.renderer;
+    if (!session || !renderer) return;
+    const look = renderer.lookDirection();
+    session.setLookHorizontal(look.facing);
+    session.setLookVertical(look.pitch);
+    const hover = session.hoverPreview(this.hoverPick);
+    const ghosts = [...session.preview];
+    const highlights: HighlightGroup[] = [];
+    if (hover?.kind === 'place') {
+      ghosts.push(...hover.blocks);
+      highlights.push({
+        id: 'hover',
+        positions: hover.blocks.map((b) => b.pos),
+        color: HOVER_PLACE_COLOR,
+        style: 'outline',
+      });
+    } else if (hover) {
+      highlights.push({
+        id: 'hover',
+        positions: hover.positions,
+        color: hover.kind === 'remove' ? HOVER_REMOVE_COLOR : HOVER_TARGET_COLOR,
+        style: 'outline',
+      });
+    }
+    renderer.setGhosts(ghosts);
+    renderer.setHighlights(highlights);
   }
 
   // --- input -------------------------------------------------------------------

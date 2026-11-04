@@ -66,6 +66,12 @@ export interface BuildRenderer {
   pick(clientX: number, clientY: number): VoxelPick | null;
   /** Register tap/click handler (fires only when the gesture was not a camera move). */
   onTap(handler: (pick: VoxelPick | null, event: PointerEvent) => void): () => void;
+  /**
+   * Register a hover handler (mouse/pen only, no button pressed). Fires at most once per
+   * frame with the voxel under the pointer, with `null` when the pointer leaves the canvas
+   * or hovers empty space, and again after `update()` so previews follow document changes.
+   */
+  onHover?(handler: (pick: VoxelPick | null) => void): () => void;
   /** Frame the camera on a box (default: whole build). */
   frame(box?: Box3): void;
   /** Rendering statistics for the debug overlay and performance tests. */

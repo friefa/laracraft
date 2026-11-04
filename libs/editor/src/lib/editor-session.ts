@@ -23,7 +23,7 @@ import type { LookVertical } from './placement';
 import { EDITOR_ACTION, createSelectionOps, rotatedBox } from './selection-ops';
 import { fillTool, pickBlockTool, removeTool, replaceTool } from './tools/basic-tools';
 import { PasteTool } from './tools/paste-tool';
-import { placeTool } from './tools/place-tool';
+import { placeTool, planPlacement } from './tools/place-tool';
 import { SelectTool } from './tools/select-tool';
 import { ChangeSetUndoStack, DEFAULT_UNDO_DEPTH } from './undo-stack';
 
@@ -77,6 +77,14 @@ export class InvalidBlockStateError extends Error {
  * active block, selection, preview and clipboard, and is the `ToolContext`
  * handed to tools. Every document change goes through {@link EditorSession.commit}.
  */
+/** Hover feedback for the app to render (see {@link EditorSession.hoverPreview}). */
+export type HoverPreview =
+  | {
+      readonly kind: 'place';
+      readonly blocks: readonly { readonly pos: Vec3; readonly state: BlockStateString }[];
+    }
+  | { readonly kind: 'remove' | 'target'; readonly positions: readonly Vec3[] };
+
 export class EditorSession implements ToolContext {
   readonly doc: BuildDocument;
   readonly registry: BlockRegistry;
@@ -202,6 +210,27 @@ export class EditorSession implements ToolContext {
   /** Forwards a tap to the active tool. Errors (e.g. `EditVolumeError`) propagate. */
   tap(pick: Pick | null, mods: PointerModifiers = NO_MODIFIERS): void {
     this.tool.tap(pick, this, mods);
+  }
+
+  /**
+   * What the active tool would do at `pick`, for a hover preview (mouse only):
+   * `place` → ghost blocks exactly as a tap would place them (same orientation
+   * logic); `remove` → the block that would disappear; `pick-block`/`replace` →
+   * the block under the pointer; other tools → the targeted cell. Never mutates.
+   */
+  hoverPreview(pick: Pick | null): HoverPreview | null {
+    if (!pick) return null;
+    switch (this._toolId) {
+      case 'place': {
+        const changes = planPlacement(this, pick);
+        if (!changes) return null;
+        return { kind: 'place', blocks: changes.map((c) => ({ pos: c.pos, state: c.after })) };
+      }
+      case 'remove':
+        return { kind: 'remove', positions: [pick.pos] };
+      default:
+        return { kind: 'target', positions: [pick.pos] };
+    }
   }
 
   /** Camera look direction from the app, used to orient placed blocks. */

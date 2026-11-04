@@ -72,6 +72,8 @@ export async function loadBuildRenderer(
       canvas,
       registry,
       atlasUrl: assetUrl(doc, ATLAS_URL),
+      // Hover/paste previews must read clearly against the build.
+      ghostOpacity: 0.75,
       ...(typeof Worker === 'undefined' ? {} : { createWorker: createMesherWorker }),
     });
   } catch (err) {

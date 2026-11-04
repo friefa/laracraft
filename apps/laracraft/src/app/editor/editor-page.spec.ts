@@ -128,6 +128,18 @@ describe('EditorPage', () => {
     expect(q(el, '.save').textContent).toContain('Saved');
   });
 
+  it('shows a hover preview of the block a click would place, and of what remove deletes', async () => {
+    const { fixture, doc, renderer } = await setup();
+    renderer.hover({ pos: { x: 0, y: 0, z: 0 }, face: 'up' });
+    await fixture.whenStable();
+    expect(renderer.ghosts).toEqual([{ pos: { x: 0, y: 1, z: 0 }, state: STONE }]);
+    expect(renderer.highlights[0]?.positions).toEqual([{ x: 0, y: 1, z: 0 }]);
+    expect(doc.getBlock(0, 1, 0)).not.toBe(STONE); // preview only
+    renderer.hover(null);
+    expect(renderer.ghosts).toEqual([]);
+    expect(renderer.highlights).toEqual([]);
+  });
+
   it('removes on right click and picks the block on middle click', async () => {
     const { fixture, el, doc, renderer } = await setup();
     doc.setBlock({ x: 1, y: 0, z: 0 }, 'minecraft:cobblestone' as BlockStateString);

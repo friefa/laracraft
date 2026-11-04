@@ -40,6 +40,15 @@ export class FakeRenderer implements EditorRenderer {
   pick(): VoxelPick | null {
     return null;
   }
+  readonly hoverHandlers = new Set<(pick: VoxelPick | null) => void>();
+  onHover(handler: (pick: VoxelPick | null) => void): () => void {
+    this.hoverHandlers.add(handler);
+    return () => this.hoverHandlers.delete(handler);
+  }
+  /** Simulates the mouse hovering a voxel (null = left the canvas). */
+  hover(pick: VoxelPick | null): void {
+    for (const h of [...this.hoverHandlers]) h(pick);
+  }
   onTap(handler: TapHandler): () => void {
     this.handlers.add(handler);
     return () => this.handlers.delete(handler);

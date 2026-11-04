@@ -76,6 +76,10 @@ class ThreeBuildRenderer implements SceneBuildRenderer {
   private readonly gestures: GestureController<PointerEvent>;
   private readonly modelGeometries = new Map<string, THREE.BufferGeometry>();
   private readonly tapHandlers = new Set<(pick: VoxelPick | null, event: PointerEvent) => void>();
+  private readonly hoverHandlers = new Set<(pick: VoxelPick | null) => void>();
+  /** Last hover pointer position (client px); null when not hovering. */
+  private hoverAt: { x: number; y: number } | null = null;
+  private hoverFrame = 0;
   private readonly resizeObserver: ResizeObserver | null;
   private readonly cleanups: (() => void)[] = [];
   private doc: BuildDocument | null = null;
@@ -172,6 +176,7 @@ class ThreeBuildRenderer implements SceneBuildRenderer {
   update(): void {
     if (this.scheduler.update().length > 0) this.refreshBounds();
     this.invalidate();
+    if (this.hoverAt) this.scheduleHover();
   }
 
   setLayerLimit(maxY: number | null): void {
@@ -217,6 +222,11 @@ class ThreeBuildRenderer implements SceneBuildRenderer {
         groundY: this.groundY,
       },
     );
+  }
+
+  onHover(handler: (pick: VoxelPick | null) => void): () => void {
+    this.hoverHandlers.add(handler);
+    return () => this.hoverHandlers.delete(handler);
   }
 
   onTap(handler: (pick: VoxelPick | null, event: PointerEvent) => void): () => void {
@@ -270,6 +280,8 @@ class ThreeBuildRenderer implements SceneBuildRenderer {
     this.resizeObserver?.disconnect();
     for (const fn of this.cleanups) fn();
     this.tapHandlers.clear();
+    this.hoverHandlers.clear();
+    if (this.hoverFrame) cancelAnimationFrame(this.hoverFrame);
     this.scheduler.dispose();
     this.chunkMeshes.clear();
     this.overlays.dispose();
@@ -299,6 +311,17 @@ class ThreeBuildRenderer implements SceneBuildRenderer {
     this.overlays.setGrid(this.groundY, this.bounds);
   }
 
+  /** Schedules one hover pick for the next frame (coalesces pointer moves). */
+  private scheduleHover(): void {
+    if (this.hoverHandlers.size === 0 || this.hoverFrame || this.disposed) return;
+    this.hoverFrame = requestAnimationFrame(() => {
+      this.hoverFrame = 0;
+      const at = this.hoverAt;
+      const pick = at ? this.pick(at.x, at.y) : null;
+      for (const h of [...this.hoverHandlers]) h(pick);
+    });
+  }
+
   private emitTap(event: PointerEvent): void {
     if (this.tapHandlers.size === 0) return;
     const pick = this.pick(event.clientX, event.clientY);
@@ -324,6 +347,7 @@ class ThreeBuildRenderer implements SceneBuildRenderer {
   private cameraChanged(fn: () => void): void {
     fn();
     this.invalidate();
+    if (this.hoverAt) this.scheduleHover();
   }
 
   private applyCamera(): void {
@@ -389,7 +413,21 @@ class ThreeBuildRenderer implements SceneBuildRenderer {
       }
       this.gestures.down(sample(e));
     });
-    listen('pointermove', (e) => this.gestures.move(sample(e)));
+    listen('pointermove', (e) => {
+      this.gestures.move(sample(e));
+      // Hover preview: only for a mouse/pen without pressed buttons (touch has no hover).
+      const hovering = e.pointerType !== 'touch' && e.buttons === 0;
+      const next = hovering ? { x: e.clientX, y: e.clientY } : null;
+      if (next || this.hoverAt) {
+        this.hoverAt = next;
+        this.scheduleHover();
+      }
+    });
+    listen('pointerleave', () => {
+      if (!this.hoverAt) return;
+      this.hoverAt = null;
+      this.scheduleHover();
+    });
     listen('pointerup', (e) => this.gestures.up(sample(e)));
     listen('pointercancel', (e) => this.gestures.cancel(sample(e)));
     listen(

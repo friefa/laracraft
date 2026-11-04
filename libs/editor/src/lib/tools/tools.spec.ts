@@ -1,3 +1,5 @@
+import { BuildDocument as HoverDoc, createJavaBlockRegistry } from '@laracraft/core-model';
+import { EditorSession } from '../editor-session';
 import { AIR, type Vec3 } from '@laracraft/core-model';
 import { newSession, st } from '../../testing/fixtures';
 import type { Pick, PointerModifiers } from '../api';
@@ -282,5 +284,39 @@ describe('paste tool', () => {
     s.setTool('paste');
     s.tap(pick(0, 0, 0));
     expect(s.preview).toEqual([]);
+  });
+});
+
+describe('hover preview', () => {
+  it('previews exactly what a place tap commits, and the target for remove', () => {
+    const registry = createJavaBlockRegistry();
+    const doc = new HoverDoc({
+      name: 't',
+      edition: 'java',
+      dataVersion: 1,
+      createdAt: '2026-01-01T00:00:00Z',
+      updatedAt: '2026-01-01T00:00:00Z',
+    });
+    doc.setBlock({ x: 0, y: 0, z: 0 }, 'minecraft:stone' as never);
+    const session = new EditorSession({
+      doc,
+      registry,
+      activeState: 'minecraft:oak_stairs',
+    });
+    session.setLookHorizontal('east');
+    const pick = { pos: { x: 0, y: 0, z: 0 }, face: 'up' as const };
+    const preview = session.hoverPreview(pick);
+    expect(preview?.kind).toBe('place');
+    expect(doc.volume.blockCount).toBe(1); // preview never mutates
+    session.tap(pick);
+    const placed = doc.getBlock(0, 1, 0);
+    expect(preview && preview.kind === 'place' ? preview.blocks[0]?.state : null).toBe(placed);
+    expect(session.hoverPreview(pick)).toBeNull(); // target cell now occupied
+    expect(session.hoverPreview(null)).toBeNull();
+    session.setTool('remove');
+    expect(session.hoverPreview(pick)).toEqual({
+      kind: 'remove',
+      positions: [{ x: 0, y: 0, z: 0 }],
+    });
   });
 });
