@@ -57,3 +57,5 @@ erst dann **Umsetzung in der App**. Danach Dokument und App wieder abgleichen (T
 - **Bauanleitung = Lektion:** oben dicker Fortschrittsbalken über alle Schritte + Schließen-X; unten großer grüner
   „Weiter“-Button; nach jedem Schritt kurzer Erfolgsmoment („Schritt geschafft!“); Phase als farbige Pill
   (Struktur grün, Redstone orange, Strom gelb, Flüssigkeiten blau, Aufräumen grau).
+
+Veröffentlichte Ansicht (privat, PO): https://claude.ai/artifact/NATXSBrazau6ZxY6WWN6oV
