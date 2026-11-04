@@ -81,7 +81,7 @@ export interface LaraAgentOptions {
   readonly chatProvider?: ChatProvider;
 }
 
-export const DEFAULT_MAX_ITERATIONS = 12;
+export const DEFAULT_MAX_ITERATIONS = 24;
 export const DEFAULT_MAX_OUTPUT_TOKENS = 16_000;
 /** Re-issues of a request whose stream was malformed (no tool_use id to answer). */
 const MAX_MALFORMED_RETRIES = 2;
