@@ -6,9 +6,8 @@ Stand: 2026-11-03. Bis zur Antwort arbeite ich mit dem jeweils genannten **Defau
    teilen seit 2026 die Jahres-Nummerierung (26.x). Umsetzung: Registry auf die aktuelle Java-26.x-Version heben
    (P1.10) und jedem Release zeitnah folgen. Bedrock bleibt laut Briefing ein späterer Hinweis-Layer auf derselben
    Versionsbasis.
-2. **Texturen (ADR-0003):** Gibst du Pixel Perfection (CC BY-SA 4.0, vorbehaltlich Recherche) frei, inklusive der
-   Share-Alike-Pflicht für Texturen, Atlas und abgeleitete eigene Texturen?
-   _Default: nur eigene Platzhalter-Texturen, bis du freigibst._
+2. ~~**Texturen**~~ — **Entschieden (PO, 2026-11-04):** beste geeignete freie Quelle → Pixel Perfection Legacy
+   (CC BY-SA 4.0), siehe ADR-0003. Offene Aufgabe für dich: Lizenzbestätigung bei Nova_Wostra anfragen.
 3. **Lizenz unseres Codes:** Bleibt das Repo proprietär (closed source) oder soll es (teilweise) Open Source werden,
    z. B. die Redstone-Modul-Bibliothek?
    _Default: proprietär, „UNLICENSED“._

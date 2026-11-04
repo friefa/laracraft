@@ -16,7 +16,7 @@ Ziel: Monorepo, CI für Web/iOS/Android, Core-Model, Blockregistry (~150 Blöcke
 | P0.3  | Blockregistry-Daten (~150 Java-Blöcke inkl. Redstone-Grundteile) + Invarianten-Tests                                             | Agent „registry“ | P0.2         | ✅     |
 | P0.3r | Fachlicher Review der Registry-Daten gegen Java Edition (Properties, Placement, Support)                                         | Review-Agent     | P0.3         | ✅     |
 | P0.4  | Textur-Pipeline: Manifest + Schema, Validator, Atlas-Builder, Credits-Generator, Platzhalter-Texturen, Lizenzrecherche           | Agent „textures“ | P0.1         | ✅     |
-| P0.4b | Import der freigegebenen Textur-Quelle (z. B. Pixel Perfection) inkl. Manifest-Einträgen                                         | Agent „textures“ | ADR-0003 ✔︎   | ⛔     |
+| P0.4b | Import Pixel Perfection Legacy (ADR-0003) inkl. Manifest-Einträgen mit Autorenschaft pro Datei                                   | Agent „textures“ | ADR-0003 ✅  | 🔄     |
 | P0.5  | Capacitor (Android/iOS) + GitHub-Actions-CI (Lint, Typecheck, Test, Web-, Android-, iOS-Build), Dependabot                       | Agent „ci“       | P0.1         | ✅     |
 | P0.6  | App-Shell: i18n (de/en, Laufzeit), Disclaimer, Credits-Seite aus `credits.json`                                                  | Agent „shell“    | P0.4, P0.5   | ✅     |
 

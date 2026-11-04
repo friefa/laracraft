@@ -1,18 +1,28 @@
 # ADR-0003: Textur-Quelle und Lizenzen
 
-- Status: **Vorgeschlagen** – Freigabe durch PO **zwingend**, bevor Fremd-Texturen ins Repo kommen
-- Datum: 2026-11-03
+- Status: **Angenommen** (PO, 2026-11-04: „die beste freie Textur, die sich eignet“)
+- Datum: 2026-11-03, Entscheidung 2026-11-04
 
 ## Kontext
 
 Wir dürfen keine Mojang-Assets verwenden, wollen aber einen Look nah am Original. Die Lizenz bestimmt, welche
 Pflichten wir in App, Store und Repo haben (Attribution, Share-Alike).
 
-## Entscheidung (Vorschlag)
+## Entscheidung
 
-1. **Pixel Perfection** (Grundlage der Texturen von VoxeLibre/MineClone2) als primäre Quelle,
-   vorbehaltlich der Lizenzprüfung (Ergebnisse: `docs/research/texture-sources.md`). Nach unserem
-   Kenntnisstand: CC BY-SA 4.0.
+1. **Pixel Perfection Legacy** (Fortsetzung von XSSheeps Pixel Perfection durch Nova_Wostra u. a.,
+   Modrinth-Version `26.3-97.2`, Hash im Manifest gepinnt) ist die primäre Quelle, Lizenz **CC BY-SA 4.0**
+   (Ableitung eines BY-SA-Werks; die widersprüchliche Modrinth-Angabe „CC-BY-4.0“ wird ignoriert, wir halten uns
+   an die strengere Lizenz). Begründung und verworfene Alternativen (Faithful, VoxeLibre-Set, CE, Fidelity):
+   `docs/research/texture-sources.md`.
+   - Übernommen werden **nur Block-Texturen (PNG)**, keine anderen Dateien aus dem Archiv (es enthält z. B.
+     Mojangs `credits.txt`).
+   - **Autorenschaft pro Datei:** Ist die Datei mit XSSheeps Original identisch, wird XSSheep genannt, sonst
+     „Nova_Wostra and Pixel Perfection Legacy contributors, based on Pixel Perfection by XSSheep“.
+   - Texturen mit unklarer Herkunft oder deutlichem Stilbruch ersetzen wir durch eigene Zeichnungen.
+   - Schriftliche Bestätigung der Lizenz durch Nova_Wostra wird angefragt (Aufgabe PO); bis dahin gilt BY-SA 4.0
+     gemäß Ableitungskette.
+   - Entwicklung mit Originaltexturen nur lokal aus der eigenen Installation (Roadmap P1.11), nie im Repo.
 2. **Manifest-Pflicht**: `assets/textures/manifest.json` mit Quelle, Autoren, SPDX-Lizenz, Änderungen und
    Share-Alike-Kennzeichen für jede Datei. Der Validator in `tools/textures` lässt die CI fehlschlagen, wenn
    eine Datei keinen Eintrag hat oder die Lizenz nicht auf der Allow-List steht.
