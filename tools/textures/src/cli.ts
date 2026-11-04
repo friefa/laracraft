@@ -1,7 +1,8 @@
 /**
  * Texture pipeline CLI. Run from the workspace root via Nx:
  *   nx run textures:validate | atlas | credits | placeholders
- * Options: --packs a,b (priority order for atlas/credits), --padding n, --out dir
+ * Options: --packs a,b (priority order for atlas/credits; default: pixel_perfection_legacy,
+ *          placeholder, then other packs in manifest order), --padding n, --out dir
  */
 import { mkdirSync, readdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { join, relative, resolve, sep } from 'node:path';
@@ -9,7 +10,7 @@ import { parseArgs } from 'node:util';
 import { format, resolveConfig } from 'prettier';
 import { buildAtlas, type AtlasInput } from './lib/atlas';
 import { buildCredits, renderLicensesMd } from './lib/credits';
-import { selectTextures, type TextureManifest } from './lib/manifest';
+import { defaultPackOrder, selectTextures, type TextureManifest } from './lib/manifest';
 import { PLACEHOLDER_NAMES, renderPlaceholder } from './lib/placeholders';
 import { readPng, writePng } from './lib/png';
 import { TEXTURES_ROOT, validate, type DiskFile } from './lib/validate';
@@ -97,7 +98,7 @@ async function main(): Promise<void> {
     },
   });
   const command = positionals[0];
-  const packOrder = values.packs?.split(',').map((p) => p.trim());
+  const packOrderArg = values.packs?.split(',').map((p) => p.trim());
   const outDir = abs(values.out);
 
   switch (command) {
@@ -110,6 +111,7 @@ async function main(): Promise<void> {
     }
     case 'atlas': {
       const manifest = await loadValidManifest(false);
+      const packOrder = packOrderArg ?? defaultPackOrder(manifest);
       const entries = selectTextures(manifest, packOrder);
       const inputs: AtlasInput[] = entries.map((e) => ({ name: e.name, ...readPng(abs(e.file)) }));
       const padding = Number(values.padding);
@@ -127,7 +129,7 @@ async function main(): Promise<void> {
         height: layout.height,
         padding: layout.padding,
         uvOrigin: 'top-left',
-        packs: packOrder ?? Object.keys(manifest.packs),
+        packs: packOrder,
         textures: Object.fromEntries(
           Object.entries(layout.rects).map(([n, r]) => [n, { ...r, pack: sources[n] }]),
         ),
@@ -139,6 +141,7 @@ async function main(): Promise<void> {
     }
     case 'credits': {
       const manifest = await loadValidManifest(false);
+      const packOrder = packOrderArg ?? defaultPackOrder(manifest);
       const credits = buildCredits(manifest, selectTextures(manifest, packOrder));
       mkdirSync(outDir, { recursive: true });
       await writeJson(join(outDir, 'credits.json'), credits);

@@ -21,7 +21,19 @@
           "title": { "type": "string", "minLength": 1 },
           "description": { "type": "string", "minLength": 1 },
           "dir": { "type": "string", "minLength": 1 },
-          "homepage": { "type": "string", "format": "uri" }
+          "homepage": { "type": "string", "format": "uri" },
+          "release": {
+            "description": "Pinned upstream release the files were imported from (third-party packs).",
+            "type": "object",
+            "required": ["url", "versionId", "downloadUrl", "sha512"],
+            "additionalProperties": false,
+            "properties": {
+              "url": { "type": "string", "format": "uri", "pattern": "^https://" },
+              "versionId": { "type": "string", "minLength": 1 },
+              "downloadUrl": { "type": "string", "format": "uri", "pattern": "^https://" },
+              "sha512": { "type": "string", "pattern": "^[0-9a-f]{128}$" }
+            }
+          }
         }
       }
     },

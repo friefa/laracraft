@@ -10,12 +10,14 @@ Texture pipeline with license manifest. Pure TypeScript, run with `tsx`, PNG I/O
 | `nx run textures:credits`        | Writes `dist/assets/textures/credits.json` (in-app Credits screen) and regenerates `assets/LICENSES.md`.                                                                       |
 | `nx run textures:placeholders`   | Regenerates the CC0 programmer-art PNGs in `assets/textures/placeholder/` (deterministic).                                                                                     |
 | `nx run textures:test` / `:lint` | Vitest / ESLint.                                                                                                                                                               |
+| `nx run textures:import-ppl`     | Imports the needed block textures from Pixel Perfection Legacy, see below.                                                                                                     |
 
-Options (pass after `--`, e.g. `nx run textures:atlas -- --packs pixel_perfection,placeholder`):
+Options (pass after `--`, e.g. `nx run textures:atlas -- --packs placeholder`):
 
 - `--packs a,b` – pack priority order for `atlas` and `credits`. For each texture name the
   first pack that provides it wins, so a partial pack falls back to the placeholders.
-  Default: all packs in manifest order.
+  Default: `pixel_perfection_legacy,placeholder`, then any other pack in manifest order
+  (`DEFAULT_PACK_PRIORITY` in `src/lib/manifest.ts`).
 - `--padding n` – edge extrusion in pixels (default 2, `atlas` only).
 - `--out dir` – output directory relative to the workspace root (default `dist/assets/textures`).
 
@@ -33,6 +35,13 @@ JSON schema: `assets/textures/manifest.schema.json`. Types: `src/lib/manifest.ts
       "description": "…",
       "dir": "placeholder",
       "homepage": "optional",
+      // optional, for packs imported from a pinned upstream archive:
+      "release": {
+        "url": "https://…",
+        "versionId": "…",
+        "downloadUrl": "https://…",
+        "sha512": "…",
+      },
     },
   },
   "textures": [
@@ -116,3 +125,40 @@ Renderer notes:
   sub-rect `y + i * w`. Padding is applied around the strip only.
 - Ship `credits.json` next to the atlas and show `groups[].attribution` in the Credits
   screen; it only lists textures that are actually in the atlas.
+
+## Importing Pixel Perfection Legacy (ADR-0003)
+
+`pixel_perfection_legacy` is the default pack; `placeholder` fills the gaps. The import is
+reproducible from checked-in data in `src/import/ppl-mapping.ts`:
+
+- `PPL_RELEASE` – pinned Modrinth version (id, download URL, sha512), also recorded in the
+  manifest's `packs.pixel_perfection_legacy.release`.
+- `PPL_TEXTURE_MAP` – laracraft texture name → PNG file name in the pack's block folder
+  (`null` = not available as a block texture; falls back to `missing`). Every registry
+  texture name must have a row (`src/import/ppl-coverage.spec.ts`).
+- `XSSHEEP_REFERENCE` / `INTRODUCED_AFTER_XSSHEEP` – reference for per-file authorship.
+
+```sh
+# 1. Download the release zip (PPL_RELEASE.downloadUrl) into an empty scratch directory.
+# 2. Reference files: the first commit of Pixel Perfection CE.
+git clone --no-checkout https://github.com/Athemis/PixelPerfectionCE ref-repo
+mkdir ref && git -C ref-repo archive acbdb5612acddf998188fc268116508105b44d90 \
+  assets/minecraft/textures/block | tar -x -C ref
+# 3. Import, then regenerate attribution files.
+pnpm exec nx run textures:import-ppl -- --zip <pack.zip> --reference ref [--report report.json]
+pnpm exec nx run textures:credits
+```
+
+The importer verifies the zip's sha512, reads only the mapped PNGs from the archive (no
+`.mcmeta`, credits or other files), re-encodes them without metadata chunks (pixels
+unchanged), writes `assets/textures/pixel_perfection_legacy/<name>.png` and replaces that
+pack's manifest entries. Animation strips are copied as strips; their `.mcmeta` timing is
+not imported (frames are equally long in our atlas).
+
+Authorship per file (`src/import/compare.ts`): decoded pixels are compared with the
+reference (fully transparent pixels count as equal). Only files that are pixel-identical
+**and** belong to blocks that existed up to Java 1.11 are credited to Hugh "XSSheep"
+Rutland ("Renamed"). Everything else – changed pixels, files missing from the reference, or
+blocks added after 1.11 (the reference already contains community updates for 1.14/1.15) –
+is credited to "Nova_Wostra, Pixel Perfection Legacy contributors, Hugh "XSSheep" Rutland
+(original)" ("Renamed; adapted/extended by Pixel Perfection Legacy contributors").

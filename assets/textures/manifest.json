@@ -2,6 +2,18 @@
   "$schema": "./manifest.schema.json",
   "version": 1,
   "packs": {
+    "pixel_perfection_legacy": {
+      "title": "Pixel Perfection Legacy",
+      "description": "Block textures from Pixel Perfection Legacy 26.3-97.2 (Nova_Wostra and contributors, continuation of Pixel Perfection by Hugh \"XSSheep\" Rutland), CC BY-SA 4.0 per ADR-0003. Imported by tools/textures/src/import/import-ppl.ts: only the block PNGs laracraft needs, renamed to laracraft texture names and re-encoded without metadata (pixels unchanged). source.originalPath is relative to the pack's block texture folder. Authorship per file is decided by pixel comparison with https://github.com/Athemis/PixelPerfectionCE @ acbdb56.",
+      "dir": "pixel_perfection_legacy",
+      "homepage": "https://modrinth.com/resourcepack/pixel-perfection-legacy",
+      "release": {
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "versionId": "UT4foa3M",
+        "downloadUrl": "https://cdn.modrinth.com/data/6w3F4SEu/versions/UT4foa3M/Pixel%20Perfection%2026.3-97.2.zip",
+        "sha512": "ea6a690ac750c01e836ce28c141faa30b0e7b90e4f6236c5873a32ee6c2bf3f290e9cddd5246ff93c3fd01ef42a6f82fb3476fb0dccc5f276e9b67781bcbca86"
+      }
+    },
     "placeholder": {
       "title": "laracraft placeholder textures",
       "description": "Procedurally generated programmer art (tools/textures/src/lib/placeholders.ts). Fallback for every texture a real pack does not provide.",
@@ -10,12 +22,3404 @@
   },
   "textures": [
     {
+      "pack": "pixel_perfection_legacy",
+      "name": "activator_rail",
+      "file": "assets/textures/pixel_perfection_legacy/activator_rail.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "activator_rail.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "andesite",
+      "file": "assets/textures/pixel_perfection_legacy/andesite.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "andesite.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "barrel_bottom",
+      "file": "assets/textures/pixel_perfection_legacy/barrel_bottom.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "barrel_bottom.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "barrel_side",
+      "file": "assets/textures/pixel_perfection_legacy/barrel_side.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "barrel_side.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "barrel_top",
+      "file": "assets/textures/pixel_perfection_legacy/barrel_top.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "barrel_top.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "birch_door_bottom",
+      "file": "assets/textures/pixel_perfection_legacy/birch_door_bottom.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "birch_door_bottom.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "birch_door_top",
+      "file": "assets/textures/pixel_perfection_legacy/birch_door_top.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "birch_door_top.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "birch_leaves",
+      "file": "assets/textures/pixel_perfection_legacy/birch_leaves.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "birch_leaves.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "birch_log",
+      "file": "assets/textures/pixel_perfection_legacy/birch_log.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "birch_log.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "birch_log_top",
+      "file": "assets/textures/pixel_perfection_legacy/birch_log_top.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "birch_log_top.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "birch_planks",
+      "file": "assets/textures/pixel_perfection_legacy/birch_planks.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "birch_planks.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "birch_trapdoor",
+      "file": "assets/textures/pixel_perfection_legacy/birch_trapdoor.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "birch_trapdoor.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "black_concrete",
+      "file": "assets/textures/pixel_perfection_legacy/black_concrete.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "black_concrete.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "black_concrete_powder",
+      "file": "assets/textures/pixel_perfection_legacy/black_concrete_powder.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "black_concrete_powder.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "black_stained_glass",
+      "file": "assets/textures/pixel_perfection_legacy/black_stained_glass.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "black_stained_glass.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "black_stained_glass_pane_top",
+      "file": "assets/textures/pixel_perfection_legacy/black_stained_glass_pane_top.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "black_stained_glass_pane_top.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "black_terracotta",
+      "file": "assets/textures/pixel_perfection_legacy/black_terracotta.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "black_terracotta.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "black_wool",
+      "file": "assets/textures/pixel_perfection_legacy/black_wool.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "black_wool.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "blue_concrete",
+      "file": "assets/textures/pixel_perfection_legacy/blue_concrete.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "blue_concrete.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "blue_concrete_powder",
+      "file": "assets/textures/pixel_perfection_legacy/blue_concrete_powder.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "blue_concrete_powder.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "blue_stained_glass",
+      "file": "assets/textures/pixel_perfection_legacy/blue_stained_glass.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "blue_stained_glass.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "blue_stained_glass_pane_top",
+      "file": "assets/textures/pixel_perfection_legacy/blue_stained_glass_pane_top.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "blue_stained_glass_pane_top.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "blue_terracotta",
+      "file": "assets/textures/pixel_perfection_legacy/blue_terracotta.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "blue_terracotta.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "blue_wool",
+      "file": "assets/textures/pixel_perfection_legacy/blue_wool.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "blue_wool.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "bookshelf",
+      "file": "assets/textures/pixel_perfection_legacy/bookshelf.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "bookshelf.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "bricks",
+      "file": "assets/textures/pixel_perfection_legacy/bricks.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "bricks.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "chiseled_sandstone",
+      "file": "assets/textures/pixel_perfection_legacy/chiseled_sandstone.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "chiseled_sandstone.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "chiseled_stone_bricks",
+      "file": "assets/textures/pixel_perfection_legacy/chiseled_stone_bricks.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "chiseled_stone_bricks.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "clay",
+      "file": "assets/textures/pixel_perfection_legacy/clay.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "clay.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "coarse_dirt",
+      "file": "assets/textures/pixel_perfection_legacy/coarse_dirt.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "coarse_dirt.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "cobbled_deepslate",
+      "file": "assets/textures/pixel_perfection_legacy/cobbled_deepslate.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "cobbled_deepslate.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "cobblestone",
+      "file": "assets/textures/pixel_perfection_legacy/cobblestone.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "cobblestone.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "comparator",
+      "file": "assets/textures/pixel_perfection_legacy/comparator.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "comparator.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "cracked_stone_bricks",
+      "file": "assets/textures/pixel_perfection_legacy/cracked_stone_bricks.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "cracked_stone_bricks.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "crafting_table_front",
+      "file": "assets/textures/pixel_perfection_legacy/crafting_table_front.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "crafting_table_front.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "crafting_table_side",
+      "file": "assets/textures/pixel_perfection_legacy/crafting_table_side.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "crafting_table_side.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "crafting_table_top",
+      "file": "assets/textures/pixel_perfection_legacy/crafting_table_top.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "crafting_table_top.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "cut_sandstone",
+      "file": "assets/textures/pixel_perfection_legacy/cut_sandstone.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "cut_sandstone.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "dark_oak_door_bottom",
+      "file": "assets/textures/pixel_perfection_legacy/dark_oak_door_bottom.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "dark_oak_door_bottom.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "dark_oak_door_top",
+      "file": "assets/textures/pixel_perfection_legacy/dark_oak_door_top.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "dark_oak_door_top.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "dark_oak_leaves",
+      "file": "assets/textures/pixel_perfection_legacy/dark_oak_leaves.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "dark_oak_leaves.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "dark_oak_log",
+      "file": "assets/textures/pixel_perfection_legacy/dark_oak_log.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "dark_oak_log.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "dark_oak_log_top",
+      "file": "assets/textures/pixel_perfection_legacy/dark_oak_log_top.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "dark_oak_log_top.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "dark_oak_planks",
+      "file": "assets/textures/pixel_perfection_legacy/dark_oak_planks.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "dark_oak_planks.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "dark_oak_trapdoor",
+      "file": "assets/textures/pixel_perfection_legacy/dark_oak_trapdoor.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "dark_oak_trapdoor.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "daylight_detector_side",
+      "file": "assets/textures/pixel_perfection_legacy/daylight_detector_side.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "daylight_detector_side.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "daylight_detector_top",
+      "file": "assets/textures/pixel_perfection_legacy/daylight_detector_top.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "daylight_detector_top.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "deepslate",
+      "file": "assets/textures/pixel_perfection_legacy/deepslate.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "deepslate.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "deepslate_bricks",
+      "file": "assets/textures/pixel_perfection_legacy/deepslate_bricks.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "deepslate_bricks.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "deepslate_tiles",
+      "file": "assets/textures/pixel_perfection_legacy/deepslate_tiles.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "deepslate_tiles.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "deepslate_top",
+      "file": "assets/textures/pixel_perfection_legacy/deepslate_top.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "deepslate_top.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "detector_rail",
+      "file": "assets/textures/pixel_perfection_legacy/detector_rail.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "detector_rail.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "diamond_block",
+      "file": "assets/textures/pixel_perfection_legacy/diamond_block.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "diamond_block.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "diorite",
+      "file": "assets/textures/pixel_perfection_legacy/diorite.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "diorite.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "dirt",
+      "file": "assets/textures/pixel_perfection_legacy/dirt.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "dirt.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "dispenser_front",
+      "file": "assets/textures/pixel_perfection_legacy/dispenser_front.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "dispenser_front.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "dropper_front",
+      "file": "assets/textures/pixel_perfection_legacy/dropper_front.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "dropper_front.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "furnace_front",
+      "file": "assets/textures/pixel_perfection_legacy/furnace_front.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "furnace_front.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "furnace_side",
+      "file": "assets/textures/pixel_perfection_legacy/furnace_side.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "furnace_side.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "furnace_top",
+      "file": "assets/textures/pixel_perfection_legacy/furnace_top.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "furnace_top.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "glass",
+      "file": "assets/textures/pixel_perfection_legacy/glass.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "glass.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "glass_pane_top",
+      "file": "assets/textures/pixel_perfection_legacy/glass_pane_top.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "glass_pane_top.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "glowstone",
+      "file": "assets/textures/pixel_perfection_legacy/glowstone.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "glowstone.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "gold_block",
+      "file": "assets/textures/pixel_perfection_legacy/gold_block.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "gold_block.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "granite",
+      "file": "assets/textures/pixel_perfection_legacy/granite.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "granite.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "grass_block_side",
+      "file": "assets/textures/pixel_perfection_legacy/grass_block_side.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "grass_block_side.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "grass_block_top",
+      "file": "assets/textures/pixel_perfection_legacy/grass_block_top.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "grass_block_top.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "gravel",
+      "file": "assets/textures/pixel_perfection_legacy/gravel.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "gravel.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "gray_concrete",
+      "file": "assets/textures/pixel_perfection_legacy/gray_concrete.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "gray_concrete.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "gray_concrete_powder",
+      "file": "assets/textures/pixel_perfection_legacy/gray_concrete_powder.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "gray_concrete_powder.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "gray_terracotta",
+      "file": "assets/textures/pixel_perfection_legacy/gray_terracotta.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "gray_terracotta.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "gray_wool",
+      "file": "assets/textures/pixel_perfection_legacy/gray_wool.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "gray_wool.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "green_concrete",
+      "file": "assets/textures/pixel_perfection_legacy/green_concrete.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "green_concrete.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "green_concrete_powder",
+      "file": "assets/textures/pixel_perfection_legacy/green_concrete_powder.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "green_concrete_powder.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "green_terracotta",
+      "file": "assets/textures/pixel_perfection_legacy/green_terracotta.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "green_terracotta.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "green_wool",
+      "file": "assets/textures/pixel_perfection_legacy/green_wool.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "green_wool.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "honey_block_bottom",
+      "file": "assets/textures/pixel_perfection_legacy/honey_block_bottom.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "honey_block_bottom.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "honey_block_side",
+      "file": "assets/textures/pixel_perfection_legacy/honey_block_side.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "honey_block_side.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "honey_block_top",
+      "file": "assets/textures/pixel_perfection_legacy/honey_block_top.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "honey_block_top.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "hopper_outside",
+      "file": "assets/textures/pixel_perfection_legacy/hopper_outside.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "hopper_outside.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "hopper_top",
+      "file": "assets/textures/pixel_perfection_legacy/hopper_top.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "hopper_top.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "ice",
+      "file": "assets/textures/pixel_perfection_legacy/ice.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "ice.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "iron_bars",
+      "file": "assets/textures/pixel_perfection_legacy/iron_bars.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "iron_bars.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "iron_block",
+      "file": "assets/textures/pixel_perfection_legacy/iron_block.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "iron_block.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "iron_door_bottom",
+      "file": "assets/textures/pixel_perfection_legacy/iron_door_bottom.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "iron_door_bottom.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "iron_door_top",
+      "file": "assets/textures/pixel_perfection_legacy/iron_door_top.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "iron_door_top.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "iron_trapdoor",
+      "file": "assets/textures/pixel_perfection_legacy/iron_trapdoor.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "iron_trapdoor.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "ladder",
+      "file": "assets/textures/pixel_perfection_legacy/ladder.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "ladder.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "lantern",
+      "file": "assets/textures/pixel_perfection_legacy/lantern.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "lantern.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "lava_flow",
+      "file": "assets/textures/pixel_perfection_legacy/lava_flow.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "lava_flow.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "lava_still",
+      "file": "assets/textures/pixel_perfection_legacy/lava_still.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "lava_still.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "lever",
+      "file": "assets/textures/pixel_perfection_legacy/lever.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "lever.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "light_blue_stained_glass",
+      "file": "assets/textures/pixel_perfection_legacy/light_blue_stained_glass.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "light_blue_stained_glass.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "light_blue_stained_glass_pane_top",
+      "file": "assets/textures/pixel_perfection_legacy/light_blue_stained_glass_pane_top.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "light_blue_stained_glass_pane_top.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "light_gray_concrete",
+      "file": "assets/textures/pixel_perfection_legacy/light_gray_concrete.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "light_gray_concrete.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "light_gray_concrete_powder",
+      "file": "assets/textures/pixel_perfection_legacy/light_gray_concrete_powder.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "light_gray_concrete_powder.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "light_gray_terracotta",
+      "file": "assets/textures/pixel_perfection_legacy/light_gray_terracotta.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "light_gray_terracotta.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "light_gray_wool",
+      "file": "assets/textures/pixel_perfection_legacy/light_gray_wool.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "light_gray_wool.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "mossy_cobblestone",
+      "file": "assets/textures/pixel_perfection_legacy/mossy_cobblestone.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "mossy_cobblestone.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "mossy_stone_bricks",
+      "file": "assets/textures/pixel_perfection_legacy/mossy_stone_bricks.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "mossy_stone_bricks.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "note_block",
+      "file": "assets/textures/pixel_perfection_legacy/note_block.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "note_block.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "oak_door_bottom",
+      "file": "assets/textures/pixel_perfection_legacy/oak_door_bottom.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "oak_door_bottom.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "oak_door_top",
+      "file": "assets/textures/pixel_perfection_legacy/oak_door_top.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "oak_door_top.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "oak_leaves",
+      "file": "assets/textures/pixel_perfection_legacy/oak_leaves.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "oak_leaves.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "oak_log",
+      "file": "assets/textures/pixel_perfection_legacy/oak_log.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "oak_log.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "oak_log_top",
+      "file": "assets/textures/pixel_perfection_legacy/oak_log_top.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "oak_log_top.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "oak_planks",
+      "file": "assets/textures/pixel_perfection_legacy/oak_planks.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "oak_planks.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "oak_trapdoor",
+      "file": "assets/textures/pixel_perfection_legacy/oak_trapdoor.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "oak_trapdoor.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "observer_back",
+      "file": "assets/textures/pixel_perfection_legacy/observer_back.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "observer_back.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "observer_front",
+      "file": "assets/textures/pixel_perfection_legacy/observer_front.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "observer_front.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "observer_side",
+      "file": "assets/textures/pixel_perfection_legacy/observer_side.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "observer_side.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "observer_top",
+      "file": "assets/textures/pixel_perfection_legacy/observer_top.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "observer_top.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "obsidian",
+      "file": "assets/textures/pixel_perfection_legacy/obsidian.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "obsidian.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "piston_bottom",
+      "file": "assets/textures/pixel_perfection_legacy/piston_bottom.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "piston_bottom.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "piston_side",
+      "file": "assets/textures/pixel_perfection_legacy/piston_side.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "piston_side.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "piston_top",
+      "file": "assets/textures/pixel_perfection_legacy/piston_top.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "piston_top.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "piston_top_sticky",
+      "file": "assets/textures/pixel_perfection_legacy/piston_top_sticky.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "piston_top_sticky.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "polished_andesite",
+      "file": "assets/textures/pixel_perfection_legacy/polished_andesite.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "polished_andesite.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "polished_deepslate",
+      "file": "assets/textures/pixel_perfection_legacy/polished_deepslate.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "polished_deepslate.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "polished_diorite",
+      "file": "assets/textures/pixel_perfection_legacy/polished_diorite.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "polished_diorite.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "polished_granite",
+      "file": "assets/textures/pixel_perfection_legacy/polished_granite.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "polished_granite.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "powered_rail",
+      "file": "assets/textures/pixel_perfection_legacy/powered_rail.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "powered_rail.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "quartz_block_side",
+      "file": "assets/textures/pixel_perfection_legacy/quartz_block_side.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "quartz_block_side.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "quartz_block_top",
+      "file": "assets/textures/pixel_perfection_legacy/quartz_block_top.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "quartz_block_top.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "rail",
+      "file": "assets/textures/pixel_perfection_legacy/rail.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "rail.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "red_concrete",
+      "file": "assets/textures/pixel_perfection_legacy/red_concrete.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "red_concrete.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "red_concrete_powder",
+      "file": "assets/textures/pixel_perfection_legacy/red_concrete_powder.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "red_concrete_powder.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "red_sand",
+      "file": "assets/textures/pixel_perfection_legacy/red_sand.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "red_sand.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "red_stained_glass",
+      "file": "assets/textures/pixel_perfection_legacy/red_stained_glass.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "red_stained_glass.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "red_stained_glass_pane_top",
+      "file": "assets/textures/pixel_perfection_legacy/red_stained_glass_pane_top.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "red_stained_glass_pane_top.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "red_terracotta",
+      "file": "assets/textures/pixel_perfection_legacy/red_terracotta.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "red_terracotta.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "red_wool",
+      "file": "assets/textures/pixel_perfection_legacy/red_wool.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "red_wool.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "redstone_block",
+      "file": "assets/textures/pixel_perfection_legacy/redstone_block.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "redstone_block.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "redstone_dust",
+      "file": "assets/textures/pixel_perfection_legacy/redstone_dust.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "redstone_dust_dot.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "redstone_lamp",
+      "file": "assets/textures/pixel_perfection_legacy/redstone_lamp.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "redstone_lamp.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "redstone_torch",
+      "file": "assets/textures/pixel_perfection_legacy/redstone_torch.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "redstone_torch.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "repeater",
+      "file": "assets/textures/pixel_perfection_legacy/repeater.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "repeater.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "sand",
+      "file": "assets/textures/pixel_perfection_legacy/sand.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "sand.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "sandstone",
+      "file": "assets/textures/pixel_perfection_legacy/sandstone.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "sandstone.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "sandstone_bottom",
+      "file": "assets/textures/pixel_perfection_legacy/sandstone_bottom.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "sandstone_bottom.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "sandstone_top",
+      "file": "assets/textures/pixel_perfection_legacy/sandstone_top.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "sandstone_top.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "sea_lantern",
+      "file": "assets/textures/pixel_perfection_legacy/sea_lantern.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "sea_lantern.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "slime_block",
+      "file": "assets/textures/pixel_perfection_legacy/slime_block.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "slime_block.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "smooth_stone",
+      "file": "assets/textures/pixel_perfection_legacy/smooth_stone.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "smooth_stone.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "smooth_stone_slab_side",
+      "file": "assets/textures/pixel_perfection_legacy/smooth_stone_slab_side.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "smooth_stone_slab_side.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "snow",
+      "file": "assets/textures/pixel_perfection_legacy/snow.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "snow.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "spruce_door_bottom",
+      "file": "assets/textures/pixel_perfection_legacy/spruce_door_bottom.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "spruce_door_bottom.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "spruce_door_top",
+      "file": "assets/textures/pixel_perfection_legacy/spruce_door_top.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "spruce_door_top.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "spruce_leaves",
+      "file": "assets/textures/pixel_perfection_legacy/spruce_leaves.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "spruce_leaves.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "spruce_log",
+      "file": "assets/textures/pixel_perfection_legacy/spruce_log.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "spruce_log.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "spruce_log_top",
+      "file": "assets/textures/pixel_perfection_legacy/spruce_log_top.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "spruce_log_top.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "spruce_planks",
+      "file": "assets/textures/pixel_perfection_legacy/spruce_planks.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "spruce_planks.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "spruce_trapdoor",
+      "file": "assets/textures/pixel_perfection_legacy/spruce_trapdoor.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "spruce_trapdoor.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "stone",
+      "file": "assets/textures/pixel_perfection_legacy/stone.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "stone.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "stone_bricks",
+      "file": "assets/textures/pixel_perfection_legacy/stone_bricks.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "stone_bricks.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "target_side",
+      "file": "assets/textures/pixel_perfection_legacy/target_side.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "target_side.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "target_top",
+      "file": "assets/textures/pixel_perfection_legacy/target_top.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "target_top.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "terracotta",
+      "file": "assets/textures/pixel_perfection_legacy/terracotta.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "terracotta.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "tnt_bottom",
+      "file": "assets/textures/pixel_perfection_legacy/tnt_bottom.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "tnt_bottom.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "tnt_side",
+      "file": "assets/textures/pixel_perfection_legacy/tnt_side.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "tnt_side.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "tnt_top",
+      "file": "assets/textures/pixel_perfection_legacy/tnt_top.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "tnt_top.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "torch",
+      "file": "assets/textures/pixel_perfection_legacy/torch.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "torch.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "water_flow",
+      "file": "assets/textures/pixel_perfection_legacy/water_flow.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "water_flow.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "water_still",
+      "file": "assets/textures/pixel_perfection_legacy/water_still.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "water_still.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "white_concrete",
+      "file": "assets/textures/pixel_perfection_legacy/white_concrete.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "white_concrete.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "white_concrete_powder",
+      "file": "assets/textures/pixel_perfection_legacy/white_concrete_powder.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "white_concrete_powder.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "white_stained_glass",
+      "file": "assets/textures/pixel_perfection_legacy/white_stained_glass.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "white_stained_glass.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "white_stained_glass_pane_top",
+      "file": "assets/textures/pixel_perfection_legacy/white_stained_glass_pane_top.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "white_stained_glass_pane_top.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "white_terracotta",
+      "file": "assets/textures/pixel_perfection_legacy/white_terracotta.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "white_terracotta.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "white_wool",
+      "file": "assets/textures/pixel_perfection_legacy/white_wool.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "white_wool.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "yellow_concrete",
+      "file": "assets/textures/pixel_perfection_legacy/yellow_concrete.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "yellow_concrete.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "yellow_concrete_powder",
+      "file": "assets/textures/pixel_perfection_legacy/yellow_concrete_powder.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "yellow_concrete_powder.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "yellow_terracotta",
+      "file": "assets/textures/pixel_perfection_legacy/yellow_terracotta.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "yellow_terracotta.png"
+      },
+      "authors": ["Hugh \"XSSheep\" Rutland"],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed",
+      "shareAlike": true
+    },
+    {
+      "pack": "pixel_perfection_legacy",
+      "name": "yellow_wool",
+      "file": "assets/textures/pixel_perfection_legacy/yellow_wool.png",
+      "source": {
+        "kind": "third-party",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "packName": "Pixel Perfection Legacy",
+        "version": "26.3-97.2",
+        "originalPath": "yellow_wool.png"
+      },
+      "authors": [
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "Renamed; adapted/extended by Pixel Perfection Legacy contributors",
+      "shareAlike": true
+    },
+    {
       "pack": "placeholder",
       "name": "cobblestone",
       "file": "assets/textures/placeholder/cobblestone.png",
-      "source": {
-        "kind": "own"
-      },
+      "source": { "kind": "own" },
       "authors": ["laracraft contributors"],
       "license": "CC0-1.0",
       "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
@@ -26,9 +3430,7 @@
       "pack": "placeholder",
       "name": "dirt",
       "file": "assets/textures/placeholder/dirt.png",
-      "source": {
-        "kind": "own"
-      },
+      "source": { "kind": "own" },
       "authors": ["laracraft contributors"],
       "license": "CC0-1.0",
       "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
@@ -39,9 +3441,7 @@
       "pack": "placeholder",
       "name": "glass",
       "file": "assets/textures/placeholder/glass.png",
-      "source": {
-        "kind": "own"
-      },
+      "source": { "kind": "own" },
       "authors": ["laracraft contributors"],
       "license": "CC0-1.0",
       "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
@@ -52,9 +3452,7 @@
       "pack": "placeholder",
       "name": "grass_block_side",
       "file": "assets/textures/placeholder/grass_block_side.png",
-      "source": {
-        "kind": "own"
-      },
+      "source": { "kind": "own" },
       "authors": ["laracraft contributors"],
       "license": "CC0-1.0",
       "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
@@ -65,9 +3463,7 @@
       "pack": "placeholder",
       "name": "grass_block_top",
       "file": "assets/textures/placeholder/grass_block_top.png",
-      "source": {
-        "kind": "own"
-      },
+      "source": { "kind": "own" },
       "authors": ["laracraft contributors"],
       "license": "CC0-1.0",
       "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
@@ -78,9 +3474,7 @@
       "pack": "placeholder",
       "name": "gravel",
       "file": "assets/textures/placeholder/gravel.png",
-      "source": {
-        "kind": "own"
-      },
+      "source": { "kind": "own" },
       "authors": ["laracraft contributors"],
       "license": "CC0-1.0",
       "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
@@ -91,9 +3485,7 @@
       "pack": "placeholder",
       "name": "missing",
       "file": "assets/textures/placeholder/missing.png",
-      "source": {
-        "kind": "own"
-      },
+      "source": { "kind": "own" },
       "authors": ["laracraft contributors"],
       "license": "CC0-1.0",
       "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
@@ -104,9 +3496,7 @@
       "pack": "placeholder",
       "name": "oak_log",
       "file": "assets/textures/placeholder/oak_log.png",
-      "source": {
-        "kind": "own"
-      },
+      "source": { "kind": "own" },
       "authors": ["laracraft contributors"],
       "license": "CC0-1.0",
       "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
@@ -117,9 +3507,7 @@
       "pack": "placeholder",
       "name": "oak_log_top",
       "file": "assets/textures/placeholder/oak_log_top.png",
-      "source": {
-        "kind": "own"
-      },
+      "source": { "kind": "own" },
       "authors": ["laracraft contributors"],
       "license": "CC0-1.0",
       "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
@@ -130,9 +3518,7 @@
       "pack": "placeholder",
       "name": "oak_planks",
       "file": "assets/textures/placeholder/oak_planks.png",
-      "source": {
-        "kind": "own"
-      },
+      "source": { "kind": "own" },
       "authors": ["laracraft contributors"],
       "license": "CC0-1.0",
       "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
@@ -143,9 +3529,7 @@
       "pack": "placeholder",
       "name": "obsidian",
       "file": "assets/textures/placeholder/obsidian.png",
-      "source": {
-        "kind": "own"
-      },
+      "source": { "kind": "own" },
       "authors": ["laracraft contributors"],
       "license": "CC0-1.0",
       "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
@@ -156,9 +3540,7 @@
       "pack": "placeholder",
       "name": "redstone_block",
       "file": "assets/textures/placeholder/redstone_block.png",
-      "source": {
-        "kind": "own"
-      },
+      "source": { "kind": "own" },
       "authors": ["laracraft contributors"],
       "license": "CC0-1.0",
       "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
@@ -169,9 +3551,7 @@
       "pack": "placeholder",
       "name": "redstone_lamp",
       "file": "assets/textures/placeholder/redstone_lamp.png",
-      "source": {
-        "kind": "own"
-      },
+      "source": { "kind": "own" },
       "authors": ["laracraft contributors"],
       "license": "CC0-1.0",
       "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
@@ -182,9 +3562,7 @@
       "pack": "placeholder",
       "name": "sand",
       "file": "assets/textures/placeholder/sand.png",
-      "source": {
-        "kind": "own"
-      },
+      "source": { "kind": "own" },
       "authors": ["laracraft contributors"],
       "license": "CC0-1.0",
       "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
@@ -195,9 +3573,7 @@
       "pack": "placeholder",
       "name": "stone",
       "file": "assets/textures/placeholder/stone.png",
-      "source": {
-        "kind": "own"
-      },
+      "source": { "kind": "own" },
       "authors": ["laracraft contributors"],
       "license": "CC0-1.0",
       "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
@@ -208,9 +3584,7 @@
       "pack": "placeholder",
       "name": "stone_bricks",
       "file": "assets/textures/placeholder/stone_bricks.png",
-      "source": {
-        "kind": "own"
-      },
+      "source": { "kind": "own" },
       "authors": ["laracraft contributors"],
       "license": "CC0-1.0",
       "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
@@ -221,9 +3595,7 @@
       "pack": "placeholder",
       "name": "white_wool",
       "file": "assets/textures/placeholder/white_wool.png",
-      "source": {
-        "kind": "own"
-      },
+      "source": { "kind": "own" },
       "authors": ["laracraft contributors"],
       "license": "CC0-1.0",
       "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",

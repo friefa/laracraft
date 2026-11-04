@@ -56,6 +56,27 @@ describe('validate', () => {
     expect(validate(manifest(all), disk(all))).toEqual([]);
   });
 
+  it('checks an optional pinned release on a pack', () => {
+    const release = {
+      url: 'https://example.org/pp/v1',
+      versionId: 'v1',
+      downloadUrl: 'https://example.org/pp/v1.zip',
+      sha512: 'ab'.repeat(64),
+    };
+    const ok = manifest(base);
+    ok.packs['pp'] = { title: 'PP', description: 'test', dir: 'pp', release };
+    expect(validate(ok, disk(base))).toEqual([]);
+
+    const bad = manifest(base);
+    bad.packs['pp'] = {
+      title: 'PP',
+      description: 'test',
+      dir: 'pp',
+      release: { ...release, sha512: 'nope', downloadUrl: 'https://www.minecraft.net/x.zip' },
+    };
+    expect(codes(bad, disk(base))).toEqual(['manifest-shape', 'forbidden-source']);
+  });
+
   it('rejects a PNG without manifest entry', () => {
     const files = [
       ...disk(base),
