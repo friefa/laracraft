@@ -148,6 +148,12 @@ export interface BehaviourStep {
   readonly pulse?: { readonly port: string; readonly ticks: number };
   /** Items inserted into an item input port at the start of the step. */
   readonly insertItems?: readonly ItemCount[];
+  /**
+   * Module blocks (local positions) that a player breaks and places again by hand at the
+   * start of the step, before any input change. The stored state is a snapshot without
+   * pending ticks, so this is how e.g. a pasted observer clock is started in game.
+   */
+  readonly rebuild?: readonly Pos[];
   /** Game ticks to simulate before `expect` is checked (upper bound, 20 ticks = 1 s). */
   readonly waitTicks: number;
   readonly expect: BehaviourExpectation;
@@ -162,10 +168,15 @@ export interface BehaviourSpec {
   readonly status: 'specified';
   /** Parameters the spec assumes (defaults otherwise). */
   readonly params?: ModuleParams;
-  /** Container contents to load before the first step (e.g. a sorter's filter hopper). */
+  /**
+   * Container contents to load before the first step (e.g. a sorter's filter hopper).
+   * `sort` items go into the first free slot as one stack; `filler` items go one per free
+   * slot. Fillers are a third item kind that never enters the module and does not stack
+   * with `sort` or `other` items (e.g. renamed sticks).
+   */
   readonly preload?: readonly {
     readonly pos: Pos;
-    readonly item: 'sort' | 'other';
+    readonly item: 'sort' | 'filler';
     readonly count: number;
   }[];
   /** Holds for the stored resting state, before any step. */

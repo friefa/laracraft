@@ -8,8 +8,8 @@ import {
 } from '@laracraft/core-model';
 import { MODULE_CATALOGUE, modulesForEdition } from './catalogue';
 import { placeModule, resolveModuleParams } from './define';
-import { repeaterClockPeriodTicks } from './modules/clocks';
-import { pulseExtenderOutput } from './modules/logic';
+import { OBSERVER_CLOCK_PERIOD_TICKS, repeaterClockPeriodTicks } from './modules/clocks';
+import { T_FLIP_FLOP_MIN_PULSE_TICKS, pulseExtenderOutput } from './modules/logic';
 import { hopperComparatorSignal, sorterFilterLoadout } from './modules/sorting';
 import {
   ModuleParamsError,
@@ -233,6 +233,10 @@ describe.each(MODULES.map((m) => [m.id, m] as const))('module %s', (_id, m) => {
       for (const i of step.insertItems ?? []) {
         expect(ports.get(i.port)).toMatchObject({ kind: 'input', carrier: 'items' });
       }
+      const cells = new Set(localBlocks(m, spec.params).map((b) => key(b.pos)));
+      for (const p of step.rebuild ?? []) {
+        expect(cells.has(key(p)), `rebuild ${key(p)} has no module block`).toBe(true);
+      }
       checkExpect(step.expect);
     }
     for (const p of spec.preload ?? []) expect(inBox(p.pos, m.size)).toBe(true);
@@ -274,6 +278,18 @@ describe('module-specific facts', () => {
       expect(hopperComparatorSignal([{ count: sortItems + 1, maxStack: max }, ...fillers])).toBe(3);
     }
     expect(hopperComparatorSignal([])).toBe(0);
+  });
+
+  it('observer clock runs at 6 gt and the T flip-flop needs 4 gt pulses', () => {
+    // https://minecraft.wiki/w/Redstone_circuits/Clock: hand-placed pair = 6 gt (3 rt).
+    expect(OBSERVER_CLOCK_PERIOD_TICKS).toBe(6);
+    const clock = MODULE_CATALOGUE.get('observer_clock');
+    expect(clock?.behaviour.steps.some((s) => (s.rebuild ?? []).length > 0)).toBe(true);
+    const flipFlop = MODULE_CATALOGUE.get('t_flip_flop');
+    const pulses = flipFlop?.behaviour.steps.flatMap((s) => (s.pulse ? [s.pulse.ticks] : []));
+    // One negative case below the minimum, the rest at or above it.
+    expect(pulses?.filter((t) => t < T_FLIP_FLOP_MIN_PULSE_TICKS)).toEqual([2]);
+    expect(pulses).toContain(T_FLIP_FLOP_MIN_PULSE_TICKS);
   });
 
   it('repeater clock and pulse extender timing formulas', () => {

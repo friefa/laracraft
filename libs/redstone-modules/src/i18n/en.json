@@ -14,7 +14,7 @@
     },
     "observer_clock": {
       "name": "Observer clock",
-      "description": "Two observers facing each other. Very fast clock that starts as soon as it is built; break an observer to stop it.",
+      "description": "Two observers facing each other. Very fast clock (a pulse every 6 game ticks) that starts when the second observer is placed. If a pasted copy stands still, break one observer and place it again; break an observer to stop it.",
       "port": { "out": "Output (front)", "outBack": "Output (back)" }
     },
     "repeater_clock": {
@@ -25,7 +25,7 @@
     },
     "t_flip_flop": {
       "name": "T flip-flop",
-      "description": "Every input pulse toggles the output between on and off – turns a button into a switch.",
+      "description": "Every input pulse toggles the output between on and off – turns a button into a switch. Pulses must last at least 4 game ticks (buttons and levers work, a single observer pulse is too short).",
       "port": { "toggle": "Toggle input", "q": "Output" }
     },
     "rs_nor_latch": {

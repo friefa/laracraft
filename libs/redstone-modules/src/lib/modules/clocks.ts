@@ -1,18 +1,31 @@
 import { LocalBuilder, defineModule, moduleKey, wire } from '../define';
 
+/** Period of the hand-placed observer clock in game ticks (2 on, 4 off). */
+export const OBSERVER_CLOCK_PERIOD_TICKS = 6;
+
 /**
  * Observer clock (Java Edition).
  *
  * Design: two observers facing each other. Each one watches the other's face; when one
- * fires, the other sees the state change and fires 2 game ticks later, and so on. Each
- * observer emits a 2-tick pulse every 4 game ticks from its back (output) face.
- * The clock starts when the second observer is placed and cannot be switched off (break
- * one observer to stop it). Same arrangement as the build-order golden build
+ * changes state, the other fires 2 game ticks later and stays on for 2 game ticks.
+ * When both observers are placed by hand, each observer is still on when the other one
+ * turns on, so it misses that change and only reacts to the other turning off: the pair
+ * settles into a 6 gt (3 rt) clock, 2 gt on and 4 gt off per observer
+ * (https://minecraft.wiki/w/Redstone_circuits/Clock, "Double Observer Clock": "Manually
+ * placing each observer facing each other will set them in a state which will form a
+ * 6gt(3rt) clock"). The 4 gt variant needs an observer pushed into place by a piston; a
+ * player building this module by hand does not get it.
+ *
+ * Starting: the clock starts when the second observer is placed, because the first one
+ * sees that placement. The stored state is a snapshot without pending ticks (both
+ * observers off), so a pasted or loaded copy stands still until a player breaks and places
+ * one observer again; the behaviour spec does exactly that. It cannot be switched off
+ * (break one observer to stop it). Same arrangement as the build-order golden build
  * `observer-clock`.
  *
  * References:
  * - https://minecraft.wiki/w/Observer (detection, 2 gt delay, 2 gt pulse)
- * - https://minecraft.wiki/w/Redstone_circuits/Clock (observer clock)
+ * - https://minecraft.wiki/w/Redstone_circuits/Clock (double observer clock, 6 gt by hand)
  * - libs/build-order/src/testing/golden/observer-clock.ts
  *
  * Local layout (x = 0, y = 0), facing north = the front output points to −Z:
@@ -33,7 +46,7 @@ export const OBSERVER_CLOCK = defineModule({
   size: { x: 1, y: 1, z: 2 },
   anchor: { x: 0, y: 0, z: 0 },
   design:
-    'Two observers facing each other: fastest simple clock, 2-tick pulses every 4 game ticks.',
+    'Two observers facing each other, placed by hand: 2-tick pulses every 6 game ticks (2 on, 4 off).',
   references: [
     'https://minecraft.wiki/w/Observer',
     'https://minecraft.wiki/w/Redstone_circuits/Clock',
@@ -45,21 +58,30 @@ export const OBSERVER_CLOCK = defineModule({
   ],
   behaviour: {
     status: 'specified',
-    notes: 'Runs from the moment the second observer is placed; the stored state is one snapshot.',
-    initial: {},
+    notes:
+      'The stored state has no pending ticks, so the clock does not run by itself after loading; ' +
+      'step 2 places the back observer again by hand, which starts it like building it does.',
+    initial: { outputs: { out: false, outBack: false } },
     steps: [
       {
-        description: 'Free-running: both outputs pulse 2 game ticks on, 2 off.',
+        description: 'Loaded as stored: nothing is scheduled, the clock stands still.',
+        waitTicks: 20,
+        expect: { outputs: { out: false, outBack: false } },
+      },
+      {
+        description:
+          'Break and place the back observer by hand: the clock starts, 2 game ticks on, 4 off.',
+        rebuild: [{ x: 0, y: 0, z: 1 }],
         waitTicks: 40,
         expect: {
-          oscillation: { port: 'out', periodTicks: 4, onTicks: 2 },
+          oscillation: { port: 'out', periodTicks: OBSERVER_CLOCK_PERIOD_TICKS, onTicks: 2 },
         },
       },
       {
         description: 'The back output runs with the same period.',
         waitTicks: 40,
         expect: {
-          oscillation: { port: 'outBack', periodTicks: 4, onTicks: 2 },
+          oscillation: { port: 'outBack', periodTicks: OBSERVER_CLOCK_PERIOD_TICKS, onTicks: 2 },
         },
       },
     ],

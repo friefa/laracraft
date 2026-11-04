@@ -14,7 +14,7 @@
     },
     "observer_clock": {
       "name": "Beobachter-Takt",
-      "description": "Zwei Beobachter, die sich ansehen. Sehr schneller Taktgeber, der sofort nach dem Bauen läuft; zum Anhalten einen Beobachter abbauen.",
+      "description": "Zwei Beobachter, die sich ansehen. Sehr schneller Taktgeber (ein Impuls alle 6 Spielticks), der startet, sobald der zweite Beobachter gesetzt wird. Steht eine eingefügte Kopie still, einen Beobachter abbauen und neu setzen; zum Anhalten einen Beobachter abbauen.",
       "port": { "out": "Ausgang (vorne)", "outBack": "Ausgang (hinten)" }
     },
     "repeater_clock": {
@@ -25,7 +25,7 @@
     },
     "t_flip_flop": {
       "name": "T-Flipflop",
-      "description": "Jeder Eingangsimpuls schaltet den Ausgang um – aus einem Knopf wird ein Schalter.",
+      "description": "Jeder Eingangsimpuls schaltet den Ausgang um – aus einem Knopf wird ein Schalter. Impulse müssen mindestens 4 Spielticks dauern (Knöpfe und Hebel gehen, ein einzelner Beobachter-Impuls ist zu kurz).",
       "port": { "toggle": "Umschalt-Eingang", "q": "Ausgang" }
     },
     "rs_nor_latch": {

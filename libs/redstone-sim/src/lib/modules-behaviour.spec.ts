@@ -23,11 +23,19 @@ import { javaRegistry, makeDoc } from './spec-helpers';
  *   (`pos + side`) and broken to switch off. Pulses last exactly `ticks` game ticks.
  * - Output ports: dust reports its power level, other blocks their emitted power towards
  *   the port side. `true`/`false` = power > 0.
- * - Items: `sort` = minecraft:iron_ingot, `other` = minecraft:stick (both stack to 64).
- *   Preloaded `other` items go one per free slot (the spec's "1 filler in each other slot").
+ * - Items: `sort` = minecraft:iron_ingot, `other` = minecraft:stick, `filler` = a renamed
+ *   stick (all stack to 64; the three never stack with each other). Preloaded `filler`
+ *   items go one per free slot (the spec's "1 filler in each other slot").
+ * - `rebuild`: the module block at each position is broken and placed again (its stored
+ *   state) like a player would, before the step's inputs change.
  */
 
-const ITEMS = { sort: 'minecraft:iron_ingot', other: 'minecraft:stick' } as const;
+const ITEMS = {
+  sort: 'minecraft:iron_ingot',
+  other: 'minecraft:stick',
+  // A renamed stick: same max stack (64), but does not stack with plain sticks.
+  filler: 'minecraft:stick[custom_name="Filler"]',
+} as const;
 
 const add = (a: Vec3, b: Vec3): Vec3 => ({ x: a.x + b.x, y: a.y + b.y, z: a.z + b.z });
 
@@ -35,6 +43,7 @@ class ModuleRun {
   readonly sim: JavaSimulation;
   readonly problems: string[] = [];
   private readonly ports: Map<string, ModulePort>;
+  private readonly stored = new Map<string, string>();
 
   constructor(private readonly module: RedstoneModule) {
     const params = module.behaviour.params;
@@ -43,6 +52,7 @@ class ModuleRun {
       state: b.state,
     }));
     this.sim = new JavaSimulation(makeDoc(blocks), javaRegistry(), { edition: 'java' });
+    for (const b of blocks) this.stored.set(`${b.pos.x},${b.pos.y},${b.pos.z}`, b.state);
     this.ports = new Map(module.ports.map((p) => [p.name, p]));
     for (const pre of module.behaviour.preload ?? []) {
       const be = this.sim.level.getBlockEntity<ContainerEntity>(pre.pos);
@@ -181,6 +191,12 @@ class ModuleRun {
     const b = this.module.behaviour;
     this.check('initial', b.initial, new Map());
     b.steps.forEach((step, i) => {
+      for (const pos of step.rebuild ?? []) {
+        const state = this.stored.get(`${pos.x},${pos.y},${pos.z}`);
+        if (!state) throw new Error(`rebuild: no module block at ${JSON.stringify(pos)}`);
+        this.sim.apply({ kind: 'break', pos });
+        this.sim.apply({ kind: 'place', pos, state: state as never });
+      }
       for (const [name, value] of Object.entries(step.set ?? {})) this.setInput(name, value);
       if (step.pulse) this.setInput(step.pulse.port, true);
       for (const ins of step.insertItems ?? []) {
@@ -206,34 +222,9 @@ class ModuleRun {
   }
 }
 
-/**
- * Known failures. In each case the simulator follows Java (sources cited); the module or its
- * behaviour spec is wrong. Reported to the lead; the modules are not changed here.
- */
-const KNOWN: Readonly<Record<string, string>> = {
-  // 1) The stored state (both observers unpowered, no pending tick) is a dead state: loading
-  //    it like a world save or a schematic paste starts nothing; only placing an observer
-  //    starts the clock. 2) Two hand-placed observers form a 6 gt clock (2 on / 4 off), not
-  //    4 gt: https://minecraft.wiki/w/Redstone_circuits/Clock ("6gt(3rt) clock"); the 4 gt
-  //    variant needs an observer pushed into place. See mechanics.spec.ts for the 6 gt clock.
-  observer_clock: 'dead stored state and 6 gt (not 4 gt) period for hand-placed observers',
-  // A 2 gt input pulse is too short: the slave S is unlocked at 4 gt and would turn on at
-  // 6 gt, but L2 relocks it in the same tick first (repeater facing a diode side has tick
-  // priority −3, S has −1: https://minecraft.wiki/w/Tick#Scheduled_tick). Pulses ≥ 4 gt work
-  // (steps 2/3 toggle correctly relative to the actual Q), so "any pulse ≥ 2 gt" is wrong.
-  t_flip_flop: 'needs input pulses of at least 4 gt; the 2 gt pulse of step 1 does not toggle',
-  // The torch powers the filter hopper F itself, so F is locked and can neither pull from the
-  // line hopper above nor push (https://minecraft.wiki/w/Hopper: a powered hopper does not
-  // move items). The usual sorter locks a second hopper below the filter instead
-  // (https://minecraft.wiki/w/Tutorials/Hopper#Item_sorter). All items overflow.
-  item_sorter: 'filter hopper is itself locked by the torch, so nothing is ever sorted',
-};
-
 describe('redstone-modules behaviour specs (Java)', () => {
   for (const module of MODULE_CATALOGUE.all()) {
-    const reason = KNOWN[module.id];
-    const test = reason ? it.fails : it;
-    test(`${module.id}${reason ? ` — known failure: ${reason}` : ''}`, () => {
+    it(module.id, () => {
       const problems = new ModuleRun(module).run();
       expect(problems, problems.join('\n')).toEqual([]);
     });
