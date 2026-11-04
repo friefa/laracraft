@@ -6,6 +6,17 @@ offizielles Minecraft aussieht (kein Minecraft-Font, keine Mojang-UI, kein Logo-
 
 Quelle der Wahrheit für Tokens und Basis-Komponenten: `apps/laracraft/src/styles.scss`.
 
+## Design-Dokument und Ablauf bei Änderungen
+
+Das Design-Dokument [`docs/design/index.html`](design/index.html) zeigt den aktuellen Stand der App: Farben,
+Schrift, Icons, Lara, alle Bausteine und jede Ansicht (Handy-Rahmen 390 × 844, dazu Desktop für Editor und
+Bauanleitung). Es ist statisches HTML/CSS ohne Build: lokal im Browser öffnen oder als Artifact veröffentlichen.
+`docs/design/design.css` enthält eine wörtliche Kopie von `styles.scss` und der Komponenten-Styles.
+
+**Regel:** UI-Änderungen werden **zuerst im Design-Dokument** vorgeschlagen → der **PO prüft** und gibt frei →
+erst dann **Umsetzung in der App**. Danach Dokument und App wieder abgleichen (Tokens/Klassen in
+`design.css` = `styles.scss`).
+
 ## Prinzipien
 
 1. **Dick und drückbar.** Buttons und Karten haben 2 px Rand, große Radien (16 px) und eine dunklere Unterkante

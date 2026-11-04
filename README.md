@@ -20,6 +20,7 @@ pnpm exec nx run-many -t lint test typecheck build
 - [Architektur](docs/ARCHITECTURE.md)
 - [Entscheidungen (ADRs)](docs/adr/README.md)
 - [Roadmap](docs/ROADMAP.md)
+- [Design-Dokument (alle Ansichten)](docs/design/index.html) – UI-Änderungen werden zuerst dort vorgeschlagen, siehe [Design](docs/DESIGN.md)
 - [Offene Fragen an den PO](docs/OPEN-QUESTIONS.md)
 - [M0-Bericht](docs/milestones/M0.md)
 - [MVP-Bericht (M1 + M2)](docs/milestones/MVP.md)
