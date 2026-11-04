@@ -11,6 +11,15 @@ import type { BlockStateString, Direction, HorizontalDirection, Vec3 } from '@la
 /** Java survival block interaction range (attribute `block_interaction_range`). */
 export const DEFAULT_REACH = 4.5;
 
+/** Eye height above the feet (standing). */
+export const EYE_HEIGHT = 1.62;
+
+/**
+ * Extra eye height at the peak of a jump (Java jump apex ≈ 1.2522 blocks). A jumping
+ * placement needs air at standAt, +1 and +2 (head clearance at the apex).
+ */
+export const JUMP_HEIGHT = 1.25;
+
 export interface BuildOrderOptions {
   /** Target number of placements per step; steps may be smaller at layer/phase boundaries. */
   readonly minStepSize: number; // default 10
@@ -52,6 +61,12 @@ export interface PlaceAction {
   readonly clickHalf?: 'top' | 'bottom';
   /** Hold sneak while placing (e.g. placing against an interactive block like a chest). */
   readonly sneak?: boolean;
+  /**
+   * Place at the apex of a jump: eye height EYE_HEIGHT + JUMP_HEIGHT. Lets players reach the
+   * top face of blocks at head height (third wall row) and pillar up (place below own feet,
+   * then `standAt` is the jump origin and the new block is at `standAt`).
+   */
+  readonly jump?: boolean;
   /** Right-clicks on the placed block afterwards (repeater delay, comparator mode, wire dot). */
   readonly interactions?: number;
   /** True for blocks that are not part of the final build (supports, scaffolding). */
@@ -64,6 +79,8 @@ export interface RemoveAction {
   /** State expected at `pos` before removal (always a temporary block placed earlier). */
   readonly state: BlockStateString;
   readonly reason: 'temporary-support' | 'scaffold';
+  /** Where the player stands to break it (optional; reach is checked when present). */
+  readonly standAt?: Vec3;
 }
 
 export type StepAction = PlaceAction | RemoveAction;
