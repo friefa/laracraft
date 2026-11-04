@@ -55,6 +55,7 @@ export default [
       'libs/redstone-modules/**/*.ts',
       'libs/formats/**/*.ts',
       'libs/editor/**/*.ts',
+      'libs/redstone-sim/**/*.ts',
       'libs/renderer/src/lib/mesh/**/*.ts',
       'libs/renderer/src/lib/models/**/*.ts',
     ],

@@ -29,7 +29,8 @@
       "@laracraft/formats": ["./libs/formats/src/index.ts"],
       "@laracraft/renderer": ["./libs/renderer/src/index.ts"],
       "@laracraft/editor": ["./libs/editor/src/index.ts"],
-      "@laracraft/lara-agent": ["./libs/lara-agent/src/index.ts"]
+      "@laracraft/lara-agent": ["./libs/lara-agent/src/index.ts"],
+      "@laracraft/redstone-sim": ["./libs/redstone-sim/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
