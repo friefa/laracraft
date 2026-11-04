@@ -10,14 +10,19 @@ import {
 import { TranslocoPipe } from '@jsverse/transloco';
 import type { BuildPlan } from '@laracraft/build-order';
 import { LanguageService } from '../i18n/language.service';
+import { GuideBlockTile } from './block-tile';
 import { loadChecklist, safeStorage, saveChecklist } from './checklist';
+import { GuideIcon } from './guide-icon';
 import { GuideText } from './guide-text';
 import { formatItemStacks, sortMaterials, type MaterialSort } from './materials';
 
-/** Whole-build overview: total materials with a gathering checklist, temporary materials, warnings. */
+/**
+ * Whole-build overview: total materials as a gathering checklist (big round checkboxes and
+ * a progress bar), temporary materials, warnings.
+ */
 @Component({
   selector: 'lc-guide-overview',
-  imports: [TranslocoPipe],
+  imports: [TranslocoPipe, GuideIcon, GuideBlockTile],
   templateUrl: './overview-panel.html',
   styleUrl: './overview-panel.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -66,12 +71,6 @@ export class GuideOverview {
       message: w.message,
     })),
   );
-
-  protected ariaSort(column: MaterialSort['by']): 'ascending' | 'descending' | 'none' {
-    const s = this.sort();
-    if (s.by !== column) return 'none';
-    return s.dir === 'asc' ? 'ascending' : 'descending';
-  }
 
   protected sortBy(column: MaterialSort['by']): void {
     const s = this.sort();

@@ -13,14 +13,21 @@ import {
 import { TranslocoPipe } from '@jsverse/transloco';
 import type { BuildStep } from '@laracraft/build-order';
 import type { BlockStateString, Vec3 } from '@laracraft/core-model';
+import { Lara } from '../shared/lara/lara';
 import { groupActions } from './action-groups';
+import { GuideBlockTile } from './block-tile';
+import { GuideIcon } from './guide-icon';
 import { BEARING, GuideText } from './guide-text';
+import { HINT_STYLE, LINE_STYLE } from './lesson-style';
 import { formatItemStacks } from './materials';
 
-/** Materials, compact action list, selected-action details and hints of one step. */
+/**
+ * One lesson step: materials as item rows, the actions as numbered chips, the selected
+ * action's details as a speech bubble from Lara, and the hints as coloured callouts.
+ */
 @Component({
   selector: 'lc-guide-step-panel',
-  imports: [TranslocoPipe],
+  imports: [TranslocoPipe, Lara, GuideIcon, GuideBlockTile],
   templateUrl: './step-panel.html',
   styleUrl: './step-panel.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -73,17 +80,21 @@ export class GuideStepPanel {
         n: index + 1,
         block: this.text.blockName(action.state),
       }),
+      state: action.state,
       bearing: action.kind === 'place' ? BEARING[action.look.horizontal] : null,
       compass:
         action.kind === 'place' ? this.text.t(`guide.look.compass.${action.look.horizontal}`) : '',
       vertical: action.kind === 'place' ? action.look.vertical : 'level',
-      lines: this.text.actionLines(action, this.blockAt()),
+      lines: this.text
+        .actionLines(action, this.blockAt())
+        .map((line) => ({ ...line, ...LINE_STYLE[line.kind] })),
     };
   });
 
   protected readonly hints = computed(() =>
     this.step().hints.map((h) => ({
       text: this.text.hint(h),
+      ...(HINT_STYLE[h.code] ?? ({ tone: 'grey', icon: 'info' } as const)),
       hasPositions: (h.positions?.length ?? 0) > 0,
     })),
   );
@@ -91,7 +102,8 @@ export class GuideStepPanel {
   protected select(index: number): void {
     this.selected.set(this.selected() === index ? null : index);
     // The details sit above the chips: on phones they are often scrolled out of the sheet.
-    afterNextRender(() => this.detailRef()?.nativeElement.scrollIntoView?.({ block: 'nearest' }), {
+    // Align their top (title first) with the top of the sheet.
+    afterNextRender(() => this.detailRef()?.nativeElement.scrollIntoView?.({ block: 'start' }), {
       injector: this.injector,
     });
   }

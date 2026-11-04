@@ -1,22 +1,44 @@
-<div class="top">
-  <a [routerLink]="['/build', id()]">← {{ 'guide.back' | transloco }}</a>
+<header class="top">
+  <a
+    class="lc-btn lc-btn--ghost lc-btn--icon close"
+    [routerLink]="['/build', id()]"
+    [attr.aria-label]="'guide.back' | transloco"
+    [title]="'guide.back' | transloco"
+  >
+    <lc-guide-icon name="close" />
+  </a>
   <h1>
     {{ 'guide.title' | transloco }} @if (build.hasValue()) {
     <span class="name">{{ build.value().metadata.name }}</span>
     }
   </h1>
-</div>
+  @if (view()) {
+  <div
+    class="lc-progress lesson-progress"
+    role="progressbar"
+    [style.--value]="lessonValue()"
+    aria-valuemin="0"
+    [attr.aria-valuemax]="total()"
+    [attr.aria-valuenow]="finished() ? total() : index() + 1"
+    [attr.aria-valuetext]="'guide.stepOf' | transloco: { current: index() + 1, total: total() }"
+    [attr.aria-label]="'guide.lessonProgress' | transloco"
+  ></div>
+  <span class="counter" aria-hidden="true">{{ index() + 1 }}/{{ total() }}</span>
+  }
+</header>
 
 @if (build.error()) {
-<p role="alert">{{ storageErrorKey() | transloco }}</p>
+<p class="state" role="alert">{{ storageErrorKey() | transloco }}</p>
 } @else if (!build.hasValue()) {
-<p role="status">{{ 'guide.loading' | transloco }}</p>
+<p class="state" role="status">{{ 'guide.loading' | transloco }}</p>
 } @else if (isEmpty() || plan()?.steps?.length === 0) {
-<p role="status">{{ 'guide.errors.empty' | transloco }}</p>
+<p class="state" role="status">{{ 'guide.errors.empty' | transloco }}</p>
 } @else if (planRes.error()) {
-<div role="alert">
+<div class="state" role="alert">
   <p>{{ planErrorKey() | transloco }}</p>
-  <button type="button" (click)="planRes.reload()">{{ 'guide.errors.retry' | transloco }}</button>
+  <button type="button" class="lc-btn lc-btn--secondary" (click)="planRes.reload()">
+    {{ 'guide.errors.retry' | transloco }}
+  </button>
 </div>
 } @else if (view(); as v) {
 <div
@@ -33,6 +55,15 @@
     [visuals]="visuals()"
     [insets]="viewInsets()"
   />
+
+  @if (celebration(); as c) {
+  <lc-guide-success
+    class="success"
+    [done]="c.done"
+    [total]="total()"
+    (dismiss)="dismissCelebration()"
+  />
+  }
 
   <section
     class="panel"
@@ -53,59 +84,21 @@
       >
         <span class="grip" aria-hidden="true"></span>
       </button>
-      <nav class="controls" [attr.aria-label]="'guide.navLabel' | transloco">
-        <button
-          type="button"
-          class="nav-btn"
-          [disabled]="index() === 0"
-          [attr.aria-label]="'guide.prev' | transloco"
-          (click)="prev()"
+      <div class="step-info">
+        <strong class="step-of" aria-live="polite">
+          {{ 'guide.stepOf' | transloco: { current: index() + 1, total: total() } }}
+        </strong>
+        <span
+          [class]="'lc-pill lc-pill--soft-' + phaseTone() + ' phase'"
+          [attr.data-phase]="v.step.phase"
         >
-          ‹
-        </button>
-        <div class="step-info">
-          <strong class="step-of" aria-live="polite">
-            {{ 'guide.stepOf' | transloco: { current: index() + 1, total: total() } }}
-          </strong>
-          <span class="badge" [attr.data-phase]="v.step.phase">
-            <span class="sr-only">{{ 'guide.phase.label' | transloco }}: </span>
-            {{ 'guide.phase.' + v.step.phase | transloco }}
-          </span>
-        </div>
-        <button
-          type="button"
-          class="nav-btn"
-          [disabled]="index() >= total() - 1"
-          [attr.aria-label]="'guide.next' | transloco"
-          (click)="next()"
-        >
-          ›
-        </button>
-      </nav>
+          <span class="lc-visually-hidden">{{ 'guide.phase.label' | transloco }}: </span>
+          {{ 'guide.phase.' + v.step.phase | transloco }}
+        </span>
+      </div>
     </div>
 
     <div class="sheet-body">
-      <input
-        class="slider"
-        type="range"
-        min="1"
-        [max]="total()"
-        [value]="index() + 1"
-        [attr.aria-label]="'guide.stepSlider' | transloco"
-        (input)="onSlider($event)"
-      />
-      <fieldset class="options">
-        <legend class="sr-only">{{ 'guide.view.label' | transloco }}</legend>
-        <label>
-          <input type="checkbox" [checked]="showNext()" (change)="onToggle('showNext', $event)" />
-          {{ 'guide.view.showNext' | transloco }}
-        </label>
-        <label>
-          <input type="checkbox" [checked]="layerOnly()" (change)="onToggle('layerOnly', $event)" />
-          {{ 'guide.view.layerOnly' | transloco }}
-        </label>
-      </fieldset>
-
       <div class="tabs" role="tablist" [attr.aria-label]="'guide.tabs.label' | transloco">
         <button
           type="button"
@@ -145,16 +138,71 @@
         <lc-guide-overview [plan]="v.plan" [buildId]="id()" />
         }
       </div>
+
+      <fieldset class="view-tools">
+        <legend class="section-title">{{ 'guide.view.label' | transloco }}</legend>
+        <input
+          class="slider"
+          type="range"
+          min="1"
+          [max]="total()"
+          [value]="index() + 1"
+          [style.--value]="total() > 1 ? index() / (total() - 1) : 1"
+          [attr.aria-label]="'guide.stepSlider' | transloco"
+          (input)="onSlider($event)"
+        />
+        <div class="options">
+          <label class="toggle">
+            <input type="checkbox" [checked]="showNext()" (change)="onToggle('showNext', $event)" />
+            <span>{{ 'guide.view.showNext' | transloco }}</span>
+          </label>
+          <label class="toggle">
+            <input
+              type="checkbox"
+              [checked]="layerOnly()"
+              (change)="onToggle('layerOnly', $event)"
+            />
+            <span>{{ 'guide.view.layerOnly' | transloco }}</span>
+          </label>
+        </div>
+      </fieldset>
     </div>
+
+    <nav #sheetFoot class="sheet-foot" [attr.aria-label]="'guide.navLabel' | transloco">
+      <button
+        type="button"
+        class="lc-btn lc-btn--ghost lc-btn--lg prev-btn"
+        [disabled]="index() === 0"
+        (click)="prev()"
+      >
+        <lc-guide-icon name="chevron-left" />
+        <span>{{ 'guide.prev' | transloco }}</span>
+      </button>
+      <button
+        type="button"
+        class="lc-btn lc-btn--primary lc-btn--lg lc-btn--block next-btn"
+        (click)="next()"
+      >
+        {{ (isLast() ? 'guide.finish.button' : 'guide.next') | transloco }}
+      </button>
+    </nav>
   </section>
+
+  @if (finished()) {
+  <lc-guide-finish
+    class="finish"
+    [buildId]="id()"
+    [name]="build.value().metadata.name"
+    [blocks]="v.plan.stats.blocks"
+    [steps]="total()"
+    (review)="closeFinish()"
+  />
+  }
 </div>
 } @else {
 <div class="planning" role="status">
   <p>{{ 'guide.planning' | transloco }}</p>
-  <progress
-    max="100"
-    [value]="percent()"
-    [attr.aria-valuetext]="'guide.progress' | transloco: { percent: percent() }"
-  ></progress>
+  <div class="lc-progress" [style.--value]="percent() / 100"></div>
+  <span class="lc-visually-hidden">{{ 'guide.progress' | transloco: { percent: percent() } }}</span>
 </div>
 }

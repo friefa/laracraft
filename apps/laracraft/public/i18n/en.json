@@ -138,8 +138,8 @@
     },
     "stepOf": "Step {{ current }} of {{ total }}",
     "stepSlider": "Choose step",
-    "prev": "Previous step",
-    "next": "Next step",
+    "prev": "Back",
+    "next": "Continue",
     "navLabel": "Step navigation",
     "phase": {
       "label": "Phase",
@@ -257,13 +257,28 @@
       "warnings": "Warnings",
       "noWarnings": "No warnings – this build can be built in survival as planned.",
       "none": "None",
-      "warningAt": "at {{ pos }}"
+      "warningAt": "at {{ pos }}",
+      "sortLabel": "Sort by"
     },
     "warning": {
       "unknown-block": "Unknown block – placed without checking the rules.",
       "unsupported-state": "This block state cannot be placed like this in survival.",
       "unreachable": "No position found from which this block can be reached.",
       "cycle": "Circular dependency – the order was chosen heuristically."
+    },
+    "lessonProgress": "Build guide progress",
+    "success": {
+      "title": "Step complete!",
+      "progress": "{{ done }} of {{ total }} steps done"
+    },
+    "finish": {
+      "button": "Finish",
+      "title": "Build complete!",
+      "text": "“{{ name }}” is done. Great job!",
+      "blocks": "Blocks",
+      "steps": "Steps",
+      "toEditor": "Back to the editor",
+      "review": "Review the steps"
     }
   },
   "editor": {

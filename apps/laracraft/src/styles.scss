@@ -686,3 +686,45 @@ textarea {
 .lc-bubble--purple::before {
   border-color: var(--lc-purple);
 }
+
+/* ---------------------------------------------------------------------------
+ * P3.3 additions (guide lesson).
+ * ------------------------------------------------------------------------- */
+
+/* Neutral tone (clean-up phase, temporary blocks); complements .lc-tone--*. */
+.lc-tone--grey {
+  --tone: var(--lc-muted);
+  --tone-shade: var(--lc-border-strong);
+}
+
+/* Soft pills for the remaining phase colours (power = yellow, clean-up = grey). */
+.lc-pill--soft-yellow {
+  background: color-mix(in srgb, var(--lc-yellow) 20%, var(--lc-bg));
+  color: var(--lc-yellow);
+}
+:root[data-theme='light'] .lc-pill--soft-yellow {
+  color: var(--lc-yellow-shade);
+}
+.lc-pill--soft-grey {
+  background: var(--lc-bg-soft);
+  color: var(--lc-muted);
+  box-shadow: inset 0 0 0 var(--lc-border-w) var(--lc-border);
+}
+
+/* Callout (hints, notes): tinted panel in a tone colour; the first child (icon) takes the tone.
+ *   <div class="lc-callout lc-tone--orange"><svg/><div>Text</div></div> */
+.lc-callout {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: var(--lc-border-w) solid var(--tone, var(--lc-green));
+  border-radius: var(--lc-radius);
+  background: color-mix(in srgb, var(--tone, var(--lc-green)) 14%, var(--lc-surface));
+  color: var(--lc-text-strong);
+  font-weight: var(--lc-fw-bold);
+}
+.lc-callout > :first-child {
+  flex: none;
+  color: var(--tone, var(--lc-green));
+}
