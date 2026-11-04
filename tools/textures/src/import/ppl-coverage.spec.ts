@@ -42,10 +42,16 @@ describe('registry texture coverage', () => {
     expect(unresolved).toEqual([]);
   });
 
-  it('prefers Pixel Perfection Legacy over the placeholders by default', () => {
-    expect(defaultPackOrder(manifest).slice(0, 2)).toEqual([PPL_RELEASE.packId, 'placeholder']);
-    const stone = selectTextures(manifest).find((e) => e.name === 'stone');
-    expect(stone?.pack).toBe(PPL_RELEASE.packId);
+  it('prefers own drawings, then Pixel Perfection Legacy, then the placeholders by default', () => {
+    expect(defaultPackOrder(manifest).slice(0, 3)).toEqual([
+      'laracraft_own',
+      PPL_RELEASE.packId,
+      'placeholder',
+    ]);
+    const selected = selectTextures(manifest);
+    expect(selected.find((e) => e.name === 'stone')?.pack).toBe(PPL_RELEASE.packId);
+    expect(selected.find((e) => e.name === 'observer_front')?.pack).toBe('laracraft_own');
+    expect(selected.find((e) => e.name === 'chest_front')?.pack).toBe('laracraft_own');
   });
 });
 

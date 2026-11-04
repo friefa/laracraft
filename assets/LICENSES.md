@@ -22,6 +22,38 @@
 
 ## Textures
 
+### laracraft own textures (`laracraft_own`)
+
+- Authors: laracraft contributors, Nova_Wostra, Pixel Perfection Legacy contributors, Hugh "XSSheep" Rutland (original)
+- License: [CC-BY-SA-4.0](https://creativecommons.org/licenses/by-sa/4.0/) (ShareAlike)
+- Source: own work
+- Modifications: New drawing by laracraft contributors in the style of Pixel Perfection Legacy 26.3-97.2, using colours sampled from its oak_planks and iron_block
+- Attribution: "laracraft own textures" by laracraft contributors, Nova_Wostra, Pixel Perfection Legacy contributors, Hugh "XSSheep" Rutland (original), source: https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M, licensed under CC-BY-SA-4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Changes: New drawing by laracraft contributors in the style of Pixel Perfection Legacy 26.3-97.2, using colours sampled from its oak_planks and iron_block.
+
+| Texture           | File                                                  |
+| ----------------- | ----------------------------------------------------- |
+| chest_front       | `assets/textures/laracraft_own/chest_front.png`       |
+| chest_front_left  | `assets/textures/laracraft_own/chest_front_left.png`  |
+| chest_front_right | `assets/textures/laracraft_own/chest_front_right.png` |
+| chest_side        | `assets/textures/laracraft_own/chest_side.png`        |
+| chest_side_left   | `assets/textures/laracraft_own/chest_side_left.png`   |
+| chest_side_right  | `assets/textures/laracraft_own/chest_side_right.png`  |
+| chest_top         | `assets/textures/laracraft_own/chest_top.png`         |
+| chest_top_left    | `assets/textures/laracraft_own/chest_top_left.png`    |
+| chest_top_right   | `assets/textures/laracraft_own/chest_top_right.png`   |
+
+### laracraft own textures (`laracraft_own`)
+
+- Authors: laracraft contributors, Nova_Wostra, Pixel Perfection Legacy contributors, Hugh "XSSheep" Rutland (original)
+- License: [CC-BY-SA-4.0](https://creativecommons.org/licenses/by-sa/4.0/) (ShareAlike)
+- Source: own work
+- Modifications: New drawing by laracraft contributors (sensor plate and visor) replacing the observer_front of Pixel Perfection Legacy 26.3-97.2; keeps the stone frame of its observer_side and uses colours sampled from its observer textures
+- Attribution: "laracraft own textures" by laracraft contributors, Nova_Wostra, Pixel Perfection Legacy contributors, Hugh "XSSheep" Rutland (original), source: https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M, licensed under CC-BY-SA-4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Changes: New drawing by laracraft contributors (sensor plate and visor) replacing the observer_front of Pixel Perfection Legacy 26.3-97.2; keeps the stone frame of its observer_side and uses colours sampled from its observer textures.
+
+| Texture        | File                                               |
+| -------------- | -------------------------------------------------- |
+| observer_front | `assets/textures/laracraft_own/observer_front.png` |
+
 ### Pixel Perfection Legacy (`pixel_perfection_legacy`)
 
 - Authors: Nova_Wostra, Pixel Perfection Legacy contributors, Hugh "XSSheep" Rutland (original)

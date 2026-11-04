@@ -1,6 +1,6 @@
 /**
  * Texture pipeline CLI. Run from the workspace root via Nx:
- *   nx run textures:validate | atlas | credits | placeholders | guard
+ *   nx run textures:validate | atlas | credits | placeholders | own-textures | guard
  * Options: --packs a,b (priority order for atlas/credits; default: pixel_perfection_legacy,
  *          placeholder, then other packs in manifest order), --padding n, --out dir
  * atlas:   --local (or env LARACRAFT_LOCAL_TEXTURES=1) puts `.local-textures/` first and
@@ -14,6 +14,7 @@ import { format, resolveConfig } from 'prettier';
 import { buildAtlas, type AtlasInput } from './lib/atlas';
 import { buildCredits, renderLicensesMd } from './lib/credits';
 import { defaultPackOrder, selectTextures, type TextureManifest } from './lib/manifest';
+import { OWN_PACK, OWN_TEXTURE_NAMES, renderOwnTexture } from './lib/own-textures';
 import { PLACEHOLDER_NAMES, renderPlaceholder } from './lib/placeholders';
 import { readPng, writePng } from './lib/png';
 import { TEXTURES_ROOT, validate, type DiskFile } from './lib/validate';
@@ -30,6 +31,8 @@ const ROOT = resolve(import.meta.dirname, '../../..');
 const MANIFEST = `${TEXTURES_ROOT}/manifest.json`;
 const LICENSES_MD = 'assets/LICENSES.md';
 const PLACEHOLDER_DIR = `${TEXTURES_ROOT}/placeholder`;
+const OWN_DIR = `${TEXTURES_ROOT}/${OWN_PACK}`;
+const PPL_DIR = `${TEXTURES_ROOT}/pixel_perfection_legacy`;
 const DEFAULT_OUT = 'dist/assets/textures';
 
 const abs = (p: string) => join(ROOT, p);
@@ -194,6 +197,15 @@ async function main(): Promise<void> {
       );
       return;
     }
+    case 'own-textures': {
+      mkdirSync(abs(OWN_DIR), { recursive: true });
+      const load = (name: string) => readPng(abs(`${PPL_DIR}/${name}.png`));
+      for (const name of OWN_TEXTURE_NAMES) {
+        writePng(abs(`${OWN_DIR}/${name}.png`), renderOwnTexture(name, load));
+      }
+      console.log(`Wrote ${OWN_TEXTURE_NAMES.length} own texture(s) to ${OWN_DIR}`);
+      return;
+    }
     case 'guard': {
       const dirs = values.dir ?? [DEFAULT_OUT];
       const problems = checkNoLocalTextures({
@@ -219,7 +231,7 @@ async function main(): Promise<void> {
     }
     default:
       console.error(
-        'usage: cli.ts <validate|atlas|credits|placeholders|guard> [--packs a,b] [--padding n] [--out dir] [--local]',
+        'usage: cli.ts <validate|atlas|credits|placeholders|own-textures|guard> [--packs a,b] [--padding n] [--out dir] [--local]',
       );
       process.exit(2);
   }

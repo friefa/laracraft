@@ -142,7 +142,7 @@ describe('buildModelGeometry – coverage', () => {
     const g = geo(s('oak_stairs', {}));
     expect(new Set(g.layers)).toEqual(new Set([textures['oak_planks']]));
     const withoutChest: TextureLayers = Object.fromEntries(
-      Object.entries(textures).filter(([name]) => name !== 'chest'),
+      Object.entries(textures).filter(([name]) => !name.startsWith('chest_')),
     );
     const chestLayers = new Set(geo('minecraft:chest', withoutChest).layers);
     expect(chestLayers).toEqual(new Set([textures['missing']]));
@@ -428,6 +428,30 @@ describe('buildModelGeometry – shapes and orientation', () => {
     expect(bounds(geo(s('chest', { facing: 'north', type: 'left' }))).max[0]).toBe(1);
     expect(bounds(geo(s('chest', { facing: 'north', type: 'right' }))).min[0]).toBe(0);
     expect(bounds(geo(s('chest', { facing: 'east', type: 'left' }))).max[2]).toBe(1);
+  });
+
+  it('textures chests with the chest textures and double-chest half variants', () => {
+    const single = new Set(geo('minecraft:chest').layers);
+    expect(single).toEqual(
+      new Set([textures['chest_front'], textures['chest_side'], textures['chest_top']]),
+    );
+    const withHalves: TextureLayers = { ...textures };
+    let next = Math.max(...Object.values(textures)) + 1;
+    for (const base of ['chest_front', 'chest_side', 'chest_top'])
+      for (const t of ['left', 'right']) withHalves[`${base}_${t}`] = next++;
+    for (const t of ['left', 'right']) {
+      const layers = new Set(geo(s('chest', { facing: 'north', type: t }), withHalves).layers);
+      expect(layers).toEqual(
+        new Set([
+          withHalves[`chest_front_${t}`],
+          withHalves[`chest_side_${t}`],
+          withHalves[`chest_top_${t}`],
+          textures['chest_side'],
+        ]),
+      );
+    }
+    // Without variants the halves fall back to the single-chest textures.
+    expect(new Set(geo(s('chest', { facing: 'north', type: 'left' })).layers)).toEqual(single);
   });
 });
 

@@ -48,7 +48,10 @@ export const UTILITY_BLOCKS: readonly BlockDefinition[] = [
     category: 'utility',
     shape: 'model',
     modelId: 'chest',
-    textures: { all: 'chest' },
+    // Own drawings (pack laracraft_own); double chest halves add `_left` / `_right` variants.
+    textures: {
+      faces: { north: 'chest_front', up: 'chest_top', down: 'chest_top', side: 'chest_side' },
+    },
     solid: false,
     properties: {
       facing: horizontalFacing(),
