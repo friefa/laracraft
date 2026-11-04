@@ -67,3 +67,13 @@ export interface BuildRenderer {
   stats(): { fps: number; drawCalls: number; triangles: number; chunks: number };
   dispose(): void;
 }
+
+/**
+ * Factory (implemented in `scene/create-build-renderer.ts`, exported from the lib index):
+ *
+ *   export function createBuildRenderer(options: RendererOptions): Promise<BuildRenderer>;
+ *
+ * Resolves once the texture array is loaded. Lazy-load this module in the app
+ * (three.js must not land in the initial bundle).
+ */
+export type CreateBuildRendererFn = (options: RendererOptions) => Promise<BuildRenderer>;
