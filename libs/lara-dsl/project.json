@@ -5,5 +5,27 @@
   "projectType": "library",
   "tags": ["type:engine", "scope:shared"],
   "// targets": "to see all targets run: nx show project lara-dsl --web",
-  "targets": {}
+  "targets": {
+    "schema": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "command": "tsx --tsconfig tsconfig.base.json libs/lara-dsl/scripts/write-schema.ts"
+      }
+    },
+    "schema-check": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "inputs": [
+        "{projectRoot}/scripts/**/*",
+        "{projectRoot}/src/**/*",
+        "{projectRoot}/schema/**/*",
+        "^production",
+        { "externalDependencies": ["tsx", "prettier"] }
+      ],
+      "options": {
+        "command": "tsx --tsconfig tsconfig.base.json libs/lara-dsl/scripts/write-schema.ts --check"
+      }
+    }
+  }
 }

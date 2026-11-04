@@ -59,6 +59,7 @@
     "eslint": "^9.8.0",
     "eslint-config-prettier": "^10.0.0",
     "fake-indexeddb": "^6.2.7",
+    "fast-check": "^4.10.2",
     "jiti": "2.4.2",
     "jsdom": "^26.0.0",
     "jsonc-eslint-parser": "^2.1.0",
