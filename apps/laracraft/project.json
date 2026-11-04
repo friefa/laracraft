@@ -81,6 +81,16 @@
               "output": "assets/textures"
             }
           ]
+        },
+        "artifact": {
+          "fileReplacements": [
+            {
+              "replace": "apps/laracraft/src/environments/environment.ts",
+              "with": "apps/laracraft/src/environments/environment.artifact.ts"
+            }
+          ],
+          "baseHref": "./",
+          "outputHashing": "all"
         }
       }
     },
