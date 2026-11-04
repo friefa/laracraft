@@ -1,0 +1,3091 @@
+/*
+ * laracraft design document – stylesheet.
+ *
+ * Part 1 is a VERBATIM copy of apps/laracraft/src/styles.scss (tokens, dark default +
+ * [data-theme='light'], shared .lc-* component classes). Part 3 is a copy of the screen
+ * component styles (Angular component SCSS, scoped with @scope instead of Angular's
+ * attribute encapsulation; @media width queries became @container queries on the frame).
+ * Both MUST stay in sync with the app.
+ *
+ * Workflow: design changes are proposed HERE first (docs/design), the product owner
+ * reviews them, then they are implemented in the app (styles.scss / component styles).
+ */
+
+/* ===========================================================================
+ * Part 1 – app tokens and shared components (copy of styles.scss)
+ * ========================================================================= */
+/* laracraft design system (dark-first comic style): see docs/DESIGN.md. */
+/* Global tokens, base styles and shared component classes (.lc-*). */
+/* Components use the --lc-* custom properties; never hard-code colours. */
+
+/* Nunito (OFL-1.1), self-hosted so the native apps work offline. Latin subsets only. */
+
+:root {
+  /* Dark-first comic palette: flat, saturated colours on a deep blue-grey. */
+  color-scheme: dark;
+  --lc-green: #58cc4a;
+  --lc-green-shade: #3d9a33;
+  --lc-green-soft: #1e3b23;
+  --lc-blue: #3fb1f5;
+  --lc-blue-shade: #1f84c4;
+  --lc-blue-soft: #133149;
+  --lc-orange: #ff9f3a;
+  --lc-orange-shade: #c9721a;
+  --lc-orange-soft: #3f2a14;
+  --lc-red: #ff5a5f;
+  --lc-red-shade: #c23a3f;
+  --lc-red-soft: #45201f;
+  --lc-yellow: #ffd23f;
+  --lc-yellow-shade: #c99e17;
+  --lc-purple: #b07cff;
+  --lc-purple-shade: #8053cf;
+
+  --lc-bg: #121d23;
+  --lc-bg-soft: #172730;
+  --lc-surface: #1c2d36;
+  --lc-text: #dbe4e9;
+  --lc-text-strong: #f5f9fb;
+  --lc-muted: #8d9ea7;
+  --lc-border: #2f434d;
+  --lc-border-strong: #3e5560;
+  --lc-on-color: #0d1519;
+  /* Comic ink: outline colour for illustrations and outlined elements. */
+  --lc-ink: #0b1216;
+
+  /* Legacy aliases used by existing components */
+  --lc-accent: var(--lc-green);
+  --lc-danger: var(--lc-red);
+
+  /* Shape & rhythm */
+  --lc-space: 1rem;
+  --lc-radius: 1rem;
+  --lc-radius-sm: 0.75rem;
+  --lc-radius-pill: 999px;
+  --lc-border-w: 2px;
+  --lc-depth: 4px; /* "pressable" bottom edge of buttons and cards */
+
+  /* Type */
+  --lc-font: 'Nunito Variable', 'Nunito', ui-rounded, 'SF Pro Rounded', system-ui, sans-serif;
+  --lc-fs-xs: 0.8125rem;
+  --lc-fs-sm: 0.9375rem;
+  --lc-fs-md: 1.0625rem;
+  --lc-fs-lg: 1.375rem;
+  --lc-fs-xl: 1.875rem;
+  --lc-fw-body: 600;
+  --lc-fw-bold: 800;
+  --lc-fw-black: 900;
+
+  --lc-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Optional light theme (explicit choice only; dark is the product default). */
+:root[data-theme='light'] {
+  color-scheme: light;
+  --lc-green: #3fb950;
+  --lc-green-shade: #2c8a3a;
+  --lc-green-soft: #e3f7e1;
+  --lc-blue: #2f9bf0;
+  --lc-blue-shade: #1f74b8;
+  --lc-blue-soft: #e1f1fd;
+  --lc-orange: #ff9a2e;
+  --lc-orange-shade: #d27512;
+  --lc-orange-soft: #fff0dc;
+  --lc-red: #f04b4f;
+  --lc-red-shade: #c23236;
+  --lc-red-soft: #fde4e4;
+  --lc-yellow: #ffcd3c;
+  --lc-yellow-shade: #d9a514;
+  --lc-purple: #9b5cf6;
+  --lc-purple-shade: #7038c9;
+  --lc-bg: #ffffff;
+  --lc-bg-soft: #f4f7f9;
+  --lc-surface: #ffffff;
+  --lc-text: #3b4449;
+  --lc-text-strong: #263035;
+  --lc-muted: #7b868c;
+  --lc-border: #e1e6e9;
+  --lc-border-strong: #cfd6da;
+  --lc-on-color: #ffffff;
+  --lc-ink: #263035;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--lc-font);
+  font-size: var(--lc-fs-md);
+  font-weight: var(--lc-fw-body);
+  line-height: 1.5;
+  color: var(--lc-text);
+  background: var(--lc-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  color: var(--lc-text-strong);
+  font-weight: var(--lc-fw-black);
+  line-height: 1.2;
+  text-wrap: balance;
+  letter-spacing: -0.01em;
+}
+
+a {
+  color: var(--lc-blue);
+  font-weight: var(--lc-fw-bold);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+:focus-visible {
+  outline: 3px solid var(--lc-blue);
+  outline-offset: 2px;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+/* ---------------------------------------------------------------------------
+ * Buttons: chunky, rounded, with a darker bottom edge that "presses in".
+ *   <button class="lc-btn lc-btn--primary">Weiter</button>
+ * Variants: --primary (green), --secondary (blue), --warn (orange), --danger (red),
+ * --ghost (white with border). Sizes: --sm, --lg, --block (full width), --icon.
+ * ------------------------------------------------------------------------- */
+.lc-btn {
+  --btn-bg: var(--lc-surface);
+  --btn-fg: var(--lc-text);
+  --btn-edge: var(--lc-border-strong);
+  --btn-border: var(--lc-border-strong);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 3rem;
+  padding: 0.6rem 1.25rem;
+  border: var(--lc-border-w) solid var(--btn-border);
+  border-radius: var(--lc-radius);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  box-shadow: 0 var(--lc-depth) 0 var(--btn-edge);
+  font-size: var(--lc-fs-sm);
+  font-weight: var(--lc-fw-black);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    transform 80ms ease,
+    box-shadow 80ms ease,
+    filter 120ms ease;
+  margin-bottom: var(--lc-depth);
+}
+
+.lc-btn:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+
+.lc-btn:active:not(:disabled) {
+  transform: translateY(var(--lc-depth));
+  box-shadow: 0 0 0 var(--btn-edge);
+}
+
+.lc-btn:disabled {
+  --btn-bg: var(--lc-bg-soft);
+  --btn-fg: var(--lc-muted);
+  --btn-edge: var(--lc-border);
+  --btn-border: var(--lc-border);
+  cursor: not-allowed;
+}
+
+.lc-btn--primary {
+  --btn-bg: var(--lc-green);
+  --btn-fg: var(--lc-on-color);
+  --btn-edge: var(--lc-green-shade);
+  --btn-border: var(--lc-green);
+}
+.lc-btn--secondary {
+  --btn-bg: var(--lc-blue);
+  --btn-fg: var(--lc-on-color);
+  --btn-edge: var(--lc-blue-shade);
+  --btn-border: var(--lc-blue);
+}
+.lc-btn--warn {
+  --btn-bg: var(--lc-orange);
+  --btn-fg: var(--lc-on-color);
+  --btn-edge: var(--lc-orange-shade);
+  --btn-border: var(--lc-orange);
+}
+.lc-btn--danger {
+  --btn-bg: var(--lc-red);
+  --btn-fg: var(--lc-on-color);
+  --btn-edge: var(--lc-red-shade);
+  --btn-border: var(--lc-red);
+}
+.lc-btn--ghost {
+  --btn-fg: var(--lc-blue);
+}
+.lc-btn--selected {
+  --btn-bg: var(--lc-blue-soft);
+  --btn-fg: var(--lc-blue);
+  --btn-edge: var(--lc-blue);
+  --btn-border: var(--lc-blue);
+}
+.lc-btn--sm {
+  min-height: 2.75rem;
+  padding: 0.4rem 0.9rem;
+  font-size: var(--lc-fs-xs);
+}
+.lc-btn--lg {
+  min-height: 3.5rem;
+  padding: 0.8rem 1.75rem;
+  font-size: var(--lc-fs-md);
+}
+.lc-btn--block {
+  display: flex;
+  width: 100%;
+}
+.lc-btn--icon {
+  min-width: 3rem;
+  padding: 0.5rem;
+  letter-spacing: 0;
+}
+
+/* Cards / panels: white, 2px border, soft bottom edge. Interactive cards lift on hover. */
+.lc-card {
+  background: var(--lc-surface);
+  border: var(--lc-border-w) solid var(--lc-border);
+  border-radius: calc(var(--lc-radius) * 1.25);
+  box-shadow: 0 var(--lc-depth) 0 var(--lc-border);
+  padding: 1rem 1.25rem;
+}
+.lc-card--interactive {
+  cursor: pointer;
+  transition: transform 120ms var(--lc-ease-bounce);
+}
+.lc-card--interactive:hover {
+  transform: translateY(-2px);
+}
+
+/* Thick rounded progress bar with a highlight stripe. Set --value: 0..1 inline. */
+.lc-progress {
+  --value: 0;
+  position: relative;
+  height: 1rem;
+  border-radius: var(--lc-radius-pill);
+  background: var(--lc-border);
+  overflow: hidden;
+}
+.lc-progress::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--value) * 100%);
+  min-width: 1rem;
+  border-radius: inherit;
+  background: var(--lc-green);
+  transition: width 300ms var(--lc-ease-bounce);
+}
+.lc-progress::after {
+  content: '';
+  position: absolute;
+  top: 0.22rem;
+  left: 0.5rem;
+  width: calc(max(var(--value) * 100% - 1rem, 0px));
+  height: 0.22rem;
+  border-radius: var(--lc-radius-pill);
+  background: rgb(255 255 255 / 0.35);
+  transition: width 300ms var(--lc-ease-bounce);
+}
+
+/* Pills / badges */
+.lc-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.7rem;
+  border-radius: var(--lc-radius-pill);
+  background: var(--lc-green-soft);
+  color: var(--lc-green-shade);
+  font-size: var(--lc-fs-xs);
+  font-weight: var(--lc-fw-black);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.lc-pill--blue {
+  background: var(--lc-blue-soft);
+  color: var(--lc-blue-shade);
+}
+.lc-pill--orange {
+  background: var(--lc-orange-soft);
+  color: var(--lc-orange-shade);
+}
+.lc-pill--red {
+  background: var(--lc-red-soft);
+  color: var(--lc-red-shade);
+}
+
+/* Text inputs */
+.lc-input {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.6rem 1rem;
+  border: var(--lc-border-w) solid var(--lc-border);
+  border-radius: var(--lc-radius);
+  background: var(--lc-bg-soft);
+  color: var(--lc-text-strong);
+  font-weight: var(--lc-fw-bold);
+}
+.lc-input:focus {
+  outline: none;
+  border-color: var(--lc-blue);
+  background: var(--lc-surface);
+}
+
+/* Small celebration: add .lc-pop to an element to bounce it in once. */
+@keyframes lc-pop {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.lc-pop {
+  animation: lc-pop 320ms var(--lc-ease-bounce) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Added by P3.2 (editor): backdrop of the 3D view. A calm, flat night blue just
+ * lighter than --lc-bg so blocks and the ground grid read well; light theme: pale sky.
+ * Read once by the renderer when the editor opens.
+ * ------------------------------------------------------------------------- */
+:root {
+  --lc-sky: #20364a;
+}
+:root[data-theme='light'] {
+  --lc-sky: #d4e7f4;
+}
+
+/* Tinted buttons (P3.2): soft background, coloured icon/text and edge. Colour = meaning
+ * (green adds, blue transforms, red removes). Use together with .lc-btn. */
+.lc-btn--tint-green:not(:disabled) {
+  --btn-bg: var(--lc-green-soft);
+  --btn-fg: var(--lc-green);
+  --btn-edge: var(--lc-green-shade);
+  --btn-border: var(--lc-green-shade);
+}
+.lc-btn--tint-blue:not(:disabled) {
+  --btn-bg: var(--lc-blue-soft);
+  --btn-fg: var(--lc-blue);
+  --btn-edge: var(--lc-blue-shade);
+  --btn-border: var(--lc-blue-shade);
+}
+.lc-btn--tint-red:not(:disabled) {
+  --btn-bg: var(--lc-red-soft);
+  --btn-fg: var(--lc-red);
+  --btn-edge: var(--lc-red-shade);
+  --btn-border: var(--lc-red-shade);
+}
+
+/* ---------------------------------------------------------------------------
+ * P3.1 additions: shared pieces used by the shell, "My builds", dialogs and credits.
+ * ------------------------------------------------------------------------- */
+
+/* Readable text colour per accent on its -soft background (AA in the dark default). */
+:root {
+  --lc-green-text: var(--lc-green);
+  --lc-blue-text: var(--lc-blue);
+  --lc-orange-text: var(--lc-orange);
+  --lc-red-text: var(--lc-red);
+  --lc-purple-text: var(--lc-purple);
+}
+:root[data-theme='light'] {
+  --lc-green-text: var(--lc-green-shade);
+  --lc-blue-text: var(--lc-blue-shade);
+  --lc-orange-text: var(--lc-orange-shade);
+  --lc-red-text: var(--lc-red-shade);
+  --lc-purple-text: var(--lc-purple-shade);
+}
+
+/* Hidden visually, still read by screen readers. */
+.lc-visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Colour tones for tiles and accents: sets --tone / --tone-shade. */
+.lc-tone--green {
+  --tone: var(--lc-green);
+  --tone-shade: var(--lc-green-shade);
+}
+.lc-tone--blue {
+  --tone: var(--lc-blue);
+  --tone-shade: var(--lc-blue-shade);
+}
+.lc-tone--orange {
+  --tone: var(--lc-orange);
+  --tone-shade: var(--lc-orange-shade);
+}
+.lc-tone--red {
+  --tone: var(--lc-red);
+  --tone-shade: var(--lc-red-shade);
+}
+.lc-tone--yellow {
+  --tone: var(--lc-yellow);
+  --tone-shade: var(--lc-yellow-shade);
+}
+.lc-tone--purple {
+  --tone: var(--lc-purple);
+  --tone-shade: var(--lc-purple-shade);
+}
+
+/* Chunky colour tile (block preview, example icon). Combine with .lc-tone--*.
+ * Size via --tile-size; put an icon (drawn in currentColor = ink) inside. */
+.lc-tile {
+  --tile-size: 4rem;
+  position: relative;
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--tile-size);
+  height: var(--tile-size);
+  border: var(--lc-border-w) solid var(--lc-ink);
+  border-radius: var(--lc-radius);
+  background: var(--tone, var(--lc-green));
+  box-shadow: inset 0 calc(var(--lc-depth) * -1.5) 0 var(--tone-shade, var(--lc-green-shade));
+  color: var(--lc-ink);
+  overflow: hidden;
+}
+.lc-tile::after {
+  content: '';
+  position: absolute;
+  top: 12%;
+  left: 12%;
+  width: 0.3rem;
+  height: 30%;
+  border-radius: var(--lc-radius-pill);
+  background: rgb(255 255 255 / 0.4);
+}
+.lc-tile svg {
+  width: 62%;
+  height: 62%;
+}
+
+/* Pill colour variants with AA text in the dark default. */
+.lc-pill--soft-green {
+  background: var(--lc-green-soft);
+  color: var(--lc-green-text);
+}
+.lc-pill--soft-blue {
+  background: var(--lc-blue-soft);
+  color: var(--lc-blue-text);
+}
+.lc-pill--soft-orange {
+  background: var(--lc-orange-soft);
+  color: var(--lc-orange-text);
+}
+
+/* Comic speech bubble with a tail on the left (towards Lara). */
+.lc-bubble {
+  position: relative;
+  padding: 0.75rem 1rem;
+  border: var(--lc-border-w) solid var(--lc-border-strong);
+  border-radius: calc(var(--lc-radius) * 1.25);
+  background: var(--lc-surface);
+  box-shadow: 0 var(--lc-depth) 0 var(--lc-border-strong);
+}
+.lc-bubble::before {
+  content: '';
+  position: absolute;
+  top: 1.25rem;
+  left: -0.6rem;
+  width: 1rem;
+  height: 1rem;
+  border-left: var(--lc-border-w) solid var(--lc-border-strong);
+  border-bottom: var(--lc-border-w) solid var(--lc-border-strong);
+  background: var(--lc-surface);
+  transform: rotate(45deg);
+}
+
+/* Modal <dialog> as a comic panel. Header row: .lc-dialog__head (optional Lara + h2). */
+.lc-dialog {
+  width: min(28rem, calc(100vw - 2rem));
+  max-height: calc(100dvh - 2rem);
+  padding: 1.25rem;
+  overflow: auto;
+  color: var(--lc-text);
+  background: var(--lc-surface);
+  border: var(--lc-border-w) solid var(--lc-border-strong);
+  border-radius: calc(var(--lc-radius) * 1.5);
+  box-shadow: 0 var(--lc-depth) 0 var(--lc-border-strong);
+}
+.lc-dialog[open] {
+  animation: lc-pop 280ms var(--lc-ease-bounce) both;
+}
+.lc-dialog::backdrop {
+  background: rgb(0 0 0 / 0.6);
+}
+.lc-dialog h2 {
+  margin: 0;
+  font-size: var(--lc-fs-lg);
+}
+.lc-dialog__head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+.lc-dialog__actions {
+  display: flex;
+  flex-wrap: wrap-reverse;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+@media (max-width: 30rem) {
+  .lc-dialog__actions > .lc-btn {
+    flex: 1 1 8rem;
+  }
+}
+
+/* Toast: a rounded status pill fixed above the bottom edge; add .lc-pop when it appears. */
+.lc-toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom) + 1.25rem);
+  z-index: 20;
+  translate: -50% 0;
+  width: max-content;
+  max-width: calc(100vw - 2rem);
+  padding: 0.75rem 1.25rem;
+  border: var(--lc-border-w) solid var(--lc-green-shade);
+  border-radius: var(--lc-radius-pill);
+  background: var(--lc-green);
+  box-shadow: 0 var(--lc-depth) 0 var(--lc-green-shade);
+  color: var(--lc-on-color);
+  font-weight: var(--lc-fw-black);
+  text-align: center;
+}
+
+/* Alert banner (errors): red comic panel with text and a dismiss/retry button. */
+.lc-alert {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: var(--lc-border-w) solid var(--lc-red);
+  border-radius: calc(var(--lc-radius) * 1.25);
+  background: var(--lc-red-soft);
+  color: var(--lc-text-strong);
+  font-weight: var(--lc-fw-bold);
+}
+.lc-alert p {
+  flex: 1 1 12rem;
+  margin: 0;
+}
+
+/* Popover menu (native [popover]); items are .lc-menu__item buttons. */
+.lc-menu {
+  min-width: 12rem;
+  margin: 0;
+  padding: 0.4rem;
+  border: var(--lc-border-w) solid var(--lc-border-strong);
+  border-radius: var(--lc-radius);
+  background: var(--lc-surface);
+  box-shadow: 0 var(--lc-depth) 0 var(--lc-border-strong);
+  color: var(--lc-text);
+}
+.lc-menu:popover-open {
+  animation: lc-pop 200ms var(--lc-ease-bounce) both;
+}
+.lc-menu__item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.5rem 0.75rem;
+  border: 0;
+  border-radius: var(--lc-radius-sm);
+  background: none;
+  color: var(--lc-text-strong);
+  font-weight: var(--lc-fw-bold);
+  text-align: start;
+  cursor: pointer;
+}
+.lc-menu__item:hover:not(:disabled),
+.lc-menu__item:focus-visible {
+  background: var(--lc-bg-soft);
+}
+.lc-menu__item:disabled {
+  color: var(--lc-muted);
+  cursor: not-allowed;
+}
+.lc-menu__item--danger {
+  color: var(--lc-red-text);
+}
+.lc-menu__item svg {
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Compact chip-style <select> (e.g. the language switch). */
+.lc-select {
+  min-height: 3rem;
+  padding: 0 2.25rem 0 1rem;
+  border: var(--lc-border-w) solid var(--lc-border-strong);
+  border-radius: var(--lc-radius-pill);
+  background-color: var(--lc-bg-soft);
+  background-image:
+    linear-gradient(45deg, transparent 50%, currentColor 50%),
+    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position:
+    right 1.15rem center,
+    right 0.8rem center;
+  background-size: 0.35rem 0.35rem;
+  background-repeat: no-repeat;
+  box-shadow: 0 3px 0 var(--lc-border-strong);
+  color: var(--lc-text-strong);
+  font-weight: var(--lc-fw-black);
+  appearance: none;
+  cursor: pointer;
+}
+
+/* Lara speaking: purple bubble variant (editor hints, guide explanations). */
+.lc-bubble--purple {
+  border-color: var(--lc-purple);
+  box-shadow: 0 var(--lc-depth) 0 var(--lc-purple-shade);
+  color: var(--lc-text-strong);
+  font-weight: var(--lc-fw-bold);
+}
+.lc-bubble--purple::before {
+  border-color: var(--lc-purple);
+}
+
+/* ---------------------------------------------------------------------------
+ * P3.3 additions (guide lesson).
+ * ------------------------------------------------------------------------- */
+
+/* Neutral tone (clean-up phase, temporary blocks); complements .lc-tone--*. */
+.lc-tone--grey {
+  --tone: var(--lc-muted);
+  --tone-shade: var(--lc-border-strong);
+}
+
+/* Soft pills for the remaining phase colours (power = yellow, clean-up = grey). */
+.lc-pill--soft-yellow {
+  background: color-mix(in srgb, var(--lc-yellow) 20%, var(--lc-bg));
+  color: var(--lc-yellow);
+}
+:root[data-theme='light'] .lc-pill--soft-yellow {
+  color: var(--lc-yellow-shade);
+}
+.lc-pill--soft-grey {
+  background: var(--lc-bg-soft);
+  color: var(--lc-muted);
+  box-shadow: inset 0 0 0 var(--lc-border-w) var(--lc-border);
+}
+
+/* Callout (hints, notes): tinted panel in a tone colour; the first child (icon) takes the tone.
+ *   <div class="lc-callout lc-tone--orange"><svg/><div>Text</div></div> */
+.lc-callout {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: var(--lc-border-w) solid var(--tone, var(--lc-green));
+  border-radius: var(--lc-radius);
+  background: color-mix(in srgb, var(--tone, var(--lc-green)) 14%, var(--lc-surface));
+  color: var(--lc-text-strong);
+  font-weight: var(--lc-fw-bold);
+}
+.lc-callout > :first-child {
+  flex: none;
+  color: var(--tone, var(--lc-green));
+}
+
+/* ===========================================================================
+ * Part 2 – design document only (page layout, device frames, state helpers).
+ * Not part of the app. Everything here is prefixed .doc-* / .mock-* / .is-*.
+ * ========================================================================= */
+
+/* Static state helpers so hover/pressed/focus can be shown side by side. */
+.lc-btn.is-hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+.lc-btn.is-pressed:not(:disabled) {
+  transform: translateY(var(--lc-depth));
+  box-shadow: 0 0 0 var(--btn-edge);
+}
+.is-focus {
+  outline: 3px solid var(--lc-blue);
+  outline-offset: 2px;
+}
+.lc-input.is-focus {
+  outline: none;
+  border-color: var(--lc-blue);
+  background: var(--lc-surface);
+}
+.lc-menu__item.is-hover {
+  background: var(--lc-bg-soft);
+}
+.lc-card--interactive.is-hover-lift {
+  transform: translateY(-2px);
+}
+
+/* Page */
+.doc-sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+.doc {
+  min-width: 0;
+}
+.doc-top {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 1rem;
+  padding: 0.5rem 1rem;
+  background: var(--lc-bg);
+  border-bottom: var(--lc-border-w) solid var(--lc-border);
+}
+.doc-top__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.doc-top__title {
+  color: var(--lc-text-strong);
+  font-size: 1.375rem;
+  font-weight: var(--lc-fw-black);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.doc-top__title span {
+  color: var(--lc-purple-text);
+}
+.doc-nav {
+  display: flex;
+  flex: 1 1 20rem;
+  gap: 0.25rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.doc-nav a {
+  flex: none;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--lc-radius-pill);
+  color: var(--lc-text);
+  font-size: var(--lc-fs-sm);
+  white-space: nowrap;
+}
+.doc-nav a:hover {
+  background: var(--lc-bg-soft);
+  color: var(--lc-blue);
+  text-decoration: none;
+}
+.doc-theme {
+  margin-left: auto;
+}
+@media (max-width: 48rem) {
+  .doc-top__title {
+    font-size: 1.125rem;
+  }
+  .doc-nav {
+    order: 3;
+    flex-basis: 100%;
+  }
+}
+.doc-main {
+  max-width: 88rem;
+  margin: 0 auto;
+  padding: 1rem 1rem 3rem;
+}
+.doc-section {
+  padding-top: 1.5rem;
+  scroll-margin-top: 4.5rem;
+}
+.doc-section > h2 {
+  margin: 0 0 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: var(--lc-border-w) solid var(--lc-border);
+  font-size: var(--lc-fs-xl);
+}
+.doc-sub {
+  margin: 1.5rem 0;
+  scroll-margin-top: 4.5rem;
+}
+.doc-sub h3 {
+  margin: 0 0 0.5rem;
+  font-size: var(--lc-fs-lg);
+}
+.doc-sub h4 {
+  margin: 1rem 0 0.5rem;
+  color: var(--lc-muted);
+  font-size: var(--lc-fs-xs);
+  font-weight: var(--lc-fw-black);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.doc-intro h1 {
+  margin: 0.5rem 0;
+  font-size: 2.25rem;
+}
+.doc-lead {
+  max-width: 50rem;
+  margin: 0 0 1rem;
+}
+.doc-workflow {
+  max-width: 50rem;
+}
+.doc-workflow > lc-guide-icon {
+  font-size: 1.5rem;
+}
+.doc-workflow h2 {
+  margin: 0 0 0.25rem;
+  font-size: var(--lc-fs-lg);
+}
+.doc-workflow ol {
+  margin: 0;
+  padding-left: 1.25rem;
+  font-weight: var(--lc-fw-body);
+}
+.doc code {
+  padding: 0.05rem 0.3rem;
+  border-radius: 0.35rem;
+  background: var(--lc-bg-soft);
+  color: var(--lc-text-strong);
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 0.85em;
+  font-weight: 600;
+}
+.doc-muted {
+  margin: 0.5rem 0;
+  color: var(--lc-muted);
+  font-size: var(--lc-fs-sm);
+}
+.doc-strong {
+  color: var(--lc-text-strong);
+  font-weight: var(--lc-fw-black);
+}
+
+/* Swatches */
+.doc-swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 0.75rem;
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+.doc-swatch {
+  display: grid;
+  grid-template-columns: 3rem 1fr;
+  gap: 0 0.75rem;
+  align-items: center;
+  padding: 0.5rem;
+  border: var(--lc-border-w) solid var(--lc-border);
+  border-radius: var(--lc-radius);
+  background: var(--lc-surface);
+  font-size: var(--lc-fs-sm);
+}
+.doc-swatch__chip {
+  grid-row: span 3;
+  width: 3rem;
+  height: 3rem;
+  border: var(--lc-border-w) solid var(--lc-ink);
+  border-radius: var(--lc-radius-sm);
+}
+.doc-swatch code {
+  justify-self: start;
+}
+.doc-swatch__hex {
+  color: var(--lc-text-strong);
+  font-weight: var(--lc-fw-bold);
+}
+.doc-swatch__hex span,
+.doc-swatch__note {
+  color: var(--lc-muted);
+  font-size: var(--lc-fs-xs);
+}
+
+/* Type and shape */
+.doc-type {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 1.5rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px dashed var(--lc-border);
+}
+.doc-type__sample {
+  min-width: 14rem;
+  color: var(--lc-text-strong);
+  line-height: 1.2;
+}
+.doc-type__meta {
+  color: var(--lc-muted);
+  font-size: var(--lc-fs-sm);
+}
+.doc-shape {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  gap: 1rem;
+}
+.doc-shape__item {
+  color: var(--lc-muted);
+  font-size: var(--lc-fs-sm);
+}
+.doc-shape__box {
+  display: block;
+  margin-bottom: 0.5rem;
+  width: 4rem;
+  height: 3rem;
+  border: var(--lc-border-w) solid var(--lc-blue);
+  background: var(--lc-blue-soft);
+}
+.doc-shape__box--depth {
+  border-color: var(--lc-border);
+  border-radius: var(--lc-radius);
+  background: var(--lc-surface);
+  box-shadow: 0 var(--lc-depth) 0 var(--lc-border);
+}
+
+/* Icons and Lara */
+.doc-icons {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr));
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.doc-icons li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.75rem 0.25rem;
+  border: var(--lc-border-w) solid var(--lc-border);
+  border-radius: var(--lc-radius);
+  background: var(--lc-surface);
+  color: var(--lc-text-strong);
+}
+.doc-icons code {
+  font-size: 0.7rem;
+}
+.doc-icons lc-icon {
+  --lc-icon: 2rem;
+}
+.doc-icons--guide li {
+  color: var(--lc-yellow);
+}
+.doc-icons--guide lc-guide-icon {
+  font-size: 1.6rem;
+}
+.doc-laras {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.doc-lara {
+  display: flex;
+  flex: 1 1 10rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 1rem;
+  border: var(--lc-border-w) solid var(--lc-border);
+  border-radius: calc(var(--lc-radius) * 1.25);
+  background: var(--lc-surface);
+  color: var(--lc-muted);
+  font-size: var(--lc-fs-sm);
+  text-align: center;
+}
+
+/* Component gallery */
+.doc-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin: 0.5rem 0 1rem;
+}
+.doc-row--narrow {
+  max-width: 22rem;
+}
+.doc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: 1rem;
+  margin: 0.5rem 0 1rem;
+}
+.doc-grid--top {
+  align-items: start;
+}
+.doc-progress {
+  display: grid;
+  gap: 0.75rem;
+  max-width: 24rem;
+}
+.doc-field {
+  display: grid;
+  gap: 0.4rem;
+  color: var(--lc-text-strong);
+  font-weight: var(--lc-fw-black);
+}
+.doc-field .lc-select {
+  justify-self: start;
+}
+.doc-speech {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+.doc-speech .lc-bubble {
+  flex: 1;
+  margin: 0;
+}
+.doc-static.lc-toast {
+  position: static;
+  translate: none;
+}
+.doc-static.lc-dialog {
+  width: auto;
+  max-width: 28rem;
+}
+.doc-menu-demo {
+  justify-self: start;
+}
+.doc-menu-demo svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Device frames: each .doc-screen behaves like its own viewport. Fixed elements are
+ * contained (layout containment) and component width queries are container queries. */
+.doc-shots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(26rem, 1fr));
+  gap: 2rem 1.5rem;
+}
+.doc-shot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+  scroll-margin-top: 4.5rem;
+}
+.doc-shot figcaption {
+  display: grid;
+  gap: 0.2rem;
+  max-width: 410px;
+  font-size: var(--lc-fs-sm);
+}
+.doc-shot figcaption strong {
+  color: var(--lc-text-strong);
+  font-weight: var(--lc-fw-black);
+}
+.doc-shot figcaption span {
+  color: var(--lc-muted);
+}
+.doc-device {
+  flex: none;
+  padding: 10px;
+  border-radius: 54px;
+  background: #05090b;
+  box-shadow:
+    0 0 0 2px var(--lc-border-strong),
+    0 var(--lc-depth) 0 2px var(--lc-border-strong);
+}
+.doc-screen {
+  position: relative;
+  width: 390px;
+  height: 844px;
+  overflow: hidden;
+  container-type: size;
+  contain: layout paint;
+  isolation: isolate;
+  border-radius: 44px;
+  background: var(--lc-bg);
+  color: var(--lc-text);
+  font-size: var(--lc-fs-md);
+  font-weight: var(--lc-fw-body);
+  line-height: 1.5;
+  text-align: start;
+}
+.doc-shot--desktop {
+  margin-bottom: 2rem;
+}
+.doc-shot--desktop figcaption {
+  max-width: 50rem;
+}
+.doc-device--desktop {
+  padding: 16px;
+  border-radius: 28px;
+  zoom: 0.62;
+}
+.doc-screen--desktop {
+  width: 1440px;
+  height: 900px;
+  border-radius: 12px;
+}
+@media (max-width: 75rem) {
+  .doc-device--desktop {
+    zoom: 0.46;
+  }
+}
+@media (max-width: 47rem) {
+  .doc-device--desktop {
+    zoom: 0.235;
+  }
+  .doc-shots {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 28rem) {
+  .doc-device:not(.doc-device--desktop) {
+    zoom: 0.84;
+  }
+}
+
+/* Replacements for things only the browser's top layer / app viewport provides. */
+:where(.doc-screen) dialog.mock-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  margin: auto;
+  max-width: calc(100% - 6px - 2em);
+  max-height: calc(100% - 6px - 2em);
+}
+.mock-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background: rgb(0 0 0 / 0.6);
+}
+.mock-backdrop--sheet {
+  background: rgb(0 0 0 / 0.55);
+}
+:where(.doc-screen) .lc-dialog {
+  width: min(28rem, calc(100cqw - 2rem));
+  max-height: calc(100cqh - 2rem);
+}
+.doc-screen .lc-toast {
+  max-width: calc(100cqw - 2rem);
+}
+@container (max-width: 30rem) {
+  .doc-screen .lc-dialog__actions > .lc-btn {
+    flex: 1 1 8rem;
+  }
+}
+@container (min-width: 30.01rem) {
+  .doc-screen .lc-dialog__actions > .lc-btn {
+    flex: initial;
+  }
+}
+.mock-scene {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Footer */
+.doc-notes {
+  max-width: 60rem;
+  padding-left: 1.25rem;
+}
+.doc-notes li {
+  margin-bottom: 0.5rem;
+}
+.doc-foot {
+  padding: 1rem;
+  border-top: var(--lc-border-w) solid var(--lc-border);
+  color: var(--lc-muted);
+  font-size: var(--lc-fs-xs);
+  font-weight: var(--lc-fw-bold);
+  text-align: center;
+}
+.doc-foot p {
+  margin: 0.25rem 0;
+}
+
+/* ===========================================================================
+ * Part 3 – screen component styles (copy of the app's component styles)
+ * ========================================================================= */
+
+/* <lc-root> */
+@scope (lc-root) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *) {
+  :scope {
+    display: flex;
+    flex-direction: column;
+    min-height: 100cqh;
+    min-height: 100cqh;
+  }
+  :scope .skip-link {
+    position: absolute;
+    left: var(--lc-space);
+    top: -10rem;
+    z-index: 30;
+  }
+  :scope .skip-link:focus {
+    top: calc(env(safe-area-inset-top) + var(--lc-space));
+  }
+  :scope .app-header,
+  :scope .app-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem var(--lc-space);
+    padding-left: calc(env(safe-area-inset-left) + var(--lc-space));
+    padding-right: calc(env(safe-area-inset-right) + var(--lc-space));
+  }
+  :scope .app-header {
+    padding-top: calc(env(safe-area-inset-top) + 0.5rem);
+    padding-bottom: 0.5rem;
+    background: var(--lc-bg);
+    border-bottom: var(--lc-border-w) solid var(--lc-border);
+  }
+  :scope .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 3rem;
+    color: var(--lc-text-strong);
+  }
+  :scope .brand:hover {
+    text-decoration: none;
+  }
+  :scope .wordmark {
+    font-size: 1.625rem;
+    font-weight: var(--lc-fw-black);
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  :scope .app-main {
+    flex: 1;
+    width: 100%;
+    max-width: 64rem;
+    margin: 0 auto;
+    padding: 1.25rem var(--lc-space) 2rem;
+    padding-left: calc(env(safe-area-inset-left) + var(--lc-space));
+    padding-right: calc(env(safe-area-inset-right) + var(--lc-space));
+  }
+  :scope .app-main:focus {
+    outline: none;
+  }
+  :scope .app-footer {
+    justify-content: center;
+    padding-top: 0.5rem;
+    padding-bottom: calc(env(safe-area-inset-bottom) + 0.5rem);
+    border-top: var(--lc-border-w) solid var(--lc-border);
+    font-size: var(--lc-fs-xs);
+    font-weight: var(--lc-fw-bold);
+    color: var(--lc-muted);
+    text-align: center;
+  }
+  :scope .app-footer .disclaimer {
+    margin: 0;
+  }
+  :scope .app-footer a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 3rem;
+    padding: 0 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+}
+
+/* <lc-lara> */
+@scope (lc-lara) to (lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *) {
+  :scope {
+    --lara-eye: #fff;
+    --lara-shine: rgb(255 255 255 / 0.45);
+    display: inline-block;
+    flex: none;
+    width: var(--lara-size, 6rem);
+    height: var(--lara-size, 6rem);
+  }
+  :scope svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  :scope .fig {
+    animation: lara-bob 2.6s ease-in-out infinite alternate;
+  }
+  [data-mood='sleep']:scope .fig {
+    animation-duration: 4s;
+  }
+  :scope .eyes {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: lara-blink 4.5s infinite;
+  }
+  :scope .wave {
+    transform-box: view-box;
+    transform-origin: 74px 60px;
+    animation: lara-wave 0.9s ease-in-out infinite alternate;
+  }
+  :scope .zz {
+    animation: lara-float 2s ease-in-out infinite alternate;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :scope .fig,
+    :scope .eyes,
+    :scope .wave,
+    :scope .zz {
+      animation: none;
+    }
+  }
+}
+@keyframes lara-bob {
+  to {
+    transform: translateY(-2px);
+  }
+}
+@keyframes lara-blink {
+  0%,
+  92%,
+  to {
+    transform: scaleY(1);
+  }
+  95% {
+    transform: scaleY(0.1);
+  }
+}
+@keyframes lara-wave {
+  0% {
+    transform: rotate(-10deg);
+  }
+  to {
+    transform: rotate(14deg);
+  }
+}
+@keyframes lara-float {
+  to {
+    transform: translateY(-3px);
+    opacity: 0.6;
+  }
+}
+
+/* <lc-icon> */
+@scope (lc-icon) to (lc-lara > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *) {
+  :scope {
+    display: inline-flex;
+    flex: none;
+  }
+  :scope svg {
+    width: var(--lc-icon, 1.5rem);
+    height: var(--lc-icon, 1.5rem);
+    overflow: visible;
+  }
+}
+
+/* <lc-guide-icon> */
+@scope (lc-guide-icon) to (lc-lara > *, lc-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *) {
+  :scope {
+    display: inline-flex;
+    flex: none;
+    width: 1.25em;
+    height: 1.25em;
+  }
+  :scope svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+}
+
+/* <lc-block-icon> */
+@scope (lc-block-icon) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *) {
+  :scope {
+    display: inline-block;
+    flex: none;
+    width: var(--lc-icon-size, 2rem);
+    height: var(--lc-icon-size, 2rem);
+    background-color: var(--lc-border);
+    background-repeat: no-repeat;
+    border-radius: 0.25rem;
+    image-rendering: pixelated;
+  }
+}
+
+/* <lc-guide-block-tile> */
+@scope (lc-guide-block-tile) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *) {
+  :scope {
+    --lc-icon-size: 100%;
+    display: inline-grid;
+    flex: none;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0.25rem;
+    border: var(--lc-border-w) solid var(--lc-border-strong);
+    border-radius: var(--lc-radius-sm);
+    background: var(--lc-bg-soft);
+    box-shadow: 0 3px 0 var(--lc-border-strong);
+  }
+  :scope span {
+    color: var(--lc-muted);
+    font-weight: var(--lc-fw-black);
+    text-transform: uppercase;
+  }
+}
+
+/* <lc-build-list> */
+@scope (lc-build-list) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *) {
+  :scope p {
+    margin: 0;
+  }
+  :scope .title {
+    margin: 0 0 1rem;
+    font-size: var(--lc-fs-xl);
+  }
+  :scope .file-input {
+    display: none;
+  }
+  :scope .hero {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+  :scope .greeting {
+    color: var(--lc-text-strong);
+    font-size: var(--lc-fs-lg);
+    font-weight: var(--lc-fw-black);
+    line-height: 1.25;
+  }
+  :scope .intro,
+  :scope .meta,
+  :scope .dialog-intro,
+  :scope .example-description {
+    color: var(--lc-muted);
+    font-size: var(--lc-fs-sm);
+  }
+  :scope .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+  :scope .toolbar .lc-btn {
+    flex: 1 1 12rem;
+  }
+  :scope .toolbar .new {
+    flex-basis: 100%;
+  }
+  @container (min-width:48rem) {
+    :scope .toolbar .new {
+      flex-basis: 14rem;
+    }
+  }
+  :scope .plus {
+    width: 1.25rem;
+    height: 1.25rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 4;
+    stroke-linecap: round;
+  }
+  :scope .status {
+    height: 0;
+  }
+  :scope .banner,
+  :scope .state.error {
+    margin-bottom: 1rem;
+  }
+  :scope .empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    max-width: 30rem;
+    margin: 0 auto;
+    padding: 1.5rem 1.25rem;
+    text-align: center;
+  }
+  :scope .empty h2 {
+    margin: 0;
+    font-size: var(--lc-fs-lg);
+  }
+  :scope .empty-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    width: 100%;
+    max-width: 22rem;
+    margin-top: 0.5rem;
+  }
+  :scope .build-list,
+  :scope .examples {
+    display: grid;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  @container (min-width:40rem) {
+    :scope .build-list {
+      grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    }
+  }
+  :scope .build {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 4.25rem 1rem 1rem;
+  }
+  :scope .build .lc-tile {
+    --tile-size: 3.5rem;
+  }
+  :scope .cube-top {
+    fill: #ffffff80;
+  }
+  :scope .cube-right {
+    fill: currentColor;
+    fill-opacity: 0.25;
+  }
+  :scope .cube-top,
+  :scope .cube-left,
+  :scope .cube-right {
+    stroke: currentColor;
+    stroke-width: 2.5;
+    stroke-linejoin: round;
+  }
+  :scope .cube-left {
+    fill: none;
+  }
+  :scope .info {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+  }
+  :scope .name {
+    margin: 0;
+    font-size: var(--lc-fs-lg);
+    overflow-wrap: anywhere;
+  }
+  :scope .name a {
+    color: var(--lc-text-strong);
+  }
+  :scope .name a:after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+  :scope .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.25rem;
+  }
+  :scope .badges .lc-pill {
+    white-space: nowrap;
+  }
+  :scope .more {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    z-index: 1;
+  }
+  :scope .more svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: currentColor;
+  }
+  :scope .lc-menu {
+    position: fixed;
+    inset: auto;
+  }
+  :scope .lc-menu svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  :scope dialog.wide {
+    width: min(44rem, 100cqw - 2rem);
+  }
+  :scope .dialog-intro {
+    margin-top: 0.25rem;
+  }
+  :scope .field-label {
+    display: block;
+    margin-bottom: 0.4rem;
+    color: var(--lc-text-strong);
+    font-weight: var(--lc-fw-black);
+  }
+  @container (min-width:36rem) {
+    :scope .examples {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  :scope .example {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    width: 100%;
+    height: 100%;
+    padding: 0.75rem;
+    color: inherit;
+    font: inherit;
+    text-align: start;
+  }
+  :scope .example .lc-tile {
+    --tile-size: 3.5rem;
+  }
+  :scope .example svg {
+    fill: currentColor;
+  }
+  :scope .example .hole {
+    fill: var(--tone);
+  }
+  :scope .example .hand,
+  :scope .example .shine {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 3;
+    stroke-linecap: round;
+  }
+  :scope .example .shine {
+    stroke: var(--tone);
+  }
+  :scope .example:disabled {
+    opacity: 0.6;
+  }
+  :scope .example-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  :scope .example-name {
+    color: var(--lc-text-strong);
+    font-weight: var(--lc-fw-black);
+  }
+}
+
+/* <lc-credits> */
+@scope (lc-credits) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *) {
+  :scope {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  :scope .hero {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
+  :scope .hero h1 {
+    margin: 0 0 0.25rem;
+    font-size: var(--lc-fs-xl);
+  }
+  :scope .hero p {
+    margin: 0;
+    color: var(--lc-muted);
+  }
+  :scope h2 {
+    margin: 0 0 0.75rem;
+    font-size: var(--lc-fs-lg);
+  }
+  :scope section.lc-card p:last-child {
+    margin-bottom: 0;
+  }
+  :scope .group {
+    margin-bottom: 1rem;
+  }
+  :scope .group h3 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 0.75rem;
+    font-size: var(--lc-fs-md);
+    overflow-wrap: anywhere;
+  }
+  :scope dl {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.35rem 0.75rem;
+    margin: 0;
+    font-size: var(--lc-fs-sm);
+  }
+  :scope dt {
+    color: var(--lc-muted);
+    font-weight: var(--lc-fw-black);
+  }
+  :scope dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+  :scope dd a {
+    display: inline-block;
+    min-width: 3rem;
+    padding: 0.85rem 0;
+    margin: -0.7rem 0;
+  }
+  :scope .count {
+    margin: 0.75rem 0 0;
+  }
+  :scope .share-alike {
+    margin: 0.75rem 0 0;
+    padding: 0.6rem 0.9rem;
+    border-radius: var(--lc-radius-sm);
+    background: var(--lc-green-soft);
+    color: var(--lc-text-strong);
+    font-size: var(--lc-fs-sm);
+  }
+  :scope .notice {
+    border-color: var(--lc-orange);
+    box-shadow: 0 var(--lc-depth) 0 var(--lc-orange-shade);
+  }
+  :scope .notice .disclaimer {
+    color: var(--lc-text-strong);
+    font-weight: var(--lc-fw-bold);
+  }
+}
+
+/* <lc-editor-page> */
+@scope (lc-editor-page) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *) {
+  :scope {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    display: block;
+    overflow: hidden;
+    background: var(--lc-sky, var(--lc-bg));
+  }
+  :scope .viewport {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    touch-action: none;
+  }
+  :scope .bar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    display: flex;
+    gap: 0.5rem;
+    padding-left: calc(env(safe-area-inset-left) + 0.625rem);
+    padding-right: calc(env(safe-area-inset-right) + 0.625rem);
+    background: var(--lc-bg);
+  }
+  :scope .top {
+    top: 0;
+    z-index: 2;
+    align-items: center;
+    padding-top: calc(env(safe-area-inset-top) + 0.5rem);
+    padding-bottom: 0.25rem;
+    border-bottom: var(--lc-border-w) solid var(--lc-border);
+  }
+  :scope .bottom {
+    bottom: 0;
+    flex-direction: column;
+    padding-top: 0.625rem;
+    padding-bottom: calc(env(safe-area-inset-bottom) + 0.375rem);
+    border-top: var(--lc-border-w) solid var(--lc-border);
+  }
+  :scope .lc-btn--icon {
+    flex: none;
+  }
+  :scope .title {
+    display: grid;
+    flex: 1;
+    justify-items: start;
+    gap: 0.125rem;
+    min-width: 0;
+    margin-bottom: var(--lc-depth);
+  }
+  :scope .title h1 {
+    max-width: 100%;
+    margin: 0;
+    overflow: hidden;
+    font-size: var(--lc-fs-lg);
+    line-height: 1.15;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  :scope .save {
+    margin: 0;
+    padding-block: 0.1rem;
+    font-size: 0.6875rem;
+    white-space: nowrap;
+  }
+  :scope .save .dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: currentColor;
+  }
+  :scope .retry {
+    padding: 0 0 0 0.25rem;
+    font: inherit;
+    color: inherit;
+    text-decoration: underline;
+    text-transform: inherit;
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+  :scope .menu-root {
+    position: relative;
+  }
+  :scope .menu {
+    position: absolute;
+    top: calc(100% + 0.25rem);
+    right: 0;
+    display: grid;
+    gap: 0.125rem;
+    min-width: 16rem;
+    margin: 0;
+    padding: 0.5rem;
+    list-style: none;
+  }
+  :scope .menu a,
+  :scope .menu button {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    width: 100%;
+    min-height: 3.25rem;
+    padding: 0.5rem 0.875rem;
+    font: inherit;
+    font-weight: var(--lc-fw-bold);
+    color: var(--lc-text-strong);
+    text-align: start;
+    background: none;
+    border: 0;
+    border-radius: var(--lc-radius-sm);
+    cursor: pointer;
+  }
+  :scope .menu a:hover,
+  :scope .menu button:hover {
+    text-decoration: none;
+    background: var(--lc-bg-soft);
+  }
+  :scope .menu lc-icon {
+    color: var(--lc-blue);
+  }
+  :scope .messages {
+    position: absolute;
+    top: calc(env(safe-area-inset-top) + 5.25rem);
+    left: 50%;
+    display: grid;
+    justify-items: center;
+    gap: 0.5rem;
+    width: min(30rem, 100% - 1.25rem);
+    transform: translate(-50%);
+    pointer-events: none;
+  }
+  :scope .messages > * {
+    pointer-events: auto;
+  }
+  :scope .note {
+    width: 100%;
+    margin: 0;
+  }
+  :scope .note p {
+    margin: 0 0 0.5rem;
+  }
+  :scope .error {
+    color: var(--lc-red);
+    background: var(--lc-red-soft);
+    border-color: var(--lc-red);
+    box-shadow: 0 var(--lc-depth) 0 var(--lc-red-shade);
+  }
+  :scope .first-run {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.75rem;
+    width: 100%;
+  }
+  :scope .first-run lc-lara {
+    flex: none;
+  }
+  :scope .bubble {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: 0.25rem;
+    padding-block: 0.5rem;
+    padding-right: 0.25rem;
+  }
+  :scope .bubble p {
+    flex: 1;
+    margin: 0;
+  }
+  :scope .close {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    --lc-icon: 1.125rem;
+    color: var(--lc-muted);
+    background: none;
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  :scope .hint {
+    margin: 0;
+    padding: 0.4rem 1rem;
+    font-size: var(--lc-fs-sm);
+    font-weight: var(--lc-fw-bold);
+    text-align: center;
+    color: var(--lc-text-strong);
+    background: var(--lc-surface);
+    border: var(--lc-border-w) solid var(--lc-border);
+    border-radius: var(--lc-radius-pill);
+  }
+  :scope .layers {
+    position: absolute;
+    right: calc(env(safe-area-inset-right) + 0.5rem);
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  :scope .actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.25rem 0.5rem;
+    margin: -0.125rem auto 0.5rem;
+    padding: 0.5rem 0.5rem 0.25rem;
+    background: var(--lc-bg-soft);
+    border: var(--lc-border-w) solid var(--lc-border);
+    border-radius: calc(var(--lc-radius) * 1.25);
+  }
+  @container (max-width:40rem) {
+    :scope .actions {
+      max-width: 21rem;
+    }
+  }
+  :scope .row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  :scope .active-block {
+    flex: 0 1 13rem;
+    justify-content: flex-start;
+    min-width: 3rem;
+    padding: 0.25rem 0.75rem 0.25rem 0.25rem;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  :scope .tile {
+    --lc-icon-size: 2rem;
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: var(--lc-bg-soft);
+    border: var(--lc-border-w) solid var(--lc-border);
+    border-radius: var(--lc-radius-sm);
+  }
+  :scope .block-name {
+    overflow: hidden;
+    font-size: var(--lc-fs-sm);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  :scope .tools {
+    display: flex;
+    gap: 0.375rem;
+    margin-left: auto;
+  }
+  :scope .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* <lc-layer-slider> */
+@scope (lc-layer-slider) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *) {
+  :scope {
+    --thumb: 2.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 0.4rem;
+    color: var(--lc-muted);
+    background: var(--lc-surface);
+    border: var(--lc-border-w) solid var(--lc-border);
+    border-radius: var(--lc-radius-pill);
+    box-shadow: 0 var(--lc-depth) 0 var(--lc-border);
+  }
+  :scope .value {
+    min-width: 2.75rem;
+    justify-content: center;
+    padding-inline: 0.4rem;
+    color: var(--lc-blue);
+    font-size: var(--lc-fs-sm);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  :scope .track {
+    --value: 1;
+    position: relative;
+    width: var(--thumb);
+    height: min(36cqh, 15rem);
+  }
+  :scope .track:before,
+  :scope .track:after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 1rem;
+    border-radius: var(--lc-radius-pill);
+    transform: translate(-50%);
+  }
+  :scope .track:before {
+    top: 0;
+    background: var(--lc-border);
+  }
+  :scope .track:after {
+    height: calc(var(--thumb) / 2 + var(--value) * (100% - var(--thumb)));
+    background: var(--lc-blue);
+  }
+  :scope .thumb {
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    bottom: calc(var(--value) * (100% - var(--thumb)));
+    width: var(--thumb);
+    height: var(--thumb);
+    background: var(--lc-text-strong);
+    border: 3px solid var(--lc-blue);
+    border-radius: 50%;
+    box-shadow: 0 3px 0 var(--lc-blue-shade);
+    transition: bottom 0.12s var(--lc-ease-bounce);
+  }
+  :scope input {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: grab;
+    writing-mode: vertical-lr;
+    direction: rtl;
+    appearance: none;
+  }
+  :scope input::-webkit-slider-thumb {
+    appearance: none;
+    width: var(--thumb);
+    height: var(--thumb);
+  }
+  :scope input::-moz-range-thumb {
+    width: var(--thumb);
+    height: var(--thumb);
+  }
+  :scope .track:has(input:focus-visible) .thumb {
+    outline: 3px solid var(--lc-blue);
+    outline-offset: 2px;
+  }
+}
+
+/* <lc-block-palette> */
+@scope (lc-block-palette) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *) {
+  :scope .sheet {
+    position: fixed;
+    inset: auto 0 0;
+    width: 100%;
+    max-width: 46rem;
+    max-height: min(82cqh, 42rem);
+    margin: auto auto 0;
+    padding: 0.25rem var(--lc-space) calc(env(safe-area-inset-bottom) + 0.75rem);
+    padding-left: calc(env(safe-area-inset-left) + var(--lc-space));
+    padding-right: calc(env(safe-area-inset-right) + var(--lc-space));
+    color: var(--lc-text);
+    background: var(--lc-bg);
+    border: var(--lc-border-w) solid var(--lc-border);
+    border-bottom: 0;
+    border-radius: calc(var(--lc-radius) * 1.5) calc(var(--lc-radius) * 1.5) 0 0;
+    transition: translate 0.2s var(--lc-ease-bounce);
+  }
+  :scope .sheet.dragging {
+    transition: none;
+  }
+  :scope .sheet[open] {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  :scope .sheet::backdrop {
+    background: #0000008c;
+  }
+  :scope .grab,
+  :scope .search,
+  :scope .tabs {
+    flex: none;
+  }
+  :scope .grab {
+    touch-action: none;
+    cursor: grab;
+  }
+  :scope .handle {
+    display: block;
+    width: 3rem;
+    height: 0.375rem;
+    margin: 0.375rem auto 0.25rem;
+    background: var(--lc-border-strong);
+    border-radius: var(--lc-radius-pill);
+  }
+  :scope .head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  :scope .head h2 {
+    margin: 0;
+    font-size: var(--lc-fs-lg);
+  }
+  :scope button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+  :scope .search {
+    position: relative;
+  }
+  :scope .search lc-icon {
+    position: absolute;
+    left: 0.875rem;
+    top: 50%;
+    color: var(--lc-muted);
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+  :scope .search .lc-input {
+    padding-left: 2.875rem;
+  }
+  :scope .tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-inline: calc(var(--lc-space) * -1);
+    padding: 0 var(--lc-space) 0.25rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  :scope .tab {
+    --lc-icon: 1rem;
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: 0.375rem;
+    min-height: 2.5rem;
+    padding: 0 1rem;
+    color: var(--lc-text);
+    font-size: var(--lc-fs-sm);
+    font-weight: var(--lc-fw-black);
+    white-space: nowrap;
+    background: var(--lc-surface);
+    border: var(--lc-border-w) solid var(--lc-border);
+    border-radius: var(--lc-radius-pill);
+  }
+  :scope .tab lc-icon {
+    color: var(--lc-yellow);
+  }
+  :scope .tab[aria-pressed='true'] {
+    color: var(--lc-blue);
+    background: var(--lc-blue-soft);
+    border-color: var(--lc-blue);
+  }
+  :scope .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(6.25rem, 1fr));
+    flex: 1;
+    gap: 0.625rem;
+    min-height: 0;
+    margin: 0;
+    padding: 0.125rem 0 0.375rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    list-style: none;
+  }
+  :scope .item {
+    position: relative;
+  }
+  :scope .block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.375rem;
+    width: 100%;
+    height: 100%;
+    padding: 0.625rem 0.375rem 0.5rem;
+    text-align: center;
+    background: var(--lc-surface);
+    border: var(--lc-border-w) solid var(--lc-border);
+    border-radius: var(--lc-radius);
+    box-shadow: 0 var(--lc-depth) 0 var(--lc-border);
+    transition: transform 80ms ease;
+  }
+  :scope .block:active {
+    transform: translateY(2px);
+  }
+  :scope .block[aria-pressed='true'] {
+    background: var(--lc-blue-soft);
+    border-color: var(--lc-blue);
+    box-shadow: 0 var(--lc-depth) 0 var(--lc-blue-shade);
+  }
+  :scope .tile {
+    --lc-icon-size: 2.5rem;
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    background: var(--lc-bg-soft);
+    border-radius: var(--lc-radius-sm);
+  }
+  :scope .label {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: var(--lc-fs-xs);
+    font-weight: var(--lc-fw-bold);
+    line-height: 1.2;
+    color: var(--lc-text-strong);
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+  :scope .fav {
+    --lc-icon: 1.25rem;
+    position: absolute;
+    top: -0.375rem;
+    right: -0.375rem;
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    color: var(--lc-border-strong);
+    border-radius: 50%;
+  }
+  :scope .fav:hover {
+    color: var(--lc-muted);
+  }
+  :scope .fav.on {
+    color: var(--lc-yellow);
+  }
+  :scope .empty {
+    grid-column: 1/-1;
+    padding: var(--lc-space);
+    font-weight: var(--lc-fw-bold);
+    text-align: center;
+    color: var(--lc-muted);
+  }
+}
+
+/* <lc-guide-page> */
+@scope (lc-guide-page) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *) {
+  :scope {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    padding-top: env(safe-area-inset-top);
+    background: var(--lc-bg);
+  }
+  :scope .top {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.625rem 1rem 0.375rem;
+  }
+  :scope .top h1 {
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    font-size: var(--lc-fs-md);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  :scope .close {
+    flex: none;
+    color: var(--lc-muted);
+    font-size: 1.125rem;
+    --lc-depth: 0px;
+    border-color: transparent;
+    background: none;
+  }
+  :scope a.close:hover {
+    text-decoration: none;
+    color: var(--lc-text-strong);
+  }
+  :scope .name {
+    color: var(--lc-muted);
+    font-weight: var(--lc-fw-bold);
+  }
+  :scope .lesson-progress {
+    flex: 1;
+  }
+  :scope .counter {
+    flex: none;
+    color: var(--lc-green);
+    font-weight: var(--lc-fw-black);
+  }
+  :scope .state,
+  :scope .planning {
+    max-width: 24rem;
+    margin: 1rem;
+  }
+  :scope .layout {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+  }
+  :scope .panel {
+    display: flex;
+    flex-direction: column;
+    background: var(--lc-surface);
+    border: var(--lc-border-w) solid var(--lc-border-strong);
+  }
+  :scope .sheet-head,
+  :scope .sheet-body {
+    padding: 0 1rem;
+  }
+  :scope .sheet-head {
+    flex: none;
+    padding-bottom: 0.5rem;
+  }
+  :scope .sheet-body {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+    padding-bottom: 1rem;
+  }
+  :scope .sheet-foot {
+    display: grid;
+    flex: none;
+    grid-template-columns: auto 1fr;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem calc(env(safe-area-inset-bottom) + 0.5rem);
+    border-top: var(--lc-border-w) solid var(--lc-border);
+  }
+  :scope .handle {
+    display: none;
+  }
+  :scope .step-info {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 0.75rem;
+    padding-top: 0.5rem;
+  }
+  :scope .step-of {
+    color: var(--lc-text-strong);
+    font-size: var(--lc-fs-lg);
+    font-weight: var(--lc-fw-black);
+  }
+  :scope .tabs {
+    display: flex;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    border-radius: var(--lc-radius);
+    background: var(--lc-bg-soft);
+  }
+  :scope .tabs button {
+    flex: 1;
+    min-height: 2.75rem;
+    border: var(--lc-border-w) solid transparent;
+    border-radius: var(--lc-radius-sm);
+    background: none;
+    color: var(--lc-muted);
+    font-weight: var(--lc-fw-black);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  :scope .tabs button[aria-selected='true'] {
+    border-color: var(--lc-blue);
+    background: var(--lc-blue-soft);
+    color: var(--lc-blue);
+  }
+  :scope .section-title {
+    padding: 0;
+    margin: 1.25rem 0 0.5rem;
+    color: var(--lc-muted);
+    font-size: var(--lc-fs-xs);
+    font-weight: var(--lc-fw-black);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  :scope .view-tools {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  :scope .slider {
+    display: block;
+    width: 100%;
+    min-height: 2.75rem;
+    margin: 0;
+    accent-color: var(--lc-green);
+  }
+  :scope .options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  :scope .toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 0 0.875rem;
+    border: var(--lc-border-w) solid var(--lc-border);
+    border-radius: var(--lc-radius-pill);
+    font-weight: var(--lc-fw-bold);
+    cursor: pointer;
+  }
+  :scope .toggle:has(input:checked) {
+    border-color: var(--lc-blue);
+    background: var(--lc-blue-soft);
+    color: var(--lc-blue);
+  }
+  :scope .toggle input {
+    margin: 0;
+    accent-color: var(--lc-blue);
+  }
+  :scope .success {
+    position: absolute;
+    top: 0.75rem;
+    left: 1rem;
+    right: 1rem;
+    z-index: 3;
+  }
+  :scope .finish {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+  }
+  @container (max-width:899.98px) {
+    :scope .top h1 {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      clip-path: inset(50%);
+    }
+    :scope .viewport {
+      position: absolute;
+      inset: 0;
+      min-height: 0;
+      border: 0;
+      border-radius: 0;
+    }
+    :scope .panel {
+      position: absolute;
+      inset: auto 0 0;
+      height: var(--sheet-h, 50%);
+      border-width: var(--lc-border-w) 0 0;
+      border-radius: 1.5rem 1.5rem 0 0;
+      transition: height 0.2s ease-out;
+    }
+    :scope .dragging .panel {
+      transition: none;
+    }
+    :scope .handle {
+      display: grid;
+      place-items: center;
+      width: 100%;
+      min-height: 1.5rem;
+      padding: 0;
+      border: 0;
+      background: none;
+      cursor: grab;
+      touch-action: none;
+    }
+    :scope .grip {
+      width: 3rem;
+      height: 0.375rem;
+      border-radius: var(--lc-radius-pill);
+      background: var(--lc-border-strong);
+    }
+    :scope .step-info {
+      padding-top: 0;
+    }
+    :scope .layout[data-snap='peek']:not(.dragging) .sheet-body {
+      display: none;
+    }
+  }
+  @container (min-width:900px) {
+    :scope .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 26rem;
+      gap: 1rem;
+      padding: 0 1rem 1rem;
+    }
+    :scope .viewport {
+      display: block;
+      min-height: 0;
+      overflow: hidden;
+      border: var(--lc-border-w) solid var(--lc-border);
+      border-radius: calc(var(--lc-radius) * 1.25);
+    }
+    :scope .panel {
+      min-height: 0;
+      border-radius: calc(var(--lc-radius) * 1.25);
+      box-shadow: 0 var(--lc-depth) 0 var(--lc-border-strong);
+      overflow: hidden;
+    }
+    :scope .success {
+      right: 28rem;
+    }
+  }
+}
+
+/* <lc-guide-viewport> */
+@scope (lc-guide-viewport) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *) {
+  :scope {
+    position: relative;
+    display: block;
+    min-height: 12rem;
+    background: var(--lc-surface);
+    border: 1px solid var(--lc-border);
+    border-radius: var(--lc-radius);
+    overflow: hidden;
+    touch-action: none;
+  }
+  :scope canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  :scope .status {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    margin: 0;
+    padding: var(--lc-space);
+    color: var(--lc-muted);
+    text-align: center;
+  }
+}
+
+/* <lc-guide-step-panel> */
+@scope (lc-guide-step-panel) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *) {
+  :scope {
+    display: block;
+  }
+  :scope ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  :scope p {
+    margin: 0;
+  }
+  :scope .muted {
+    color: var(--lc-muted);
+  }
+  :scope .section-title {
+    margin: 1.25rem 0 0.5rem;
+    color: var(--lc-muted);
+    font-size: var(--lc-fs-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  :scope .coach {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+  }
+  :scope .coach-lara {
+    margin-top: 0.25rem;
+  }
+  :scope .coach .lc-bubble {
+    flex: 1;
+    min-width: 0;
+  }
+  :scope .prompt {
+    color: var(--lc-text-strong);
+    font-weight: var(--lc-fw-bold);
+  }
+  :scope .detail-head {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+  }
+  :scope .detail-head h3 {
+    flex: 1;
+    margin: 0;
+    font-size: var(--lc-fs-md);
+  }
+  :scope .close {
+    margin-bottom: 0;
+    --lc-depth: 2px;
+  }
+  :scope .lines {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+  :scope .line {
+    --tone: var(--lc-green);
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-weight: var(--lc-fw-bold);
+    color: var(--lc-text-strong);
+  }
+  :scope .line[data-tone='blue'] {
+    --tone: var(--lc-blue);
+  }
+  :scope .line[data-tone='orange'] {
+    --tone: var(--lc-orange);
+  }
+  :scope .line[data-tone='yellow'] {
+    --tone: var(--lc-yellow);
+  }
+  :scope .line[data-tone='purple'] {
+    --tone: var(--lc-purple);
+  }
+  :scope .line[data-tone='grey'] {
+    --tone: var(--lc-muted);
+    color: var(--lc-muted);
+  }
+  :scope .line-icon {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: var(--lc-border-w) solid var(--tone);
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--tone) 18%, var(--lc-surface));
+    color: var(--tone);
+    font-size: 1.125rem;
+  }
+  :scope .line-text {
+    flex: 1;
+    min-width: 0;
+  }
+  :scope .compass {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: 0.125rem;
+    padding: 0.125rem 0.5rem;
+    border-radius: var(--lc-radius-pill);
+    background: var(--lc-purple);
+    color: var(--lc-on-color);
+    font-weight: var(--lc-fw-black);
+  }
+  :scope .lines,
+  :scope .items,
+  :scope .groups,
+  :scope .hints {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  :scope .items,
+  :scope .groups {
+    display: grid;
+    gap: 0.5rem;
+  }
+  :scope .item,
+  :scope .group-head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  :scope .item {
+    padding: 0.5rem 0.625rem;
+    border: var(--lc-border-w) solid var(--lc-border);
+    border-radius: var(--lc-radius);
+    background: var(--lc-bg-soft);
+  }
+  :scope .item-name,
+  :scope .group-label {
+    flex: 1;
+    min-width: 0;
+    color: var(--lc-text-strong);
+    font-weight: var(--lc-fw-bold);
+  }
+  :scope .count {
+    flex: none;
+    padding: 0.2rem 0.75rem;
+    border-radius: var(--lc-radius-pill);
+    background: var(--lc-blue);
+    color: var(--lc-on-color);
+    font-weight: var(--lc-fw-black);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  :scope .group {
+    padding: 0.625rem;
+    border: var(--lc-border-w) solid var(--lc-border);
+    border-radius: var(--lc-radius);
+  }
+  :scope .remove .group-label {
+    color: var(--lc-red);
+  }
+  :scope .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.625rem;
+  }
+  :scope .chip {
+    min-width: 3rem;
+    min-height: 3rem;
+    margin-bottom: 3px;
+    border: var(--lc-border-w) solid var(--lc-border-strong);
+    border-radius: var(--lc-radius-sm);
+    background: var(--lc-surface);
+    box-shadow: 0 3px 0 var(--lc-border-strong);
+    color: var(--lc-text-strong);
+    font-size: var(--lc-fs-md);
+    font-weight: var(--lc-fw-black);
+    cursor: pointer;
+    transition: transform 80ms ease;
+  }
+  :scope .chip:active {
+    transform: translateY(3px);
+    box-shadow: none;
+  }
+  :scope .chip[aria-pressed='true'] {
+    border-color: var(--lc-blue);
+    background: var(--lc-blue-soft);
+    box-shadow: 0 3px 0 var(--lc-blue);
+    color: var(--lc-blue);
+  }
+  :scope .remove .chip:not([aria-pressed='true']) {
+    border-color: var(--lc-red-shade);
+    box-shadow: 0 3px 0 var(--lc-red-shade);
+    color: var(--lc-red);
+  }
+  :scope .hints {
+    display: grid;
+    gap: 0.5rem;
+  }
+  :scope .hints .lc-btn {
+    margin-top: 0.5rem;
+  }
+  :scope .hint-icon {
+    font-size: 1.25rem;
+  }
+}
+
+/* <lc-guide-overview> */
+@scope (lc-guide-overview) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-success > *, lc-guide-finish > *) {
+  :scope {
+    display: block;
+  }
+  :scope ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  :scope p {
+    margin: 0;
+  }
+  :scope .muted {
+    color: var(--lc-muted);
+  }
+  :scope .stats {
+    margin-top: 1rem;
+    color: var(--lc-text-strong);
+    font-weight: var(--lc-fw-black);
+  }
+  :scope .section-title {
+    margin: 1.25rem 0 0.5rem;
+    color: var(--lc-muted);
+    font-size: var(--lc-fs-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  :scope .head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  :scope .head .section-title {
+    margin-bottom: 0;
+  }
+  :scope .sort {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  :scope .sort .lc-btn {
+    --lc-depth: 3px;
+  }
+  :scope .sort [data-dir='asc']:after {
+    content: '\2191';
+  }
+  :scope .sort [data-dir='desc']:after {
+    content: '\2193';
+  }
+  :scope .gathered {
+    display: grid;
+    gap: 0.375rem;
+    margin: 0.5rem 0 0.75rem;
+  }
+  :scope .progress-text {
+    color: var(--lc-green);
+    font-size: var(--lc-fs-sm);
+    font-weight: var(--lc-fw-black);
+  }
+  :scope .checklist,
+  :scope .list,
+  :scope .warnings {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+  :scope .check-row,
+  :scope .list li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 3.5rem;
+    padding: 0.5rem 0.75rem;
+    border: var(--lc-border-w) solid var(--lc-border);
+    border-radius: var(--lc-radius);
+    background: var(--lc-bg-soft);
+  }
+  :scope .check-row {
+    position: relative;
+    cursor: pointer;
+  }
+  :scope .check-row:has(.check-input:focus-visible) {
+    outline: 3px solid var(--lc-blue);
+    outline-offset: 2px;
+  }
+  :scope .check-input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  :scope .box {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 3px solid var(--lc-border-strong);
+    border-radius: 50%;
+    background: var(--lc-surface);
+    color: transparent;
+    font-size: 1.125rem;
+    transition:
+      background 0.15s ease,
+      transform 0.2s var(--lc-ease-bounce);
+  }
+  :scope .done .check-row {
+    border-color: var(--lc-green-shade);
+    background: var(--lc-green-soft);
+  }
+  :scope .done .box {
+    border-color: var(--lc-green-shade);
+    background: var(--lc-green);
+    color: var(--lc-on-color);
+    transform: scale(1.08);
+  }
+  :scope .done .name {
+    color: var(--lc-muted);
+    text-decoration: line-through;
+  }
+  :scope .name {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    color: var(--lc-text-strong);
+    font-weight: var(--lc-fw-bold);
+  }
+  :scope .count {
+    flex: none;
+    padding: 0.2rem 0.75rem;
+    border-radius: var(--lc-radius-pill);
+    background: var(--lc-blue);
+    color: var(--lc-on-color);
+    font-weight: var(--lc-fw-black);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  :scope .reset {
+    margin-top: 0.75rem;
+  }
+  :scope .lc-callout .muted {
+    display: block;
+    font-size: var(--lc-fs-sm);
+  }
+}
+
+/* <lc-guide-success> */
+@scope (lc-guide-success) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-finish > *) {
+  :scope {
+    display: block;
+    pointer-events: none;
+  }
+  :scope .banner {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: min(100%, 22rem);
+    margin: 0 auto;
+    padding: 0.5rem 1.25rem 0.5rem 0.625rem;
+    border: var(--lc-border-w) solid var(--lc-green-shade);
+    border-radius: calc(var(--lc-radius) * 1.25);
+    background: var(--lc-green);
+    box-shadow: 0 var(--lc-depth) 0 var(--lc-green-shade);
+    color: var(--lc-on-color);
+    text-align: left;
+    cursor: pointer;
+    pointer-events: auto;
+  }
+  :scope strong {
+    display: block;
+    font-size: var(--lc-fs-lg);
+    font-weight: var(--lc-fw-black);
+    line-height: 1.15;
+  }
+  :scope small {
+    font-size: var(--lc-fs-sm);
+    font-weight: var(--lc-fw-bold);
+  }
+}
+
+/* <lc-guide-finish> */
+@scope (lc-guide-finish) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *) {
+  :scope {
+    display: grid;
+    place-items: center;
+    overflow: auto;
+    padding: 1.5rem 1rem calc(env(safe-area-inset-bottom) + 1.5rem);
+    background: var(--lc-bg);
+  }
+  :scope .finish {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: min(100%, 26rem);
+    text-align: center;
+  }
+  :scope h2 {
+    margin: 1rem 0 0.25rem;
+    color: var(--lc-green);
+    font-size: var(--lc-fs-xl);
+  }
+  :scope p {
+    margin: 0;
+    color: var(--lc-muted);
+    font-weight: var(--lc-fw-bold);
+  }
+  :scope dl {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    width: 100%;
+    margin: 1.5rem 0;
+  }
+  :scope .stat {
+    margin: 0;
+    padding: 0.75rem;
+    border: var(--lc-border-w) solid var(--lc-yellow-shade);
+    border-radius: var(--lc-radius);
+    box-shadow: 0 var(--lc-depth) 0 var(--lc-yellow-shade);
+  }
+  :scope dt {
+    color: var(--lc-yellow);
+    font-size: var(--lc-fs-xs);
+    font-weight: var(--lc-fw-black);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  :scope dd {
+    margin: 0;
+    color: var(--lc-text-strong);
+    font-size: var(--lc-fs-xl);
+    font-weight: var(--lc-fw-black);
+  }
+}
