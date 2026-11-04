@@ -87,10 +87,15 @@ export interface TextureManifest {
 }
 
 /**
- * Default pack priority for atlas/credits: the real texture pack first, the CC0
- * placeholders as fallback. Declared packs not listed here follow in manifest order.
+ * Default pack priority for atlas/credits: our own drawings first (they replace gaps and
+ * style breaks of the texture pack, e.g. `observer_front`), then the real texture pack,
+ * the CC0 placeholders as fallback. Declared packs not listed here follow in manifest order.
  */
-export const DEFAULT_PACK_PRIORITY: readonly string[] = ['pixel_perfection_legacy', 'placeholder'];
+export const DEFAULT_PACK_PRIORITY: readonly string[] = [
+  'laracraft_own',
+  'pixel_perfection_legacy',
+  'placeholder',
+];
 
 export function defaultPackOrder(manifest: TextureManifest): string[] {
   const declared = Object.keys(manifest.packs);

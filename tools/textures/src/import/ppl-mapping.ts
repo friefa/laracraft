@@ -115,8 +115,10 @@ export const PPL_TEXTURE_MAP: Readonly<Record<string, string | null>> = {
   bookshelf: 'bookshelf.png',
   bricks: 'bricks.png',
   // Chests are rendered from an entity texture, not a block texture; ADR-0003
-  // only allows block textures from this pack.
-  chest: null,
+  // only allows block textures from this pack. Drawn ourselves (pack laracraft_own).
+  chest_front: null,
+  chest_side: null,
+  chest_top: null,
   chiseled_sandstone: 'chiseled_sandstone.png',
   chiseled_stone_bricks: 'chiseled_stone_bricks.png',
   clay: 'clay.png',
@@ -200,6 +202,7 @@ export const PPL_TEXTURE_MAP: Readonly<Record<string, string | null>> = {
   oak_planks: 'oak_planks.png',
   oak_trapdoor: 'oak_trapdoor.png',
   observer_back: 'observer_back.png',
+  // Imported for completeness; replaced by our own drawing (laracraft_own, style break).
   observer_front: 'observer_front.png',
   observer_side: 'observer_side.png',
   observer_top: 'observer_top.png',

@@ -10,6 +10,7 @@ Texture pipeline with license manifest. Pure TypeScript, run with `tsx`, PNG I/O
 | `nx run textures:credits`        | Writes `dist/assets/textures/credits.json` (in-app Credits screen) and regenerates `assets/LICENSES.md`.                                                                       |
 | `nx run textures:placeholders`   | Regenerates the CC0 programmer-art PNGs in `assets/textures/placeholder/` (deterministic).                                                                                     |
 | `nx run textures:test` / `:lint` | Vitest / ESLint.                                                                                                                                                               |
+| `nx run textures:own-textures`   | Regenerates our own drawings in `assets/textures/laracraft_own/` (deterministic), see below.                                                                                   |
 | `nx run textures:import-ppl`     | Imports the needed block textures from Pixel Perfection Legacy, see below.                                                                                                     |
 | `nx run textures:import-local`   | Local developer mode only: extracts textures from your own `client.jar` into `.local-textures/`, see below.                                                                    |
 | `nx run textures:guard-no-local` | Fails if a local (Mojang) atlas would be shipped. Runs before every `laracraft:build`.                                                                                         |
@@ -18,7 +19,7 @@ Options (pass after `--`, e.g. `nx run textures:atlas -- --packs placeholder`):
 
 - `--packs a,b` – pack priority order for `atlas` and `credits`. For each texture name the
   first pack that provides it wins, so a partial pack falls back to the placeholders.
-  Default: `pixel_perfection_legacy,placeholder`, then any other pack in manifest order
+  Default: `laracraft_own,pixel_perfection_legacy,placeholder`, then any other pack in manifest order
   (`DEFAULT_PACK_PRIORITY` in `src/lib/manifest.ts`).
 - `--padding n` – edge extrusion in pixels (default 2, `atlas` only).
 - `--out dir` – output directory relative to the workspace root (default `dist/assets/textures`).
@@ -168,6 +169,24 @@ Rutland ("Renamed"). Everything else – changed pixels, files missing from the 
 blocks added after 1.11 (the reference already contains community updates for 1.14/1.15) –
 is credited to "Nova_Wostra, Pixel Perfection Legacy contributors, Hugh "XSSheep" Rutland
 (original)" ("Renamed; adapted/extended by Pixel Perfection Legacy contributors").
+
+## Own textures (`laracraft_own`)
+
+Textures Pixel Perfection Legacy lacks or that break its style (ADR-0003) are drawn by
+`src/lib/own-textures.ts` and written by `nx run textures:own-textures`; the manifest
+entries are maintained by hand. The pack comes first in the default priority, so it also
+overrides PPL files (`observer_front`).
+
+- **License: CC BY-SA 4.0**, credited to laracraft contributors and the PPL authors. The
+  drawings are new, but adapted to PPL: colours are sampled from PPL textures and
+  `observer_front` keeps the frame of PPL's `observer_side` (read from
+  `assets/textures/pixel_perfection_legacy/` at generation time). A purely original
+  drawing without PPL pixels or colours could be CC0 in its own entry.
+- **Chest:** `chest_front` (with the latch), `chest_side` (sides and back), `chest_top`
+  (lid and bottom). The model is a 14 px box with auto-UV, so only columns 1..14 (top:
+  rows 1..14, sides: rows 2..15) are visible; the border repeats its neighbours. Double
+  chest halves use the `_left` / `_right` variants: 15 px slices of one 30 px drawing, so
+  there is no frame at the seam and the latch is shared.
 
 ## Local developer texture mode (P1.11, local only)
 

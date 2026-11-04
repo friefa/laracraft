@@ -71,6 +71,12 @@
         "command": "tsx tools/textures/src/cli.ts placeholders"
       }
     },
+    "own-textures": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsx tools/textures/src/cli.ts own-textures"
+      }
+    },
     "import-ppl": {
       "executor": "nx:run-commands",
       "options": {

@@ -2,6 +2,11 @@
   "$schema": "./manifest.schema.json",
   "version": 1,
   "packs": {
+    "laracraft_own": {
+      "title": "laracraft own textures",
+      "description": "Own drawings by laracraft contributors for textures Pixel Perfection Legacy lacks (chest, which vanilla draws from an entity texture) or that break its style (observer_front), ADR-0003. Generated deterministically by tools/textures/src/lib/own-textures.ts (nx run textures:own-textures). Adapted to Pixel Perfection Legacy 26.3-97.2 (colours sampled from its textures; observer_front keeps the frame of its observer_side), hence CC BY-SA 4.0 with credit to the Pixel Perfection Legacy authors. Takes priority over pixel_perfection_legacy.",
+      "dir": "laracraft_own"
+    },
     "pixel_perfection_legacy": {
       "title": "Pixel Perfection Legacy",
       "description": "Block textures from Pixel Perfection Legacy 26.3-97.2 (Nova_Wostra and contributors, continuation of Pixel Perfection by Hugh \"XSSheep\" Rutland), CC BY-SA 4.0 per ADR-0003. Imported by tools/textures/src/import/import-ppl.ts: only the block PNGs laracraft needs, renamed to laracraft texture names and re-encoded without metadata (pixels unchanged). source.originalPath is relative to the pack's block texture folder. Authorship per file is decided by pixel comparison with https://github.com/Athemis/PixelPerfectionCE @ acbdb56.",
@@ -21,6 +26,197 @@
     }
   },
   "textures": [
+    {
+      "pack": "laracraft_own",
+      "name": "chest_front",
+      "file": "assets/textures/laracraft_own/chest_front.png",
+      "source": {
+        "kind": "own",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M"
+      },
+      "authors": [
+        "laracraft contributors",
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "New drawing by laracraft contributors in the style of Pixel Perfection Legacy 26.3-97.2, using colours sampled from its oak_planks and iron_block",
+      "shareAlike": true
+    },
+    {
+      "pack": "laracraft_own",
+      "name": "chest_front_left",
+      "file": "assets/textures/laracraft_own/chest_front_left.png",
+      "source": {
+        "kind": "own",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M"
+      },
+      "authors": [
+        "laracraft contributors",
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "New drawing by laracraft contributors in the style of Pixel Perfection Legacy 26.3-97.2, using colours sampled from its oak_planks and iron_block",
+      "shareAlike": true
+    },
+    {
+      "pack": "laracraft_own",
+      "name": "chest_front_right",
+      "file": "assets/textures/laracraft_own/chest_front_right.png",
+      "source": {
+        "kind": "own",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M"
+      },
+      "authors": [
+        "laracraft contributors",
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "New drawing by laracraft contributors in the style of Pixel Perfection Legacy 26.3-97.2, using colours sampled from its oak_planks and iron_block",
+      "shareAlike": true
+    },
+    {
+      "pack": "laracraft_own",
+      "name": "chest_side",
+      "file": "assets/textures/laracraft_own/chest_side.png",
+      "source": {
+        "kind": "own",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M"
+      },
+      "authors": [
+        "laracraft contributors",
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "New drawing by laracraft contributors in the style of Pixel Perfection Legacy 26.3-97.2, using colours sampled from its oak_planks and iron_block",
+      "shareAlike": true
+    },
+    {
+      "pack": "laracraft_own",
+      "name": "chest_side_left",
+      "file": "assets/textures/laracraft_own/chest_side_left.png",
+      "source": {
+        "kind": "own",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M"
+      },
+      "authors": [
+        "laracraft contributors",
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "New drawing by laracraft contributors in the style of Pixel Perfection Legacy 26.3-97.2, using colours sampled from its oak_planks and iron_block",
+      "shareAlike": true
+    },
+    {
+      "pack": "laracraft_own",
+      "name": "chest_side_right",
+      "file": "assets/textures/laracraft_own/chest_side_right.png",
+      "source": {
+        "kind": "own",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M"
+      },
+      "authors": [
+        "laracraft contributors",
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "New drawing by laracraft contributors in the style of Pixel Perfection Legacy 26.3-97.2, using colours sampled from its oak_planks and iron_block",
+      "shareAlike": true
+    },
+    {
+      "pack": "laracraft_own",
+      "name": "chest_top",
+      "file": "assets/textures/laracraft_own/chest_top.png",
+      "source": {
+        "kind": "own",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M"
+      },
+      "authors": [
+        "laracraft contributors",
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "New drawing by laracraft contributors in the style of Pixel Perfection Legacy 26.3-97.2, using colours sampled from its oak_planks and iron_block",
+      "shareAlike": true
+    },
+    {
+      "pack": "laracraft_own",
+      "name": "chest_top_left",
+      "file": "assets/textures/laracraft_own/chest_top_left.png",
+      "source": {
+        "kind": "own",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M"
+      },
+      "authors": [
+        "laracraft contributors",
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "New drawing by laracraft contributors in the style of Pixel Perfection Legacy 26.3-97.2, using colours sampled from its oak_planks and iron_block",
+      "shareAlike": true
+    },
+    {
+      "pack": "laracraft_own",
+      "name": "chest_top_right",
+      "file": "assets/textures/laracraft_own/chest_top_right.png",
+      "source": {
+        "kind": "own",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M"
+      },
+      "authors": [
+        "laracraft contributors",
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "New drawing by laracraft contributors in the style of Pixel Perfection Legacy 26.3-97.2, using colours sampled from its oak_planks and iron_block",
+      "shareAlike": true
+    },
+    {
+      "pack": "laracraft_own",
+      "name": "observer_front",
+      "file": "assets/textures/laracraft_own/observer_front.png",
+      "source": {
+        "kind": "own",
+        "url": "https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M",
+        "originalPath": "observer_side.png"
+      },
+      "authors": [
+        "laracraft contributors",
+        "Nova_Wostra",
+        "Pixel Perfection Legacy contributors",
+        "Hugh \"XSSheep\" Rutland (original)"
+      ],
+      "license": "CC-BY-SA-4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "modifications": "New drawing by laracraft contributors (sensor plate and visor) replacing the observer_front of Pixel Perfection Legacy 26.3-97.2; keeps the stone frame of its observer_side and uses colours sampled from its observer textures",
+      "shareAlike": true
+    },
     {
       "pack": "pixel_perfection_legacy",
       "name": "activator_rail",
