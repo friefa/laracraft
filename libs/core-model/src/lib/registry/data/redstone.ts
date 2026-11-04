@@ -166,7 +166,7 @@ export const REDSTONE_BLOCKS: readonly BlockDefinition[] = [
     redstone: { role: 'source' },
     tags: ['redstone', 'block', 'power'],
   }),
-  faceAttached('lever', 'redstone', 'lever', 'lever'),
+  faceAttached('lever', 'redstone', 'lever', 'lever', 'interaction'),
   button('stone_button', 'redstone', 'stone'),
   pressurePlate('stone_pressure_plate', 'redstone', 'stone'),
   block('repeater', {

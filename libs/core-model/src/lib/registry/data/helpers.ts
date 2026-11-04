@@ -374,6 +374,8 @@ export const faceAttached = (
   category: BlockCategory,
   modelId: string,
   texture: string,
+  /** Levers are switched on by right-clicking after placement; buttons only pulse. */
+  poweredSource: 'fixed' | 'interaction' = 'fixed',
 ): BlockDefinition =>
   block(path, {
     category,
@@ -391,7 +393,7 @@ export const faceAttached = (
       { property: 'face', source: 'clickedFace' },
       { property: 'facing', source: 'clickedFace', when: { property: 'face', value: 'wall' } },
       { property: 'facing', source: 'playerFacing' },
-      { property: 'powered', source: 'fixed' },
+      { property: 'powered', source: poweredSource },
     ],
     redstone: { role: 'source' },
   });

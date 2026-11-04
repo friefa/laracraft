@@ -44,8 +44,10 @@ describe('placementStateFor', () => {
     expect(place('minecraft:lever', 'east', 'north')).toBe(
       st('minecraft:lever[face=wall,facing=east]'),
     );
+    // `powered` is an interaction property for levers (right-click after placing),
+    // so the editor keeps the state chosen in the palette.
     expect(place('minecraft:lever[powered=true]', 'up', 'south')).toBe(
-      st('minecraft:lever[face=floor,facing=south,powered=false]'),
+      st('minecraft:lever[face=floor,facing=south,powered=true]'),
     );
     expect(place('minecraft:lever', 'down', 'west')).toBe(
       st('minecraft:lever[face=ceiling,facing=west]'),

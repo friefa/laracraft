@@ -85,7 +85,7 @@ Aus dem fachlichen Review der Registry (P0.3r), vor Start der Build-Order-Engine
 
 - **M2 Build-Order-Engine** ✅ (P2.0 Support-Profile, P2.1 Planer, P2.2 Validator + Golden-Builds, P2.3 Anleitungsmodus, P2.4 Sprung/Säulen, P2.5 Politur): Regeln aus Briefing §2, Validator, Golden-Tests (Haus, Turm mit Überhang, Sandstruktur,
   2×2-Kolbentür, Observer-Takt, Wasserfall), Anleitungsmodus in der UI.
-- **M3 Lara**: `apps/api` (.NET), ILlmProvider + Anthropic, DSL + Interpreter + Property-Based-Tests, SSE-Streaming,
+- **M3 Lara** (Teilstand 2026-11-04: ✅ M3.1 DSL – 13 Tools, Schema `libs/lara-dsl/schema/`, Interpreter, Property-Tests; ✅ M3.2 10 Redstone-Module, Java strukturell + baubar getestet, Verhalten nur spezifiziert (Simulator fehlt); offen: Backend nach ADR-0007, Streaming-Vorschau in der App, Redstone-Simulator, DSL-Lücken: Shed-Richtung `highSide`, Modul-Parameter als Liste, OpenAI-strict ohne optionale Felder): `apps/api` (.NET), ILlmProvider + Anthropic, DSL + Interpreter + Property-Based-Tests, SSE-Streaming,
   erste 10 Redstone-Module.
 - **M4 Teilen**: Accounts, Veröffentlichen, Feed/Suche, Remix, `.schem`/`.litematic`, PDF-Anleitung, Moderation.
 - **M5 Store-Release**: Performance-Härtung, Accessibility, DSGVO, Store-Assets, TestFlight/Play-Beta.

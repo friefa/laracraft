@@ -35,3 +35,24 @@ describe('planner × validator on golden builds', () => {
     );
   });
 });
+
+describe('planner × validator: switched-on lever', () => {
+  it('a lever stored powered=true is placed and then right-clicked, with zero issues', () => {
+    const registry = createJavaBlockRegistry();
+    const golden = GOLDEN_BUILDS[0];
+    if (!golden) throw new Error('no golden builds');
+    const doc = golden.create(registry);
+    const b = doc.volume.bounds();
+    if (!b) throw new Error('empty');
+    // A stone block with a powered lever on top, next to the build.
+    const x = b.max.x + 2;
+    const y = b.min.y;
+    doc.setBlock({ x, y, z: b.min.z }, 'minecraft:stone' as never);
+    doc.setBlock(
+      { x, y: y + 1, z: b.min.z },
+      'minecraft:lever[face=floor,facing=north,powered=true]' as never,
+    );
+    const plan = planBuild(doc, registry);
+    expect(validatePlan(doc, registry, plan)).toEqual([]);
+  });
+});
