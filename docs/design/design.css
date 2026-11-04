@@ -142,7 +142,7 @@ h3 {
 }
 
 a {
-  color: var(--lc-blue);
+  color: var(--lc-blue-text); /* D2: AA in both themes */
   font-weight: var(--lc-fw-bold);
   text-decoration: none;
 }
@@ -323,7 +323,7 @@ textarea {
   padding: 0.2rem 0.7rem;
   border-radius: var(--lc-radius-pill);
   background: var(--lc-green-soft);
-  color: var(--lc-green-shade);
+  color: var(--lc-green-text); /* D2: was --lc-green-shade (3.4:1 in dark) */
   font-size: var(--lc-fs-xs);
   font-weight: var(--lc-fw-black);
   letter-spacing: 0.05em;
@@ -331,15 +331,15 @@ textarea {
 }
 .lc-pill--blue {
   background: var(--lc-blue-soft);
-  color: var(--lc-blue-shade);
+  color: var(--lc-blue-text);
 }
 .lc-pill--orange {
   background: var(--lc-orange-soft);
-  color: var(--lc-orange-shade);
+  color: var(--lc-orange-text);
 }
 .lc-pill--red {
   background: var(--lc-red-soft);
-  color: var(--lc-red-shade);
+  color: var(--lc-red-text);
 }
 
 /* Text inputs */
@@ -430,11 +430,15 @@ textarea {
   --lc-purple-text: var(--lc-purple);
 }
 :root[data-theme='light'] {
-  --lc-green-text: var(--lc-green-shade);
-  --lc-blue-text: var(--lc-blue-shade);
-  --lc-orange-text: var(--lc-orange-shade);
-  --lc-red-text: var(--lc-red-shade);
+  /* D2 contrast proposal: darker text tones so every pill/link reaches WCAG AA (≥ 4.5:1). */
+  --lc-green-text: #24732f;
+  --lc-blue-text: #1a64a0;
+  --lc-orange-text: #9a520a;
+  --lc-red-text: #b02a2e;
   --lc-purple-text: var(--lc-purple-shade);
+  /* Dark text on coloured buttons (like the dark theme): white on green was only 2.5:1. */
+  --lc-on-color: #10202a;
+  --lc-muted: #66727a;
 }
 
 /* Hidden visually, still read by screen readers. */
