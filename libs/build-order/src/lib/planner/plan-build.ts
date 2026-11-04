@@ -10,11 +10,14 @@ import {
 import type { PlanBuildFn } from '../api';
 import {
   DEFAULT_REACH,
+  EYE_HEIGHT,
+  JUMP_HEIGHT,
   type BuildOrderOptions,
   type BuildPhase,
   type BuildPlan,
   type PlaceAction,
   type PlanWarning,
+  type RemoveAction,
   type WarningCode,
 } from '../types';
 import { IdHeap, PlannerGrid, W_AIR, W_FINAL, W_IMPLICIT, W_TEMP } from './grid';
@@ -65,10 +68,18 @@ import {
  *    about to be left. Cycles are broken at the lowest pending node.
  * 4. For every placement: choose click target, half and look so the registry
  *    placement rules yield the target state, and a stand position (feet+head
- *    free, solid floor, eye within reach of the clicked face). If none exists,
- *    a two-column scaffold tower is built next to the target.
+ *    free, solid floor, eye within reach of the clicked face). Preference:
+ *    a normal stand (ground or the build itself), then a jump placement (eye at
+ *    the apex, EYE_HEIGHT + JUMP_HEIGHT; feet, head and apex cell free, solid
+ *    ground), then pillaring on the target itself (jump and place the block into
+ *    the own cell). If none exists, a temporary 1-wide column is built that the
+ *    player pillars up on; its position is chosen so that the most pending
+ *    blocks nearby without a stand become reachable from its top (reuse). A
+ *    two-column scaffold tower remains as the fallback (non-solid scaffold block).
  * 5. Temporary blocks only go where the final build has air, nothing rests
- *    on them and no fluid touches them; all are removed in cleanup (top-down).
+ *    on them and no fluid touches them; all are removed in cleanup, one
+ *    connected structure at a time, top-down, each with a stand position
+ *    (next to the block, or on top of it to dig a pillar down).
  *    Fluids: scaffolding for them is built first, then all sources are placed
  *    (flowing fluid is assumed to fill its cells) — no solid block after a fluid.
  * 6. Steps of `minStepSize`–`maxStepSize` actions, never across phases.
@@ -100,6 +111,16 @@ interface Stand {
   readonly fz: number;
   readonly opt: ClickOpt;
   readonly look: number;
+  /** Placed at the apex of a jump (eye at {@link EYE_JUMP}). */
+  readonly jump?: boolean;
+}
+
+/** A not yet placed node near a pillar candidate, with the click options it could use. */
+interface PendingNode {
+  readonly x: number;
+  readonly y: number;
+  readonly z: number;
+  readonly opts: readonly ClickOpt[];
 }
 
 interface TempBlock {
@@ -118,7 +139,18 @@ const CLICK_ORDER: readonly number[] = [D_UP, 2, 5, 3, 4, D_DOWN];
 const CLUSTER = 8;
 const MAX_COLUMN = 512;
 const MAX_TOWER = 128;
-const EYE = 1.62;
+const EYE = EYE_HEIGHT;
+/** Eye height at the apex of a jump. */
+const EYE_JUMP = EYE_HEIGHT + JUMP_HEIGHT;
+/** Horizontal radius / vertical half-range of the pending-node scan when choosing a pillar. */
+const PILLAR_SCAN_R = 7;
+const PILLAR_SCAN_DY = 3;
+/** Pillar cells: rings 1..3 around the target column. */
+const PILLAR_RING = 3;
+/** Feet offsets (relative to the target) tried for a pillar top. */
+const PILLAR_FEET: readonly number[] = [-1, -2, 0, -3, 1];
+/** How many scaffold blocks one more reachable pending block is worth when choosing a pillar. */
+const PILLAR_SERVE_WEIGHT = 8;
 const PROGRESS_EVERY = 2000;
 /** In-plane offsets sampled on a clicked face (centre first). */
 const AIM_T: readonly number[] = [0, 0.2, -0.2, 0.45, -0.45];
@@ -156,6 +188,18 @@ const TOWER_CELLS: readonly (readonly [number, number])[] = (() => {
   return cells.map(([, dx, dz]) => [dx, dz] as const);
 })();
 
+/** Pillar cell offsets around the target column, rings 1..{@link PILLAR_RING}, closest first. */
+const PILLAR_CELLS: readonly (readonly [number, number])[] = (() => {
+  const cells: [number, number, number][] = [];
+  for (let dx = -PILLAR_RING; dx <= PILLAR_RING; dx++) {
+    for (let dz = -PILLAR_RING; dz <= PILLAR_RING; dz++) {
+      if (dx !== 0 || dz !== 0) cells.push([dx * dx + dz * dz, dx, dz]);
+    }
+  }
+  cells.sort((a, b) => a[0] - b[0] || a[1] - b[1] || a[2] - b[2]);
+  return cells.map(([, dx, dz]) => [dx, dz] as const);
+})();
+
 const H_NEIGHBOURS: readonly (readonly [number, number])[] = [
   [1, 0],
   [-1, 0],
@@ -164,14 +208,14 @@ const H_NEIGHBOURS: readonly (readonly [number, number])[] = [
 ];
 
 /** Feet offsets relative to the target, sorted by preference (close, same level first). */
-function standOffsets(reach: number): Int32Array {
+function standOffsets(reach: number, eye: number): Int32Array {
   const r = Math.ceil(reach) + 1;
   const limit = (reach + 0.5) ** 2 + 1e-9;
   const list: [number, number, number, number][] = [];
   for (let dy = -r - 2; dy <= r; dy++) {
     for (let dx = -r; dx <= r; dx++) {
       for (let dz = -r; dz <= r; dz++) {
-        const ey = dy + EYE - 0.5;
+        const ey = dy + eye - 0.5;
         if (dx * dx + ey * ey + dz * dz > limit) continue;
         list.push([Math.sqrt(dx * dx + dz * dz) + 1.5 * Math.abs(dy), dy, dx, dz]);
       }
@@ -217,6 +261,7 @@ class Planner {
   private groundY = 0;
   private reach2 = 0;
   private offsets: Int32Array = new Int32Array(0);
+  private jumpOffsets: Int32Array = new Int32Array(0);
 
   // Nodes (final blocks the player places), numbered in (y, z, x) order.
   private count = 0;
@@ -310,7 +355,8 @@ class Planner {
     this.opts = resolveOptions(this.options, this.registry, Number.isFinite(minY) ? minY : 0);
     this.groundY = this.opts.groundY;
     this.reach2 = this.opts.reach * this.opts.reach + 1e-9;
-    this.offsets = standOffsets(this.opts.reach);
+    this.offsets = standOffsets(this.opts.reach, EYE);
+    this.jumpOffsets = standOffsets(this.opts.reach, EYE_JUMP);
     this.scaffold = analyzeState(this.opts.scaffoldBlock, this.registry);
     if (xs.length === 0) {
       this.grid = new PlannerGrid(0, 0, 0);
@@ -676,7 +722,7 @@ class Planner {
   }
 
   /**
-   * Checks one stand position for one click option.
+   * Checks one stand position for one click option, with the eye `eye` blocks above the feet.
    * Returns the look index, or -1 when out of reach, facing away or no matching look.
    */
   private evaluate(
@@ -687,6 +733,7 @@ class Planner {
     y: number,
     z: number,
     opt: ClickOpt,
+    eye: number = EYE,
   ): number {
     const ox = DX[opt.dir] as number;
     const oy = DY[opt.dir] as number;
@@ -695,7 +742,7 @@ class Planner {
     const fcy = y + 0.5 - 0.5 * oy;
     const fcz = z + 0.5 - 0.5 * oz;
     const ex = fx + 0.5;
-    const ey = fy + EYE;
+    const ey = fy + eye;
     const ez = fz + 0.5;
     const dx = fcx - ex;
     const dy = fcy - ey;
@@ -712,27 +759,94 @@ class Planner {
     );
   }
 
-  /** First valid stand position in preference order, or undefined. */
+  /** Solid, non-fluid block a player can jump off. */
+  private jumpGround(x: number, y: number, z: number): boolean {
+    const w = this.grid.world(x, y, z);
+    if (w === W_AIR) return this.isGround(x, y, z);
+    if (w === W_IMPLICIT) return false;
+    const info = this.infoAtWorld(x, y, z, w);
+    return info.def?.solid === true && !info.fluid && info.standable;
+  }
+
+  /** Jump origin: feet, head and apex cell free (fluids count as occupied), solid ground below. */
+  private jumpOk(fx: number, fy: number, fz: number): boolean {
+    return (
+      !this.occupied(fx, fy, fz) &&
+      !this.occupied(fx, fy + 1, fz) &&
+      !this.occupied(fx, fy + 2, fz) &&
+      this.jumpGround(fx, fy - 1, fz)
+    );
+  }
+
+  /**
+   * First valid stand position in preference order, or undefined. With `jump`
+   * the eye is at the apex of a jump and the player's body spans three cells.
+   */
   private findStand(
     x: number,
     y: number,
     z: number,
     opts: readonly ClickOpt[],
     partnerUp: boolean,
+    jump = false,
   ): Stand | undefined {
-    const off = this.offsets;
+    const off = jump ? this.jumpOffsets : this.offsets;
+    const eye = jump ? EYE_JUMP : EYE;
+    // Same column: the body must not contain the target (feet and head; when jumping also the
+    // apex cell, and the cell above it, which the hitbox touches at the apex: 1.25 + 1.8 > 3).
+    const below = jump ? 3 : 1;
     for (let k = 0; k < off.length; k += 3) {
       const fx = x + (off[k] as number);
       const fy = y + (off[k + 1] as number);
       const fz = z + (off[k + 2] as number);
-      if (fx === x && fz === z && fy >= y - 1 && fy <= y + (partnerUp ? 1 : 0)) continue;
-      if (!this.feetOk(fx, fy, fz)) continue;
+      if (fx === x && fz === z && fy >= y - below && fy <= y + (partnerUp ? 1 : 0)) continue;
+      if (jump ? !this.jumpOk(fx, fy, fz) : !this.feetOk(fx, fy, fz)) continue;
       for (const opt of opts) {
-        const look = this.evaluate(fx, fy, fz, x, y, z, opt);
-        if (look >= 0) return { fx, fy, fz, opt, look };
+        const look = this.evaluate(fx, fy, fz, x, y, z, opt, eye);
+        if (look >= 0) return jump ? { fx, fy, fz, opt, look, jump } : { fx, fy, fz, opt, look };
       }
     }
     return undefined;
+  }
+
+  /**
+   * Pillaring: jump and place the block into the player's own cell by clicking
+   * the top of the block below; afterwards the player stands on it. Only for
+   * solid blocks a player can stand on.
+   */
+  private selfPillar(
+    x: number,
+    y: number,
+    z: number,
+    info: StateInfo,
+    opts: readonly ClickOpt[],
+    partnerUp: boolean,
+  ): Stand | undefined {
+    if (partnerUp || info.fluid || !info.standable || info.def?.solid !== true) return undefined;
+    if (!this.jumpOk(x, y, z)) return undefined;
+    for (const opt of opts) {
+      if (opt.dir !== D_UP) continue;
+      const look = this.evaluate(x, y, z, x, y, z, opt, EYE_JUMP);
+      if (look >= 0) return { fx: x, fy: y, fz: z, opt, look, jump: true };
+    }
+    return undefined;
+  }
+
+  /** Preference: normal placement, then a jump placement, then pillaring on the target itself. */
+  private findAnyStand(
+    x: number,
+    y: number,
+    z: number,
+    info: StateInfo,
+    opts: readonly ClickOpt[],
+    partnerUp: boolean,
+  ): Stand | undefined {
+    if (opts.length === 0) return undefined;
+    return (
+      this.findStand(x, y, z, opts, partnerUp) ??
+      this.findStand(x, y, z, opts, partnerUp, true) ??
+      this.selfPillar(x, y, z, info, opts, partnerUp)
+    );
   }
 
   // ---------------------------------------------------------------- emission
@@ -772,6 +886,7 @@ class Planner {
       ...(opt.half === HALF_TOP ? { clickHalf: 'top' as const } : {}),
       ...(opt.half === HALF_BOTTOM ? { clickHalf: 'bottom' as const } : {}),
       ...(opt.sneak ? { sneak: true } : {}),
+      ...(stand.jump ? { jump: true } : {}),
       ...(info.interactions > 0 ? { interactions: info.interactions } : {}),
       ...(temporary ? { temporary: true } : {}),
     };
@@ -795,10 +910,10 @@ class Planner {
     allowTower = true,
   ): void {
     let opts = this.clickOptions(x, y, z, info, sneak);
-    let stand = opts.length > 0 ? this.findStand(x, y, z, opts, partnerUp) : undefined;
-    if (!stand && allowTower && opts.length > 0 && this.buildTower(x, y, z, opts, phase)) {
+    let stand = this.findAnyStand(x, y, z, info, opts, partnerUp);
+    if (!stand && allowTower && opts.length > 0 && this.provideStand(x, y, z, opts, phase)) {
       opts = this.clickOptions(x, y, z, info, sneak);
-      stand = this.findStand(x, y, z, opts, partnerUp);
+      stand = this.findAnyStand(x, y, z, info, opts, partnerUp);
     }
     if (!stand) {
       const pos = vec(x, y, z);
@@ -908,6 +1023,177 @@ class Planner {
       q--;
     }
     return undefined;
+  }
+
+  /**
+   * Pending nodes of `phase` near a target that have no stand position yet, with
+   * the click options they could use (faces that exist now or before their turn).
+   */
+  private pendingNear(x: number, y: number, z: number, phase: BuildPhase): PendingNode[] {
+    const out: PendingNode[] = [];
+    for (let py = y - PILLAR_SCAN_DY; py <= y + PILLAR_SCAN_DY; py++) {
+      for (let pz = z - PILLAR_SCAN_R; pz <= z + PILLAR_SCAN_R; pz++) {
+        for (let px = x - PILLAR_SCAN_R; px <= x + PILLAR_SCAN_R; px++) {
+          const node = this.grid.node(px, py, pz) - 1;
+          if (node < 0 || this.status[node] === ST_PLACED) continue;
+          if (RANK_PHASE[this.rank[node] as number] !== phase) continue;
+          const info = this.nodeInfo(node);
+          const opts: ClickOpt[] = [];
+          for (let d = 0; d < 6; d++) {
+            if (!info.maskAny[d]) continue;
+            const cx = px - (DX[d] as number);
+            const cy = py - (DY[d] as number);
+            const cz = pz - (DZ[d] as number);
+            // Only faces that exist now or will exist before this node is placed.
+            if (!this.clickable(cx, cy, cz)) {
+              const c = this.nodeAt(cx, cy, cz);
+              // A placed node that is not in the world yet is the one being placed right now.
+              if (
+                c < 0 ||
+                (this.status[c] !== ST_PLACED &&
+                  (this.ord[c] as number) > (this.ord[node] as number))
+              ) {
+                continue;
+              }
+              if (!this.nodeInfo(c).clickable) continue;
+            }
+            for (let half = 0; half < 3; half++) {
+              const mask = info.masks[d * 3 + half] as number;
+              if (!mask) continue;
+              opts.push({
+                nx: cx,
+                ny: cy,
+                nz: cz,
+                dir: d,
+                half,
+                mask,
+                sneak: false,
+              });
+            }
+          }
+          if (opts.length === 0) continue;
+          if (
+            this.findStand(px, py, pz, opts, false) ||
+            this.findStand(px, py, pz, opts, false, true)
+          ) {
+            continue;
+          }
+          out.push({ x: px, y: py, z: pz, opts });
+        }
+      }
+    }
+    return out;
+  }
+
+  /**
+   * Builds a temporary 1-wide column the player pillars up on (jumping and
+   * placing below the feet), so its top is a stand position for the target.
+   * Among the candidate columns it prefers the one from which the most pending
+   * blocks nearby are reachable (so later blocks reuse it), then the shortest.
+   */
+  private buildPillar(
+    x: number,
+    y: number,
+    z: number,
+    opts: readonly ClickOpt[],
+    phase: BuildPhase,
+  ): boolean {
+    const sc = this.scaffold;
+    if (sc.def?.solid !== true || !sc.standable || sc.fluid) return false;
+    let pending: PendingNode[] | undefined;
+    let best: { cx: number; cz: number; base: number; top: number } | undefined;
+    let bestScore = -Infinity;
+    for (const [cdx, cdz] of PILLAR_CELLS) {
+      const cx = x + cdx;
+      const cz = z + cdz;
+      for (const df of PILLAR_FEET) {
+        const feet = y + df;
+        const top = feet - 1;
+        const base = this.towerBase(cx, cz, top);
+        if (base === undefined || base > top || !this.jumpGround(cx, base - 1, cz)) continue;
+        if (this.occupied(cx, feet, cz) || this.occupied(cx, feet + 1, cz)) continue;
+        const canJump = !this.occupied(cx, feet + 2, cz);
+        if (!this.reachesAny(cx, feet, cz, x, y, z, opts, canJump)) continue;
+        const cost = top - base + 1;
+        // Even with every pending block served, a pricier column cannot beat the best one.
+        if (pending && pending.length * PILLAR_SERVE_WEIGHT - cost <= bestScore) continue;
+        pending ??= this.pendingNear(x, y, z, phase);
+        let served = 0;
+        for (const p of pending) {
+          if (p.x === cx && p.z === cz) continue;
+          if (this.reachesAny(cx, feet, cz, p.x, p.y, p.z, p.opts, canJump)) served++;
+        }
+        const score = served * PILLAR_SERVE_WEIGHT - cost;
+        if (score > bestScore) {
+          bestScore = score;
+          best = { cx, cz, base, top };
+        }
+      }
+    }
+    if (!best) return false;
+    const { cx, cz, base, top } = best;
+    for (let level = base; level <= top; level++) {
+      const opt: ClickOpt = {
+        nx: cx,
+        ny: level - 1,
+        nz: cz,
+        dir: D_UP,
+        half: HALF_NONE,
+        mask: ALL_LOOKS,
+        sneak: this.interactive(cx, level - 1, cz),
+      };
+      const look = this.lookFor(
+        cx + 0.5,
+        level + EYE_JUMP,
+        cz + 0.5,
+        cx + 0.5,
+        level,
+        cz + 0.5,
+        opt,
+      );
+      const stand: Stand = {
+        fx: cx,
+        fy: level,
+        fz: cz,
+        opt,
+        look: look >= 0 ? look : V_DOWN,
+        jump: true,
+      };
+      this.pushPlace(cx, level, cz, sc, stand, phase, F_SCAFFOLD, true);
+      this.grid.setWorld(cx, level, cz, W_TEMP);
+      this.temps.push({ x: cx, y: level, z: cz });
+      this.wake(cx, level, cz);
+    }
+    return true;
+  }
+
+  /** Whether (fx,fy,fz) reaches the target with any option, standing or (if `jump`) jumping. */
+  private reachesAny(
+    fx: number,
+    fy: number,
+    fz: number,
+    x: number,
+    y: number,
+    z: number,
+    opts: readonly ClickOpt[],
+    jump: boolean,
+  ): boolean {
+    for (const opt of opts) {
+      if (this.evaluate(fx, fy, fz, x, y, z, opt) >= 0) return true;
+      if (jump && this.evaluate(fx, fy, fz, x, y, z, opt, EYE_JUMP) >= 0) return true;
+    }
+    return false;
+  }
+
+  /** Makes a stand position for the target: player pillar first, 2-wide tower as fallback. */
+  private provideStand(
+    x: number,
+    y: number,
+    z: number,
+    opts: readonly ClickOpt[],
+    phase: BuildPhase,
+  ): boolean {
+    return this.buildPillar(x, y, z, opts, phase) || this.buildTower(x, y, z, opts, phase);
   }
 
   private towerReaches(
@@ -1163,8 +1449,8 @@ class Planner {
     if (info.fluid) {
       // Only prepare scaffolding now; the source itself is placed in placeFluids().
       const opts = this.clickOptions(x, y, z, info, false);
-      if (opts.length > 0 && !this.findStand(x, y, z, opts, false)) {
-        this.buildTower(x, y, z, opts, phase);
+      if (opts.length > 0 && !this.findAnyStand(x, y, z, info, opts, false)) {
+        this.provideStand(x, y, z, opts, phase);
       }
       this.fluidNodes.push(i);
       this.release(i);
@@ -1239,24 +1525,77 @@ class Planner {
 
   // ---------------------------------------------------------------- cleanup
 
+  /**
+   * Removes every temporary block. Connected temporary structures (columns,
+   * pillars, towers) are taken down one at a time in creation order, each from
+   * the top, so the player can dig down a pillar standing on it.
+   */
   private cleanup(): number {
-    const removable = this.temps.map((t, seq) => ({ ...t, seq }));
-    removable.sort((a, b) => b.y - a.y || b.seq - a.seq);
+    const temps = this.temps;
+    const n = temps.length;
+    const parent = new Int32Array(n);
+    for (let i = 0; i < n; i++) parent[i] = i;
+    const find = (i: number): number => {
+      while (parent[i] !== i) {
+        parent[i] = parent[parent[i] as number] as number;
+        i = parent[i] as number;
+      }
+      return i;
+    };
+    const index = new Map<string, number>();
+    temps.forEach((t, i) => index.set(`${t.x},${t.y},${t.z}`, i));
+    temps.forEach((t, i) => {
+      for (let d = 0; d < 6; d += 2) {
+        // down, north, west: each adjacency is visited once.
+        const j = index.get(
+          `${t.x + (DX[d] as number)},${t.y + (DY[d] as number)},${t.z + (DZ[d] as number)}`,
+        );
+        if (j === undefined) continue;
+        const a = find(i);
+        const b = find(j);
+        if (a !== b) parent[Math.max(a, b)] = Math.min(a, b);
+      }
+    });
+    const removable = temps.map((t, seq) => ({ ...t, seq, group: find(seq) }));
+    removable.sort((a, b) => a.group - b.group || b.y - a.y || b.seq - a.seq);
     for (const t of removable) {
-      this.entries.push({
-        phase: 'cleanup',
-        action: {
-          kind: 'remove',
-          pos: vec(t.x, t.y, t.z),
-          state: this.scaffold.state,
-          reason: 'scaffold',
-        },
-        count: 0,
-        flags: F_SCAFFOLD,
-      });
+      const standAt = this.removalStand(t.x, t.y, t.z);
+      const action: RemoveAction = {
+        kind: 'remove',
+        pos: vec(t.x, t.y, t.z),
+        state: this.scaffold.state,
+        reason: 'scaffold',
+        standAt,
+      };
+      this.entries.push({ phase: 'cleanup', action, count: 0, flags: F_SCAFFOLD });
       this.grid.setWorld(t.x, t.y, t.z, W_AIR);
     }
     return removable.length;
+  }
+
+  /**
+   * Where the player stands to break the block at (x,y,z): feet and head free,
+   * something to stand on, eye within reach of the block centre. Prefers a spot
+   * that does not stand on the block itself; otherwise digs down from on top.
+   */
+  private removalStand(x: number, y: number, z: number): Vec3 {
+    const off = this.offsets;
+    const limit = this.reach2;
+    for (let k = 0; k < off.length; k += 3) {
+      const fx = x + (off[k] as number);
+      const fy = y + (off[k + 1] as number);
+      const fz = z + (off[k + 2] as number);
+      if (fx === x && fz === z && fy === y + 1) continue;
+      const dx = fx - x;
+      const dy = fy + EYE - 0.5 - y;
+      const dz = fz - z;
+      if (dx * dx + dy * dy + dz * dz > limit) continue;
+      if (this.feetOk(fx, fy, fz)) return vec(fx, fy, fz);
+    }
+    if (!this.feetOk(x, y + 1, z)) {
+      this.warn('unreachable', vec(x, y, z), 'temporary block: no stand position to remove it');
+    }
+    return vec(x, y + 1, z);
   }
 }
 
