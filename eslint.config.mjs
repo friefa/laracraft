@@ -12,6 +12,7 @@ export default [
   {
     ignores: [
       '**/dist',
+      '**/.local-textures',
       '**/out-tsc',
       '**/coverage',
       '**/android',

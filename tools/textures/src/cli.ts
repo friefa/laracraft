@@ -1,8 +1,11 @@
 /**
  * Texture pipeline CLI. Run from the workspace root via Nx:
- *   nx run textures:validate | atlas | credits | placeholders
+ *   nx run textures:validate | atlas | credits | placeholders | guard
  * Options: --packs a,b (priority order for atlas/credits; default: pixel_perfection_legacy,
  *          placeholder, then other packs in manifest order), --padding n, --out dir
+ * atlas:   --local (or env LARACRAFT_LOCAL_TEXTURES=1) puts `.local-textures/` first and
+ *          writes a `"local": true` atlas to dist/assets/textures-local (P1.11, local only).
+ * guard:   --dir d (repeatable), --strict, --ci; fails if local textures would be shipped.
  */
 import { mkdirSync, readdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { join, relative, resolve, sep } from 'node:path';
@@ -14,6 +17,14 @@ import { defaultPackOrder, selectTextures, type TextureManifest } from './lib/ma
 import { PLACEHOLDER_NAMES, renderPlaceholder } from './lib/placeholders';
 import { readPng, writePng } from './lib/png';
 import { TEXTURES_ROOT, validate, type DiskFile } from './lib/validate';
+import { CI_FORBIDDEN_PATHS, checkNoLocalTextures } from './local/guard';
+import {
+  applyLocalTextures,
+  isLocalEnv,
+  LOCAL_ATLAS_OUT,
+  LOCAL_PACK,
+  LOCAL_TEXTURES_DIR,
+} from './local/local-textures';
 
 const ROOT = resolve(import.meta.dirname, '../../..');
 const MANIFEST = `${TEXTURES_ROOT}/manifest.json`;
@@ -94,12 +105,21 @@ async function main(): Promise<void> {
     options: {
       packs: { type: 'string' },
       padding: { type: 'string', default: '2' },
-      out: { type: 'string', default: DEFAULT_OUT },
+      out: { type: 'string' },
+      local: { type: 'boolean', default: false },
+      dir: { type: 'string', multiple: true },
+      strict: { type: 'boolean', default: false },
+      ci: { type: 'boolean', default: false },
     },
   });
   const command = positionals[0];
   const packOrderArg = values.packs?.split(',').map((p) => p.trim());
-  const outDir = abs(values.out);
+  const local = command === 'atlas' && (values.local || isLocalEnv(process.env));
+  const outDir = abs(values.out ?? (local ? LOCAL_ATLAS_OUT : DEFAULT_OUT));
+  // The guard recognises local output by this folder name, so never write it elsewhere.
+  if (local && !toPosix(relative(ROOT, outDir)).split('/').includes('textures-local')) {
+    fail([`[local-out] the local atlas must go to a "textures-local" folder (${LOCAL_ATLAS_OUT})`]);
+  }
 
   switch (command) {
     case 'validate': {
@@ -114,6 +134,19 @@ async function main(): Promise<void> {
       const packOrder = packOrderArg ?? defaultPackOrder(manifest);
       const entries = selectTextures(manifest, packOrder);
       const inputs: AtlasInput[] = entries.map((e) => ({ name: e.name, ...readPng(abs(e.file)) }));
+      const sources = Object.fromEntries(entries.map((e) => [e.name, e.pack]));
+      if (local) {
+        if (listFiles(LOCAL_TEXTURES_DIR).every((f) => !f.endsWith('.png'))) {
+          fail([
+            `[local-missing] no textures in ${LOCAL_TEXTURES_DIR}/; run: pnpm exec nx run ` +
+              'textures:import-local -- --jar <path to your client.jar>',
+          ]);
+        }
+        const { replaced, skipped } = applyLocalTextures(inputs, abs(LOCAL_TEXTURES_DIR));
+        for (const s of skipped) console.warn(`skipping local texture ${s}`);
+        for (const name of replaced) sources[name] = LOCAL_PACK;
+        console.log(`Local mode: ${replaced.length} texture(s) from ${LOCAL_TEXTURES_DIR}/`);
+      }
       const padding = Number(values.padding);
       if (!Number.isInteger(padding) || padding < 0 || padding > 8) {
         throw new Error('--padding must be an integer 0..8');
@@ -121,15 +154,16 @@ async function main(): Promise<void> {
       const { layout, image } = buildAtlas(inputs, { padding });
       mkdirSync(outDir, { recursive: true });
       writePng(join(outDir, 'atlas.png'), image);
-      const sources = Object.fromEntries(entries.map((e) => [e.name, e.pack]));
       await writeJson(join(outDir, 'atlas.json'), {
         version: 1,
+        // Marker checked by the guard: this atlas contains the developer's own Mojang textures.
+        ...(local ? { local: true } : {}),
         image: 'atlas.png',
         width: layout.width,
         height: layout.height,
         padding: layout.padding,
         uvOrigin: 'top-left',
-        packs: packOrder,
+        packs: local ? [LOCAL_PACK, ...packOrder] : packOrder,
         textures: Object.fromEntries(
           Object.entries(layout.rects).map(([n, r]) => [n, { ...r, pack: sources[n] }]),
         ),
@@ -160,9 +194,32 @@ async function main(): Promise<void> {
       );
       return;
     }
+    case 'guard': {
+      const dirs = values.dir ?? [DEFAULT_OUT];
+      const problems = checkNoLocalTextures({
+        root: ROOT,
+        dirs,
+        strict: values.strict || values.ci,
+        env: process.env,
+        forbidPaths: values.ci ? CI_FORBIDDEN_PATHS : [],
+      });
+      if (problems.length > 0) {
+        console.error(
+          `LOCAL TEXTURE GUARD FAILED: Mojang textures from the local developer mode (P1.11) ` +
+            `must never be built, synced, uploaded or committed (${problems.length} problem(s)):`,
+        );
+        for (const p of problems) console.error(`  - ${p}`);
+        console.error(
+          `Rebuild without --local / LARACRAFT_LOCAL_TEXTURES (pnpm exec nx run textures:atlas).`,
+        );
+        process.exit(1);
+      }
+      console.log(`OK: no local textures in ${dirs.join(', ')}`);
+      return;
+    }
     default:
       console.error(
-        'usage: cli.ts <validate|atlas|credits|placeholders> [--packs a,b] [--padding n] [--out dir]',
+        'usage: cli.ts <validate|atlas|credits|placeholders|guard> [--packs a,b] [--padding n] [--out dir] [--local]',
       );
       process.exit(2);
   }

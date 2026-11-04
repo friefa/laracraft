@@ -54,3 +54,6 @@ vitest.config.*.timestamp*
 .vitest
 
 __screenshots__/
+
+# Local-only Mojang textures (P1.11). Never commit.
+/.local-textures
