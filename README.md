@@ -22,3 +22,4 @@ pnpm exec nx run-many -t lint test typecheck build
 - [Roadmap](docs/ROADMAP.md)
 - [Offene Fragen an den PO](docs/OPEN-QUESTIONS.md)
 - [M0-Bericht](docs/milestones/M0.md)
+- [MVP-Bericht (M1 + M2)](docs/milestones/MVP.md)

@@ -70,6 +70,16 @@ export interface BuildRenderer {
   frame(box?: Box3): void;
   /** Rendering statistics for the debug overlay and performance tests. */
   stats(): { fps: number; drawCalls: number; triangles: number; chunks: number };
+  /**
+   * Screen areas covered by app UI (toolbars, bottom sheet), in CSS pixels. The camera
+   * frames and centres the build in the remaining area. Optional for implementations.
+   */
+  setViewInsets?(insets: {
+    readonly top: number;
+    readonly right: number;
+    readonly bottom: number;
+    readonly left: number;
+  }): void;
   dispose(): void;
 }
 

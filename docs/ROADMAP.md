@@ -23,14 +23,14 @@ Ziel: Monorepo, CI für Web/iOS/Android, Core-Model, Blockregistry (~150 Blöcke
 **Schnittstellen M0:** `libs/core-model/src/index.ts` (Lead), `assets/textures/manifest.json` + `atlas.json` (P0.4),
 `credits.json` (P0.4 → P0.6).
 
-## MVP (Entscheidung PO 2026-11-04: „MVP fertig bauen“)
+## MVP (Entscheidung PO 2026-11-04: „MVP fertig bauen“) ✅ – Bericht: [milestones/MVP.md](milestones/MVP.md)
 
 MVP = **M1 + M2**: selbst bauen (Web, iOS, Android, lokal gespeichert) und automatische, validierte
 Survival-Bauanleitung im Anleitungsmodus. Lara (M3) und Teilen (M4) folgen danach.
 Verträge (Lead, ✅): `libs/core-model` Support-Profile (P2.0), `libs/build-order/src/lib/{types,api}.ts`,
 `libs/renderer/src/lib/{mesh/types,scene/api}.ts`, `libs/editor/src/lib/api.ts`.
 
-## M1 – Viewer und Editor
+## M1 – Viewer und Editor (✅ außer P1.7 Touch-Test auf Geräten und P1.9 Performance-Messung auf Geräten)
 
 Ziel: Bau laden, flüssig rendern, mit Touch und Maus bearbeiten, Undo/Redo, lokal speichern.
 
@@ -72,7 +72,7 @@ Aus dem fachlichen Review der Registry (P0.3r), vor Start der Build-Order-Engine
 
 ## M2–M5 (Grobplanung)
 
-- **M2 Build-Order-Engine**: Regeln aus Briefing §2, Validator, Golden-Tests (Haus, Turm mit Überhang, Sandstruktur,
+- **M2 Build-Order-Engine** ✅ (P2.0 Support-Profile, P2.1 Planer, P2.2 Validator + Golden-Builds, P2.3 Anleitungsmodus, P2.4 Sprung/Säulen, P2.5 Politur): Regeln aus Briefing §2, Validator, Golden-Tests (Haus, Turm mit Überhang, Sandstruktur,
   2×2-Kolbentür, Observer-Takt, Wasserfall), Anleitungsmodus in der UI.
 - **M3 Lara**: `apps/api` (.NET), ILlmProvider + Anthropic, DSL + Interpreter + Property-Based-Tests, SSE-Streaming,
   erste 10 Redstone-Module.
