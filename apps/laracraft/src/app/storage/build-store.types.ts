@@ -21,6 +21,8 @@ export interface BuildSummary {
  * - `too-large`: import file exceeds the size limit
  * - `invalid-file`: import file is not a valid laracraft build
  * - `unsupported-version`: import file was written by a newer laracraft
+ * - `export-failed`: the export file could not be written (native app)
+ * - `share-failed`: the system share sheet could not be opened (native app)
  * - `unknown`: anything else
  */
 export type BuildStoreErrorCode =
@@ -31,6 +33,8 @@ export type BuildStoreErrorCode =
   | 'too-large'
   | 'invalid-file'
   | 'unsupported-version'
+  | 'export-failed'
+  | 'share-failed'
   | 'unknown';
 
 export class BuildStoreError extends Error {
@@ -57,6 +61,8 @@ export const STORAGE_ERROR_KEYS: Readonly<Record<BuildStoreErrorCode, string>> =
   'too-large': 'storage.errors.tooLarge',
   'invalid-file': 'storage.errors.invalidFile',
   'unsupported-version': 'storage.errors.unsupportedVersion',
+  'export-failed': 'storage.errors.exportFailed',
+  'share-failed': 'storage.errors.shareFailed',
   unknown: 'storage.errors.unknown',
 };
 
