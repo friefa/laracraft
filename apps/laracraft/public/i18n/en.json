@@ -501,6 +501,7 @@
       "provider": "The provider reported an error. Try again in a moment.",
       "refusal": "I would rather not build that. Ask me something else!",
       "limit": "Your daily Lara limit is reached. You can change it in the settings.",
+      "turnLimit": "That was a lot of steps at once, so I'm taking a break here. Write “continue” and I'll finish the build.",
       "cancelled": "Stopped.",
       "unknown": "Something went wrong. Try again.",
       "networkPreview": "In this preview the browser blocks the connection to the provider. Open the app directly to build with Lara."

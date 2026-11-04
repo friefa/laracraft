@@ -161,7 +161,7 @@
             [queryParams]="{ from: host().buildId }"
             >{{ 'lara.chat.openSettings' | transloco }}</a
           >
-          } @if (m.id === lastLaraId() && e.code !== 'limit') {
+          } @if (m.id === lastLaraId() && e.code !== 'limit' && e.code !== 'turn-limit') {
           <button
             type="button"
             class="lc-btn lc-btn--sm"

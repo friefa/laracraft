@@ -30,7 +30,7 @@ export function blocksKey(count: number): string {
 export function errorKey(code: LaraErrorCode): string {
   // In the hosted preview the browser blocks provider requests; "are you online?" would mislead.
   if (code === 'network' && environment.sandboxedPreview) return 'lara.errors.networkPreview';
-  return `lara.errors.${code === 'not-configured' ? 'notConfigured' : code === 'rate-limit' ? 'rateLimit' : code}`;
+  return `lara.errors.${code === 'not-configured' ? 'notConfigured' : code === 'rate-limit' ? 'rateLimit' : code === 'turn-limit' ? 'turnLimit' : code}`;
 }
 
 /** Errors the user fixes in the settings (show a settings button instead of only retry). */

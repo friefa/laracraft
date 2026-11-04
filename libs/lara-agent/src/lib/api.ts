@@ -67,7 +67,8 @@ export type LaraErrorCode =
   | 'network' // offline, CORS, DNS
   | 'provider' // 4xx/5xx from provider
   | 'refusal' // model declined
-  | 'limit' // local daily token limit or DSL turn limit
+  | 'limit' // local daily token limit
+  | 'turn-limit' // too many model requests in one turn; the changes so far are kept
   | 'cancelled'
   | 'unknown';
 

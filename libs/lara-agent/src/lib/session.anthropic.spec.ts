@@ -335,7 +335,7 @@ describe('Lara session with Anthropic (fake fetch)', () => {
     expect(f.requests).toHaveLength(3);
     const end = events.at(-1) as Extract<LaraEvent, { type: 'turn-end' }>;
     expect(end.type).toBe('turn-end');
-    expect(end.message).toMatchObject({ error: { code: 'limit' } });
+    expect(end.message).toMatchObject({ error: { code: 'turn-limit' } });
     expect(end.changeSet.changes).toHaveLength(3);
     expect(context.doc.volume.blockCount).toBe(3);
   });

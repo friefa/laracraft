@@ -117,6 +117,7 @@ describe('chat model helpers', () => {
     expect(blocksKey(48)).toBe('lara.chip.blocks');
     expect(errorKey('rate-limit')).toBe('lara.errors.rateLimit');
     expect(errorKey('not-configured')).toBe('lara.errors.notConfigured');
+    expect(errorKey('turn-limit')).toBe('lara.errors.turnLimit');
     expect(needsSettings('auth')).toBe(true);
     expect(needsSettings('network')).toBe(false);
   });

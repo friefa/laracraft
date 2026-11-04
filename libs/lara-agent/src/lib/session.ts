@@ -390,7 +390,7 @@ export function createLaraSession(
         throwIfAborted();
         if (iteration >= maxIterations) {
           limitNote = {
-            code: 'limit',
+            code: 'turn-limit',
             message: `stopped after ${maxIterations} model requests in one turn`,
           };
           break;
