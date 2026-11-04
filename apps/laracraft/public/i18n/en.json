@@ -186,7 +186,6 @@
     },
     "action": {
       "hold": "Hold {{ item }}",
-      "stand": "Stand at {{ pos }} (feet)",
       "click": "Click the {{ face }} of {{ block }}",
       "clickGround": "Click the {{ face }} of the ground",
       "half": {
@@ -197,11 +196,55 @@
       "sneak": "Hold sneak while placing",
       "interactions": "Then right-click it {{ count }}×",
       "temporary": "Temporary block – it is removed again later",
-      "remove": "Break {{ block }} at {{ pos }}",
+      "remove": "Break {{ block }}",
       "reason": {
         "temporary-support": "It was only a temporary support.",
         "scaffold": "It was only scaffolding."
       }
+    },
+    "stand": {
+      "text": "Stand {{ where }}, {{ height }}",
+      "pillar": "Stand on the block below it",
+      "pillarScaffold": "Stand on the block below it (your scaffold)",
+      "onTop": "Stand on top of it",
+      "where": {
+        "above": "directly above it",
+        "below": "directly below it",
+        "adjacent": "right next to it ({{ direction }})",
+        "diagonal": "diagonally next to it ({{ direction }})",
+        "offset1": "{{ a }} of it",
+        "offset2": "{{ a }} and {{ b }} of it"
+      },
+      "axis": "{{ distance }} {{ direction }}",
+      "blocks": {
+        "one": "{{ count }} block",
+        "other": "{{ count }} blocks"
+      },
+      "direction": {
+        "north": "north",
+        "east": "east",
+        "south": "south",
+        "west": "west"
+      },
+      "diagonal": {
+        "north-east": "northeast",
+        "north-west": "northwest",
+        "south-east": "southeast",
+        "south-west": "southwest"
+      },
+      "height": {
+        "same": "on the same level",
+        "above": {
+          "one": "{{ count }} block higher",
+          "other": "{{ count }} blocks higher"
+        },
+        "below": {
+          "one": "{{ count }} block lower",
+          "other": "{{ count }} blocks lower"
+        }
+      },
+      "scaffold": "{{ height }} (on the scaffold)",
+      "coords": "Coordinates relative to the build: {{ pos }}"
     },
     "look": {
       "text": "{{ direction }}, {{ vertical }}",

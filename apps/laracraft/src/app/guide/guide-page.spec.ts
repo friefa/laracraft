@@ -155,7 +155,10 @@ describe('GuidePage', () => {
     button('Block 2 at 0 / 1 / 0').click();
     await settle();
     const detail = el.querySelector('.detail')?.textContent ?? '';
-    expect(detail).toContain('Stand at 0 / 0 / 2 (feet)');
+    expect(detail).toContain('Stand 2 blocks south of it, 1 block lower');
+    expect(el.querySelector('.detail .line-detail')?.textContent?.trim()).toBe(
+      'Coordinates relative to the build: 0\u00a0/\u00a00\u00a0/\u00a02',
+    );
     expect(detail).toContain('Look north, straight ahead');
     expect(detail).toContain('Click the north side of');
     expect(detail).toContain('Aim at the lower half of that face');
