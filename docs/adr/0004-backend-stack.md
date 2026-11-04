@@ -1,6 +1,6 @@
 # ADR-0004: Backend-Stack
 
-- Status: **Vorgeschlagen**
+- Status: **Vorgeschlagen** – wird bei Annahme von ADR-0007 ersetzt
 - Datum: 2026-11-03
 
 ## Kontext
