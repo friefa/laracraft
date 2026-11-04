@@ -14,27 +14,59 @@ describe('Lara', () => {
     expect(el.getAttribute('data-mood')).toBe(mood);
     const svg = el.querySelector('svg');
     expect(svg?.getAttribute('viewBox')).toBe('0 0 100 100');
-    // Body, hat and face are always there.
-    expect(svg?.querySelectorAll('rect').length).toBeGreaterThanOrEqual(5);
     expect(svg?.querySelector('.fig')).not.toBeNull();
+    // v2: ponytail with hair tie, head, dungarees and two arms in every mood.
+    expect(svg?.querySelector('.ponytail')).not.toBeNull();
+    expect(svg?.querySelector('.hair-tie')).not.toBeNull();
+    expect(svg?.querySelector('.head')).not.toBeNull();
+    expect(svg?.querySelector('.dungarees')).not.toBeNull();
+    expect(svg?.querySelectorAll('.arm').length).toBe(2);
+  });
+
+  it('has no hard hat any more', async () => {
+    for (const mood of LARA_MOODS) {
+      const svg = (await render({ mood })).querySelector('svg');
+      expect(svg?.querySelector('.hat')).toBeNull();
+      // The old hat was the only yellow-shade shape.
+      expect(svg?.innerHTML).not.toContain('--lc-yellow-shade');
+    }
   });
 
   it('draws each mood differently', async () => {
     const drawings = new Set<string>();
     for (const mood of LARA_MOODS) {
       const el = await render({ mood });
-      drawings.add(
-        (el.querySelector('svg')?.innerHTML ?? '').replace(/<!--.*?-->|lc-lara-clip-\d+/g, ''),
-      );
+      drawings.add((el.querySelector('svg')?.innerHTML ?? '').replace(/<!--.*?-->/g, ''));
     }
     expect(drawings.size).toBe(LARA_MOODS.length);
   });
 
   it('shows pose details per mood', async () => {
-    expect((await render({ mood: 'wave' })).querySelector('.wave')).not.toBeNull();
-    expect((await render({ mood: 'sleep' })).querySelector('.zz')).not.toBeNull();
-    expect((await render({ mood: 'sleep' })).querySelector('.eyes')).toBeNull();
-    expect((await render({ mood: 'happy' })).querySelector('.eyes')).not.toBeNull();
+    const wave = await render({ mood: 'wave' });
+    expect(wave.querySelectorAll('.wave').length).toBe(1);
+    expect((await render({ mood: 'happy' })).querySelector('.wave')).toBeNull();
+
+    const sleep = await render({ mood: 'sleep' });
+    expect(sleep.querySelector('.zz')).not.toBeNull();
+    expect(sleep.querySelector('.eyes')).toBeNull();
+    expect(sleep.querySelector('.head')?.getAttribute('transform')).toContain('rotate');
+
+    for (const mood of ['happy', 'wave', 'think'] as const) {
+      expect((await render({ mood })).querySelector('.eyes')).not.toBeNull();
+    }
+    expect((await render({ mood: 'cheer' })).querySelector('.eyes')).toBeNull();
+    expect((await render({ mood: 'cheer' })).querySelector('.sparkles')).not.toBeNull();
+    expect((await render({ mood: 'think' })).querySelector('.bubbles')).not.toBeNull();
+  });
+
+  it('draws the thinking hand in front of the torso', async () => {
+    const children = (el: HTMLElement) =>
+      [...(el.querySelector('.fig')?.children ?? [])].map((c) =>
+        c.classList.contains('arm') ? 'arm' : c.classList.contains('dungarees') ? 'torso' : '',
+      );
+    const order = (el: HTMLElement) => children(el).filter(Boolean).join(' ');
+    expect(order(await render({ mood: 'happy' }))).toBe('arm arm torso');
+    expect(order(await render({ mood: 'think' }))).toBe('arm torso arm');
   });
 
   it('is decorative by default', async () => {
@@ -54,11 +86,7 @@ describe('Lara', () => {
     expect(el.querySelector('svg')?.getAttribute('aria-hidden')).toBe('true');
   });
 
-  it('uses a unique clip path id per instance', async () => {
-    const a = await render();
-    const b = await render();
-    const id = (el: HTMLElement) => el.querySelector('clipPath')?.id;
-    expect(id(a)).toBeTruthy();
-    expect(id(a)).not.toBe(id(b));
+  it('defines no ids, so several instances can share a page', async () => {
+    expect((await render()).querySelector('[id]')).toBeNull();
   });
 });
