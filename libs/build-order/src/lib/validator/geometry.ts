@@ -4,14 +4,12 @@ import {
   type HorizontalDirection,
   type Vec3,
 } from '@laracraft/core-model';
+import { EYE_HEIGHT, JUMP_HEIGHT } from '../types';
 
 /**
  * Continuous geometry for reachability and look-direction checks.
  * Block (x, y, z) occupies [x, x+1) × [y, y+1) × [z, z+1).
  */
-
-/** Java standing eye height above the feet. */
-export const EYE_HEIGHT = 1.62;
 
 /** Tolerance for floating point comparisons against the reach limit. */
 const EPS = 1e-9;
@@ -22,10 +20,21 @@ export interface Point {
   readonly z: number;
 }
 
-export const eyePosition = (standAt: Vec3): Point => ({
+/**
+ * Eye position of a player whose feet are in block `standAt` (centred in it).
+ * With `jump`, the eye is at the apex of a jump (EYE_HEIGHT + JUMP_HEIGHT).
+ */
+export const eyePosition = (standAt: Vec3, jump = false): Point => ({
   x: standAt.x + 0.5,
-  y: standAt.y + EYE_HEIGHT,
+  y: standAt.y + EYE_HEIGHT + (jump ? JUMP_HEIGHT : 0),
   z: standAt.z + 0.5,
+});
+
+/** Centre of the block at `pos` (approximate target point for breaking a block). */
+export const blockCentre = (pos: Vec3): Point => ({
+  x: pos.x + 0.5,
+  y: pos.y + 0.5,
+  z: pos.z + 0.5,
 });
 
 /** Centre of `face` of the block at `pos`. */
