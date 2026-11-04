@@ -5,3 +5,4 @@ export * from './lib/mesh/texture-layers';
 export * from './lib/mesh/extract';
 export * from './lib/mesh/greedy-mesher';
 export * from './lib/mesh/worker-handler';
+export * from './lib/models';
