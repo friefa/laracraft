@@ -1,19 +1,28 @@
-<h1>{{ 'credits.title' | transloco }}</h1>
-<p>{{ 'credits.intro' | transloco }}</p>
+<div class="hero">
+  <lc-lara mood="cheer" size="5rem" />
+  <div class="lc-bubble">
+    <h1>{{ 'credits.title' | transloco }}</h1>
+    <p>{{ 'credits.intro' | transloco }}</p>
+  </div>
+</div>
 
 <section aria-labelledby="credits-textures">
   <h2 id="credits-textures">{{ 'credits.texturesHeading' | transloco }}</h2>
 
   @if (credits.error()) {
-  <div class="state error" role="alert">
+  <div class="state error lc-alert" role="alert">
     <p>{{ 'credits.error' | transloco }}</p>
-    <button type="button" (click)="credits.reload()">{{ 'credits.retry' | transloco }}</button>
+    <button type="button" class="lc-btn" (click)="credits.reload()">
+      {{ 'credits.retry' | transloco }}
+    </button>
   </div>
   } @else if (credits.hasValue()) { @for (group of credits.value().groups; track $index) {
-  <article class="group">
+  <article class="group lc-card">
     <h3>
       {{ group.title }} @if (group.version) {
-      <span class="version">({{ 'credits.version' | transloco }} {{ group.version }})</span>
+      <span class="version lc-pill lc-pill--soft-blue"
+        >{{ 'credits.version' | transloco }} {{ group.version }}</span
+      >
       }
     </h3>
     <dl>
@@ -42,7 +51,9 @@
         @else { {{ group.modifications }} }
       </dd>
     </dl>
-    <p class="count">{{ 'credits.textureCount' | transloco: { count: group.textures.length } }}</p>
+    <p class="count lc-pill lc-pill--soft-green">
+      {{ 'credits.textureCount' | transloco: { count: group.textures.length } }}
+    </p>
     @if (group.shareAlike) {
     <p class="share-alike">{{ 'credits.shareAlike' | transloco }}</p>
     }
@@ -54,19 +65,23 @@
   }
 </section>
 
-<section aria-labelledby="credits-oss">
+<section class="lc-card" aria-labelledby="credits-oss">
   <h2 id="credits-oss">{{ 'credits.ossHeading' | transloco }}</h2>
   <p>{{ 'credits.ossText' | transloco }}</p>
   @if (hasThirdPartyLicenses()) {
   <p>
-    <a class="oss-link" [href]="thirdPartyLicensesUrl" target="_blank" rel="noopener"
+    <a
+      class="oss-link lc-btn lc-btn--secondary"
+      [href]="thirdPartyLicensesUrl"
+      target="_blank"
+      rel="noopener"
       >{{ 'credits.ossLink' | transloco }}</a
     >
   </p>
   }
 </section>
 
-<section aria-labelledby="credits-disclaimer">
+<section class="notice lc-card" aria-labelledby="credits-disclaimer">
   <h2 id="credits-disclaimer">{{ 'credits.disclaimerHeading' | transloco }}</h2>
   <p class="disclaimer">{{ 'footer.disclaimer' | transloco }}</p>
 </section>

@@ -1,15 +1,16 @@
 <!-- A button, not href="#main": with <base href="/"> a fragment link would navigate home. -->
-<button type="button" class="skip-link" (click)="main.focus()">
+<button type="button" class="skip-link lc-btn lc-btn--secondary" (click)="main.focus()">
   {{ 'app.skipToContent' | transloco }}
 </button>
 
 <header class="app-header">
-  <a class="brand" routerLink="/" [attr.aria-label]="'app.homeLink' | transloco"
-    >{{ 'app.name' | transloco }}</a
-  >
+  <a class="brand" routerLink="/" [attr.aria-label]="'app.homeLink' | transloco">
+    <lc-lara size="2.5rem" />
+    <span class="wordmark">{{ 'app.name' | transloco }}</span>
+  </a>
   <div class="lang-switch">
-    <label for="lang-select">{{ 'lang.label' | transloco }}</label>
-    <select id="lang-select" (change)="onLangChange($event)">
+    <label for="lang-select" class="lc-visually-hidden">{{ 'lang.label' | transloco }}</label>
+    <select id="lang-select" class="lc-select" (change)="onLangChange($event)">
       @for (l of language.langs; track l) {
       <option [value]="l" [selected]="l === language.lang()" [attr.lang]="l">
         {{ 'lang.' + l | transloco }}

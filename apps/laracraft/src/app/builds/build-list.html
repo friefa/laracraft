@@ -1,113 +1,212 @@
-<div class="page-head">
-  <h1>{{ 'builds.title' | transloco }}</h1>
-  <p class="intro">{{ 'builds.intro' | transloco }}</p>
-  <div class="toolbar">
-    <button
-      type="button"
-      class="primary"
-      data-action="new"
-      [disabled]="busy()"
-      (click)="openCreate()"
-    >
-      {{ 'builds.new' | transloco }}
-    </button>
-    <button type="button" data-action="import" [disabled]="busy()" (click)="fileInput.click()">
-      {{ 'builds.import' | transloco }}
-    </button>
-    <button type="button" data-action="examples" [disabled]="busy()" (click)="openExamples()">
-      {{ 'builds.examples.open' | transloco }}
-    </button>
-    <input
-      #fileInput
-      class="file-input"
-      type="file"
-      accept=".lcb.json,.json,application/json"
-      tabindex="-1"
-      aria-hidden="true"
-      (change)="onImport($event)"
-    />
+<h1 class="title">{{ 'builds.title' | transloco }}</h1>
+
+<input
+  #fileInput
+  class="file-input"
+  type="file"
+  accept=".lcb.json,.json,application/json"
+  tabindex="-1"
+  aria-hidden="true"
+  (change)="onImport($event)"
+/>
+
+@if (!isEmpty()) {
+<div class="hero">
+  <lc-lara mood="wave" size="5rem" />
+  <div class="lc-bubble">
+    <p class="greeting">{{ 'builds.greeting' | transloco }}</p>
+    <p class="intro">{{ 'builds.intro' | transloco }}</p>
   </div>
 </div>
+<div class="toolbar">
+  <button
+    type="button"
+    class="lc-btn lc-btn--primary lc-btn--lg new"
+    data-action="new"
+    [disabled]="busy()"
+    (click)="openCreate()"
+  >
+    <svg class="plus" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 4v16M4 12h16" />
+    </svg>
+    {{ 'builds.new' | transloco }}
+  </button>
+  <button
+    type="button"
+    class="lc-btn lc-btn--secondary"
+    data-action="examples"
+    [disabled]="busy()"
+    (click)="openExamples()"
+  >
+    {{ 'builds.examples.open' | transloco }}
+  </button>
+  <button
+    type="button"
+    class="lc-btn lc-btn--ghost"
+    data-action="import"
+    [disabled]="busy()"
+    (click)="fileInput.click()"
+  >
+    {{ 'builds.import' | transloco }}
+  </button>
+</div>
+}
 
-<p class="status" role="status">@if (status(); as s) { {{ s.key | transloco: s.params }} }</p>
+<p class="status" role="status">
+  @if (status(); as s) {
+  <span class="lc-toast lc-pop">{{ s.key | transloco: s.params }}</span>
+  }
+</p>
 
 @if (error(); as e) {
-<div class="banner error" role="alert">
+<div class="banner lc-alert lc-pop" role="alert">
   <p>{{ e.key | transloco: e.params }}</p>
-  <button type="button" (click)="dismissError()">{{ 'builds.dismiss' | transloco }}</button>
+  <button type="button" class="lc-btn" (click)="dismissError()">
+    {{ 'builds.dismiss' | transloco }}
+  </button>
 </div>
 }
 
 <section [attr.aria-label]="'builds.listLabel' | transloco" [attr.aria-busy]="builds.isLoading()">
   @if (builds.error()) {
-  <div class="state error" role="alert">
+  <div class="state error lc-alert" role="alert">
     <p>{{ 'builds.loadError' | transloco }}</p>
-    <button type="button" (click)="builds.reload()">{{ 'builds.retry' | transloco }}</button>
+    <button type="button" class="lc-btn" (click)="builds.reload()">
+      {{ 'builds.retry' | transloco }}
+    </button>
   </div>
-  } @else if (builds.hasValue()) { @if (builds.value().length === 0) {
-  <div class="empty">
+  } @else if (builds.hasValue()) { @if (isEmpty()) {
+  <div class="empty lc-card">
+    <lc-lara mood="sleep" size="8rem" />
     <h2>{{ 'builds.emptyTitle' | transloco }}</h2>
     <p>{{ 'builds.emptyText' | transloco }}</p>
     <div class="empty-actions">
-      <button type="button" class="primary" data-action="empty-new" (click)="openCreate()">
+      <button
+        type="button"
+        class="lc-btn lc-btn--primary lc-btn--lg lc-btn--block"
+        data-action="empty-new"
+        [disabled]="busy()"
+        (click)="openCreate()"
+      >
         {{ 'builds.emptyAction' | transloco }}
       </button>
-      <button type="button" data-action="empty-examples" (click)="openExamples()">
+      <button
+        type="button"
+        class="lc-btn lc-btn--secondary lc-btn--block"
+        data-action="empty-examples"
+        [disabled]="busy()"
+        (click)="openExamples()"
+      >
         {{ 'builds.examples.open' | transloco }}
+      </button>
+      <button
+        type="button"
+        class="lc-btn lc-btn--ghost lc-btn--block"
+        data-action="empty-import"
+        [disabled]="busy()"
+        (click)="fileInput.click()"
+      >
+        {{ 'builds.import' | transloco }}
       </button>
     </div>
   </div>
   } @else {
   <ul class="build-list">
     @for (b of builds.value(); track b.id) {
-    <li class="build" [attr.data-id]="b.id">
-      <h2 class="name" [id]="'build-name-' + b.id">
-        <a [routerLink]="['/build', b.id]">{{ b.name }}</a>
-      </h2>
-      <p class="meta">
-        <span>{{ 'builds.updated' | transloco: { date: formatDate(b.updatedAt) } }}</span>
-        <span>{{ 'builds.blocks' | transloco: { count: b.blockCount } }}</span>
-        <span
-          >{{ 'builds.size' | transloco: { width: b.size[0], height: b.size[1], length: b.size[2] }
-          }}</span
-        >
-      </p>
-      <div class="actions">
+    <li class="build lc-card lc-card--interactive" [attr.data-id]="b.id">
+      <div class="lc-tile" [class]="'lc-tone--' + toneOf(b.id)" aria-hidden="true">
+        <svg viewBox="0 0 40 40">
+          <path class="cube-top" d="M20 6 34 13 20 20 6 13Z" />
+          <path class="cube-left" d="M6 13 20 20V35L6 28Z" />
+          <path class="cube-right" d="M34 13V28L20 35V20Z" />
+        </svg>
+      </div>
+      <div class="info">
+        <h2 class="name" [id]="'build-name-' + b.id">
+          <a [routerLink]="['/build', b.id]">{{ b.name }}</a>
+        </h2>
+        <p class="meta">{{ 'builds.updated' | transloco: { date: formatDate(b.updatedAt) } }}</p>
+        <p class="badges">
+          <span class="lc-pill lc-pill--soft-green"
+            >{{ 'builds.blocks' | transloco: { count: b.blockCount } }}</span
+          >
+          <span class="lc-pill lc-pill--soft-blue"
+            >{{ 'builds.size' | transloco: { width: b.size[0], height: b.size[1], length: b.size[2]
+            } }}</span
+          >
+        </p>
+      </div>
+      <button
+        #more
+        type="button"
+        class="more lc-btn lc-btn--ghost lc-btn--icon"
+        data-action="more"
+        [attr.popovertarget]="'build-menu-' + b.id"
+        [attr.aria-label]="'builds.moreActions' | transloco: { name: b.name }"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="5" cy="12" r="2.5" />
+          <circle cx="12" cy="12" r="2.5" />
+          <circle cx="19" cy="12" r="2.5" />
+        </svg>
+      </button>
+      <div
+        #menu
+        popover
+        class="lc-menu"
+        [id]="'build-menu-' + b.id"
+        (beforetoggle)="placeMenu($event, more)"
+      >
         <button
           type="button"
+          class="lc-menu__item"
           data-action="rename"
           [disabled]="busy()"
           [attr.aria-describedby]="'build-name-' + b.id"
-          (click)="openRename(b)"
+          (click)="fromMenu(menu, more); openRename(b)"
         >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 20h4L19 9l-4-4L4 16zM14 6l4 4" />
+          </svg>
           {{ 'builds.rename' | transloco }}
         </button>
         <button
           type="button"
+          class="lc-menu__item"
           data-action="duplicate"
           [disabled]="busy()"
           [attr.aria-describedby]="'build-name-' + b.id"
-          (click)="duplicate(b)"
+          (click)="fromMenu(menu, more); duplicate(b)"
         >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M9 9h11v11H9zM5 15H4V4h11v1" />
+          </svg>
           {{ 'builds.duplicate' | transloco }}
         </button>
         <button
           type="button"
+          class="lc-menu__item"
           data-action="export"
           [disabled]="busy()"
           [attr.aria-describedby]="'build-name-' + b.id"
-          (click)="exportBuild(b)"
+          (click)="fromMenu(menu, more); exportBuild(b)"
         >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3v12M7 10l5 5 5-5M4 20h16" />
+          </svg>
           {{ 'builds.export' | transloco }}
         </button>
         <button
           type="button"
-          class="danger"
+          class="lc-menu__item lc-menu__item--danger"
           data-action="delete"
           [disabled]="busy()"
           [attr.aria-describedby]="'build-name-' + b.id"
-          (click)="openDelete(b)"
+          (click)="fromMenu(menu, more); openDelete(b)"
         >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13" />
+          </svg>
           {{ 'builds.delete' | transloco }}
         </button>
       </div>
@@ -119,53 +218,100 @@
   }
 </section>
 
-<dialog #modal aria-labelledby="build-dialog-title" (close)="onDialogClosed()">
+<dialog
+  #modal
+  class="lc-dialog"
+  [class.wide]="dialog()?.kind === 'examples'"
+  aria-labelledby="build-dialog-title"
+  (close)="onDialogClosed()"
+>
   @let d = dialog(); @if (d?.kind === 'delete') {
-  <h2 id="build-dialog-title">{{ 'builds.dialog.deleteTitle' | transloco }}</h2>
+  <div class="lc-dialog__head">
+    <lc-lara mood="think" size="3.5rem" />
+    <h2 id="build-dialog-title">{{ 'builds.dialog.deleteTitle' | transloco }}</h2>
+  </div>
   <form (submit)="submitDialog($event)">
     <p>{{ 'builds.dialog.deleteText' | transloco: { name: d.build.name } }}</p>
-    <div class="dialog-actions">
-      <button #initialFocus type="button" (click)="closeDialog()">
+    <div class="lc-dialog__actions">
+      <button #initialFocus type="button" class="lc-btn" (click)="closeDialog()">
         {{ 'builds.dialog.cancel' | transloco }}
       </button>
-      <button type="submit" class="danger" data-action="confirm">
+      <button type="submit" class="lc-btn lc-btn--danger" data-action="confirm">
         {{ 'builds.dialog.deleteConfirm' | transloco }}
       </button>
     </div>
   </form>
   } @else if (d?.kind === 'examples') {
-  <h2 id="build-dialog-title">{{ 'builds.examples.title' | transloco }}</h2>
-  <p class="dialog-intro">{{ 'builds.examples.intro' | transloco }}</p>
+  <div class="lc-dialog__head">
+    <lc-lara mood="cheer" size="3.5rem" />
+    <div>
+      <h2 id="build-dialog-title">{{ 'builds.examples.title' | transloco }}</h2>
+      <p class="dialog-intro">{{ 'builds.examples.intro' | transloco }}</p>
+    </div>
+  </div>
   <ul class="examples">
     @for (ex of examples; track ex) {
     <li>
       <button
         #initialFocus
         type="button"
-        class="example"
+        class="example lc-card lc-card--interactive"
         [attr.data-example]="ex"
         [disabled]="busy()"
         (click)="openExample(ex)"
       >
-        <span class="example-name">{{ exampleNameKey(ex) | transloco }}</span>
-        <span class="example-description">{{ exampleDescriptionKey(ex) | transloco }}</span>
+        <span class="lc-tile" [class]="'lc-tone--' + exampleTone[ex]" aria-hidden="true">
+          <svg viewBox="0 0 40 40">
+            @switch (ex) { @case ('house') {
+            <path d="M5 19 20 6l15 13zM10 18h20v16H10z" />
+            <path class="hole" d="M17 24h6v10h-6z" />
+            } @case ('tower') {
+            <path d="M11 6h5v4h2V6h4v4h2V6h5v10h-2v18H13V16h-2z" />
+            <path class="hole" d="M18 19h4v6h-4z" />
+            } @case ('sand-arch') {
+            <path d="M4 34V13h32v21h-8v-9a8 8 0 0 0-16 0v9z" />
+            } @case ('piston-door') {
+            <path d="M7 5h26v30H7z" />
+            <path class="hole" d="M11 9h8v10h-8zM21 9h8v10h-8zM11 21h8v10h-8zM21 21h8v10h-8z" />
+            } @case ('observer-clock') {
+            <circle cx="20" cy="20" r="15" />
+            <circle class="hole" cx="20" cy="20" r="10.5" />
+            <path class="hand" d="M20 20v-7M20 20l5 3" />
+            } @default {
+            <path d="M20 4s12 13.5 12 21a12 12 0 0 1-24 0C8 17.5 20 4 20 4z" />
+            <path class="shine" d="M14 25a6 6 0 0 0 6 6" />
+            } }
+          </svg>
+        </span>
+        <span class="example-text">
+          <span class="example-name">{{ exampleNameKey(ex) | transloco }}</span>
+          <span class="example-description">{{ exampleDescriptionKey(ex) | transloco }}</span>
+        </span>
       </button>
     </li>
     }
   </ul>
-  <div class="dialog-actions">
-    <button type="button" (click)="closeDialog()">{{ 'builds.dialog.cancel' | transloco }}</button>
+  <div class="lc-dialog__actions">
+    <button type="button" class="lc-btn" (click)="closeDialog()">
+      {{ 'builds.dialog.cancel' | transloco }}
+    </button>
   </div>
   } @else if (d) {
-  <h2 id="build-dialog-title">
-    {{ (d.kind === 'create' ? 'builds.dialog.createTitle' : 'builds.dialog.renameTitle') | transloco
-    }}
-  </h2>
+  <div class="lc-dialog__head">
+    <lc-lara [mood]="d.kind === 'create' ? 'happy' : 'think'" size="3.5rem" />
+    <h2 id="build-dialog-title">
+      {{ (d.kind === 'create' ? 'builds.dialog.createTitle' : 'builds.dialog.renameTitle') |
+      transloco }}
+    </h2>
+  </div>
   <form (submit)="submitDialog($event)">
-    <label for="build-name-input">{{ 'builds.dialog.nameLabel' | transloco }}</label>
+    <label class="field-label" for="build-name-input"
+      >{{ 'builds.dialog.nameLabel' | transloco }}</label
+    >
     <input
       #initialFocus
       id="build-name-input"
+      class="lc-input"
       type="text"
       autocomplete="off"
       required
@@ -173,11 +319,16 @@
       [value]="nameDraft()"
       (input)="onNameInput($event)"
     />
-    <div class="dialog-actions">
-      <button type="button" (click)="closeDialog()">
+    <div class="lc-dialog__actions">
+      <button type="button" class="lc-btn" (click)="closeDialog()">
         {{ 'builds.dialog.cancel' | transloco }}
       </button>
-      <button type="submit" class="primary" data-action="confirm" [disabled]="!nameDraft().trim()">
+      <button
+        type="submit"
+        class="lc-btn lc-btn--primary"
+        data-action="confirm"
+        [disabled]="!nameDraft().trim()"
+      >
         {{ (d.kind === 'create' ? 'builds.dialog.create' : 'builds.dialog.save') | transloco }}
       </button>
     </div>

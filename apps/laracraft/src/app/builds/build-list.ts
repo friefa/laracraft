@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   DOCUMENT,
+  DestroyRef,
   ElementRef,
   Injector,
   afterNextRender,
@@ -15,6 +16,7 @@ import { Router, RouterLink } from '@angular/router';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { MAX_NAME_LENGTH } from '@laracraft/core-model';
 import { LanguageService } from '../i18n/language.service';
+import { Lara } from '../shared/lara/lara';
 import { BuildStore } from '../storage/build-store';
 import {
   BuildSummary,
@@ -44,6 +46,22 @@ type DialogState =
   | { readonly kind: 'rename'; readonly build: BuildSummary }
   | { readonly kind: 'delete'; readonly build: BuildSummary };
 
+/** Tile colours for build cards (picked from the id) and examples. */
+const TONES = ['green', 'blue', 'orange', 'purple', 'yellow', 'red'] as const;
+type Tone = (typeof TONES)[number];
+
+const EXAMPLE_TONES: Record<ExampleId, Tone> = {
+  house: 'orange',
+  tower: 'purple',
+  'sand-arch': 'yellow',
+  'piston-door': 'green',
+  'observer-clock': 'red',
+  waterfall: 'blue',
+};
+
+/** How long a status toast stays visible. */
+const TOAST_MS = 4000;
+
 interface Message {
   readonly key: string;
   readonly params?: Record<string, unknown>;
@@ -52,7 +70,7 @@ interface Message {
 /** Home page: the builds stored on this device ("My builds"). */
 @Component({
   selector: 'lc-build-list',
-  imports: [RouterLink, TranslocoPipe],
+  imports: [RouterLink, TranslocoPipe, Lara],
   templateUrl: './build-list.html',
   styleUrl: './build-list.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -69,6 +87,7 @@ export class BuildListPage {
   private readonly initialFocus = viewChild<ElementRef<HTMLElement>>('initialFocus');
   private readonly injector = inject(Injector);
   private returnFocus: HTMLElement | null = null;
+  private toastTimer: ReturnType<typeof setTimeout> | undefined;
 
   protected readonly builds = resource({ loader: () => this.store.list() });
   protected readonly dialog = signal<DialogState | null>(null);
@@ -80,6 +99,43 @@ export class BuildListPage {
   protected readonly examples = EXAMPLE_IDS;
   protected readonly exampleNameKey = exampleNameKey;
   protected readonly exampleDescriptionKey = exampleDescriptionKey;
+  protected readonly exampleTone = EXAMPLE_TONES;
+  protected readonly isEmpty = computed(
+    () => this.builds.hasValue() && this.builds.value().length === 0,
+  );
+
+  constructor() {
+    inject(DestroyRef).onDestroy(() => clearTimeout(this.toastTimer));
+  }
+
+  /** A stable colour per build, so cards are easy to tell apart. */
+  protected toneOf(id: string): Tone {
+    let hash = 0;
+    for (const ch of id) hash = (hash * 31 + (ch.codePointAt(0) ?? 0)) >>> 0;
+    return TONES[hash % TONES.length] as Tone;
+  }
+
+  /** Places a card's overflow menu next to its trigger (no CSS anchor positioning needed). */
+  protected placeMenu(event: Event, trigger: HTMLElement): void {
+    if ((event as ToggleEvent).newState !== 'open') return;
+    const menu = event.target as HTMLElement;
+    const rect = trigger.getBoundingClientRect();
+    const view = this.document.documentElement;
+    const below = rect.bottom < view.clientHeight / 2;
+    menu.style.right = `${Math.max(8, view.clientWidth - rect.right)}px`;
+    menu.style.top = below ? `${rect.bottom + 8}px` : 'auto';
+    menu.style.bottom = below ? 'auto' : `${view.clientHeight - rect.top + 8}px`;
+  }
+
+  /** Closes an overflow menu before its action and returns focus to the menu button. */
+  protected fromMenu(menu: HTMLElement, trigger: HTMLElement): void {
+    try {
+      menu.hidePopover?.();
+    } catch {
+      // Not open (or popovers unsupported): nothing to close.
+    }
+    trigger.focus();
+  }
 
   private readonly dateFormat = computed(
     () =>
@@ -235,6 +291,12 @@ export class BuildListPage {
     );
   }
 
+  private showStatus(message: Message): void {
+    clearTimeout(this.toastTimer);
+    this.status.set(message);
+    this.toastTimer = setTimeout(() => this.status.set(null), TOAST_MS);
+  }
+
   /** Runs a store action with busy state, error mapping and an optional status message. */
   private async act(
     action: () => Promise<Message | void | undefined>,
@@ -246,7 +308,7 @@ export class BuildListPage {
     this.status.set(null);
     try {
       const message = await action();
-      if (message) this.status.set(message);
+      if (message) this.showStatus(message);
     } catch (err) {
       if (err instanceof ExampleLoadError) {
         console.error(err);

@@ -402,29 +402,287 @@ textarea {
   --btn-border: var(--lc-red-shade);
 }
 
-/* Comic speech bubble (P3.2), e.g. Lara talking: purple outline and a tail on the left
- * pointing at the speaker placed before it. */
+/* ---------------------------------------------------------------------------
+ * P3.1 additions: shared pieces used by the shell, "My builds", dialogs and credits.
+ * ------------------------------------------------------------------------- */
+
+/* Readable text colour per accent on its -soft background (AA in the dark default). */
+:root {
+  --lc-green-text: var(--lc-green);
+  --lc-blue-text: var(--lc-blue);
+  --lc-orange-text: var(--lc-orange);
+  --lc-red-text: var(--lc-red);
+  --lc-purple-text: var(--lc-purple);
+}
+:root[data-theme='light'] {
+  --lc-green-text: var(--lc-green-shade);
+  --lc-blue-text: var(--lc-blue-shade);
+  --lc-orange-text: var(--lc-orange-shade);
+  --lc-red-text: var(--lc-red-shade);
+  --lc-purple-text: var(--lc-purple-shade);
+}
+
+/* Hidden visually, still read by screen readers. */
+.lc-visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Colour tones for tiles and accents: sets --tone / --tone-shade. */
+.lc-tone--green {
+  --tone: var(--lc-green);
+  --tone-shade: var(--lc-green-shade);
+}
+.lc-tone--blue {
+  --tone: var(--lc-blue);
+  --tone-shade: var(--lc-blue-shade);
+}
+.lc-tone--orange {
+  --tone: var(--lc-orange);
+  --tone-shade: var(--lc-orange-shade);
+}
+.lc-tone--red {
+  --tone: var(--lc-red);
+  --tone-shade: var(--lc-red-shade);
+}
+.lc-tone--yellow {
+  --tone: var(--lc-yellow);
+  --tone-shade: var(--lc-yellow-shade);
+}
+.lc-tone--purple {
+  --tone: var(--lc-purple);
+  --tone-shade: var(--lc-purple-shade);
+}
+
+/* Chunky colour tile (block preview, example icon). Combine with .lc-tone--*.
+ * Size via --tile-size; put an icon (drawn in currentColor = ink) inside. */
+.lc-tile {
+  --tile-size: 4rem;
+  position: relative;
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--tile-size);
+  height: var(--tile-size);
+  border: var(--lc-border-w) solid var(--lc-ink);
+  border-radius: var(--lc-radius);
+  background: var(--tone, var(--lc-green));
+  box-shadow: inset 0 calc(var(--lc-depth) * -1.5) 0 var(--tone-shade, var(--lc-green-shade));
+  color: var(--lc-ink);
+  overflow: hidden;
+}
+.lc-tile::after {
+  content: '';
+  position: absolute;
+  top: 12%;
+  left: 12%;
+  width: 0.3rem;
+  height: 30%;
+  border-radius: var(--lc-radius-pill);
+  background: rgb(255 255 255 / 0.4);
+}
+.lc-tile svg {
+  width: 62%;
+  height: 62%;
+}
+
+/* Pill colour variants with AA text in the dark default. */
+.lc-pill--soft-green {
+  background: var(--lc-green-soft);
+  color: var(--lc-green-text);
+}
+.lc-pill--soft-blue {
+  background: var(--lc-blue-soft);
+  color: var(--lc-blue-text);
+}
+.lc-pill--soft-orange {
+  background: var(--lc-orange-soft);
+  color: var(--lc-orange-text);
+}
+
+/* Comic speech bubble with a tail on the left (towards Lara). */
 .lc-bubble {
   position: relative;
-  padding: 0.6rem 0.9rem;
-  color: var(--lc-text-strong);
-  font-weight: var(--lc-fw-bold);
-  line-height: 1.3;
+  padding: 0.75rem 1rem;
+  border: var(--lc-border-w) solid var(--lc-border-strong);
+  border-radius: calc(var(--lc-radius) * 1.25);
   background: var(--lc-surface);
-  border: var(--lc-border-w) solid var(--lc-purple);
-  border-radius: var(--lc-radius);
-  box-shadow: 0 var(--lc-depth) 0 var(--lc-purple-shade);
+  box-shadow: 0 var(--lc-depth) 0 var(--lc-border-strong);
 }
 .lc-bubble::before {
   content: '';
   position: absolute;
-  left: -0.45rem;
-  bottom: 0.9rem;
-  width: 0.8rem;
-  height: 0.8rem;
-  background: inherit;
-  border: inherit;
-  border-width: 0 0 var(--lc-border-w) var(--lc-border-w);
-  border-radius: 0 0 0 0.2rem;
+  top: 1.25rem;
+  left: -0.6rem;
+  width: 1rem;
+  height: 1rem;
+  border-left: var(--lc-border-w) solid var(--lc-border-strong);
+  border-bottom: var(--lc-border-w) solid var(--lc-border-strong);
+  background: var(--lc-surface);
   transform: rotate(45deg);
+}
+
+/* Modal <dialog> as a comic panel. Header row: .lc-dialog__head (optional Lara + h2). */
+.lc-dialog {
+  width: min(28rem, calc(100vw - 2rem));
+  max-height: calc(100dvh - 2rem);
+  padding: 1.25rem;
+  overflow: auto;
+  color: var(--lc-text);
+  background: var(--lc-surface);
+  border: var(--lc-border-w) solid var(--lc-border-strong);
+  border-radius: calc(var(--lc-radius) * 1.5);
+  box-shadow: 0 var(--lc-depth) 0 var(--lc-border-strong);
+}
+.lc-dialog[open] {
+  animation: lc-pop 280ms var(--lc-ease-bounce) both;
+}
+.lc-dialog::backdrop {
+  background: rgb(0 0 0 / 0.6);
+}
+.lc-dialog h2 {
+  margin: 0;
+  font-size: var(--lc-fs-lg);
+}
+.lc-dialog__head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+.lc-dialog__actions {
+  display: flex;
+  flex-wrap: wrap-reverse;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+@media (max-width: 30rem) {
+  .lc-dialog__actions > .lc-btn {
+    flex: 1 1 8rem;
+  }
+}
+
+/* Toast: a rounded status pill fixed above the bottom edge; add .lc-pop when it appears. */
+.lc-toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom) + 1.25rem);
+  z-index: 20;
+  translate: -50% 0;
+  width: max-content;
+  max-width: calc(100vw - 2rem);
+  padding: 0.75rem 1.25rem;
+  border: var(--lc-border-w) solid var(--lc-green-shade);
+  border-radius: var(--lc-radius-pill);
+  background: var(--lc-green);
+  box-shadow: 0 var(--lc-depth) 0 var(--lc-green-shade);
+  color: var(--lc-on-color);
+  font-weight: var(--lc-fw-black);
+  text-align: center;
+}
+
+/* Alert banner (errors): red comic panel with text and a dismiss/retry button. */
+.lc-alert {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: var(--lc-border-w) solid var(--lc-red);
+  border-radius: calc(var(--lc-radius) * 1.25);
+  background: var(--lc-red-soft);
+  color: var(--lc-text-strong);
+  font-weight: var(--lc-fw-bold);
+}
+.lc-alert p {
+  flex: 1 1 12rem;
+  margin: 0;
+}
+
+/* Popover menu (native [popover]); items are .lc-menu__item buttons. */
+.lc-menu {
+  min-width: 12rem;
+  margin: 0;
+  padding: 0.4rem;
+  border: var(--lc-border-w) solid var(--lc-border-strong);
+  border-radius: var(--lc-radius);
+  background: var(--lc-surface);
+  box-shadow: 0 var(--lc-depth) 0 var(--lc-border-strong);
+  color: var(--lc-text);
+}
+.lc-menu:popover-open {
+  animation: lc-pop 200ms var(--lc-ease-bounce) both;
+}
+.lc-menu__item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.5rem 0.75rem;
+  border: 0;
+  border-radius: var(--lc-radius-sm);
+  background: none;
+  color: var(--lc-text-strong);
+  font-weight: var(--lc-fw-bold);
+  text-align: start;
+  cursor: pointer;
+}
+.lc-menu__item:hover:not(:disabled),
+.lc-menu__item:focus-visible {
+  background: var(--lc-bg-soft);
+}
+.lc-menu__item:disabled {
+  color: var(--lc-muted);
+  cursor: not-allowed;
+}
+.lc-menu__item--danger {
+  color: var(--lc-red-text);
+}
+.lc-menu__item svg {
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Compact chip-style <select> (e.g. the language switch). */
+.lc-select {
+  min-height: 3rem;
+  padding: 0 2.25rem 0 1rem;
+  border: var(--lc-border-w) solid var(--lc-border-strong);
+  border-radius: var(--lc-radius-pill);
+  background-color: var(--lc-bg-soft);
+  background-image:
+    linear-gradient(45deg, transparent 50%, currentColor 50%),
+    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position:
+    right 1.15rem center,
+    right 0.8rem center;
+  background-size: 0.35rem 0.35rem;
+  background-repeat: no-repeat;
+  box-shadow: 0 3px 0 var(--lc-border-strong);
+  color: var(--lc-text-strong);
+  font-weight: var(--lc-fw-black);
+  appearance: none;
+  cursor: pointer;
+}
+
+/* Lara speaking: purple bubble variant (editor hints, guide explanations). */
+.lc-bubble--purple {
+  border-color: var(--lc-purple);
+  box-shadow: 0 var(--lc-depth) 0 var(--lc-purple-shade);
+  color: var(--lc-text-strong);
+  font-weight: var(--lc-fw-bold);
+}
+.lc-bubble--purple::before {
+  border-color: var(--lc-purple);
 }
