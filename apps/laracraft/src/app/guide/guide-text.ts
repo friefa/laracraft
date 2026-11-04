@@ -49,7 +49,8 @@ export function isSteepLook(state: BlockStateString): boolean {
 
 /** One line of the selected-action detail view. */
 export interface ActionLine {
-  readonly kind: 'hold' | 'stand' | 'look' | 'click' | 'half' | 'sneak' | 'interact' | 'temp';
+  readonly kind:
+    'hold' | 'stand' | 'look' | 'click' | 'half' | 'jump' | 'sneak' | 'interact' | 'temp';
   readonly text: string;
 }
 
@@ -125,6 +126,14 @@ export class GuideText {
             pos: this.pos(action.pos),
           }),
         },
+        ...(action.standAt
+          ? [
+              {
+                kind: 'stand' as const,
+                text: this.t('guide.action.stand', { pos: this.pos(action.standAt) }),
+              },
+            ]
+          : []),
         { kind: 'temp', text: this.t(`guide.action.reason.${action.reason}`) },
       ];
     }
@@ -137,6 +146,7 @@ export class GuideText {
     if (action.clickHalf) {
       lines.push({ kind: 'half', text: this.t(`guide.action.half.${action.clickHalf}`) });
     }
+    if (action.jump) lines.push({ kind: 'jump', text: this.t('guide.action.jump') });
     if (action.sneak) lines.push({ kind: 'sneak', text: this.t('guide.action.sneak') });
     if (action.interactions) {
       lines.push({

@@ -161,6 +161,7 @@
         "top": "Ziele auf die obere Hälfte der Fläche",
         "bottom": "Ziele auf die untere Hälfte der Fläche"
       },
+      "jump": "Im Sprung setzen (am höchsten Punkt)",
       "sneak": "Beim Platzieren schleichen",
       "interactions": "Danach {{ count }}× rechtsklicken",
       "temporary": "Temporärer Block – wird später wieder entfernt",

@@ -76,6 +76,14 @@ export function stepVisuals(
       color: GUIDE_COLORS.selected,
       style: 'outline',
     });
+    if (sel.kind === 'remove' && sel.standAt) {
+      highlights.push({
+        id: 'stand',
+        positions: [sel.standAt, above(sel.standAt)],
+        color: GUIDE_COLORS.stand,
+        style: 'fill',
+      });
+    }
     if (sel.kind === 'place') {
       highlights.push(
         {

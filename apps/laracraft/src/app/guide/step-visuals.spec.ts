@@ -53,6 +53,15 @@ describe('stepVisuals', () => {
     expect(v.highlights[3]?.positions).toEqual([{ x: 1, y: -1, z: 0 }]);
   });
 
+  it('marks the stand position of a selected removal', () => {
+    const action = FIXTURE_PLAN.steps[2]?.actions[0];
+    const v = stepVisuals(FIXTURE_PLAN, 2, { ...opts, selected: action });
+    expect(v.highlights.find((h) => h.id === 'stand')?.positions).toEqual([
+      { x: 2, y: 0, z: 2 },
+      { x: 2, y: 1, z: 2 },
+    ]);
+  });
+
   it('highlights hint positions and handles out-of-range steps', () => {
     const v = stepVisuals(FIXTURE_PLAN, 1, { ...opts, hintPositions: [{ x: 1, y: 1, z: 0 }] });
     expect(v.highlights.at(-1)?.id).toBe('hint');

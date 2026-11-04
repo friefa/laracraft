@@ -161,6 +161,7 @@
         "top": "Aim at the upper half of that face",
         "bottom": "Aim at the lower half of that face"
       },
+      "jump": "Place it while jumping (at the top of the jump)",
       "sneak": "Hold sneak while placing",
       "interactions": "Then right-click it {{ count }}×",
       "temporary": "Temporary block – it is removed again later",

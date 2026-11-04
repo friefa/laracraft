@@ -16,24 +16,27 @@ import { createJavaBlockRegistry, type BuildDocument } from '@laracraft/core-mod
 import type { BuildRenderer, CreateBuildRendererFn } from '@laracraft/renderer';
 import type { StepVisuals } from './step-visuals';
 
-/** Lazy-loads the renderer factory (three.js stays out of the initial bundle). */
+/**
+ * Lazy-loads the renderer (three.js stays out of the initial bundle) and binds
+ * its mesher worker. Undefined when the renderer lib has no factory.
+ */
 export async function loadRendererFactory(): Promise<CreateBuildRendererFn | undefined> {
   const mod = (await import('@laracraft/renderer')) as {
     createBuildRenderer?: CreateBuildRendererFn;
+    createMesherWorker?: () => Worker;
   };
-  return typeof mod.createBuildRenderer === 'function' ? mod.createBuildRenderer : undefined;
+  const create = mod.createBuildRenderer;
+  if (typeof create !== 'function') return undefined;
+  const createWorker =
+    typeof Worker !== 'undefined' && typeof mod.createMesherWorker === 'function'
+      ? mod.createMesherWorker
+      : undefined;
+  return (options) => create(createWorker ? { ...options, createWorker } : options);
 }
 
 export const RENDERER_FACTORY_LOADER = new InjectionToken<
   () => Promise<CreateBuildRendererFn | undefined>
 >('RENDERER_FACTORY_LOADER', { providedIn: 'root', factory: () => loadRendererFactory });
-
-function createMesherWorker(): Worker {
-  return new Worker(
-    new URL('../../../../../libs/renderer/src/lib/mesh/mesher.worker', import.meta.url),
-    { type: 'module' },
-  );
-}
 
 type ViewportStatus = 'loading' | 'ready' | 'unavailable';
 
@@ -132,7 +135,6 @@ export class GuideViewport {
         canvas: this.canvas().nativeElement,
         registry: createJavaBlockRegistry(),
         atlasUrl: 'assets/textures/atlas.json',
-        createWorker: typeof Worker === 'undefined' ? undefined : createMesherWorker,
       });
       if (this.destroyed) {
         renderer.dispose();

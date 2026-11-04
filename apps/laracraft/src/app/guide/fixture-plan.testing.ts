@@ -63,7 +63,7 @@ export const FIXTURE_PLAN: BuildPlan = {
           clickHalf: 'bottom',
         }),
         place(v(1, 1, 0), PISTON, { look: { horizontal: 'east', vertical: 'down' } }),
-        place(v(1, 2, 0), REPEATER, { sneak: true, interactions: 2 }),
+        place(v(1, 2, 0), REPEATER, { sneak: true, interactions: 2, jump: true }),
       ],
       materials: [
         { item: 'minecraft:sand', count: 1 },
@@ -77,7 +77,15 @@ export const FIXTURE_PLAN: BuildPlan = {
     {
       index: 2,
       phase: 'cleanup',
-      actions: [{ kind: 'remove', pos: v(2, 0, 0), state: DIRT, reason: 'temporary-support' }],
+      actions: [
+        {
+          kind: 'remove',
+          pos: v(2, 0, 0),
+          state: DIRT,
+          reason: 'temporary-support',
+          standAt: v(2, 0, 2),
+        },
+      ],
       materials: [],
       hints: [{ code: 'remove-temporary' }],
       yRange: [0, 0],

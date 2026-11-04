@@ -71,10 +71,13 @@ describe('GuideText', () => {
     ]);
     expect(lines(repeater, AIR)).toContain('Click the top of the ground');
     expect(lines(repeater)).toContain('Hold sneak while placing');
+    expect(lines(repeater)).toContain('Place it while jumping (at the top of the jump)');
+    expect(lines(stairs).join()).not.toContain('jumping');
     expect(lines(repeater)).toContain('Then right-click it 2×');
     await language.use('de');
     expect(lines(stairs)).toContain('Klicke auf die Nordseite von Stone');
     expect(lines(repeater)).toContain('Danach 2× rechtsklicken');
+    expect(lines(repeater)).toContain('Im Sprung setzen (am höchsten Punkt)');
     const temp = FIXTURE_PLAN.steps[0]?.actions[2] as PlaceAction;
     expect(lines(temp)).toContain('Temporärer Block – wird später wieder entfernt');
   });
@@ -84,6 +87,7 @@ describe('GuideText', () => {
     if (!remove) throw new Error('fixture');
     expect(text.actionLines(remove, () => AIR).map((l) => l.text)).toEqual([
       'Break Dirt at 2 / 0 / 0',
+      'Stand at 2 / 0 / 2 (feet)',
       'It was only a temporary support.',
     ]);
   });

@@ -28,7 +28,7 @@ export interface PlannerModule {
   readonly planBuildWithProgress?: PlanWithProgressFn;
 }
 
-/** Lazily loads the build-order lib (separate chunk; also used inside the worker). */
+/** Lazily loads the build-order lib (separate chunk). */
 export const loadPlannerModule = (): Promise<PlannerModule> =>
   import('@laracraft/build-order') as Promise<PlannerModule>;
 
@@ -36,7 +36,7 @@ let registry: BlockRegistry | undefined;
 
 /**
  * Runs one plan request and reports through `post`, exactly like the worker
- * protocol. Used by the app's plan worker and as main-thread fallback.
+ * protocol. Main-thread fallback when the build-order worker is unavailable.
  */
 export async function handlePlanRequest(
   request: BuildOrderRequest,
