@@ -1,6 +1,5 @@
 import type { BlockDefinition, BlockTextures } from '../types';
 import {
-  BELOW,
   NO_ITEM,
   block,
   bool,
@@ -96,7 +95,7 @@ const poweredRail = (path: string, role: 'actuator' | 'source'): BlockDefinition
       shape: prop(railShapesStraight, 'north_south'),
       waterlogged: waterlogged(),
     },
-    support: BELOW,
+    support: { kind: 'below', needs: 'rigid' },
     // Powered/activator rails take power from neighbours; a detector rail is
     // only powered by a minecart on top.
     placement: rules(
@@ -121,7 +120,7 @@ export const REDSTONE_BLOCKS: readonly BlockDefinition[] = [
       south: wireSide(),
       west: wireSide(),
     },
-    support: BELOW,
+    support: { kind: 'below', needs: 'rigid' },
     placement: rules(
       ['east', 'neighbors'],
       ['north', 'neighbors'],
@@ -140,7 +139,7 @@ export const REDSTONE_BLOCKS: readonly BlockDefinition[] = [
     layer: 'cutout',
     lightEmission: 7,
     properties: { lit: bool(true) },
-    support: BELOW,
+    support: { kind: 'below', needs: 'center' },
     // Turns off when the block it stands on is powered.
     placement: rules(['lit', 'neighbors']),
     lightByProperty: { property: 'lit', levels: { true: 7, false: 0 } },
@@ -181,7 +180,7 @@ export const REDSTONE_BLOCKS: readonly BlockDefinition[] = [
       locked: bool(),
       powered: bool(),
     },
-    support: BELOW,
+    support: { kind: 'below', needs: 'rigid' },
     // `facing` points from output to input = towards the player (see header).
     placement: rules(
       ['facing', 'playerFacingOpposite'],
@@ -202,7 +201,7 @@ export const REDSTONE_BLOCKS: readonly BlockDefinition[] = [
       mode: prop(['compare', 'subtract'], 'compare'),
       powered: bool(),
     },
-    support: BELOW,
+    support: { kind: 'below', needs: 'rigid' },
     // Same orientation semantics as the repeater.
     placement: rules(
       ['facing', 'playerFacingOpposite'],
@@ -254,6 +253,7 @@ export const REDSTONE_BLOCKS: readonly BlockDefinition[] = [
     category: 'redstone',
     shape: 'model',
     modelId: 'hopper',
+    supportFaces: { default: { up: 'rigid', down: 'center', side: 'none' } },
     textures: { top: 'hopper_top', bottom: 'hopper_outside', side: 'hopper_outside' },
     solid: false,
     properties: {
@@ -369,7 +369,7 @@ export const REDSTONE_BLOCKS: readonly BlockDefinition[] = [
       ),
       waterlogged: waterlogged(),
     },
-    support: BELOW,
+    support: { kind: 'below', needs: 'rigid' },
     placement: rules(['shape', 'neighbors']),
     tags: ['rail', 'minecart', 'track'],
   }),

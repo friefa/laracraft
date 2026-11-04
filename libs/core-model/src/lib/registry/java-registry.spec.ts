@@ -5,6 +5,8 @@ import {
   createJavaBlockRegistry,
 } from './java-registry';
 import { defaultState, resolveBlockState } from './registry';
+import { faceSupport, requiredSupport, satisfiesSupport } from './support';
+import { parseBlockState } from '../blockstate/blockstate';
 import type { BlockDefinition, PlacementSource, SupportRule } from './types';
 
 const registry = createJavaBlockRegistry();
@@ -180,7 +182,7 @@ describe('Java block registry', () => {
       expect(values(d, 'delay')).toEqual(['1', '2', '3', '4']);
       expect(source('repeater', 'facing')).toBe('playerFacingOpposite');
       expect(source('repeater', 'delay')).toBe('interaction');
-      expect(d.physics.support).toEqual({ kind: 'below' });
+      expect(d.physics.support).toEqual({ kind: 'below', needs: 'rigid' });
       expect(d.redstone?.role).toBe('repeater');
     });
 
@@ -293,7 +295,10 @@ describe('Java block registry', () => {
       expect(get('lantern').physics.support).toEqual({
         kind: 'conditional',
         property: 'hanging',
-        cases: { true: { kind: 'ceiling' }, false: { kind: 'below' } },
+        cases: {
+          true: { kind: 'ceiling', needs: 'center' },
+          false: { kind: 'below', needs: 'center' },
+        },
       });
     });
 
@@ -352,6 +357,34 @@ describe('Java block registry', () => {
         bottom: 'dirt',
         side: 'grass_block_side',
       });
+    });
+  });
+
+  describe('face support (P2.0)', () => {
+    const reg = createJavaBlockRegistry();
+    const at = (state: string, face: 'up' | 'down' | 'north') => {
+      const st = parseBlockState(state);
+      return faceSupport(reg.get(st.id), st, face);
+    };
+    it('distinguishes full, rigid, center and none', () => {
+      expect(at('minecraft:stone', 'north')).toBe('full');
+      expect(at('minecraft:glass', 'north')).toBe('full');
+      expect(at('minecraft:oak_leaves', 'up')).toBe('none');
+      expect(at('minecraft:oak_fence', 'up')).toBe('center');
+      expect(at('minecraft:hopper', 'up')).toBe('rigid');
+      expect(at('minecraft:oak_slab[type=bottom]', 'up')).toBe('none');
+      expect(at('minecraft:oak_slab[type=top]', 'up')).toBe('full');
+      expect(at('minecraft:oak_stairs[half=top]', 'up')).toBe('full');
+      expect(at('minecraft:air', 'up')).toBe('none');
+    });
+    it('matches Java attachment rules', () => {
+      const need = (id: string) =>
+        requiredSupport(reg.get(id)?.physics.support ?? { kind: 'none' });
+      expect(satisfiesSupport('center', need('minecraft:torch'))).toBe(true); // torch on fence
+      expect(satisfiesSupport('center', need('minecraft:rail'))).toBe(false);
+      expect(satisfiesSupport('rigid', need('minecraft:redstone_wire'))).toBe(true); // wire on hopper
+      expect(satisfiesSupport('none', need('minecraft:white_carpet'))).toBe(true);
+      expect(satisfiesSupport('rigid', need('minecraft:ladder'))).toBe(false);
     });
   });
 });

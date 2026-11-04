@@ -1,6 +1,5 @@
 import type { BlockDefinition } from '../types';
 import {
-  BELOW,
   block,
   bool,
   cube,
@@ -104,7 +103,7 @@ export const LIGHTING_BLOCKS: readonly BlockDefinition[] = [
     modelId: 'torch',
     layer: 'cutout',
     lightEmission: 14,
-    support: BELOW,
+    support: { kind: 'below', needs: 'center' },
     tags: ['torch', 'light'],
   }),
   block('wall_torch', {
@@ -133,7 +132,10 @@ export const LIGHTING_BLOCKS: readonly BlockDefinition[] = [
     support: {
       kind: 'conditional',
       property: 'hanging',
-      cases: { true: { kind: 'ceiling' }, false: BELOW },
+      cases: {
+        true: { kind: 'ceiling', needs: 'center' },
+        false: { kind: 'below', needs: 'center' },
+      },
     },
     placement: rules(['hanging', 'clickedFace']),
     tags: ['lantern', 'light', 'lamp'],

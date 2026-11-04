@@ -9,6 +9,7 @@ import type {
   RedstoneInfo,
   RenderLayer,
   SupportRule,
+  SupportFaces,
 } from '../types';
 
 /**
@@ -72,6 +73,7 @@ export interface BlockOptions {
   lightEmission?: number;
   lightByProperty?: { property: string; levels: Record<string, number> };
   solid?: boolean;
+  supportFaces?: SupportFaces;
   gravity?: boolean;
   fluid?: boolean;
   support?: SupportRule;
@@ -107,6 +109,7 @@ export function block(path: string, o: BlockOptions): BlockDefinition {
     },
   };
   if (o.placement && o.placement.length > 0) def.placement = o.placement;
+  if (o.supportFaces) def.supportFaces = o.supportFaces;
   if (o.redstone) def.redstone = o.redstone;
   if (o.item) def.item = o.item;
   def.tags = o.tags ?? path.split('_');
@@ -149,6 +152,10 @@ export const stairs = (
     textures,
     // Stairs have a full back face but are not treated as attachment surfaces.
     solid: false,
+    supportFaces: {
+      default: { up: 'none', down: 'full', side: 'none' },
+      cases: [{ when: { half: 'top' }, faces: { up: 'full', down: 'none', side: 'none' } }],
+    },
     properties: {
       facing: horizontalFacing(),
       half: prop(['top', 'bottom'], 'bottom'),
@@ -178,6 +185,13 @@ export const slab = (
     modelId: 'slab',
     textures,
     solid: false,
+    supportFaces: {
+      default: { up: 'none', down: 'full', side: 'none' },
+      cases: [
+        { when: { type: 'top' }, faces: { up: 'full', down: 'none', side: 'none' } },
+        { when: { type: 'double' }, faces: { up: 'full', down: 'full', side: 'full' } },
+      ],
+    },
     properties: { type: prop(['top', 'bottom', 'double'], 'bottom'), waterlogged: waterlogged() },
     placement: rules(['type', 'clickedHalf']),
     item: {
@@ -194,6 +208,7 @@ export const fence = (path: string, category: BlockCategory, texture: string): B
     modelId: 'fence',
     textures: { all: texture },
     solid: false,
+    supportFaces: { default: { up: 'center', down: 'center', side: 'none' } },
     properties: {
       east: bool(),
       north: bool(),
@@ -231,6 +246,7 @@ export const wall = (path: string, category: BlockCategory, texture: string): Bl
     modelId: 'wall',
     textures: { all: texture },
     solid: false,
+    supportFaces: { default: { up: 'center', down: 'center', side: 'none' } },
     properties: {
       east: side(),
       north: side(),
@@ -394,7 +410,7 @@ export const pressurePlate = (
     textures: { all: texture },
     solid: false,
     properties: { powered: bool() },
-    support: BELOW,
+    support: { kind: 'below', needs: 'center' },
     placement: rules(['powered', 'fixed']),
     redstone: { role: 'source' },
   });
@@ -407,5 +423,5 @@ export const carpet = (path: string, texture: string): BlockDefinition =>
     modelId: 'carpet',
     textures: { all: texture },
     solid: false,
-    support: BELOW,
+    support: { kind: 'below', needs: 'none' },
   });

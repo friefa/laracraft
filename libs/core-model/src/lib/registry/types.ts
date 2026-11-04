@@ -77,15 +77,62 @@ export interface PropertyDefinition {
  */
 export type SupportRule =
   | { readonly kind: 'none' }
-  | { readonly kind: 'below' }
-  | { readonly kind: 'ceiling' }
-  | { readonly kind: 'facing'; readonly property: string }
-  | { readonly kind: 'face'; readonly faceProperty: string; readonly facingProperty: string }
+  | { readonly kind: 'below'; readonly needs?: FaceSupport }
+  | { readonly kind: 'ceiling'; readonly needs?: FaceSupport }
+  | { readonly kind: 'facing'; readonly property: string; readonly needs?: FaceSupport }
+  | {
+      readonly kind: 'face';
+      readonly faceProperty: string;
+      readonly facingProperty: string;
+      readonly needs?: FaceSupport;
+    }
   | {
       readonly kind: 'conditional';
       readonly property: string;
       readonly cases: Readonly<Record<string, SupportRule>>;
     };
+
+/**
+ * build-order: how much a block face can carry, ordered `none < center < rigid < full`
+ * (Java: no support / `canSupportCenter` / `canSupportRigidBlock` / sturdy full face).
+ * - `full`: full sturdy face (stone, glass, top of upper slab). Carries everything.
+ * - `rigid`: enough for rails, repeaters, comparators, redstone wire (hopper top).
+ * - `center`: only the centre is supported (top of fences/walls): torches, lanterns,
+ *   pressure plates.
+ * - `none`: nothing can attach (leaves, honey, air).
+ *
+ * `SupportRule.needs` is the minimum the supporting face must offer. When omitted it
+ * is `full`. `needs: 'none'` means "any non-air block" (carpet).
+ */
+export type FaceSupport = 'none' | 'center' | 'rigid' | 'full';
+
+export const FACE_SUPPORT_ORDER: Readonly<Record<FaceSupport, number>> = {
+  none: 0,
+  center: 1,
+  rigid: 2,
+  full: 3,
+};
+
+/** Support offered by the faces of one blockstate. `side` = the four horizontal faces. */
+export interface FaceSupportSpec {
+  readonly up: FaceSupport;
+  readonly down: FaceSupport;
+  readonly side: FaceSupport;
+}
+
+/**
+ * Support offered by a block, optionally depending on its state. The first case
+ * whose `when` matches all listed properties wins; otherwise `default`.
+ * Blocks without `supportFaces` offer `full` everywhere if `solid`, else `none`.
+ * Known approximation: direction-dependent faces (back of stairs) are not modelled.
+ */
+export interface SupportFaces {
+  readonly default: FaceSupportSpec;
+  readonly cases?: readonly {
+    readonly when: Readonly<Record<string, string>>;
+    readonly faces: FaceSupportSpec;
+  }[];
+}
 
 /**
  * build-order: how the player determines the blockstate when placing.
@@ -204,8 +251,13 @@ export interface BlockDefinition {
       readonly levels: Readonly<Record<string, number>>;
     };
   };
-  /** Whether the full block face can support attachments (torches, buttons…). */
+  /**
+   * Shorthand: the block offers a full sturdy face on all sides (torches, buttons…
+   * can attach). Refined by `supportFaces`.
+   */
   readonly solid: boolean;
+  /** build-order: per-face support, see {@link SupportFaces}. */
+  readonly supportFaces?: SupportFaces;
   /** build-order rules. */
   readonly physics: {
     readonly gravity?: boolean; // sand, gravel, concrete powder, anvil…
