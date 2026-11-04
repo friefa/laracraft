@@ -13,3 +13,4 @@ Angenommene ADRs werden nicht mehr inhaltlich geändert, sondern durch neue erse
 | [0005](0005-llm-provider-abstraction.md) | LLM-Provider-Abstraktion                    | Vorgeschlagen |
 | [0006](0006-bedrock-edition.md)          | Bedrock Edition als zweites Ziel            | Vorgeschlagen |
 | [0007](0007-backend-supabase-hybrid.md)  | Backend als Hybrid (Supabase + Lara-Dienst) | Vorgeschlagen |
+| [0008](0008-local-first-lara-byok.md)    | Erste Version lokal, Lara mit eigenem Key   | Angenommen    |

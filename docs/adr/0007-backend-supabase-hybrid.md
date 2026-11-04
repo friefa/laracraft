@@ -1,6 +1,6 @@
 # ADR-0007: Backend als Hybrid – Supabase + eigener Lara-Dienst
 
-- Status: **Vorgeschlagen** (Prüfung auf Wunsch des PO, 2026-11-04)
+- Status: **Vertagt** (ADR-0008: v1 ohne Backend; ADR-0007 ist die Vorlage für Accounts/Teilen ab M4)
 - Datum: 2026-11-04
 - Ersetzt bei Annahme: ADR-0004 (ASP.NET-Core-Backend). ADR-0005 bleibt inhaltlich gültig (Provider-Abstraktion),
   wird aber in TypeScript statt C# umgesetzt.
