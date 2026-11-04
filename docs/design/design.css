@@ -1354,6 +1354,8 @@ textarea {
 @scope (lc-lara) to (lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *) {
   :scope {
     --lara-eye: #fff;
+    --lara-hair: #f07a3c;
+    --lara-hair-shade: #c25520;
     --lara-shine: rgb(255 255 255 / 0.45);
     display: inline-block;
     flex: none;
