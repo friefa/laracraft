@@ -1,0 +1,529 @@
+{
+  "bedrockVersion": "26.60",
+  "directionEnums": {
+    "facing_direction": {
+      "values": { "0": "down", "1": "up", "2": "north", "3": "south", "4": "west", "5": "east" },
+      "note": "Generic Bedrock int facing (buttons, dispenser, dropper, hopper, ladder, barrel, observer pre-1.21). EXCEPTION: piston, sticky_piston and *_piston_arm_collision use 2=south, 3=north, 4=east, 5=west.",
+      "refs": ["wiki:Button", "wiki:Dispenser", "wiki:Piston"]
+    },
+    "minecraft:facing_direction": {
+      "values": ["down", "up", "north", "south", "west", "east"],
+      "note": "String variant used by observer; same meaning as Java `facing`."
+    },
+    "minecraft:cardinal_direction": {
+      "values": ["north", "south", "west", "east"],
+      "note": "String horizontal facing (chest, furnace, repeater, comparator, fence gate, door). Same names as Java `facing` and the same value for all of these EXCEPT doors, where the J2B data rotates by 90 degrees (see minecraft:oak_door)."
+    },
+    "weirdo_direction": {
+      "values": { "0": "east", "1": "west", "2": "south", "3": "north" },
+      "note": "Stairs: direction the full-block (back) side faces = Java stairs `facing`.",
+      "refs": ["wiki:Stairs"]
+    },
+    "direction (trapdoor)": {
+      "values": { "0": "east", "1": "west", "2": "south", "3": "north" },
+      "note": "Trapdoors: value -> Java `facing`. 0 = trapdoor on the west side of its block.",
+      "refs": ["wiki:Trapdoor"]
+    },
+    "torch_facing_direction": {
+      "values": {
+        "top": "floor",
+        "south": "wall facing=north",
+        "north": "wall facing=south",
+        "east": "wall facing=west",
+        "west": "wall facing=east",
+        "unknown": "unused"
+      },
+      "note": "Names the attached block face; the torch top points the OPPOSITE way, i.e. Bedrock value = opposite of Java wall_torch `facing`.",
+      "refs": ["wiki:Torch"]
+    },
+    "rail_direction": {
+      "values": {
+        "0": "north_south",
+        "1": "east_west",
+        "2": "ascending_east",
+        "3": "ascending_west",
+        "4": "ascending_north",
+        "5": "ascending_south",
+        "6": "south_east",
+        "7": "south_west",
+        "8": "north_west",
+        "9": "north_east"
+      },
+      "note": "Same order as Java `shape`; powered/detector/activator rails only 0-5.",
+      "refs": ["wiki:Rail"]
+    },
+    "lever_direction": {
+      "values": [
+        "down_east_west",
+        "east",
+        "west",
+        "south",
+        "north",
+        "up_north_south",
+        "up_east_west",
+        "down_north_south"
+      ],
+      "note": "Wall values = Java facing; floor/ceiling only encode the axis (north/south or east/west), not the 180-degree handle direction.",
+      "refs": ["wiki:Lever"]
+    }
+  },
+  "sources": {
+    "j2b-1.26.30": "https://github.com/PrismarineJS/minecraft-data/blob/master/data/bedrock/1.26.30/blocksJ2B.json (community; Java state -> Bedrock state, Geyser-style, visual-oriented)",
+    "states-1.26.60": "https://github.com/PrismarineJS/minecraft-data/blob/master/data/bedrock/1.26.60/blockStates.json (community; all Bedrock 26.60 permutations, typed)",
+    "wiki:BE26.50": "https://minecraft.wiki/w/Bedrock_Edition_26.50",
+    "wiki:BE26.60": "https://minecraft.wiki/w/Bedrock_Edition_26.60",
+    "wiki:Stairs": "https://minecraft.wiki/w/Stairs#Block_states",
+    "wiki:Slab": "https://minecraft.wiki/w/Slab#Block_states",
+    "wiki:Wool_Slab": "https://minecraft.wiki/w/Wool_Slab",
+    "wiki:Wool_Stairs": "https://minecraft.wiki/w/Wool_Stairs",
+    "wiki:Concrete_Slab": "https://minecraft.wiki/w/Concrete_Slab",
+    "wiki:Concrete_Stairs": "https://minecraft.wiki/w/Concrete_Stairs",
+    "wiki:Trapdoor": "https://minecraft.wiki/w/Trapdoor#Block_states",
+    "wiki:Door": "https://minecraft.wiki/w/Door#Block_states",
+    "wiki:Fence": "https://minecraft.wiki/w/Fence#Block_states",
+    "wiki:Fence_Gate": "https://minecraft.wiki/w/Fence_Gate#Block_states",
+    "wiki:Glass_Pane": "https://minecraft.wiki/w/Glass_Pane#Block_states",
+    "wiki:Wall": "https://minecraft.wiki/w/Wall#Block_states",
+    "wiki:Button": "https://minecraft.wiki/w/Button#Block_states",
+    "wiki:Lever": "https://minecraft.wiki/w/Lever#Block_states",
+    "wiki:Torch": "https://minecraft.wiki/w/Torch#Block_states",
+    "wiki:Redstone_Torch": "https://minecraft.wiki/w/Redstone_Torch",
+    "wiki:Piston": "https://minecraft.wiki/w/Piston#Block_states",
+    "wiki:Observer": "https://minecraft.wiki/w/Observer#Block_states",
+    "wiki:Dispenser": "https://minecraft.wiki/w/Dispenser#Block_states",
+    "wiki:Hopper": "https://minecraft.wiki/w/Hopper#Block_states",
+    "wiki:Redstone_Repeater": "https://minecraft.wiki/w/Redstone_Repeater#Block_states",
+    "wiki:Redstone_Dust": "https://minecraft.wiki/w/Redstone_Dust#Block_states",
+    "wiki:Rail": "https://minecraft.wiki/w/Rail#Block_states",
+    "wiki:Ladder": "https://minecraft.wiki/w/Ladder#Block_states",
+    "wiki:Barrel": "https://minecraft.wiki/w/Barrel#Block_states",
+    "wiki:Chest": "https://minecraft.wiki/w/Chest#Block_states",
+    "wiki:Lantern": "https://minecraft.wiki/w/Lantern#Block_states",
+    "wiki:Leaves": "https://minecraft.wiki/w/Leaves#Block_states",
+    "wiki:Note_Block": "https://minecraft.wiki/w/Note_Block",
+    "wiki:Waterlogging": "https://minecraft.wiki/w/Waterlogging",
+    "wiki:BlockEntityBE": "https://minecraft.wiki/w/Bedrock_Edition_level_format/Block_entity_format"
+  },
+  "propertyKinds": {
+    "state": "Java property maps to a Bedrock block state (see `states`).",
+    "identifier": "Java property selects the Bedrock identifier (see `identifierBy`).",
+    "waterLayer": "Java `waterlogged`. Bedrock has no state; water is a second block layer (layer 1 = minecraft:water liquid_depth=0) at the same position. In .mcstructure: second `block_indices` array.",
+    "derived": "Recomputed by the game from neighbours/redstone; write the Bedrock default and let the world update it.",
+    "blockEntity": "Bedrock keeps this in the block entity (`block_entity_data`), not in the block state.",
+    "lost": "No Bedrock equivalent; the information is dropped (lossy)."
+  },
+  "familyPatterns": [
+    ["minecraft:.*_(wool|concrete)_stairs", "colorStairs"],
+    ["minecraft:.*_(wool|concrete)_slab", "colorSlab"],
+    ["minecraft:.*_stairs", "stairs"],
+    ["minecraft:.*_slab", "slab"],
+    ["minecraft:.*_wall", "wall"],
+    ["minecraft:.*_fence", "fence"],
+    ["minecraft:.*_fence_gate", "fenceGate"],
+    ["minecraft:(.*_)?glass_pane|minecraft:iron_bars", "pane"],
+    ["minecraft:.*_door", "door"],
+    ["minecraft:.*_trapdoor", "trapdoor"],
+    ["minecraft:.*_button", "button"],
+    ["minecraft:.*_pressure_plate", "pressurePlate"],
+    ["minecraft:.*_leaves", "leaves"],
+    ["minecraft:.*_log|minecraft:deepslate", "pillar"],
+    ["minecraft:(powered|detector|activator)_rail", "poweredRail"]
+  ],
+  "templates": {
+    "colorStairs": { "java": "minecraft:oak_stairs", "from": "minecraft:oak", "suffix": "_stairs" },
+    "colorSlab": { "java": "minecraft:oak_slab", "from": "minecraft:oak", "suffix": "_slab" }
+  },
+  "families": {
+    "stairs": {
+      "addedStates": {
+        "minecraft:corner": {
+          "java": "shape",
+          "since": "26.50",
+          "values": { "straight": "none" },
+          "note": "Added in Bedrock 26.50 (wiki:BE26.50). Values equal Java `shape` except straight -> none. Neighbour updates only in worlds created with base game version >= 1.26.40."
+        }
+      },
+      "javaOnly": { "waterlogged": { "kind": "waterLayer" } },
+      "notes": [
+        "Bedrock id differs for stone_stairs (Bedrock normal_stone_stairs) and cobblestone_stairs (Bedrock stone_stairs): never map by id string alone.",
+        "weirdo_direction 0..3 = east, west, south, north; upside_down_bit = Java half=top."
+      ],
+      "refs": ["j2b-1.26.30", "states-1.26.60", "wiki:Stairs", "wiki:BE26.50"]
+    },
+    "colorStairs": {
+      "addedStates": {
+        "minecraft:corner": {
+          "java": "shape",
+          "since": "26.50",
+          "values": { "straight": "none" }
+        }
+      },
+      "javaOnly": { "waterlogged": { "kind": "waterLayer" } },
+      "notes": [
+        "Wool/concrete stairs: Java 26.3; Bedrock 26.40 (experiment 'Drop 3 of 2026', wool) / 26.50 (released, concrete added in 26.50). Not in the 26.30 J2B data: mapping derived from oak_stairs and checked against the 26.60 permutation list (same states as all other stairs).",
+        "Bedrock 26.50 bug list: '[Experimental] The new single wool slabs and stairs conduct redstone' (MCPE-240018) - check conductivity before relying on it in redstone builds."
+      ],
+      "refs": ["states-1.26.60", "wiki:Wool_Stairs", "wiki:Concrete_Stairs", "wiki:BE26.50"],
+      "confidence": "verified"
+    },
+    "slab": {
+      "javaOnly": { "waterlogged": { "kind": "waterLayer" } },
+      "notes": [
+        "Bedrock uses separate ids for double slabs (`<x>_double_slab`, vertical_half=bottom). Single slab: minecraft:vertical_half = Java type (top/bottom).",
+        "Bedrock id differs for stone_slab (Bedrock normal_stone_slab)."
+      ],
+      "refs": ["j2b-1.26.30", "states-1.26.60", "wiki:Slab"]
+    },
+    "colorSlab": {
+      "javaOnly": { "waterlogged": { "kind": "waterLayer" } },
+      "notes": [
+        "Wool/concrete slabs: Java 26.3; Bedrock 26.40 experiment / 26.50 release. Derived from oak_slab, ids `<color>_wool_double_slab` / `<color>_concrete_double_slab` confirmed in wiki ID table and 26.60 permutation list."
+      ],
+      "refs": ["states-1.26.60", "wiki:Wool_Slab", "wiki:Concrete_Slab"]
+    },
+    "wall": {
+      "javaOnly": { "waterlogged": { "kind": "waterLayer" } },
+      "notes": [
+        "wall_connection_type_*: Java low -> short, tall -> tall, none -> none; wall_post_bit = Java up. Bedrock stores these, but they are recomputed from neighbours like in Java."
+      ],
+      "refs": ["j2b-1.26.30", "wiki:Wall"]
+    },
+    "fence": {
+      "addedStates": {
+        "minecraft:connection_east": { "java": "east", "since": "26.50" },
+        "minecraft:connection_north": { "java": "north", "since": "26.50" },
+        "minecraft:connection_south": { "java": "south", "since": "26.50" },
+        "minecraft:connection_west": { "java": "west", "since": "26.50" }
+      },
+      "javaOnly": { "waterlogged": { "kind": "waterLayer" } },
+      "notes": [
+        "Fence connection states exist since Bedrock 26.50 (before: no states, computed at render). Connection rules differ: Bedrock fences/panes/walls connect to honey blocks (MCPE-123695) and fences do not connect to glass/glowstone; the game recomputes them on update."
+      ],
+      "refs": ["states-1.26.60", "wiki:Fence", "wiki:BE26.50"]
+    },
+    "pane": {
+      "addedStates": {
+        "minecraft:connection_east": { "java": "east", "since": "26.50" },
+        "minecraft:connection_north": { "java": "north", "since": "26.50" },
+        "minecraft:connection_south": { "java": "south", "since": "26.50" },
+        "minecraft:connection_west": { "java": "west", "since": "26.50" }
+      },
+      "javaOnly": { "waterlogged": { "kind": "waterLayer" } },
+      "notes": [
+        "Glass panes / iron bars got minecraft:connection_* states in Bedrock 26.50; neighbour updates only in new worlds."
+      ],
+      "refs": ["states-1.26.60", "wiki:Glass_Pane", "wiki:BE26.50"]
+    },
+    "fenceGate": {
+      "javaOnly": {
+        "powered": { "kind": "derived", "note": "Bedrock has no powered state for fence gates." }
+      },
+      "notes": [
+        "Oak fence gate is `minecraft:fence_gate` in Bedrock (other woods `<wood>_fence_gate`)."
+      ],
+      "refs": ["j2b-1.26.30", "wiki:Fence_Gate"]
+    },
+    "door": {
+      "javaOnly": {
+        "powered": { "kind": "derived", "note": "Bedrock has no powered state for doors." }
+      },
+      "notes": [
+        "Oak door is `minecraft:wooden_door`.",
+        "CONFLICT: J2B maps Java facing north/east/south/west -> minecraft:cardinal_direction east/south/west/north (rotated 90 degrees clockwise); minecraft.wiki describes minecraft:cardinal_direction with the same meaning as Java `facing`. Plausible explanation (assumed): doors kept their legacy `direction` numbering (0 = east, like pre-1.13 Java door metadata) and the 1.21.60 migration to minecraft:cardinal_direction converted the numbers with the generic 0=south/1=west/2=north/3=east table, so the string is offset by 90 degrees. We keep the J2B table (it is used by Geyser clients every day). Verify in-game before B1 ships (place a door facing north, export it as .mcstructure and read the state)."
+      ],
+      "refs": ["j2b-1.26.30", "wiki:Door"],
+      "confidence": "assumed"
+    },
+    "trapdoor": {
+      "javaOnly": { "powered": { "kind": "derived" }, "waterlogged": { "kind": "waterLayer" } },
+      "notes": [
+        "Oak trapdoor is `minecraft:trapdoor`. Still uses int `direction` (0 east, 1 west, 2 south, 3 north = Java facing) - not migrated to minecraft:cardinal_direction as of 26.60."
+      ],
+      "refs": ["j2b-1.26.30", "states-1.26.60", "wiki:Trapdoor"]
+    },
+    "button": {
+      "status": "lossy",
+      "notes": [
+        "Oak button is `minecraft:wooden_button`. facing_direction: 0 ceiling, 1 floor, 2..5 wall north/south/west/east. Floor/ceiling buttons have no rotation in Bedrock: Java `facing` for face=floor|ceiling is lost (wiki:Button; parity list: 'Can face in all directions when on the top or bottom of a block' is Java-only)."
+      ],
+      "refs": ["j2b-1.26.30", "wiki:Button"]
+    },
+    "pressurePlate": {
+      "notes": [
+        "Oak pressure plate is `minecraft:wooden_pressure_plate`. Java `powered` (bool) -> redstone_signal 15/0."
+      ],
+      "refs": ["j2b-1.26.30", "states-1.26.60"]
+    },
+    "leaves": {
+      "status": "lossy",
+      "javaOnly": {
+        "distance": {
+          "kind": "lost",
+          "note": "Bedrock leaves have no distance state; decay check uses update_bit (write 0 for persistent leaves)."
+        },
+        "waterlogged": {
+          "kind": "waterLayer",
+          "note": "Waterlogged leaves spread water in Bedrock (MCPE-153400), not in Java."
+        }
+      },
+      "refs": ["j2b-1.26.30", "wiki:Leaves"]
+    },
+    "pillar": {
+      "notes": ["Java `axis` -> Bedrock `pillar_axis`, same values."],
+      "refs": ["j2b-1.26.30"]
+    },
+    "poweredRail": {
+      "javaOnly": {
+        "waterlogged": {
+          "kind": "waterLayer",
+          "note": "Rails are destroyed by flowing water in Bedrock."
+        }
+      },
+      "notes": ["`powered` -> rail_data_bit. powered_rail is `minecraft:golden_rail`."],
+      "refs": ["j2b-1.26.30", "wiki:Rail"]
+    }
+  },
+  "blocks": {
+    "minecraft:cave_air": {
+      "status": "lossy",
+      "notes": ["Bedrock has only minecraft:air."]
+    },
+    "minecraft:void_air": {
+      "status": "lossy",
+      "notes": ["Bedrock has only minecraft:air."]
+    },
+    "minecraft:moving_piston": {
+      "javaOnly": {
+        "facing": {
+          "kind": "blockEntity",
+          "note": "moving_block block entity: movingBlock, movingBlockExtra, pistonPosX/Y/Z."
+        },
+        "type": { "kind": "blockEntity" }
+      },
+      "notes": ["Technical block; never exported by the builder (only appears mid-motion)."],
+      "refs": ["j2b-1.26.30", "wiki:BlockEntityBE"]
+    },
+    "minecraft:grass_block": {
+      "javaOnly": {
+        "snowy": {
+          "kind": "derived",
+          "note": "Bedrock has no snowy state; the side texture is chosen by the renderer."
+        }
+      }
+    },
+    "minecraft:glass": {
+      "notes": [
+        "Same id. Torches/buttons attach to top and sides in Bedrock too (MCPE-17487, Works as Intended); the 'Bedrock differs' comment in registry/data/glass.ts is outdated. Glass passes redstone dust power downward in Bedrock."
+      ]
+    },
+    "minecraft:snow_block": {
+      "notes": ["Bedrock id `minecraft:snow` (the layer block is `minecraft:snow_layer`)."]
+    },
+    "minecraft:bricks": { "notes": ["Bedrock id `minecraft:brick_block`."] },
+    "minecraft:terracotta": {
+      "notes": [
+        "Bedrock id `minecraft:hardened_clay` (colored terracotta uses `<color>_terracotta`)."
+      ]
+    },
+    "minecraft:quartz_block": {
+      "notes": ["Bedrock quartz_block carries pillar_axis (Java has none): always write `y`."]
+    },
+    "minecraft:slime_block": { "notes": ["Bedrock id `minecraft:slime`."] },
+    "minecraft:furnace": {
+      "javaOnly": {},
+      "notes": [
+        "`lit=true` -> `minecraft:lit_furnace`. Furnace contents live in the block entity."
+      ],
+      "refs": ["j2b-1.26.30", "wiki:BlockEntityBE"]
+    },
+    "minecraft:chest": {
+      "javaOnly": {
+        "type": {
+          "kind": "blockEntity",
+          "note": "Double chests: block entity fields pairx/pairz (+ pairlead); without them two adjacent chests may pair or stay single depending on placement."
+        },
+        "waterlogged": { "kind": "waterLayer" }
+      },
+      "refs": ["j2b-1.26.30", "wiki:Chest", "wiki:BlockEntityBE"]
+    },
+    "minecraft:barrel": {
+      "notes": [
+        "J2B maps facing with the generic facing_direction table (north=2 ... east=5). The wiki block-state table for barrels lists 2=east,3=west,4=south,5=north, which contradicts both J2B and every other facing_direction table - treated as a wiki error, verify in-game."
+      ],
+      "refs": ["j2b-1.26.30", "wiki:Barrel"],
+      "confidence": "assumed"
+    },
+    "minecraft:ladder": {
+      "javaOnly": {
+        "waterlogged": {
+          "kind": "waterLayer",
+          "note": "Waterlogged ladders cannot be climbed in Bedrock (wiki:Ladder)."
+        }
+      },
+      "refs": ["j2b-1.26.30", "wiki:Ladder"]
+    },
+    "minecraft:torch": {
+      "notes": ["Floor torch = torch_facing_direction=top."],
+      "refs": ["j2b-1.26.30", "wiki:Torch"]
+    },
+    "minecraft:wall_torch": {
+      "notes": [
+        "Bedrock has no separate wall torch id: `minecraft:torch` with torch_facing_direction = opposite of Java facing."
+      ],
+      "refs": ["j2b-1.26.30", "wiki:Torch"]
+    },
+    "minecraft:lantern": {
+      "javaOnly": { "waterlogged": { "kind": "waterLayer" } },
+      "refs": ["j2b-1.26.30", "wiki:Lantern"]
+    },
+    "minecraft:water": {
+      "notes": [
+        "level 0 -> minecraft:water (source), 1..15 -> minecraft:flowing_water with the same liquid_depth. Builds only ever contain sources."
+      ],
+      "refs": ["j2b-1.26.30"]
+    },
+    "minecraft:lava": {
+      "notes": ["level 0 -> minecraft:lava, 1..15 -> minecraft:flowing_lava."],
+      "refs": ["j2b-1.26.30"]
+    },
+    "minecraft:redstone_wire": {
+      "addedStates": {
+        "redstone_east": { "java": "east", "since": "26.60" },
+        "redstone_north": { "java": "north", "since": "26.60" },
+        "redstone_south": { "java": "south", "since": "26.60" },
+        "redstone_west": { "java": "west", "since": "26.60" }
+      },
+      "notes": [
+        "Connection states added in Bedrock 26.60. NAME CONFLICT: minecraft-data 26.60 permutations call them redstone_north/east/south/west; the wiki copy of the official 26.60 changelog says minecraft:connection_north/... Values none|side|up in both. Verify before writing them; omitting them is safe (the game recomputes connections).",
+        "Bedrock dust cannot be a dot: an unconnected wire is always a cross (MCPE-83955). Java `dot` shapes (all none, power irrelevant) become crosses that DO power their neighbours.",
+        "Bedrock dust auto-connects to the back/sides of pistons."
+      ],
+      "refs": ["j2b-1.26.30", "states-1.26.60", "wiki:BE26.60", "wiki:Redstone_Dust"],
+      "confidence": "assumed"
+    },
+    "minecraft:redstone_torch": {
+      "notes": ["`lit=false` -> `minecraft:unlit_redstone_torch` (separate id)."],
+      "refs": ["j2b-1.26.30", "wiki:Redstone_Torch"]
+    },
+    "minecraft:redstone_wall_torch": {
+      "notes": [
+        "Same id as floor redstone torch, torch_facing_direction = opposite of Java facing; `lit=false` -> unlit_redstone_torch."
+      ],
+      "refs": ["j2b-1.26.30", "wiki:Torch"]
+    },
+    "minecraft:lever": {
+      "status": "lossy",
+      "overrideStates": {
+        "open_bit": {
+          "javaProperties": ["powered"],
+          "values": { "true": "true", "false": "false" },
+          "reason": "J2B flips open_bit for floor/ceiling levers with facing south/east to imitate the Java handle direction (visual-only). For a structure that must behave correctly, open_bit = powered (wiki:Lever: 'If the lever is currently activated')."
+        }
+      },
+      "notes": [
+        "lever_direction combines Java face+facing; for face=floor|ceiling only the axis survives (north=south, east=west): 180-degree handle direction is lost."
+      ],
+      "refs": ["j2b-1.26.30", "wiki:Lever"]
+    },
+    "minecraft:repeater": {
+      "javaOnly": {
+        "locked": {
+          "kind": "derived",
+          "note": "No state in 26.60; `locked` is upcoming in Bedrock 26.70 (wiki:Redstone_Repeater)."
+        }
+      },
+      "notes": [
+        "`powered` selects powered_repeater / unpowered_repeater. repeater_delay = Java delay - 1."
+      ],
+      "refs": ["j2b-1.26.30", "wiki:Redstone_Repeater"]
+    },
+    "minecraft:comparator": {
+      "notes": [
+        "`powered` selects powered_/unpowered_comparator AND output_lit_bit. Output signal strength is in the comparator block entity (OutputSignal)."
+      ],
+      "refs": ["j2b-1.26.30", "wiki:BlockEntityBE"]
+    },
+    "minecraft:piston": {
+      "javaOnly": {
+        "extended": {
+          "kind": "blockEntity",
+          "note": "Piston block entity (State/NewState/Progress/Sticky). An extended piston also needs the arm block (piston_arm_collision) in front."
+        }
+      },
+      "notes": [
+        "facing_direction uses the PISTON table: 0 down, 1 up, 2 south, 3 north, 4 east, 5 west (differs from dispenser/observer)."
+      ],
+      "refs": ["j2b-1.26.30", "wiki:Piston", "wiki:BlockEntityBE"]
+    },
+    "minecraft:sticky_piston": {
+      "javaOnly": { "extended": { "kind": "blockEntity" } },
+      "notes": ["Same facing table as piston."],
+      "refs": ["j2b-1.26.30", "wiki:Piston"]
+    },
+    "minecraft:piston_head": {
+      "status": "lossy",
+      "javaOnly": { "short": { "kind": "lost" } },
+      "notes": [
+        "`type` selects piston_arm_collision / sticky_piston_arm_collision; piston facing table."
+      ],
+      "refs": ["j2b-1.26.30", "wiki:Piston"]
+    },
+    "minecraft:observer": {
+      "notes": ["String minecraft:facing_direction = Java facing (observed direction)."],
+      "refs": ["j2b-1.26.30", "wiki:Observer"]
+    },
+    "minecraft:dispenser": { "refs": ["j2b-1.26.30", "wiki:Dispenser"] },
+    "minecraft:dropper": { "refs": ["j2b-1.26.30", "wiki:Dispenser"] },
+    "minecraft:hopper": {
+      "overrideStates": {
+        "toggle_bit": {
+          "javaProperties": ["enabled"],
+          "values": { "true": "false", "false": "true" },
+          "reason": "J2B maps enabled=true -> toggle_bit=true, but wiki:Hopper defines toggle_bit=1 as 'hopper cannot move items' (powered). Semantics are inverted to Java `enabled`; we follow the wiki definition."
+        }
+      },
+      "notes": ["facing_direction: 0 down, 2..5 north/south/west/east (generic table)."],
+      "refs": ["j2b-1.26.30", "wiki:Hopper"],
+      "confidence": "assumed"
+    },
+    "minecraft:redstone_lamp": { "notes": ["`lit=true` -> `minecraft:lit_redstone_lamp`."] },
+    "minecraft:note_block": {
+      "status": "lossy",
+      "javaOnly": {
+        "instrument": { "kind": "derived", "note": "Computed from the block below/above." },
+        "note": { "kind": "blockEntity", "note": "Block entity byte `note` (0-24)." },
+        "powered": { "kind": "derived" }
+      },
+      "notes": [
+        "Bedrock id `minecraft:noteblock`, no block states. Changing the note does not cause a block update in Bedrock (MCPE-53919): observers cannot detect it."
+      ],
+      "refs": ["j2b-1.26.30", "wiki:Note_Block", "wiki:BlockEntityBE"]
+    },
+    "minecraft:target": {
+      "javaOnly": { "power": { "kind": "derived", "note": "No state in Bedrock." } }
+    },
+    "minecraft:daylight_detector": {
+      "notes": [
+        "`inverted=true` -> `minecraft:daylight_detector_inverted`; power -> redstone_signal."
+      ]
+    },
+    "minecraft:tnt": {
+      "notes": [
+        "`unstable` -> explode_bit (only state in 26.60; the Education-only allow_underwater_bit listed on Microsoft Learn is not part of the vanilla 26.60 permutations)."
+      ],
+      "refs": ["j2b-1.26.30"]
+    },
+    "minecraft:rail": {
+      "javaOnly": {
+        "waterlogged": {
+          "kind": "waterLayer",
+          "note": "Rails are destroyed by flowing water in Bedrock."
+        }
+      },
+      "notes": [
+        "Lone rails: Java places them along the player's look direction; this is listed as Java-only in the parity list (MCPE-52823)."
+      ],
+      "refs": ["j2b-1.26.30", "wiki:Rail"]
+    }
+  }
+}
