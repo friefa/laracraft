@@ -94,5 +94,146 @@
     "ossText": "laracraft is built with open-source software. Their license notices are part of every build.",
     "ossLink": "Third-party licenses",
     "disclaimerHeading": "Disclaimer"
+  },
+  "guide": {
+    "title": "Build guide",
+    "back": "Back to the build",
+    "loading": "Loading build…",
+    "planning": "Working out the build order…",
+    "progress": "{{ percent }} %",
+    "pos": "{{ x }} / {{ y }} / {{ z }}",
+    "errors": {
+      "plan": "The build guide could not be calculated.",
+      "plannerUnavailable": "The build order engine is not available in this version yet.",
+      "empty": "This build has no blocks yet – there is nothing to guide.",
+      "retry": "Try again"
+    },
+    "stepOf": "Step {{ current }} of {{ total }}",
+    "stepSlider": "Choose step",
+    "prev": "Previous step",
+    "next": "Next step",
+    "navLabel": "Step navigation",
+    "phase": {
+      "label": "Phase",
+      "structure": "Structure",
+      "redstone": "Redstone",
+      "power": "Power",
+      "fluids": "Fluids",
+      "cleanup": "Clean-up"
+    },
+    "tabs": {
+      "label": "Guide sections",
+      "step": "Step",
+      "overview": "Overview"
+    },
+    "sheet": {
+      "expand": "Show details",
+      "collapse": "Hide details"
+    },
+    "view": {
+      "label": "View options",
+      "showNext": "Show next step",
+      "layerOnly": "Only up to this layer",
+      "loading": "Loading 3D view…",
+      "unavailable": "The 3D view is not available on this device.",
+      "canvasLabel": "3D view of the current step"
+    },
+    "step": {
+      "materials": "Materials for this step",
+      "noMaterials": "No new materials in this step.",
+      "actions": "Blocks",
+      "hints": "Hints",
+      "place": "{{ count }}× {{ block }}",
+      "remove": "Break {{ count }}× {{ block }}",
+      "temporary": "temporary",
+      "actionLabel": "Block {{ n }} at {{ pos }}",
+      "selectHint": "Tap a block to see where to stand, where to look and where to click.",
+      "detailTitle": "Block {{ n }}: {{ block }}",
+      "close": "Close details",
+      "showHint": "Show positions"
+    },
+    "action": {
+      "hold": "Hold {{ item }}",
+      "stand": "Stand at {{ pos }} (feet)",
+      "click": "Click the {{ face }} of {{ block }}",
+      "clickGround": "Click the {{ face }} of the ground",
+      "half": {
+        "top": "Aim at the upper half of that face",
+        "bottom": "Aim at the lower half of that face"
+      },
+      "jump": "Place it while jumping (at the top of the jump)",
+      "sneak": "Hold sneak while placing",
+      "interactions": "Then right-click it {{ count }}×",
+      "temporary": "Temporary block – it is removed again later",
+      "remove": "Break {{ block }} at {{ pos }}",
+      "reason": {
+        "temporary-support": "It was only a temporary support.",
+        "scaffold": "It was only scaffolding."
+      }
+    },
+    "look": {
+      "text": "{{ direction }}, {{ vertical }}",
+      "horizontal": {
+        "north": "Look north",
+        "east": "Look east",
+        "south": "Look south",
+        "west": "Look west"
+      },
+      "vertical": {
+        "level": "straight ahead",
+        "up": "slightly up",
+        "down": "slightly down",
+        "upSteep": "steeply up",
+        "downSteep": "steeply down"
+      },
+      "compass": {
+        "north": "N",
+        "east": "E",
+        "south": "S",
+        "west": "W"
+      }
+    },
+    "face": {
+      "up": "top",
+      "down": "bottom",
+      "north": "north side",
+      "east": "east side",
+      "south": "south side",
+      "west": "west side"
+    },
+    "hint": {
+      "temporary-support": "Sand and gravel fall: place the temporary support first and remove it later.",
+      "scaffold": "Some blocks are out of reach – build the temporary scaffolding first.",
+      "remove-temporary": "This step removes temporary blocks. Break only the marked blocks.",
+      "keep-circuit-open": "Keep the circuit open: do not connect any power source yet.",
+      "power-source-last": "This step closes the circuit – the contraption may start running.",
+      "observer-order": "Place observers exactly in the given order so they do not fire too early.",
+      "fluids-last": "Water and lava come last so they don't flow into the build.",
+      "look-direction": "The direction of these blocks depends on where you look – follow the look direction exactly.",
+      "interaction": "Some blocks have to be right-clicked after placing (delay, mode)."
+    },
+    "overview": {
+      "stats": "{{ blocks }} blocks in {{ steps }} steps",
+      "totals": "Total materials",
+      "item": "Block",
+      "count": "Amount",
+      "gathered": "Gathered",
+      "gatheredItem": "{{ item }} gathered",
+      "progress": "{{ done }} of {{ total }} gathered",
+      "sortBy": "Sort by {{ column }}",
+      "reset": "Clear checklist",
+      "temporary": "Temporary materials",
+      "temporaryInfo": "Needed for supports and scaffolding; you get them back when they are removed.",
+      "warnings": "Warnings",
+      "noWarnings": "No warnings – this build can be built in survival as planned.",
+      "none": "None",
+      "warningAt": "at {{ pos }}"
+    },
+    "warning": {
+      "unknown-block": "Unknown block – placed without checking the rules.",
+      "unsupported-state": "This block state cannot be placed like this in survival.",
+      "unreachable": "No position found from which this block can be reached.",
+      "cycle": "Circular dependency – the order was chosen heuristically."
+    }
   }
 }
