@@ -216,15 +216,6 @@ a.close:hover {
   z-index: 4;
 }
 
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-
 // Phones and narrow windows: full-size 3D view behind a bottom sheet with three snap
 // points. Touches on the visible part of the view reach the canvas, never the sheet.
 @media (max-width: 899.98px) {

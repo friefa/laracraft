@@ -96,7 +96,7 @@ describe('GuidePage', () => {
     expect(stepOf()).toBe('Step 1 of 3');
     const phase = el.querySelector('.phase') as HTMLElement;
     expect(phase.textContent).toContain('Structure');
-    expect(phase.classList).toContain('lc-pill--green');
+    expect(phase.classList).toContain('lc-pill--soft-green');
     expect(el.textContent).toContain('2× Stone');
     expect(el.querySelector('.item')?.textContent).toContain('Stone');
     expect(el.querySelector('a[href="/build/b1"]')?.getAttribute('aria-label')).toBe(
@@ -107,7 +107,9 @@ describe('GuidePage', () => {
     expect(progress.style.getPropertyValue('--value')).toBe(String(1 / 3));
     expect(prevBtn().disabled).toBe(true);
     expect(nextBtn().textContent?.trim()).toBe('Continue');
-    expect(el.querySelector('.lc-callout--grey')?.textContent).toContain('Sand and gravel fall');
+    expect(el.querySelector('.lc-callout.lc-tone--grey')?.textContent).toContain(
+      'Sand and gravel fall',
+    );
   });
 
   it('navigates with buttons, arrow keys and the slider and updates the 3D view', async () => {
@@ -120,7 +122,7 @@ describe('GuidePage', () => {
     await settle();
     expect(stepOf()).toBe('Step 2 of 3');
     expect(el.querySelector('.phase')?.textContent).toContain('Redstone');
-    expect(el.querySelector('.phase')?.classList).toContain('lc-pill--orange');
+    expect(el.querySelector('.phase')?.classList).toContain('lc-pill--soft-orange');
     expect(doc.volume.blockCount).toBe(7);
     expect(renderer.update).toHaveBeenCalled();
 

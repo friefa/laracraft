@@ -27,6 +27,9 @@ import {
   writeIdList,
 } from './palette-model';
 
+/** Swipe distance on the handle that closes the sheet. */
+const SWIPE_CLOSE_PX = 96;
+
 export type PaletteTab = 'favorites' | 'recent' | 'all' | BlockCategory;
 
 function safeLocalStorage(doc: Document): Storage | undefined {
@@ -106,6 +109,11 @@ export class BlockPalette {
     }
   });
 
+  /** Swipe-down on the handle: current offset in px (0 = resting). */
+  protected readonly dragOffset = signal(0);
+  protected readonly dragging = signal(false);
+  private dragStartY = 0;
+
   name(def: BlockDefinition): string {
     return this.names().get(def.id) ?? def.id;
   }
@@ -146,6 +154,25 @@ export class BlockPalette {
     const target = this.returnFocus;
     this.returnFocus = null;
     if (target?.isConnected) target.focus();
+  }
+
+  protected onDragStart(event: PointerEvent): void {
+    if (event.target instanceof Element && event.target.closest('button')) return;
+    this.dragStartY = event.clientY;
+    this.dragging.set(true);
+    (event.currentTarget as Element | null)?.setPointerCapture?.(event.pointerId);
+  }
+
+  protected onDragMove(event: PointerEvent): void {
+    if (this.dragging()) this.dragOffset.set(Math.max(0, event.clientY - this.dragStartY));
+  }
+
+  protected onDragEnd(): void {
+    if (!this.dragging()) return;
+    const offset = this.dragOffset();
+    this.dragging.set(false);
+    this.dragOffset.set(0);
+    if (offset > SWIPE_CLOSE_PX) this.close();
   }
 
   protected onSearch(event: Event): void {

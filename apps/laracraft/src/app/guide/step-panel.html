@@ -1,7 +1,7 @@
 <div class="coach">
   <lc-lara class="coach-lara" [mood]="detail() ? 'think' : 'wave'" size="3rem" />
   @if (detail(); as d) {
-  <section #detail class="detail lc-bubble" aria-live="polite">
+  <section #detail class="detail lc-bubble lc-bubble--purple" aria-live="polite">
     <div class="detail-head">
       <lc-guide-block-tile [item]="d.state" />
       <h3>{{ d.title }}</h3>
@@ -36,7 +36,7 @@
     </ul>
   </section>
   } @else {
-  <p class="lc-bubble prompt">{{ 'guide.step.selectHint' | transloco }}</p>
+  <p class="lc-bubble lc-bubble--purple prompt">{{ 'guide.step.selectHint' | transloco }}</p>
   }
 </div>
 
@@ -66,7 +66,7 @@
         <lc-guide-block-tile [item]="g.state" />
         <span class="group-label">{{ g.label }}</span>
         @if (g.temporary && g.kind === 'place') {
-        <span class="lc-pill lc-pill--grey">{{ 'guide.step.temporary' | transloco }}</span>
+        <span class="lc-pill lc-pill--soft-grey">{{ 'guide.step.temporary' | transloco }}</span>
         }
       </div>
       <div class="chips">
@@ -93,7 +93,7 @@
   <h3 class="section-title">{{ 'guide.step.hints' | transloco }}</h3>
   <ul class="hints">
     @for (h of hints(); track $index) {
-    <li [class]="'lc-callout lc-callout--' + h.tone">
+    <li [class]="'lc-callout lc-tone--' + h.tone">
       <lc-guide-icon class="hint-icon" [name]="h.icon" />
       <div>
         <p>{{ h.text }}</p>

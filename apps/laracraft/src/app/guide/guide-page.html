@@ -89,10 +89,10 @@
           {{ 'guide.stepOf' | transloco: { current: index() + 1, total: total() } }}
         </strong>
         <span
-          [class]="'lc-pill lc-pill--' + phaseTone() + ' phase'"
+          [class]="'lc-pill lc-pill--soft-' + phaseTone() + ' phase'"
           [attr.data-phase]="v.step.phase"
         >
-          <span class="sr-only">{{ 'guide.phase.label' | transloco }}: </span>
+          <span class="lc-visually-hidden">{{ 'guide.phase.label' | transloco }}: </span>
           {{ 'guide.phase.' + v.step.phase | transloco }}
         </span>
       </div>
@@ -203,6 +203,6 @@
 <div class="planning" role="status">
   <p>{{ 'guide.planning' | transloco }}</p>
   <div class="lc-progress" [style.--value]="percent() / 100"></div>
-  <span class="sr-only">{{ 'guide.progress' | transloco: { percent: percent() } }}</span>
+  <span class="lc-visually-hidden">{{ 'guide.progress' | transloco: { percent: percent() } }}</span>
 </div>
 }

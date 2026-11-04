@@ -92,14 +92,14 @@
 <section>
   <h3 class="section-title">{{ 'guide.overview.warnings' | transloco }}</h3>
   @if (warnings().length === 0) {
-  <p class="lc-callout lc-callout--green">
+  <p class="lc-callout lc-tone--green">
     <lc-guide-icon name="check" />
     <span>{{ 'guide.overview.noWarnings' | transloco }}</span>
   </p>
   } @else {
   <ul class="warnings">
     @for (w of warnings(); track $index) {
-    <li class="lc-callout lc-callout--red" [title]="w.message">
+    <li class="lc-callout lc-tone--red" [title]="w.message">
       <lc-guide-icon name="alert" />
       <span>
         {{ w.text }} @if (w.at) {

@@ -2,7 +2,7 @@ import type { BuildPhase, HintCode } from '@laracraft/build-order';
 import type { GuideIconName } from './guide-icon';
 import type { ActionLine } from './guide-text';
 
-/** Colour family of the shared `.lc-pill--*` / `.lc-callout--*` classes. */
+/** Colour family: `.lc-tone--<tone>` (callouts) and `.lc-pill--soft-<tone>` (phase pills). */
 export type LessonTone = 'green' | 'blue' | 'orange' | 'yellow' | 'purple' | 'grey';
 
 /** Phase pill colours (docs/DESIGN.md): structure green, redstone orange, power yellow … */

@@ -1,21 +1,39 @@
-<dialog #sheet class="sheet" aria-labelledby="palette-title" (close)="onClosed()">
-  <div class="head">
-    <h2 id="palette-title">{{ 'editor.palette.title' | transloco }}</h2>
-    <button
-      type="button"
-      class="icon-button"
-      data-action="close-palette"
-      [attr.aria-label]="'editor.palette.close' | transloco"
-      (click)="close()"
-    >
-      <lc-icon name="close" />
-    </button>
+<dialog
+  #sheet
+  class="sheet"
+  aria-labelledby="palette-title"
+  [style.translate]="dragOffset() ? '0 ' + dragOffset() + 'px' : null"
+  [class.dragging]="dragging()"
+  (close)="onClosed()"
+>
+  <div
+    class="grab"
+    (pointerdown)="onDragStart($event)"
+    (pointermove)="onDragMove($event)"
+    (pointerup)="onDragEnd()"
+    (pointercancel)="onDragEnd()"
+  >
+    <span class="handle" aria-hidden="true"></span>
+    <div class="head">
+      <h2 id="palette-title">{{ 'editor.palette.title' | transloco }}</h2>
+      <button
+        type="button"
+        class="lc-btn lc-btn--icon lc-btn--sm"
+        data-action="close-palette"
+        [attr.aria-label]="'editor.palette.close' | transloco"
+        [title]="'editor.palette.close' | transloco"
+        (click)="close()"
+      >
+        <lc-icon name="close" />
+      </button>
+    </div>
   </div>
 
   <div class="search">
     <lc-icon name="search" />
     <input
       #search
+      class="lc-input"
       type="search"
       autocomplete="off"
       enterkeyhint="search"
@@ -35,7 +53,9 @@
       [attr.aria-pressed]="!query().trim() && tab() === t"
       (click)="selectTab(t)"
     >
-      {{ tabLabel(t) | transloco }}
+      @if (t === 'favorites') {
+      <lc-icon name="star" [filled]="true" />
+      } {{ tabLabel(t) | transloco }}
     </button>
     }
   </div>
@@ -50,16 +70,17 @@
         [attr.aria-pressed]="def.id === activeId()"
         (click)="choose(def)"
       >
-        <lc-block-icon [block]="def" />
+        <span class="tile"><lc-block-icon [block]="def" /></span>
         <span class="label">{{ label }}</span>
       </button>
       <button
         type="button"
-        class="fav icon-button"
+        class="fav"
         [class.on]="fav"
         [attr.data-fav]="def.id"
         [attr.aria-pressed]="fav"
         [attr.aria-label]="'editor.palette.favorite' | transloco: { name: label }"
+        [title]="'editor.palette.favorite' | transloco: { name: label }"
         (click)="toggleFavorite(def)"
       >
         <lc-icon name="star" [filled]="fav" />
