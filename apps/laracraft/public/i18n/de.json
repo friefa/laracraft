@@ -98,6 +98,8 @@
       "tooLarge": "Die Datei ist zu groß (höchstens {{ max }} MB).",
       "invalidFile": "Diese Datei ist kein gültiger laracraft-Bau.",
       "unsupportedVersion": "Diese Datei stammt aus einer neueren laracraft-Version. Bitte aktualisiere die App.",
+      "exportFailed": "Der Bau konnte nicht exportiert werden. Bitte versuche es erneut.",
+      "shareFailed": "Das Teilen-Menü konnte nicht geöffnet werden. Bitte versuche es erneut.",
       "unknown": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
     }
   },
