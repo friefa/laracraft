@@ -18,14 +18,23 @@ export type MdBlock =
 const BULLET = /^\s*[-*•]\s+(.*)$/;
 const NUMBERED = /^\s*\d{1,3}[.)]\s+(.*)$/;
 
-/** Splits `**bold**` runs. An unclosed `**` (e.g. mid-stream) stays literal text. */
+/**
+ * Splits `**bold**` runs. An unclosed `**` (mid-stream, before the closing marker arrived)
+ * makes the rest of the line bold, so streaming text does not flash raw markers.
+ */
 export function parseInline(text: string): Line {
   const out: Inline[] = [];
   let rest = text;
   for (;;) {
     const start = rest.indexOf('**');
-    const end = start < 0 ? -1 : rest.indexOf('**', start + 2);
-    if (start < 0 || end < 0) break;
+    if (start < 0) break;
+    const end = rest.indexOf('**', start + 2);
+    if (end < 0) {
+      if (start > 0) out.push({ text: rest.slice(0, start), bold: false });
+      const tail = rest.slice(start + 2);
+      if (tail) out.push({ text: tail, bold: true });
+      return out;
+    }
     if (start > 0) out.push({ text: rest.slice(0, start), bold: false });
     const bold = rest.slice(start + 2, end);
     if (bold) out.push({ text: bold, bold: true });
@@ -38,7 +47,9 @@ export function parseInline(text: string): Line {
 export function parseMarkdownLite(text: string): MdBlock[] {
   const blocks: MdBlock[] = [];
   let para: Line[] = [];
-  let list: { kind: 'ul' | 'ol'; items: Line[] } | null = null;
+  type ListBlock = { kind: 'ul' | 'ol'; items: Line[] };
+  // Typed via a cast: TS does not see the closures below resetting it.
+  let list = null as ListBlock | null;
   const flushPara = () => {
     if (para.length) blocks.push({ kind: 'p', lines: para });
     para = [];

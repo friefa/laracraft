@@ -25,9 +25,9 @@ export function blocksKey(count: number): string {
   return count === 1 ? 'lara.chip.block' : 'lara.chip.blocks';
 }
 
-/** Translation key for an agent error (`lara.error.*`). */
+/** Translation key for an agent error (`lara.errors.*`). */
 export function errorKey(code: LaraErrorCode): string {
-  return `lara.error.${code === 'not-configured' ? 'notConfigured' : code === 'rate-limit' ? 'rateLimit' : code}`;
+  return `lara.errors.${code === 'not-configured' ? 'notConfigured' : code === 'rate-limit' ? 'rateLimit' : code}`;
 }
 
 /** Errors the user fixes in the settings (show a settings button instead of only retry). */

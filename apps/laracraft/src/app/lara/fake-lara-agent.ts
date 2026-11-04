@@ -7,6 +7,7 @@ import type {
   LaraSession,
   ProviderConfig,
   Usage,
+  UsageStore,
 } from '@laracraft/lara-agent';
 import { createLaraTurn } from '@laracraft/lara-dsl';
 import type { LaraAgent } from './lara-agent';
@@ -23,13 +24,14 @@ import type { LaraAgent } from './lara-agent';
 export interface FakeLaraOptions {
   /** Pause between streamed chunks in ms (0 in unit tests). */
   readonly delayMs?: number;
+  readonly usageStore?: UsageStore;
 }
 
 export function createFakeLaraAgent(options: FakeLaraOptions = {}): LaraAgent {
   const delayMs = options.delayMs ?? 45;
   return {
     createSession: (provider, context, history = []) =>
-      new FakeLaraSession(provider, context, [...history], delayMs),
+      new FakeLaraSession(provider, context, [...history], delayMs, options.usageStore),
     testProvider: async (provider, signal) => {
       await sleep(delayMs * 8, signal);
       if (provider.apiKey === 'invalid' || provider.apiKey.trim().length < 8) {
@@ -66,6 +68,7 @@ class FakeLaraSession implements LaraSession {
     private readonly context: LaraContext,
     private readonly messages: ChatMessage[],
     private readonly delayMs: number,
+    private readonly usageStore?: UsageStore,
   ) {}
 
   get history(): readonly ChatMessage[] {
@@ -84,6 +87,11 @@ class FakeLaraSession implements LaraSession {
     onEvent({ type: 'turn-start', turnId });
     if (this.provider.apiKey === 'invalid') {
       onEvent({ type: 'error', error: { code: 'auth', message: 'invalid x-api-key' } });
+      return;
+    }
+    const limit = await this.usageStore?.dailyLimit();
+    if (limit && ((await this.usageStore?.usedToday()) ?? 0) >= limit) {
+      onEvent({ type: 'error', error: { code: 'limit', message: 'daily token limit reached' } });
       return;
     }
 
@@ -163,6 +171,7 @@ class FakeLaraSession implements LaraSession {
       outputTokens: 212,
       cachedInputTokens: 1200,
     };
+    await this.usageStore?.add(usage.inputTokens + usage.outputTokens, usage);
     onEvent({ type: 'usage', usage });
     const message: ChatMessage = {
       role: 'lara',

@@ -493,7 +493,7 @@
       "insertModule": "Module",
       "other": "Change"
     },
-    "error": {
+    "errors": {
       "notConfigured": "Lara is not set up yet.",
       "auth": "The API key was rejected. Check it in the settings.",
       "rateLimit": "The provider is slowing down requests. Wait a moment and try again.",

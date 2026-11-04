@@ -47,6 +47,11 @@ erst dann **Umsetzung in der App**. Danach Dokument und App wieder abgleichen (T
 | `.lc-pill` + `--blue/--orange/--red`                                                               | Badges (Phase, Status)    |
 | `.lc-input`                                                                                        | Textfelder                |
 | `.lc-pop`                                                                                          | einmalige Federanimation  |
+| `.lc-btn--lara`, `.lc-lara-btn` (+ `--float`, `__avatar`)                                          | Lara-Button (lila)        |
+| `.lc-chip` (+ `.cube`, `--action`)                                                                 | Bau-Operation, Vorschlag  |
+| `.lc-typing`                                                                                       | Lara schreibt (Punkte)    |
+| `.lc-dock` (+ `--full`, `.lc-dock-open`/`.lc-dock-avoid`)                                          | Sheet / Seitenpanel       |
+| `.lc-field` (+ `__label/__hint/__error`), `.lc-check`                                              | Formularfelder            |
 
 ## Bildschirm-Leitlinien
 
@@ -54,6 +59,9 @@ erst dann **Umsetzung in der App**. Danach Dokument und App wieder abgleichen (T
   Beispiele als bunte Karten.
 - **Editor:** 3D-Ansicht bleibt ruhig; Werkzeugleiste unten als dicke Icon-Buttons (aktives Werkzeug `--selected`),
   Palette als Bottom-Sheet mit großen Blockkacheln.
+- **Lara-Chat:** lila Lara-Button über der Werkzeugleiste; Chat als Bottom-Sheet (halb/groß, 3D bleibt oben
+  sichtbar) bzw. Seitenpanel auf dem Desktop. Bau-Operationen als Chips, Live-Vorschau, Stopp, Nochmal,
+  „Rückgängig“ = ein Editor-Schritt. Ohne Schlüssel: Onboarding (Kosten, Daten, Schlüssel) → Einstellungen.
 - **Bauanleitung = Lektion:** oben dicker Fortschrittsbalken über alle Schritte + Schließen-X; unten großer grüner
   „Weiter“-Button; nach jedem Schritt kurzer Erfolgsmoment („Schritt geschafft!“); Phase als farbige Pill
   (Struktur grün, Redstone orange, Strom gelb, Flüssigkeiten blau, Aufräumen grau).

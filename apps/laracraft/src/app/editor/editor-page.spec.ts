@@ -362,6 +362,61 @@ describe('EditorPage', () => {
     }
   });
 
+  it('opens the Lara chat (onboarding without a key) and closes it again', async () => {
+    sessionStorage.clear();
+    const { fixture, el } = await setup();
+    const fab = q<HTMLButtonElement>(el, '[data-action="lara"]');
+    expect(fab.getAttribute('aria-expanded')).toBe('false');
+    await click(fixture, fab);
+    await delay(10);
+    await fixture.whenStable();
+    expect(fab.getAttribute('aria-expanded')).toBe('true');
+    expect(q(el, '#lara-chat [data-state="onboarding"]')).toBeTruthy();
+    await click(fixture, q(el, '[data-action="chat-close"]'));
+    expect(el.querySelector('#lara-chat')).toBeNull();
+  });
+
+  it('records a Lara turn as one undo step and blocks edits while Lara works', async () => {
+    const { fixture, el, doc, renderer, store } = await setup();
+    const page = fixture.componentInstance as unknown as {
+      laraHost: () => import('../lara/lara-chat-host').LaraChatHost;
+    };
+    const host = page.laraHost();
+    expect(host.buildId).toBe('b1');
+    expect(host.canUndoTurn()).toBe(false);
+
+    host.setBusy(true);
+    await fixture.whenStable();
+    expect(q<HTMLButtonElement>(el, '[data-action="undo"]').disabled).toBe(true);
+    renderer.tap({ pos: { x: 0, y: 0, z: 0 }, face: 'up' });
+    expect(doc.getBlock(0, 1, 0)).not.toBe(STONE);
+
+    // Live preview: the agent applies operations directly to the document.
+    const changes = [
+      { pos: { x: 1, y: 0, z: 0 }, before: doc.getBlock(1, 0, 0), after: STONE },
+      { pos: { x: 2, y: 0, z: 0 }, before: doc.getBlock(2, 0, 0), after: STONE },
+    ];
+    doc.apply({ changes: changes.slice(0, 1), origin: 'lara' });
+    host.previewChanged();
+    doc.apply({ changes: changes.slice(1), origin: 'lara' });
+    host.previewChanged();
+    expect(renderer.updates).toBe(2);
+
+    host.recordTurn({ changes, origin: 'lara', label: 'Lara' });
+    host.setBusy(false);
+    await fixture.whenStable();
+    expect(host.canUndoTurn()).toBe(true);
+    expect(q<HTMLButtonElement>(el, '[data-action="undo"]').disabled).toBe(false);
+    await delay(20);
+    expect(store.save).toHaveBeenCalled();
+
+    expect(host.undoTurn()).toBe(true);
+    expect(doc.getBlock(1, 0, 0)).not.toBe(STONE);
+    expect(doc.getBlock(2, 0, 0)).not.toBe(STONE);
+    expect(host.canUndoTurn()).toBe(false);
+    expect(host.undoTurn()).toBe(false);
+  });
+
   it('tells the renderer which canvas edges the toolbars cover before framing', async () => {
     const { renderer } = await setup();
     expect(renderer.insets.length).toBeGreaterThan(0);

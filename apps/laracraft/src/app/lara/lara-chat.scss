@@ -190,7 +190,10 @@
 }
 
 .onboarding {
+  flex: 1;
+  min-height: 0;
   display: grid;
+  align-content: start;
   gap: 0.875rem;
   padding: 1rem;
   overflow-y: auto;

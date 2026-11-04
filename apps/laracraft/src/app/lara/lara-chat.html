@@ -114,7 +114,7 @@
       type="button"
       class="lc-chip lc-chip--action"
       [attr.data-suggestion]="s"
-      (click)="useSuggestion('lara.chat.suggestions.' + s | transloco)"
+      (click)="useSuggestion(s)"
     >
       {{ 'lara.chat.suggestions.' + s | transloco }}
     </button>

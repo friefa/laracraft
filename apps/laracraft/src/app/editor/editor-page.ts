@@ -177,7 +177,7 @@ const javaRegistry = () => (sharedRegistry ??= createJavaBlockRegistry());
   styleUrl: './editor-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class.chat-open]': 'chatOpen()',
+    '[class.lc-dock-open]': 'chatOpen()',
     '(document:keydown)': 'onKeydown($event)',
     '(document:pointerdown)': 'onDocumentPointerDown($event)',
   },
@@ -346,6 +346,8 @@ export class EditorPage {
 
   /** The editor side of the Lara chat: live preview, one undo step per turn, busy lock. */
   private createLaraHost(session: EditorSession, buildId: string): LaraChatHost {
+    // Bounds before Lara's turn: frame the view at the end when the build grew.
+    let turnStartBounds: Box3 | undefined;
     return {
       buildId,
       doc: session.doc,
@@ -356,7 +358,7 @@ export class EditorPage {
         this.bounds.set(session.doc.volume.bounds());
       },
       recordTurn: (changeSet: ChangeSet) => {
-        const before = this.bounds();
+        const before = turnStartBounds;
         session.recordExternal(changeSet);
         this.laraStep.set(session.history.length);
         // Show what Lara built when it reaches outside the previous build.
@@ -368,7 +370,10 @@ export class EditorPage {
         session.undo();
         return true;
       },
-      setBusy: (busy: boolean) => this.laraBusy.set(busy),
+      setBusy: (busy: boolean) => {
+        if (busy && !this.laraBusy()) turnStartBounds = session.doc.volume.bounds();
+        this.laraBusy.set(busy);
+      },
     };
   }
 

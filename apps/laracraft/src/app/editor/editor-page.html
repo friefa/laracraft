@@ -147,7 +147,7 @@
 @if (phase() === 'ready') { @if (showLayers()) {
 <lc-layer-slider
   #layersPanel
-  class="layers"
+  class="layers lc-dock-avoid"
   [min]="layerMin()"
   [max]="layerMax()"
   [limit]="layer()"
@@ -155,11 +155,11 @@
 />
 }
 
-<footer #bottomBar class="bar bottom">
+<footer #bottomBar class="bar bottom lc-dock-avoid">
   <button
     #laraFab
     type="button"
-    class="lara-fab lc-btn lc-btn--lara"
+    class="lc-btn lc-btn--lara lc-lara-btn lc-lara-btn--float"
     data-action="lara"
     aria-controls="lara-chat"
     [attr.aria-expanded]="chatOpen()"
@@ -167,7 +167,7 @@
     [title]="'lara.open' | transloco"
     (click)="chatOpen() ? closeChat() : openChat()"
   >
-    <span class="avatar"><lc-lara mood="happy" size="2.5rem" /></span>
+    <span class="lc-lara-btn__avatar"><lc-lara mood="happy" size="2.5rem" /></span>
     {{ 'lara.name' | transloco }}
   </button>
   @if (hasSelection() || hasClipboard()) {
@@ -255,7 +255,7 @@
 </footer>
 
 @if (chatOpen() && laraHost(); as host) {
-<div #chatPanel id="lara-chat" class="chat-panel" [class.full]="chatSize() === 'full'">
+<div #chatPanel id="lara-chat" class="lc-dock" [class.lc-dock--full]="chatSize() === 'full'">
   @defer (on immediate) {
   <lc-lara-chat
     [host]="host"
@@ -264,7 +264,7 @@
     (closed)="closeChat()"
   />
   } @loading {
-  <p class="chat-loading">{{ 'lara.chat.loading' | transloco }}</p>
+  <p class="lc-dock__loading">{{ 'lara.chat.loading' | transloco }}</p>
   }
 </div>
 }

@@ -1,5 +1,5 @@
 import { DOCUMENT, Injectable, computed, inject, signal } from '@angular/core';
-import type { ProviderConfig, ProviderKind, Usage } from '@laracraft/lara-agent';
+import type { ProviderConfig, ProviderKind, UsageStore } from '@laracraft/lara-agent';
 import { LARA_SECRET_STORE } from './secret-store';
 
 /** Lara provider settings WITHOUT the API key (stored in plain `localStorage`). */
@@ -171,14 +171,19 @@ export class LaraSettings {
     this.hasKeySignal.set(false);
   }
 
-  /** Adds a turn's usage to today's total. */
-  recordUsage(usage: Usage): void {
-    const day = localDay(new Date());
-    const tokens = (this.tokensToday() || 0) + usage.inputTokens + usage.outputTokens;
-    const next = { day, tokens };
+  /** Adds tokens (input + output) to today's total. */
+  addTokens(tokens: number): void {
+    const next = { day: localDay(new Date()), tokens: this.tokensToday() + Math.max(0, tokens) };
     this.usageSignal.set(next);
     this.write(USAGE_KEY, JSON.stringify(next));
   }
+
+  /** The agent's view of the local daily budget (it checks and reports every request). */
+  readonly usageStore: UsageStore = {
+    usedToday: () => this.tokensToday(),
+    add: (tokens) => this.addTokens(tokens),
+    dailyLimit: () => this.prefs().dailyTokenLimit,
+  };
 
   private readUsage(): DailyUsage {
     try {

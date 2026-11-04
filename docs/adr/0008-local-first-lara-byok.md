@@ -38,3 +38,17 @@
   in der App.
 - Für Store-Releases mit vielen Nutzern ohne eigenen Key bleibt ein Backend (ADR-0007) die spätere Option.
 - Apple/Google erlauben Apps mit eigenem API-Key des Nutzers; die Store-Texte müssen das erklären (M5).
+
+## Umsetzung in der App (L2, 2026-11-04)
+
+- **Sicherer Speicher (nativ):** `capacitor-secure-storage-plugin` 0.13.0 (MIT, Peer `@capacitor/core >= 8`,
+  letzte Version 2026-01, iOS Keychain / Android Keystore, keine weiteren Abhängigkeiten). Verworfen:
+  `@aparajita/capacitor-secure-storage` 8.x (MIT, gepflegt, zieht aber `@capacitor/app` und
+  `@capacitor/keyboard` als Abhängigkeiten mit). Zugriff nur über `LARA_SECRET_STORE`
+  (`apps/laracraft/src/app/lara/secret-store.ts`); Web: `sessionStorage`, `localStorage` nur mit Häkchen
+  „Auf diesem Gerät merken“ und Warnung.
+- **Netz in den Apps:** OpenAI-kompatible Endpunkte laufen nativ über `CapacitorHttp` (kein CORS). Grenze: die
+  Antwort kommt dann am Stück statt Wort für Wort. Anthropic nutzt den normalen `fetch` mit Streaming.
+- **Tageslimit:** `LaraSettings.usageStore` (lokal, pro Kalendertag) wird dem Agenten als `usageStore` übergeben.
+- **Entwicklung:** `localStorage['laracraft.lara.devFake'] = '1'` schaltet auf einen Skript-Agenten ohne Netz
+  (UI-Arbeit, Screenshots).

@@ -1,13 +1,17 @@
 import { parseInline, parseMarkdownLite } from './markdown-lite';
 
 describe('markdown-lite', () => {
-  it('parses bold runs and keeps unclosed markers literal', () => {
+  it('parses bold runs; an unclosed marker (mid-stream) bolds the rest', () => {
     expect(parseInline('a **b** c')).toEqual([
       { text: 'a ', bold: false },
       { text: 'b', bold: true },
       { text: ' c', bold: false },
     ]);
-    expect(parseInline('streaming **hal')).toEqual([{ text: 'streaming **hal', bold: false }]);
+    expect(parseInline('streaming **hal')).toEqual([
+      { text: 'streaming ', bold: false },
+      { text: 'hal', bold: true },
+    ]);
+    expect(parseInline('a **')).toEqual([{ text: 'a ', bold: false }]);
     expect(parseInline('')).toEqual([]);
   });
 

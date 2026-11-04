@@ -714,6 +714,7 @@
         <a href="#screens-builds">Meine Bauten</a>
         <a href="#screens-editor">Editor</a>
         <a href="#screens-guide">Bauanleitung</a>
+        <a href="#screens-lara">Lara</a>
         <a href="#screens-desktop">Desktop</a>
         <a href="#notes">Hinweise</a>
       </nav>
@@ -10491,6 +10492,3260 @@
             </figure>
           </div>
         </section>
+        <section class="doc-sub" id="screens-lara">
+          <h3>Lara: Chat und Einstellungen</h3>
+          <p class="doc-muted">
+            Lara spricht direkt mit dem Anbieter, den die Nutzerin selbst einträgt (ADR-0008,
+            eigener API-Schlüssel). Der Chat ist auf dem Handy ein Bottom-Sheet (halb/groß – die
+            3D-Ansicht bleibt darüber sichtbar), auf dem Desktop ein Seitenpanel rechts.
+          </p>
+          <div class="doc-shots">
+            <figure class="doc-shot" id="v-lara-button">
+              <div class="doc-device">
+                <div class="doc-screen" data-screen="lara-button">
+                  <lc-root
+                    ><button type="button" class="skip-link lc-btn lc-btn--secondary">
+                      Zum Inhalt springen
+                    </button>
+                    <header class="app-header">
+                      <a routerlink="/" class="brand" aria-label="laracraft – Startseite" href="#"
+                        ><lc-lara size="2.5rem" data-mood="happy" style="--lara-size: 2.5rem"
+                          ><svg viewBox="0 0 100 100" aria-hidden="true">
+                            <use href="#lara-happy"></use></svg></lc-lara
+                        ><span class="wordmark">laracraft</span></a
+                      >
+                      <div class="lang-switch">
+                        <label for="lang-select" class="lc-visually-hidden">Sprache</label
+                        ><select id="lang-select" class="lc-select">
+                          <option value="de" lang="de">Deutsch</option>
+                          <option value="en" lang="en">English</option>
+                        </select>
+                      </div>
+                    </header>
+                    <main class="app-main">
+                      <router-outlet></router-outlet
+                      ><lc-editor-page
+                        ><img
+                          class="viewport mock-scene"
+                          src="assets/scene-house.png"
+                          alt="3D-Ansicht von „Haus“. Tippe auf einen Block, um das aktive Werkzeug zu benutzen; ziehe, um die Kamera zu drehen." />
+                        <header class="bar top">
+                          <a
+                            routerlink="/"
+                            data-action="back"
+                            class="lc-btn lc-btn--icon"
+                            title="Zurück zu meinen Bauten"
+                            aria-label="Zurück zu meinen Bauten"
+                            href="#"
+                            ><lc-icon name="back"
+                              ><svg
+                                viewBox="0 0 24 24"
+                                width="24"
+                                height="24"
+                                aria-hidden="true"
+                                focusable="false"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              >
+                                <path
+                                  d="M10.5 4.5L3.5 12l7 7.5V15H18a2 2 0 002-2v-2a2 2 0 00-2-2h-7.5z"
+                                  fill="currentColor"
+                                  stroke="currentColor"
+                                  stroke-width="2"
+                                ></path></svg></lc-icon
+                          ></a>
+                          <div class="title">
+                            <h1>Haus</h1>
+                            <p role="status" class="lc-pill save" data-state="idle">
+                              <span aria-hidden="true" class="dot"></span> Gespeichert
+                            </p>
+                          </div>
+                          <button
+                            type="button"
+                            data-action="undo"
+                            class="lc-btn lc-btn--icon"
+                            disabled=""
+                            title="Rückgängig"
+                            aria-label="Rückgängig"
+                          >
+                            <lc-icon name="undo"
+                              ><svg
+                                viewBox="0 0 24 24"
+                                width="24"
+                                height="24"
+                                aria-hidden="true"
+                                focusable="false"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              >
+                                <path
+                                  d="M8 9h6.5a5 5 0 010 10H11"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  stroke-width="3.5"
+                                ></path>
+                                <path
+                                  d="M9.5 4L3.5 9l6 5z"
+                                  fill="currentColor"
+                                  stroke="currentColor"
+                                  stroke-width="2"
+                                ></path></svg
+                            ></lc-icon></button
+                          ><button
+                            type="button"
+                            data-action="redo"
+                            class="lc-btn lc-btn--icon"
+                            disabled=""
+                            title="Wiederholen"
+                            aria-label="Wiederholen"
+                          >
+                            <lc-icon name="redo"
+                              ><svg
+                                viewBox="0 0 24 24"
+                                width="24"
+                                height="24"
+                                aria-hidden="true"
+                                focusable="false"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              >
+                                <path
+                                  d="M16 9H9.5a5 5 0 000 10H13"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  stroke-width="3.5"
+                                ></path>
+                                <path
+                                  d="M14.5 4l6 5-6 5z"
+                                  fill="currentColor"
+                                  stroke="currentColor"
+                                  stroke-width="2"
+                                ></path></svg
+                            ></lc-icon>
+                          </button>
+                          <div class="menu-root">
+                            <button
+                              type="button"
+                              data-action="more"
+                              aria-controls="editor-menu"
+                              class="lc-btn lc-btn--icon"
+                              title="Mehr"
+                              aria-expanded="false"
+                              aria-label="Mehr"
+                            >
+                              <lc-icon name="more"
+                                ><svg
+                                  viewBox="0 0 24 24"
+                                  width="24"
+                                  height="24"
+                                  aria-hidden="true"
+                                  focusable="false"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                >
+                                  <path
+                                    d="M9.6 5a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0z"
+                                    fill="currentColor"
+                                    stroke="none"
+                                    stroke-width="0"
+                                  ></path>
+                                  <path
+                                    d="M9.6 12a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0z"
+                                    fill="currentColor"
+                                    stroke="none"
+                                    stroke-width="0"
+                                  ></path>
+                                  <path
+                                    d="M9.6 19a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0z"
+                                    fill="currentColor"
+                                    stroke="none"
+                                    stroke-width="0"
+                                  ></path></svg
+                              ></lc-icon>
+                            </button>
+                          </div>
+                        </header>
+                        <div class="messages"><p role="status" class="visually-hidden"></p></div>
+                        <lc-layer-slider class="layers lc-dock-avoid"
+                          ><span aria-hidden="true" class="lc-pill lc-pill--blue value"> ∞ </span>
+                          <div class="track" style="--value: 1">
+                            <span class="thumb"></span
+                            ><input
+                              type="range"
+                              data-control="layer"
+                              step="1"
+                              min="0"
+                              max="4"
+                              aria-label="Ebene"
+                              aria-valuetext="Alle Ebenen"
+                              value="4"
+                            />
+                          </div>
+                          <lc-icon name="layers"
+                            ><svg
+                              viewBox="0 0 24 24"
+                              width="24"
+                              height="24"
+                              aria-hidden="true"
+                              focusable="false"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <path
+                                d="M3 14l9 5 9-5"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="3.5"
+                                opacity="0.55"
+                              ></path>
+                              <path
+                                d="M12 3.5l9 5-9 5-9-5z"
+                                fill="currentColor"
+                                stroke="currentColor"
+                                stroke-width="2"
+                              ></path></svg></lc-icon
+                        ></lc-layer-slider>
+                        <footer class="bar bottom lc-dock-avoid">
+                          <button
+                            type="button"
+                            data-action="lara"
+                            aria-controls="lara-chat"
+                            class="lc-btn lc-btn--lara lc-lara-btn lc-lara-btn--float"
+                            title="Mit Lara bauen"
+                            aria-expanded="false"
+                            aria-label="Mit Lara bauen"
+                          >
+                            <span class="lc-lara-btn__avatar"
+                              ><lc-lara
+                                mood="happy"
+                                size="2.5rem"
+                                data-mood="happy"
+                                style="--lara-size: 2.5rem"
+                                ><svg viewBox="0 0 100 100" aria-hidden="true">
+                                  <use href="#lara-happy"></use></svg></lc-lara
+                            ></span>
+                            Lara
+                          </button>
+                          <div class="row">
+                            <button
+                              type="button"
+                              data-action="palette"
+                              aria-haspopup="dialog"
+                              class="lc-btn active-block"
+                              aria-label="Block wählen (aktiv: Stein)"
+                            >
+                              <span class="tile"
+                                ><lc-block-icon
+                                  aria-hidden="true"
+                                  style="
+                                    background-image: url('http://localhost:4317/assets/textures/atlas.png');
+                                    background-size: 6400% 6400%;
+                                    background-position: 51.7857% 55.3571%;
+                                  "
+                                ></lc-block-icon></span
+                              ><span class="block-name">Stein</span>
+                            </button>
+                            <div role="toolbar" class="tools" aria-label="Werkzeuge">
+                              <button
+                                type="button"
+                                class="lc-btn lc-btn--icon lc-btn--selected"
+                                title="Setzen (1)"
+                                data-tool="place"
+                                aria-pressed="true"
+                                aria-label="Setzen"
+                                aria-keyshortcuts="1"
+                              >
+                                <lc-icon
+                                  ><svg
+                                    viewBox="0 0 24 24"
+                                    width="24"
+                                    height="24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    <path
+                                      d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"
+                                      fill="currentColor"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                      opacity="0.45"
+                                    ></path>
+                                    <path
+                                      d="M4 7.5L12 12v9l-8-4.5z"
+                                      fill="currentColor"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                    ></path>
+                                    <path
+                                      d="M20 7.5L12 12v9l8-4.5z"
+                                      fill="currentColor"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                      opacity="0.7"
+                                    ></path></svg
+                                ></lc-icon></button
+                              ><button
+                                type="button"
+                                class="lc-btn lc-btn--icon"
+                                title="Entfernen (2)"
+                                data-tool="remove"
+                                aria-pressed="false"
+                                aria-label="Entfernen"
+                                aria-keyshortcuts="2"
+                              >
+                                <lc-icon
+                                  ><svg
+                                    viewBox="0 0 24 24"
+                                    width="24"
+                                    height="24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    <path
+                                      d="M4 6.5h16"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="3"
+                                    ></path>
+                                    <path
+                                      d="M9.5 6V4.5h5V6"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="2.5"
+                                    ></path>
+                                    <path
+                                      d="M6.5 9.5h11l-1 10h-9z"
+                                      fill="currentColor"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                    ></path></svg
+                                ></lc-icon></button
+                              ><button
+                                type="button"
+                                class="lc-btn lc-btn--icon"
+                                title="Block aufnehmen (3)"
+                                data-tool="pick-block"
+                                aria-pressed="false"
+                                aria-label="Block aufnehmen"
+                                aria-keyshortcuts="3"
+                              >
+                                <lc-icon
+                                  ><svg
+                                    viewBox="0 0 24 24"
+                                    width="24"
+                                    height="24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    <path
+                                      d="M14.5 4.5a2.5 2.5 0 013.5 0l1.5 1.5a2.5 2.5 0 010 3.5L17.5 11.5l-5-5z"
+                                      fill="currentColor"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                    ></path>
+                                    <path
+                                      d="M14.5 9.5l-8 8"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="4"
+                                    ></path>
+                                    <path
+                                      d="M6 18l-2 2"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="2.5"
+                                      opacity="0.6"
+                                    ></path></svg
+                                ></lc-icon></button
+                              ><button
+                                type="button"
+                                class="lc-btn lc-btn--icon"
+                                title="Auswählen (4)"
+                                data-tool="select"
+                                aria-pressed="false"
+                                aria-label="Auswählen"
+                                aria-keyshortcuts="4"
+                              >
+                                <lc-icon
+                                  ><svg
+                                    viewBox="0 0 24 24"
+                                    width="24"
+                                    height="24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    <path
+                                      d="M4 9V6.5A2.5 2.5 0 016.5 4H9M15 4h2.5A2.5 2.5 0 0120 6.5V9M20 15v2.5a2.5 2.5 0 01-2.5 2.5H15M9 20H6.5A2.5 2.5 0 014 17.5V15"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="3.5"
+                                    ></path>
+                                    <path
+                                      d="M9.5 9.5h5v5h-5z"
+                                      fill="currentColor"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                      opacity="0.45"
+                                    ></path></svg
+                                ></lc-icon>
+                              </button>
+                            </div>
+                          </div>
+                        </footer>
+                        <lc-block-palette></lc-block-palette
+                      ></lc-editor-page>
+                    </main>
+                    <footer class="app-footer">
+                      <p class="disclaimer">
+                        Nicht offiziell. Nicht mit Mojang oder Microsoft verbunden.
+                      </p>
+                      <nav aria-label="Rechtliches">
+                        <a routerlink="/credits" href="#">Credits</a>
+                      </nav>
+                    </footer></lc-root
+                  >
+                </div>
+              </div>
+              <figcaption>
+                <strong>Ansicht: Editor – Lara-Chat geschlossen (Button)</strong
+                ><span
+                  >Lila Lara-Button mit Avatar sitzt rechts über der Werkzeugleiste und öffnet den
+                  Chat.</span
+                >
+              </figcaption>
+            </figure>
+            <figure class="doc-shot" id="v-lara-onboarding">
+              <div class="doc-device">
+                <div class="doc-screen" data-screen="lara-onboarding">
+                  <lc-root
+                    ><button type="button" class="skip-link lc-btn lc-btn--secondary">
+                      Zum Inhalt springen
+                    </button>
+                    <header class="app-header">
+                      <a routerlink="/" class="brand" aria-label="laracraft – Startseite" href="#"
+                        ><lc-lara size="2.5rem" data-mood="happy" style="--lara-size: 2.5rem"
+                          ><svg viewBox="0 0 100 100" aria-hidden="true">
+                            <use href="#lara-happy"></use></svg></lc-lara
+                        ><span class="wordmark">laracraft</span></a
+                      >
+                      <div class="lang-switch">
+                        <label for="lang-select" class="lc-visually-hidden">Sprache</label
+                        ><select id="lang-select" class="lc-select">
+                          <option value="de" lang="de">Deutsch</option>
+                          <option value="en" lang="en">English</option>
+                        </select>
+                      </div>
+                    </header>
+                    <main class="app-main">
+                      <router-outlet></router-outlet
+                      ><lc-editor-page class="lc-dock-open"
+                        ><img
+                          class="viewport mock-scene"
+                          src="assets/scene-house.png"
+                          alt="3D-Ansicht von „Haus“. Tippe auf einen Block, um das aktive Werkzeug zu benutzen; ziehe, um die Kamera zu drehen." />
+                        <header class="bar top">
+                          <a
+                            routerlink="/"
+                            data-action="back"
+                            class="lc-btn lc-btn--icon"
+                            title="Zurück zu meinen Bauten"
+                            aria-label="Zurück zu meinen Bauten"
+                            href="#"
+                            ><lc-icon name="back"
+                              ><svg
+                                viewBox="0 0 24 24"
+                                width="24"
+                                height="24"
+                                aria-hidden="true"
+                                focusable="false"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              >
+                                <path
+                                  d="M10.5 4.5L3.5 12l7 7.5V15H18a2 2 0 002-2v-2a2 2 0 00-2-2h-7.5z"
+                                  fill="currentColor"
+                                  stroke="currentColor"
+                                  stroke-width="2"
+                                ></path></svg></lc-icon
+                          ></a>
+                          <div class="title">
+                            <h1>Haus</h1>
+                            <p role="status" class="lc-pill save" data-state="idle">
+                              <span aria-hidden="true" class="dot"></span> Gespeichert
+                            </p>
+                          </div>
+                          <button
+                            type="button"
+                            data-action="undo"
+                            class="lc-btn lc-btn--icon"
+                            disabled=""
+                            title="Rückgängig"
+                            aria-label="Rückgängig"
+                          >
+                            <lc-icon name="undo"
+                              ><svg
+                                viewBox="0 0 24 24"
+                                width="24"
+                                height="24"
+                                aria-hidden="true"
+                                focusable="false"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              >
+                                <path
+                                  d="M8 9h6.5a5 5 0 010 10H11"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  stroke-width="3.5"
+                                ></path>
+                                <path
+                                  d="M9.5 4L3.5 9l6 5z"
+                                  fill="currentColor"
+                                  stroke="currentColor"
+                                  stroke-width="2"
+                                ></path></svg
+                            ></lc-icon></button
+                          ><button
+                            type="button"
+                            data-action="redo"
+                            class="lc-btn lc-btn--icon"
+                            disabled=""
+                            title="Wiederholen"
+                            aria-label="Wiederholen"
+                          >
+                            <lc-icon name="redo"
+                              ><svg
+                                viewBox="0 0 24 24"
+                                width="24"
+                                height="24"
+                                aria-hidden="true"
+                                focusable="false"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              >
+                                <path
+                                  d="M16 9H9.5a5 5 0 000 10H13"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  stroke-width="3.5"
+                                ></path>
+                                <path
+                                  d="M14.5 4l6 5-6 5z"
+                                  fill="currentColor"
+                                  stroke="currentColor"
+                                  stroke-width="2"
+                                ></path></svg
+                            ></lc-icon>
+                          </button>
+                          <div class="menu-root">
+                            <button
+                              type="button"
+                              data-action="more"
+                              aria-controls="editor-menu"
+                              class="lc-btn lc-btn--icon"
+                              title="Mehr"
+                              aria-expanded="false"
+                              aria-label="Mehr"
+                            >
+                              <lc-icon name="more"
+                                ><svg
+                                  viewBox="0 0 24 24"
+                                  width="24"
+                                  height="24"
+                                  aria-hidden="true"
+                                  focusable="false"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                >
+                                  <path
+                                    d="M9.6 5a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0z"
+                                    fill="currentColor"
+                                    stroke="none"
+                                    stroke-width="0"
+                                  ></path>
+                                  <path
+                                    d="M9.6 12a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0z"
+                                    fill="currentColor"
+                                    stroke="none"
+                                    stroke-width="0"
+                                  ></path>
+                                  <path
+                                    d="M9.6 19a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0z"
+                                    fill="currentColor"
+                                    stroke="none"
+                                    stroke-width="0"
+                                  ></path></svg
+                              ></lc-icon>
+                            </button>
+                          </div>
+                        </header>
+                        <div class="messages"><p role="status" class="visually-hidden"></p></div>
+                        <lc-layer-slider class="layers lc-dock-avoid"
+                          ><span aria-hidden="true" class="lc-pill lc-pill--blue value"> ∞ </span>
+                          <div class="track" style="--value: 1">
+                            <span class="thumb"></span
+                            ><input
+                              type="range"
+                              data-control="layer"
+                              step="1"
+                              min="0"
+                              max="4"
+                              aria-label="Ebene"
+                              aria-valuetext="Alle Ebenen"
+                              value="4"
+                              style=""
+                            />
+                          </div>
+                          <lc-icon name="layers"
+                            ><svg
+                              viewBox="0 0 24 24"
+                              width="24"
+                              height="24"
+                              aria-hidden="true"
+                              focusable="false"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <path
+                                d="M3 14l9 5 9-5"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="3.5"
+                                opacity="0.55"
+                              ></path>
+                              <path
+                                d="M12 3.5l9 5-9 5-9-5z"
+                                fill="currentColor"
+                                stroke="currentColor"
+                                stroke-width="2"
+                              ></path></svg></lc-icon
+                        ></lc-layer-slider>
+                        <footer class="bar bottom lc-dock-avoid">
+                          <button
+                            type="button"
+                            data-action="lara"
+                            aria-controls="lara-chat"
+                            class="lc-btn lc-btn--lara lc-lara-btn lc-lara-btn--float"
+                            title="Mit Lara bauen"
+                            aria-expanded="true"
+                            aria-label="Mit Lara bauen"
+                          >
+                            <span class="lc-lara-btn__avatar"
+                              ><lc-lara
+                                mood="happy"
+                                size="2.5rem"
+                                data-mood="happy"
+                                style="--lara-size: 2.5rem"
+                                ><svg viewBox="0 0 100 100" aria-hidden="true">
+                                  <use href="#lara-happy"></use></svg></lc-lara
+                            ></span>
+                            Lara
+                          </button>
+                          <div class="row">
+                            <button
+                              type="button"
+                              data-action="palette"
+                              aria-haspopup="dialog"
+                              class="lc-btn active-block"
+                              aria-label="Block wählen (aktiv: Stein)"
+                            >
+                              <span class="tile"
+                                ><lc-block-icon
+                                  aria-hidden="true"
+                                  style="
+                                    background-image: url('http://localhost:4317/assets/textures/atlas.png');
+                                    background-size: 6400% 6400%;
+                                    background-position: 51.7857% 55.3571%;
+                                  "
+                                ></lc-block-icon></span
+                              ><span class="block-name">Stein</span>
+                            </button>
+                            <div role="toolbar" class="tools" aria-label="Werkzeuge">
+                              <button
+                                type="button"
+                                class="lc-btn lc-btn--icon lc-btn--selected"
+                                title="Setzen (1)"
+                                data-tool="place"
+                                aria-pressed="true"
+                                aria-label="Setzen"
+                                aria-keyshortcuts="1"
+                              >
+                                <lc-icon
+                                  ><svg
+                                    viewBox="0 0 24 24"
+                                    width="24"
+                                    height="24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    <path
+                                      d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"
+                                      fill="currentColor"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                      opacity="0.45"
+                                    ></path>
+                                    <path
+                                      d="M4 7.5L12 12v9l-8-4.5z"
+                                      fill="currentColor"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                    ></path>
+                                    <path
+                                      d="M20 7.5L12 12v9l8-4.5z"
+                                      fill="currentColor"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                      opacity="0.7"
+                                    ></path></svg
+                                ></lc-icon></button
+                              ><button
+                                type="button"
+                                class="lc-btn lc-btn--icon"
+                                title="Entfernen (2)"
+                                data-tool="remove"
+                                aria-pressed="false"
+                                aria-label="Entfernen"
+                                aria-keyshortcuts="2"
+                              >
+                                <lc-icon
+                                  ><svg
+                                    viewBox="0 0 24 24"
+                                    width="24"
+                                    height="24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    <path
+                                      d="M4 6.5h16"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="3"
+                                    ></path>
+                                    <path
+                                      d="M9.5 6V4.5h5V6"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="2.5"
+                                    ></path>
+                                    <path
+                                      d="M6.5 9.5h11l-1 10h-9z"
+                                      fill="currentColor"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                    ></path></svg
+                                ></lc-icon></button
+                              ><button
+                                type="button"
+                                class="lc-btn lc-btn--icon"
+                                title="Block aufnehmen (3)"
+                                data-tool="pick-block"
+                                aria-pressed="false"
+                                aria-label="Block aufnehmen"
+                                aria-keyshortcuts="3"
+                              >
+                                <lc-icon
+                                  ><svg
+                                    viewBox="0 0 24 24"
+                                    width="24"
+                                    height="24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    <path
+                                      d="M14.5 4.5a2.5 2.5 0 013.5 0l1.5 1.5a2.5 2.5 0 010 3.5L17.5 11.5l-5-5z"
+                                      fill="currentColor"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                    ></path>
+                                    <path
+                                      d="M14.5 9.5l-8 8"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="4"
+                                    ></path>
+                                    <path
+                                      d="M6 18l-2 2"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="2.5"
+                                      opacity="0.6"
+                                    ></path></svg
+                                ></lc-icon></button
+                              ><button
+                                type="button"
+                                class="lc-btn lc-btn--icon"
+                                title="Auswählen (4)"
+                                data-tool="select"
+                                aria-pressed="false"
+                                aria-label="Auswählen"
+                                aria-keyshortcuts="4"
+                              >
+                                <lc-icon
+                                  ><svg
+                                    viewBox="0 0 24 24"
+                                    width="24"
+                                    height="24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    <path
+                                      d="M4 9V6.5A2.5 2.5 0 016.5 4H9M15 4h2.5A2.5 2.5 0 0120 6.5V9M20 15v2.5a2.5 2.5 0 01-2.5 2.5H15M9 20H6.5A2.5 2.5 0 014 17.5V15"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="3.5"
+                                    ></path>
+                                    <path
+                                      d="M9.5 9.5h5v5h-5z"
+                                      fill="currentColor"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                      opacity="0.45"
+                                    ></path></svg
+                                ></lc-icon>
+                              </button>
+                            </div>
+                          </div>
+                        </footer>
+                        <div id="lara-chat" class="lc-dock">
+                          <lc-lara-chat role="region" aria-labelledby="lara-chat-title"
+                            ><header class="head">
+                              <lc-lara
+                                mood="happy"
+                                size="2.75rem"
+                                data-mood="happy"
+                                style="--lara-size: 2.75rem"
+                                ><svg viewBox="0 0 100 100" aria-hidden="true">
+                                  <use href="#lara-happy"></use></svg
+                              ></lc-lara>
+                              <div class="who"><h2 id="lara-chat-title">Lara</h2></div>
+                              <button
+                                type="button"
+                                data-action="chat-size"
+                                class="lc-btn lc-btn--icon lc-btn--ghost size-toggle"
+                                title="Chat größer"
+                                aria-expanded="false"
+                                aria-label="Chat größer"
+                              >
+                                <lc-icon
+                                  ><svg
+                                    viewBox="0 0 24 24"
+                                    width="24"
+                                    height="24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    <path
+                                      d="M5 15l7-7 7 7"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="4"
+                                    ></path></svg
+                                ></lc-icon></button
+                              ><a
+                                data-action="lara-settings"
+                                routerlink="/settings/lara"
+                                class="lc-btn lc-btn--icon lc-btn--ghost"
+                                title="Lara-Einstellungen"
+                                aria-label="Lara-Einstellungen"
+                                href="#"
+                                ><lc-icon name="settings"
+                                  ><svg
+                                    viewBox="0 0 24 24"
+                                    width="24"
+                                    height="24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    <path
+                                      d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.2 2.2M16.2 16.2l2.2 2.2M5.6 18.4l2.2-2.2M16.2 7.8l2.2-2.2"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="3.5"
+                                    ></path>
+                                    <path
+                                      d="M5.5 12a6.5 6.5 0 1 0 13 0a6.5 6.5 0 1 0-13 0zM9.5 12a2.5 2.5 0 1 1 5 0a2.5 2.5 0 1 1-5 0z"
+                                      fill="currentColor"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                    ></path></svg></lc-icon></a
+                              ><button
+                                type="button"
+                                data-action="chat-close"
+                                class="lc-btn lc-btn--icon lc-btn--ghost"
+                                title="Chat schließen"
+                                aria-label="Chat schließen"
+                              >
+                                <lc-icon name="close"
+                                  ><svg
+                                    viewBox="0 0 24 24"
+                                    width="24"
+                                    height="24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    <path
+                                      d="M6.5 6.5l11 11M17.5 6.5l-11 11"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="3.5"
+                                    ></path></svg
+                                ></lc-icon>
+                              </button>
+                            </header>
+                            <p role="status" aria-live="polite" class="lc-visually-hidden"></p>
+                            <div data-state="onboarding" class="onboarding">
+                              <div class="intro">
+                                <lc-lara
+                                  mood="wave"
+                                  size="4.5rem"
+                                  data-mood="wave"
+                                  style="--lara-size: 4.5rem"
+                                  ><svg viewBox="0 0 100 100" aria-hidden="true">
+                                    <use href="#lara-wave"></use></svg
+                                ></lc-lara>
+                                <div class="lc-bubble lc-bubble--purple">
+                                  <h3>Lara einrichten</h3>
+                                  <p>
+                                    Ich kann für dich bauen! Dafür brauche ich einen Schlüssel von
+                                    einem KI-Anbieter, zum Beispiel Anthropic.
+                                  </p>
+                                </div>
+                              </div>
+                              <ul class="facts">
+                                <li class="lc-callout lc-tone--yellow">
+                                  <lc-icon name="coin"
+                                    ><svg
+                                      viewBox="0 0 24 24"
+                                      width="24"
+                                      height="24"
+                                      aria-hidden="true"
+                                      focusable="false"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                    >
+                                      <path
+                                        d="M3.5 12a8.5 8.5 0 1 0 17 0a8.5 8.5 0 1 0 -17 0z"
+                                        fill="currentColor"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        opacity="0.45"
+                                      ></path>
+                                      <path
+                                        d="M12 7.5v9M9.5 9.5h4M10.5 14.5h4"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2.5"
+                                      ></path></svg
+                                  ></lc-icon>
+                                  <p>
+                                    <strong>Kosten</strong> Lara nutzt dein eigenes Konto beim
+                                    Anbieter. Er rechnet direkt mit dir ab.
+                                  </p>
+                                </li>
+                                <li class="lc-callout lc-tone--blue">
+                                  <lc-icon name="send"
+                                    ><svg
+                                      viewBox="0 0 24 24"
+                                      width="24"
+                                      height="24"
+                                      aria-hidden="true"
+                                      focusable="false"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                    >
+                                      <path
+                                        d="M3.5 11L20.5 3.5 14 20.5l-3-6.5z"
+                                        fill="currentColor"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                      ></path>
+                                      <path
+                                        d="M11 14l9.5-10.5"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2.5"
+                                        opacity="0.5"
+                                      ></path></svg
+                                  ></lc-icon>
+                                  <p>
+                                    <strong>Daten</strong> Was du schreibst und dein Bau gehen an
+                                    den Anbieter, den du auswählst. Sonst nirgendwohin.
+                                  </p>
+                                </li>
+                                <li class="lc-callout lc-tone--green">
+                                  <lc-icon name="key"
+                                    ><svg
+                                      viewBox="0 0 24 24"
+                                      width="24"
+                                      height="24"
+                                      aria-hidden="true"
+                                      focusable="false"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                    >
+                                      <path
+                                        d="M3.5 12a4.5 4.5 0 1 0 9 0a4.5 4.5 0 1 0 -9 0z"
+                                        fill="currentColor"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        opacity="0.45"
+                                      ></path>
+                                      <path
+                                        d="M12.5 12H21M18 12v3.5M21 12v3"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="3"
+                                      ></path></svg
+                                  ></lc-icon>
+                                  <p>
+                                    <strong>Schlüssel</strong> Dein Schlüssel bleibt auf diesem
+                                    Gerät.
+                                  </p>
+                                </li>
+                              </ul>
+                              <a
+                                data-action="lara-setup"
+                                routerlink="/settings/lara"
+                                class="lc-btn lc-btn--lara lc-btn--lg lc-btn--block"
+                                href="#"
+                                >Lara einrichten</a
+                              >
+                            </div></lc-lara-chat
+                          >
+                        </div>
+                        <lc-block-palette></lc-block-palette
+                      ></lc-editor-page>
+                    </main>
+                    <footer class="app-footer">
+                      <p class="disclaimer">
+                        Nicht offiziell. Nicht mit Mojang oder Microsoft verbunden.
+                      </p>
+                      <nav aria-label="Rechtliches">
+                        <a routerlink="/credits" href="#">Credits</a>
+                      </nav>
+                    </footer></lc-root
+                  >
+                </div>
+              </div>
+              <figcaption>
+                <strong>Ansicht: Lara nicht eingerichtet (Onboarding)</strong
+                ><span
+                  >Lara erklärt „eigener Schlüssel“ in einfachen Worten: Kosten über das eigene
+                  Konto, Daten nur zum gewählten Anbieter, Schlüssel bleibt auf dem Gerät. Großer
+                  lila Button zu den Einstellungen.</span
+                >
+              </figcaption>
+            </figure>
+            <figure class="doc-shot" id="v-lara-chat">
+              <div class="doc-device">
+                <div class="doc-screen" data-screen="lara-chat">
+                  <lc-root
+                    ><button type="button" class="skip-link lc-btn lc-btn--secondary">
+                      Zum Inhalt springen
+                    </button>
+                    <header class="app-header">
+                      <a routerlink="/" class="brand" aria-label="laracraft – Startseite" href="#"
+                        ><lc-lara size="2.5rem" data-mood="happy" style="--lara-size: 2.5rem"
+                          ><svg viewBox="0 0 100 100" aria-hidden="true">
+                            <use href="#lara-happy"></use></svg></lc-lara
+                        ><span class="wordmark">laracraft</span></a
+                      >
+                      <div class="lang-switch">
+                        <label for="lang-select" class="lc-visually-hidden">Sprache</label
+                        ><select id="lang-select" class="lc-select">
+                          <option value="de" lang="de">Deutsch</option>
+                          <option value="en" lang="en">English</option>
+                        </select>
+                      </div>
+                    </header>
+                    <main class="app-main">
+                      <router-outlet></router-outlet
+                      ><lc-editor-page class="lc-dock-open"
+                        ><img
+                          class="viewport mock-scene"
+                          src="assets/scene-house-lara.png"
+                          alt="3D-Ansicht von „Haus“. Tippe auf einen Block, um das aktive Werkzeug zu benutzen; ziehe, um die Kamera zu drehen." />
+                        <header class="bar top">
+                          <a
+                            routerlink="/"
+                            data-action="back"
+                            class="lc-btn lc-btn--icon"
+                            title="Zurück zu meinen Bauten"
+                            aria-label="Zurück zu meinen Bauten"
+                            href="#"
+                            ><lc-icon name="back"
+                              ><svg
+                                viewBox="0 0 24 24"
+                                width="24"
+                                height="24"
+                                aria-hidden="true"
+                                focusable="false"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              >
+                                <path
+                                  d="M10.5 4.5L3.5 12l7 7.5V15H18a2 2 0 002-2v-2a2 2 0 00-2-2h-7.5z"
+                                  fill="currentColor"
+                                  stroke="currentColor"
+                                  stroke-width="2"
+                                ></path></svg></lc-icon
+                          ></a>
+                          <div class="title">
+                            <h1>Haus</h1>
+                            <p role="status" class="lc-pill save" data-state="idle">
+                              <span aria-hidden="true" class="dot"></span> Gespeichert
+                            </p>
+                          </div>
+                          <button
+                            type="button"
+                            data-action="undo"
+                            class="lc-btn lc-btn--icon"
+                            disabled=""
+                            title="Rückgängig"
+                            aria-label="Rückgängig"
+                          >
+                            <lc-icon name="undo"
+                              ><svg
+                                viewBox="0 0 24 24"
+                                width="24"
+                                height="24"
+                                aria-hidden="true"
+                                focusable="false"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              >
+                                <path
+                                  d="M8 9h6.5a5 5 0 010 10H11"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  stroke-width="3.5"
+                                ></path>
+                                <path
+                                  d="M9.5 4L3.5 9l6 5z"
+                                  fill="currentColor"
+                                  stroke="currentColor"
+                                  stroke-width="2"
+                                ></path></svg
+                            ></lc-icon></button
+                          ><button
+                            type="button"
+                            data-action="redo"
+                            class="lc-btn lc-btn--icon"
+                            disabled=""
+                            title="Wiederholen"
+                            aria-label="Wiederholen"
+                          >
+                            <lc-icon name="redo"
+                              ><svg
+                                viewBox="0 0 24 24"
+                                width="24"
+                                height="24"
+                                aria-hidden="true"
+                                focusable="false"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              >
+                                <path
+                                  d="M16 9H9.5a5 5 0 000 10H13"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  stroke-width="3.5"
+                                ></path>
+                                <path
+                                  d="M14.5 4l6 5-6 5z"
+                                  fill="currentColor"
+                                  stroke="currentColor"
+                                  stroke-width="2"
+                                ></path></svg
+                            ></lc-icon>
+                          </button>
+                          <div class="menu-root">
+                            <button
+                              type="button"
+                              data-action="more"
+                              aria-controls="editor-menu"
+                              class="lc-btn lc-btn--icon"
+                              title="Mehr"
+                              aria-expanded="false"
+                              aria-label="Mehr"
+                            >
+                              <lc-icon name="more"
+                                ><svg
+                                  viewBox="0 0 24 24"
+                                  width="24"
+                                  height="24"
+                                  aria-hidden="true"
+                                  focusable="false"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                >
+                                  <path
+                                    d="M9.6 5a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0z"
+                                    fill="currentColor"
+                                    stroke="none"
+                                    stroke-width="0"
+                                  ></path>
+                                  <path
+                                    d="M9.6 12a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0z"
+                                    fill="currentColor"
+                                    stroke="none"
+                                    stroke-width="0"
+                                  ></path>
+                                  <path
+                                    d="M9.6 19a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0z"
+                                    fill="currentColor"
+                                    stroke="none"
+                                    stroke-width="0"
+                                  ></path></svg
+                              ></lc-icon>
+                            </button>
+                          </div>
+                        </header>
+                        <div class="messages"><p role="status" class="visually-hidden"></p></div>
+                        <lc-layer-slider class="layers lc-dock-avoid"
+                          ><span aria-hidden="true" class="lc-pill lc-pill--blue value"> ∞ </span>
+                          <div class="track" style="--value: 1">
+                            <span class="thumb"></span
+                            ><input
+                              type="range"
+                              data-control="layer"
+                              step="1"
+                              min="0"
+                              max="4"
+                              aria-label="Ebene"
+                              aria-valuetext="Alle Ebenen"
+                              value="4"
+                              style=""
+                            />
+                          </div>
+                          <lc-icon name="layers"
+                            ><svg
+                              viewBox="0 0 24 24"
+                              width="24"
+                              height="24"
+                              aria-hidden="true"
+                              focusable="false"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <path
+                                d="M3 14l9 5 9-5"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="3.5"
+                                opacity="0.55"
+                              ></path>
+                              <path
+                                d="M12 3.5l9 5-9 5-9-5z"
+                                fill="currentColor"
+                                stroke="currentColor"
+                                stroke-width="2"
+                              ></path></svg></lc-icon
+                        ></lc-layer-slider>
+                        <footer class="bar bottom lc-dock-avoid">
+                          <button
+                            type="button"
+                            data-action="lara"
+                            aria-controls="lara-chat"
+                            class="lc-btn lc-btn--lara lc-lara-btn lc-lara-btn--float"
+                            title="Mit Lara bauen"
+                            aria-expanded="true"
+                            aria-label="Mit Lara bauen"
+                          >
+                            <span class="lc-lara-btn__avatar"
+                              ><lc-lara
+                                mood="happy"
+                                size="2.5rem"
+                                data-mood="happy"
+                                style="--lara-size: 2.5rem"
+                                ><svg viewBox="0 0 100 100" aria-hidden="true">
+                                  <use href="#lara-happy"></use></svg></lc-lara
+                            ></span>
+                            Lara
+                          </button>
+                          <div class="row">
+                            <button
+                              type="button"
+                              data-action="palette"
+                              aria-haspopup="dialog"
+                              class="lc-btn active-block"
+                              aria-label="Block wählen (aktiv: Stein)"
+                            >
+                              <span class="tile"
+                                ><lc-block-icon
+                                  aria-hidden="true"
+                                  style="
+                                    background-image: url('http://localhost:4317/assets/textures/atlas.png');
+                                    background-size: 6400% 6400%;
+                                    background-position: 51.7857% 55.3571%;
+                                  "
+                                ></lc-block-icon></span
+                              ><span class="block-name">Stein</span>
+                            </button>
+                            <div role="toolbar" class="tools" aria-label="Werkzeuge">
+                              <button
+                                type="button"
+                                class="lc-btn lc-btn--icon lc-btn--selected"
+                                title="Setzen (1)"
+                                data-tool="place"
+                                aria-pressed="true"
+                                aria-label="Setzen"
+                                aria-keyshortcuts="1"
+                              >
+                                <lc-icon
+                                  ><svg
+                                    viewBox="0 0 24 24"
+                                    width="24"
+                                    height="24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    <path
+                                      d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"
+                                      fill="currentColor"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                      opacity="0.45"
+                                    ></path>
+                                    <path
+                                      d="M4 7.5L12 12v9l-8-4.5z"
+                                      fill="currentColor"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                    ></path>
+                                    <path
+                                      d="M20 7.5L12 12v9l8-4.5z"
+                                      fill="currentColor"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                      opacity="0.7"
+                                    ></path></svg
+                                ></lc-icon></button
+                              ><button
+                                type="button"
+                                class="lc-btn lc-btn--icon"
+                                title="Entfernen (2)"
+                                data-tool="remove"
+                                aria-pressed="false"
+                                aria-label="Entfernen"
+                                aria-keyshortcuts="2"
+                              >
+                                <lc-icon
+                                  ><svg
+                                    viewBox="0 0 24 24"
+                                    width="24"
+                                    height="24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    <path
+                                      d="M4 6.5h16"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="3"
+                                    ></path>
+                                    <path
+                                      d="M9.5 6V4.5h5V6"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="2.5"
+                                    ></path>
+                                    <path
+                                      d="M6.5 9.5h11l-1 10h-9z"
+                                      fill="currentColor"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                    ></path></svg
+                                ></lc-icon></button
+                              ><button
+                                type="button"
+                                class="lc-btn lc-btn--icon"
+                                title="Block aufnehmen (3)"
+                                data-tool="pick-block"
+                                aria-pressed="false"
+                                aria-label="Block aufnehmen"
+                                aria-keyshortcuts="3"
+                              >
+                                <lc-icon
+                                  ><svg
+                                    viewBox="0 0 24 24"
+                                    width="24"
+                                    height="24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    <path
+                                      d="M14.5 4.5a2.5 2.5 0 013.5 0l1.5 1.5a2.5 2.5 0 010 3.5L17.5 11.5l-5-5z"
+                                      fill="currentColor"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                    ></path>
+                                    <path
+                                      d="M14.5 9.5l-8 8"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="4"
+                                    ></path>
+                                    <path
+                                      d="M6 18l-2 2"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="2.5"
+                                      opacity="0.6"
+                                    ></path></svg
+                                ></lc-icon></button
+                              ><button
+                                type="button"
+                                class="lc-btn lc-btn--icon"
+                                title="Auswählen (4)"
+                                data-tool="select"
+                                aria-pressed="false"
+                                aria-label="Auswählen"
+                                aria-keyshortcuts="4"
+                              >
+                                <lc-icon
+                                  ><svg
+                                    viewBox="0 0 24 24"
+                                    width="24"
+                                    height="24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    <path
+                                      d="M4 9V6.5A2.5 2.5 0 016.5 4H9M15 4h2.5A2.5 2.5 0 0120 6.5V9M20 15v2.5a2.5 2.5 0 01-2.5 2.5H15M9 20H6.5A2.5 2.5 0 014 17.5V15"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="3.5"
+                                    ></path>
+                                    <path
+                                      d="M9.5 9.5h5v5h-5z"
+                                      fill="currentColor"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                      opacity="0.45"
+                                    ></path></svg
+                                ></lc-icon>
+                              </button>
+                            </div>
+                          </div>
+                        </footer>
+                        <div id="lara-chat" class="lc-dock">
+                          <lc-lara-chat role="region" aria-labelledby="lara-chat-title"
+                            ><header class="head">
+                              <lc-lara
+                                mood="happy"
+                                size="2.75rem"
+                                data-mood="happy"
+                                style="--lara-size: 2.75rem"
+                                ><svg viewBox="0 0 100 100" aria-hidden="true">
+                                  <use href="#lara-happy"></use></svg
+                              ></lc-lara>
+                              <div class="who">
+                                <h2 id="lara-chat-title">Lara</h2>
+                                <p class="model">claude-opus-5-5</p>
+                              </div>
+                              <button
+                                type="button"
+                                data-action="chat-size"
+                                class="lc-btn lc-btn--icon lc-btn--ghost size-toggle"
+                                title="Chat größer"
+                                aria-expanded="false"
+                                aria-label="Chat größer"
+                              >
+                                <lc-icon
+                                  ><svg
+                                    viewBox="0 0 24 24"
+                                    width="24"
+                                    height="24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    <path
+                                      d="M5 15l7-7 7 7"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="4"
+                                    ></path></svg
+                                ></lc-icon></button
+                              ><a
+                                data-action="lara-settings"
+                                routerlink="/settings/lara"
+                                class="lc-btn lc-btn--icon lc-btn--ghost"
+                                title="Lara-Einstellungen"
+                                aria-label="Lara-Einstellungen"
+                                href="#"
+                                ><lc-icon name="settings"
+                                  ><svg
+                                    viewBox="0 0 24 24"
+                                    width="24"
+                                    height="24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    <path
+                                      d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.2 2.2M16.2 16.2l2.2 2.2M5.6 18.4l2.2-2.2M16.2 7.8l2.2-2.2"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="3.5"
+                                    ></path>
+                                    <path
+                                      d="M5.5 12a6.5 6.5 0 1 0 13 0a6.5 6.5 0 1 0-13 0zM9.5 12a2.5 2.5 0 1 1 5 0a2.5 2.5 0 1 1-5 0z"
+                                      fill="currentColor"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                    ></path></svg></lc-icon></a
+                              ><button
+                                type="button"
+                                data-action="chat-close"
+                                class="lc-btn lc-btn--icon lc-btn--ghost"
+                                title="Chat schließen"
+                                aria-label="Chat schließen"
+                              >
+                                <lc-icon name="close"
+                                  ><svg
+                                    viewBox="0 0 24 24"
+                                    width="24"
+                                    height="24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    <path
+                                      d="M6.5 6.5l11 11M17.5 6.5l-11 11"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="3.5"
+                                    ></path></svg
+                                ></lc-icon>
+                              </button>
+                            </header>
+                            <p role="status" aria-live="polite" class="lc-visually-hidden">
+                              Lara schreibt …
+                            </p>
+                            <div
+                              role="log"
+                              aria-live="off"
+                              tabindex="0"
+                              class="log mock-scroll-end"
+                              aria-label="Unterhaltung mit Lara"
+                              aria-busy="true"
+                            >
+                              <ol class="messages">
+                                <li class="msg user">
+                                  <span class="lc-visually-hidden">Du:</span>
+                                  <p class="user-bubble">Bau mir eine Mauer vor das Haus</p>
+                                </li>
+                                <li data-state="streaming" class="msg lara streaming">
+                                  <lc-lara
+                                    mood="think"
+                                    size="2.25rem"
+                                    data-mood="think"
+                                    style="--lara-size: 2.25rem"
+                                    ><svg viewBox="0 0 100 100" aria-hidden="true">
+                                      <use href="#lara-think"></use></svg
+                                  ></lc-lara>
+                                  <div class="lc-bubble lc-bubble--purple bubble">
+                                    <lc-lara-markdown
+                                      ><p>
+                                        Klar! Ich baue dir eine <strong>Mauer</strong> vor deinen
+                                        Bau.
+                                      </p>
+                                      <ul>
+                                        <li>12 Blöcke lang</li>
+                                        <li>4 Blöcke hoch</li>
+                                        <li>oben mit <strong>bemoosten </strong></li>
+                                      </ul></lc-lara-markdown
+                                    >
+                                    <ul class="chips" aria-label="Änderungen am Bau">
+                                      <li class="lc-chip lc-pop">
+                                        <span aria-hidden="true" class="cube"></span>Wand · 48
+                                        Blöcke
+                                      </li>
+                                    </ul>
+                                    <span role="img" class="lc-typing" aria-label="Lara schreibt …"
+                                      ><i></i><i></i><i></i
+                                    ></span>
+                                  </div>
+                                </li>
+                              </ol>
+                            </div>
+                            <form class="composer">
+                              <label for="lara-input" class="lc-visually-hidden"
+                                >Nachricht an Lara</label
+                              ><textarea
+                                id="lara-input"
+                                rows="1"
+                                maxlength="2000"
+                                enterkeyhint="send"
+                                class="lc-input"
+                                placeholder="Was soll ich bauen?"
+                                style="height: 45px"
+                              ></textarea
+                              ><button
+                                type="button"
+                                data-action="stop"
+                                class="lc-btn lc-btn--icon lc-btn--danger"
+                                title="Stoppen"
+                                aria-label="Stoppen"
+                              >
+                                <lc-icon name="stop"
+                                  ><svg
+                                    viewBox="0 0 24 24"
+                                    width="24"
+                                    height="24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    <path
+                                      d="M7 7h10v10H7z"
+                                      fill="currentColor"
+                                      stroke="currentColor"
+                                      stroke-width="3"
+                                    ></path></svg
+                                ></lc-icon>
+                              </button></form
+                          ></lc-lara-chat>
+                        </div>
+                        <lc-block-palette></lc-block-palette
+                      ></lc-editor-page>
+                    </main>
+                    <footer class="app-footer">
+                      <p class="disclaimer">
+                        Nicht offiziell. Nicht mit Mojang oder Microsoft verbunden.
+                      </p>
+                      <nav aria-label="Rechtliches">
+                        <a routerlink="/credits" href="#">Credits</a>
+                      </nav>
+                    </footer></lc-root
+                  >
+                </div>
+              </div>
+              <figcaption>
+                <strong>Ansicht: Lara-Chat offen – Streaming</strong
+                ><span
+                  >Nutzer-Nachricht blau rechts, Lara lila links (fett, Listen, Zeilenumbrüche).
+                  Jede Bau-Operation erscheint sofort als Chip („Wand · 48 Blöcke“), die 3D-Vorschau
+                  baut live mit; Tipp-Punkte zeigen, dass Lara noch schreibt. Senden wird zu Stopp
+                  (rot).</span
+                >
+              </figcaption>
+            </figure>
+            <figure class="doc-shot" id="v-lara-chat-error">
+              <div class="doc-device">
+                <div class="doc-screen" data-screen="lara-chat-error">
+                  <lc-root
+                    ><button type="button" class="skip-link lc-btn lc-btn--secondary">
+                      Zum Inhalt springen
+                    </button>
+                    <header class="app-header">
+                      <a routerlink="/" class="brand" aria-label="laracraft – Startseite" href="#"
+                        ><lc-lara size="2.5rem" data-mood="happy" style="--lara-size: 2.5rem"
+                          ><svg viewBox="0 0 100 100" aria-hidden="true">
+                            <use href="#lara-happy"></use></svg></lc-lara
+                        ><span class="wordmark">laracraft</span></a
+                      >
+                      <div class="lang-switch">
+                        <label for="lang-select" class="lc-visually-hidden">Sprache</label
+                        ><select id="lang-select" class="lc-select">
+                          <option value="de" lang="de">Deutsch</option>
+                          <option value="en" lang="en">English</option>
+                        </select>
+                      </div>
+                    </header>
+                    <main class="app-main">
+                      <router-outlet></router-outlet
+                      ><lc-editor-page class="lc-dock-open"
+                        ><img
+                          class="viewport mock-scene"
+                          src="assets/scene-house-lara.png"
+                          alt="3D-Ansicht von „Haus“. Tippe auf einen Block, um das aktive Werkzeug zu benutzen; ziehe, um die Kamera zu drehen." />
+                        <header class="bar top">
+                          <a
+                            routerlink="/"
+                            data-action="back"
+                            class="lc-btn lc-btn--icon"
+                            title="Zurück zu meinen Bauten"
+                            aria-label="Zurück zu meinen Bauten"
+                            href="#"
+                            ><lc-icon name="back"
+                              ><svg
+                                viewBox="0 0 24 24"
+                                width="24"
+                                height="24"
+                                aria-hidden="true"
+                                focusable="false"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              >
+                                <path
+                                  d="M10.5 4.5L3.5 12l7 7.5V15H18a2 2 0 002-2v-2a2 2 0 00-2-2h-7.5z"
+                                  fill="currentColor"
+                                  stroke="currentColor"
+                                  stroke-width="2"
+                                ></path></svg></lc-icon
+                          ></a>
+                          <div class="title">
+                            <h1>Haus</h1>
+                            <p role="status" class="lc-pill save" data-state="saved">
+                              <span aria-hidden="true" class="dot"></span> Gespeichert
+                            </p>
+                          </div>
+                          <button
+                            type="button"
+                            data-action="undo"
+                            class="lc-btn lc-btn--icon"
+                            title="Rückgängig"
+                            aria-label="Rückgängig"
+                          >
+                            <lc-icon name="undo"
+                              ><svg
+                                viewBox="0 0 24 24"
+                                width="24"
+                                height="24"
+                                aria-hidden="true"
+                                focusable="false"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              >
+                                <path
+                                  d="M8 9h6.5a5 5 0 010 10H11"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  stroke-width="3.5"
+                                ></path>
+                                <path
+                                  d="M9.5 4L3.5 9l6 5z"
+                                  fill="currentColor"
+                                  stroke="currentColor"
+                                  stroke-width="2"
+                                ></path></svg
+                            ></lc-icon></button
+                          ><button
+                            type="button"
+                            data-action="redo"
+                            class="lc-btn lc-btn--icon"
+                            disabled=""
+                            title="Wiederholen"
+                            aria-label="Wiederholen"
+                          >
+                            <lc-icon name="redo"
+                              ><svg
+                                viewBox="0 0 24 24"
+                                width="24"
+                                height="24"
+                                aria-hidden="true"
+                                focusable="false"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              >
+                                <path
+                                  d="M16 9H9.5a5 5 0 000 10H13"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  stroke-width="3.5"
+                                ></path>
+                                <path
+                                  d="M14.5 4l6 5-6 5z"
+                                  fill="currentColor"
+                                  stroke="currentColor"
+                                  stroke-width="2"
+                                ></path></svg
+                            ></lc-icon>
+                          </button>
+                          <div class="menu-root">
+                            <button
+                              type="button"
+                              data-action="more"
+                              aria-controls="editor-menu"
+                              class="lc-btn lc-btn--icon"
+                              title="Mehr"
+                              aria-expanded="false"
+                              aria-label="Mehr"
+                            >
+                              <lc-icon name="more"
+                                ><svg
+                                  viewBox="0 0 24 24"
+                                  width="24"
+                                  height="24"
+                                  aria-hidden="true"
+                                  focusable="false"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                >
+                                  <path
+                                    d="M9.6 5a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0z"
+                                    fill="currentColor"
+                                    stroke="none"
+                                    stroke-width="0"
+                                  ></path>
+                                  <path
+                                    d="M9.6 12a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0z"
+                                    fill="currentColor"
+                                    stroke="none"
+                                    stroke-width="0"
+                                  ></path>
+                                  <path
+                                    d="M9.6 19a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0z"
+                                    fill="currentColor"
+                                    stroke="none"
+                                    stroke-width="0"
+                                  ></path></svg
+                              ></lc-icon>
+                            </button>
+                          </div>
+                        </header>
+                        <div class="messages"><p role="status" class="visually-hidden"></p></div>
+                        <lc-layer-slider class="layers lc-dock-avoid"
+                          ><span aria-hidden="true" class="lc-pill lc-pill--blue value"> ∞ </span>
+                          <div class="track" style="--value: 1">
+                            <span class="thumb"></span
+                            ><input
+                              type="range"
+                              data-control="layer"
+                              step="1"
+                              min="0"
+                              max="4"
+                              aria-label="Ebene"
+                              aria-valuetext="Alle Ebenen"
+                              value="4"
+                              style=""
+                            />
+                          </div>
+                          <lc-icon name="layers"
+                            ><svg
+                              viewBox="0 0 24 24"
+                              width="24"
+                              height="24"
+                              aria-hidden="true"
+                              focusable="false"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <path
+                                d="M3 14l9 5 9-5"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="3.5"
+                                opacity="0.55"
+                              ></path>
+                              <path
+                                d="M12 3.5l9 5-9 5-9-5z"
+                                fill="currentColor"
+                                stroke="currentColor"
+                                stroke-width="2"
+                              ></path></svg></lc-icon
+                        ></lc-layer-slider>
+                        <footer class="bar bottom lc-dock-avoid">
+                          <button
+                            type="button"
+                            data-action="lara"
+                            aria-controls="lara-chat"
+                            class="lc-btn lc-btn--lara lc-lara-btn lc-lara-btn--float"
+                            title="Mit Lara bauen"
+                            aria-expanded="true"
+                            aria-label="Mit Lara bauen"
+                          >
+                            <span class="lc-lara-btn__avatar"
+                              ><lc-lara
+                                mood="happy"
+                                size="2.5rem"
+                                data-mood="happy"
+                                style="--lara-size: 2.5rem"
+                                ><svg viewBox="0 0 100 100" aria-hidden="true">
+                                  <use href="#lara-happy"></use></svg></lc-lara
+                            ></span>
+                            Lara
+                          </button>
+                          <div class="row">
+                            <button
+                              type="button"
+                              data-action="palette"
+                              aria-haspopup="dialog"
+                              class="lc-btn active-block"
+                              aria-label="Block wählen (aktiv: Stein)"
+                            >
+                              <span class="tile"
+                                ><lc-block-icon
+                                  aria-hidden="true"
+                                  style="
+                                    background-image: url('http://localhost:4317/assets/textures/atlas.png');
+                                    background-size: 6400% 6400%;
+                                    background-position: 51.7857% 55.3571%;
+                                  "
+                                ></lc-block-icon></span
+                              ><span class="block-name">Stein</span>
+                            </button>
+                            <div role="toolbar" class="tools" aria-label="Werkzeuge">
+                              <button
+                                type="button"
+                                class="lc-btn lc-btn--icon lc-btn--selected"
+                                title="Setzen (1)"
+                                data-tool="place"
+                                aria-pressed="true"
+                                aria-label="Setzen"
+                                aria-keyshortcuts="1"
+                              >
+                                <lc-icon
+                                  ><svg
+                                    viewBox="0 0 24 24"
+                                    width="24"
+                                    height="24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    <path
+                                      d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"
+                                      fill="currentColor"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                      opacity="0.45"
+                                    ></path>
+                                    <path
+                                      d="M4 7.5L12 12v9l-8-4.5z"
+                                      fill="currentColor"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                    ></path>
+                                    <path
+                                      d="M20 7.5L12 12v9l8-4.5z"
+                                      fill="currentColor"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                      opacity="0.7"
+                                    ></path></svg
+                                ></lc-icon></button
+                              ><button
+                                type="button"
+                                class="lc-btn lc-btn--icon"
+                                title="Entfernen (2)"
+                                data-tool="remove"
+                                aria-pressed="false"
+                                aria-label="Entfernen"
+                                aria-keyshortcuts="2"
+                              >
+                                <lc-icon
+                                  ><svg
+                                    viewBox="0 0 24 24"
+                                    width="24"
+                                    height="24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    <path
+                                      d="M4 6.5h16"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="3"
+                                    ></path>
+                                    <path
+                                      d="M9.5 6V4.5h5V6"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="2.5"
+                                    ></path>
+                                    <path
+                                      d="M6.5 9.5h11l-1 10h-9z"
+                                      fill="currentColor"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                    ></path></svg
+                                ></lc-icon></button
+                              ><button
+                                type="button"
+                                class="lc-btn lc-btn--icon"
+                                title="Block aufnehmen (3)"
+                                data-tool="pick-block"
+                                aria-pressed="false"
+                                aria-label="Block aufnehmen"
+                                aria-keyshortcuts="3"
+                              >
+                                <lc-icon
+                                  ><svg
+                                    viewBox="0 0 24 24"
+                                    width="24"
+                                    height="24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    <path
+                                      d="M14.5 4.5a2.5 2.5 0 013.5 0l1.5 1.5a2.5 2.5 0 010 3.5L17.5 11.5l-5-5z"
+                                      fill="currentColor"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                    ></path>
+                                    <path
+                                      d="M14.5 9.5l-8 8"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="4"
+                                    ></path>
+                                    <path
+                                      d="M6 18l-2 2"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="2.5"
+                                      opacity="0.6"
+                                    ></path></svg
+                                ></lc-icon></button
+                              ><button
+                                type="button"
+                                class="lc-btn lc-btn--icon"
+                                title="Auswählen (4)"
+                                data-tool="select"
+                                aria-pressed="false"
+                                aria-label="Auswählen"
+                                aria-keyshortcuts="4"
+                              >
+                                <lc-icon
+                                  ><svg
+                                    viewBox="0 0 24 24"
+                                    width="24"
+                                    height="24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    <path
+                                      d="M4 9V6.5A2.5 2.5 0 016.5 4H9M15 4h2.5A2.5 2.5 0 0120 6.5V9M20 15v2.5a2.5 2.5 0 01-2.5 2.5H15M9 20H6.5A2.5 2.5 0 014 17.5V15"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="3.5"
+                                    ></path>
+                                    <path
+                                      d="M9.5 9.5h5v5h-5z"
+                                      fill="currentColor"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                      opacity="0.45"
+                                    ></path></svg
+                                ></lc-icon>
+                              </button>
+                            </div>
+                          </div>
+                        </footer>
+                        <div id="lara-chat" class="lc-dock">
+                          <lc-lara-chat role="region" aria-labelledby="lara-chat-title"
+                            ><header class="head">
+                              <lc-lara
+                                mood="happy"
+                                size="2.75rem"
+                                data-mood="happy"
+                                style="--lara-size: 2.75rem"
+                                ><svg viewBox="0 0 100 100" aria-hidden="true">
+                                  <use href="#lara-happy"></use></svg
+                              ></lc-lara>
+                              <div class="who">
+                                <h2 id="lara-chat-title">Lara</h2>
+                                <p class="model">claude-opus-5-5</p>
+                              </div>
+                              <button
+                                type="button"
+                                data-action="chat-size"
+                                class="lc-btn lc-btn--icon lc-btn--ghost size-toggle"
+                                title="Chat größer"
+                                aria-expanded="false"
+                                aria-label="Chat größer"
+                              >
+                                <lc-icon
+                                  ><svg
+                                    viewBox="0 0 24 24"
+                                    width="24"
+                                    height="24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    <path
+                                      d="M5 15l7-7 7 7"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="4"
+                                    ></path></svg
+                                ></lc-icon></button
+                              ><a
+                                data-action="lara-settings"
+                                routerlink="/settings/lara"
+                                class="lc-btn lc-btn--icon lc-btn--ghost"
+                                title="Lara-Einstellungen"
+                                aria-label="Lara-Einstellungen"
+                                href="#"
+                                ><lc-icon name="settings"
+                                  ><svg
+                                    viewBox="0 0 24 24"
+                                    width="24"
+                                    height="24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    <path
+                                      d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.2 2.2M16.2 16.2l2.2 2.2M5.6 18.4l2.2-2.2M16.2 7.8l2.2-2.2"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="3.5"
+                                    ></path>
+                                    <path
+                                      d="M5.5 12a6.5 6.5 0 1 0 13 0a6.5 6.5 0 1 0-13 0zM9.5 12a2.5 2.5 0 1 1 5 0a2.5 2.5 0 1 1-5 0z"
+                                      fill="currentColor"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                    ></path></svg></lc-icon></a
+                              ><button
+                                type="button"
+                                data-action="chat-close"
+                                class="lc-btn lc-btn--icon lc-btn--ghost"
+                                title="Chat schließen"
+                                aria-label="Chat schließen"
+                              >
+                                <lc-icon name="close"
+                                  ><svg
+                                    viewBox="0 0 24 24"
+                                    width="24"
+                                    height="24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    <path
+                                      d="M6.5 6.5l11 11M17.5 6.5l-11 11"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="3.5"
+                                    ></path></svg
+                                ></lc-icon>
+                              </button>
+                            </header>
+                            <p role="status" aria-live="polite" class="lc-visually-hidden">
+                              Keine Verbindung zum Anbieter. Bist du online?
+                            </p>
+                            <div
+                              role="log"
+                              aria-live="off"
+                              tabindex="0"
+                              class="log mock-scroll-end"
+                              aria-label="Unterhaltung mit Lara"
+                              aria-busy="false"
+                            >
+                              <ol class="messages">
+                                <li class="msg user">
+                                  <span class="lc-visually-hidden">Du:</span>
+                                  <p class="user-bubble">Bau mir eine Mauer vor das Haus</p>
+                                </li>
+                                <li class="msg lara" data-message="fake-mw29vsmz-1-l">
+                                  <lc-lara
+                                    size="2.25rem"
+                                    data-mood="happy"
+                                    style="--lara-size: 2.25rem"
+                                    ><svg viewBox="0 0 100 100" aria-hidden="true">
+                                      <use href="#lara-happy"></use></svg
+                                  ></lc-lara>
+                                  <div class="lc-bubble lc-bubble--purple bubble">
+                                    <span class="lc-visually-hidden">Lara:</span
+                                    ><lc-lara-markdown
+                                      ><p>
+                                        Klar! Ich baue dir eine <strong>Mauer</strong> vor deinen
+                                        Bau.
+                                      </p>
+                                      <ul>
+                                        <li>12 Blöcke lang</li>
+                                        <li>4 Blöcke hoch</li>
+                                        <li>oben mit <strong>bemoosten Steinziegeln</strong></li>
+                                      </ul>
+                                      <p>
+                                        Sag mir, wenn sie anders aussehen soll!
+                                      </p></lc-lara-markdown
+                                    >
+                                    <ul class="chips" aria-label="Änderungen am Bau">
+                                      <li class="lc-chip">
+                                        <span aria-hidden="true" class="cube"></span>Wand · 48
+                                        Blöcke
+                                      </li>
+                                      <li class="lc-chip">
+                                        <span aria-hidden="true" class="cube"></span>Linie · 12
+                                        Blöcke
+                                      </li>
+                                    </ul>
+                                    <div class="meta">
+                                      <span class="usage">1.870 Token rein · 212 raus</span
+                                      ><button
+                                        type="button"
+                                        data-action="undo-turn"
+                                        class="lc-btn lc-btn--sm lc-btn--ghost undo"
+                                      >
+                                        <lc-icon name="undo"
+                                          ><svg
+                                            viewBox="0 0 24 24"
+                                            width="24"
+                                            height="24"
+                                            aria-hidden="true"
+                                            focusable="false"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                          >
+                                            <path
+                                              d="M8 9h6.5a5 5 0 010 10H11"
+                                              fill="none"
+                                              stroke="currentColor"
+                                              stroke-width="3.5"
+                                            ></path>
+                                            <path
+                                              d="M9.5 4L3.5 9l6 5z"
+                                              fill="currentColor"
+                                              stroke="currentColor"
+                                              stroke-width="2"
+                                            ></path></svg></lc-icon
+                                        >Rückgängig
+                                      </button>
+                                    </div>
+                                  </div>
+                                </li>
+                                <li class="msg user">
+                                  <span class="lc-visually-hidden">Du:</span>
+                                  <p class="user-bubble">Noch eine /fehler</p>
+                                </li>
+                                <li
+                                  class="msg lara failed"
+                                  data-message="ef5106b5-8a41-40f1-bf31-79d69b5ae651"
+                                >
+                                  <lc-lara
+                                    size="2.25rem"
+                                    data-mood="think"
+                                    style="--lara-size: 2.25rem"
+                                    ><svg viewBox="0 0 100 100" aria-hidden="true">
+                                      <use href="#lara-think"></use></svg
+                                  ></lc-lara>
+                                  <div class="lc-bubble lc-bubble--purple bubble">
+                                    <span class="lc-visually-hidden">Lara:</span
+                                    ><lc-lara-markdown
+                                      ><p>
+                                        Klar! Ich baue dir eine <strong>Mauer</strong> vor deinen
+                                        Bau.
+                                      </p></lc-lara-markdown
+                                    >
+                                    <p class="error" data-error="network">
+                                      Keine Verbindung zum Anbieter. Bist du online?
+                                    </p>
+                                    <div class="actions">
+                                      <button
+                                        type="button"
+                                        data-action="retry"
+                                        class="lc-btn lc-btn--sm"
+                                      >
+                                        <lc-icon name="retry"
+                                          ><svg
+                                            viewBox="0 0 24 24"
+                                            width="24"
+                                            height="24"
+                                            aria-hidden="true"
+                                            focusable="false"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                          >
+                                            <path
+                                              d="M19 12a7 7 0 11-2.05-4.95"
+                                              fill="none"
+                                              stroke="currentColor"
+                                              stroke-width="3.5"
+                                            ></path>
+                                            <path
+                                              d="M20.5 3.5v6.5H14z"
+                                              fill="currentColor"
+                                              stroke="currentColor"
+                                              stroke-width="2"
+                                            ></path></svg></lc-icon
+                                        >Nochmal
+                                      </button>
+                                    </div>
+                                  </div>
+                                </li>
+                              </ol>
+                            </div>
+                            <form class="composer">
+                              <label for="lara-input" class="lc-visually-hidden"
+                                >Nachricht an Lara</label
+                              ><textarea
+                                id="lara-input"
+                                rows="1"
+                                maxlength="2000"
+                                enterkeyhint="send"
+                                class="lc-input"
+                                placeholder="Was soll ich bauen?"
+                                style="height: 45px"
+                              ></textarea
+                              ><button
+                                type="submit"
+                                data-action="send"
+                                class="lc-btn lc-btn--icon lc-btn--lara"
+                                disabled=""
+                                title="Senden"
+                                aria-label="Senden"
+                              >
+                                <lc-icon name="send"
+                                  ><svg
+                                    viewBox="0 0 24 24"
+                                    width="24"
+                                    height="24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    <path
+                                      d="M3.5 11L20.5 3.5 14 20.5l-3-6.5z"
+                                      fill="currentColor"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                    ></path>
+                                    <path
+                                      d="M11 14l9.5-10.5"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      stroke-width="2.5"
+                                      opacity="0.5"
+                                    ></path></svg
+                                ></lc-icon>
+                              </button></form
+                          ></lc-lara-chat>
+                        </div>
+                        <lc-block-palette></lc-block-palette
+                      ></lc-editor-page>
+                    </main>
+                    <footer class="app-footer">
+                      <p class="disclaimer">
+                        Nicht offiziell. Nicht mit Mojang oder Microsoft verbunden.
+                      </p>
+                      <nav aria-label="Rechtliches">
+                        <a routerlink="/credits" href="#">Credits</a>
+                      </nav>
+                    </footer></lc-root
+                  >
+                </div>
+              </div>
+              <figcaption>
+                <strong>Ansicht: Lara-Chat – fertige Antwort und Fehlerzustand</strong
+                ><span
+                  >Fertige Antwort mit Token-Zeile (klein) und „Rückgängig“ (ein Schritt im
+                  Editor-Verlauf). Fehler: rote Blase, verständlicher Text, „Nochmal“; bei
+                  Schlüsselfehlern zusätzlich „Einstellungen“. Teiländerungen werden
+                  zurückgenommen.</span
+                >
+              </figcaption>
+            </figure>
+            <figure class="doc-shot" id="v-lara-settings">
+              <div class="doc-device">
+                <div class="doc-screen" data-screen="lara-settings">
+                  <lc-root
+                    ><button type="button" class="skip-link lc-btn lc-btn--secondary">
+                      Zum Inhalt springen
+                    </button>
+                    <header class="app-header">
+                      <a routerlink="/" class="brand" aria-label="laracraft – Startseite" href="#"
+                        ><lc-lara size="2.5rem" data-mood="happy" style="--lara-size: 2.5rem"
+                          ><svg viewBox="0 0 100 100" aria-hidden="true">
+                            <use href="#lara-happy"></use></svg></lc-lara
+                        ><span class="wordmark">laracraft</span></a
+                      >
+                      <div class="lang-switch">
+                        <label for="lang-select" class="lc-visually-hidden">Sprache</label
+                        ><select id="lang-select" class="lc-select">
+                          <option value="de" lang="de">Deutsch</option>
+                          <option value="en" lang="en">English</option>
+                        </select>
+                      </div>
+                    </header>
+                    <main class="app-main">
+                      <router-outlet></router-outlet
+                      ><lc-lara-settings-page
+                        ><a data-action="back" class="back lc-btn lc-btn--ghost lc-btn--sm" href="#"
+                          ><lc-icon name="back"
+                            ><svg
+                              viewBox="0 0 24 24"
+                              width="24"
+                              height="24"
+                              aria-hidden="true"
+                              focusable="false"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <path
+                                d="M10.5 4.5L3.5 12l7 7.5V15H18a2 2 0 002-2v-2a2 2 0 00-2-2h-7.5z"
+                                fill="currentColor"
+                                stroke="currentColor"
+                                stroke-width="2"
+                              ></path></svg></lc-icon
+                          >Zurück zum Bau</a
+                        >
+                        <div class="hero">
+                          <lc-lara
+                            mood="think"
+                            size="5rem"
+                            data-mood="think"
+                            style="--lara-size: 5rem"
+                            ><svg viewBox="0 0 100 100" aria-hidden="true">
+                              <use href="#lara-think"></use></svg
+                          ></lc-lara>
+                          <div class="lc-bubble lc-bubble--purple">
+                            <h1>Lara einrichten</h1>
+                            <p>
+                              Lara spricht direkt mit dem KI-Anbieter, den du hier auswählst. Du
+                              brauchst dort ein Konto und einen API-Schlüssel.
+                            </p>
+                          </div>
+                        </div>
+                        <form novalidate="" class="lc-card form">
+                          <fieldset class="providers">
+                            <legend class="lc-field__label">Anbieter</legend>
+                            <label class="choice selected"
+                              ><input type="radio" name="kind" value="anthropic" checked="" /><span
+                                class="choice-text"
+                                ><span class="choice-title"
+                                  >Anthropic (Claude)
+                                  <span class="lc-pill lc-pill--soft-green">Empfohlen</span></span
+                                ><span class="lc-field__hint"
+                                  >Laras Bauwerkzeuge funktionieren hier am besten. Schlüssel unter
+                                  console.anthropic.com.</span
+                                ></span
+                              ></label
+                            ><label class="choice"
+                              ><input type="radio" name="kind" value="openai-compatible" /><span
+                                class="choice-text"
+                                ><span class="choice-title">OpenAI-kompatibel</span
+                                ><span class="lc-field__hint"
+                                  >OpenAI, OpenRouter, Azure oder ein eigener Server (Ollama, LM
+                                  Studio, vLLM).</span
+                                ></span
+                              ></label
+                            >
+                          </fieldset>
+                          <div class="lc-field">
+                            <label for="lara-model">Modell</label
+                            ><input
+                              id="lara-model"
+                              autocomplete="off"
+                              autocapitalize="off"
+                              spellcheck="false"
+                              aria-describedby="lara-model-hint"
+                              class="lc-input"
+                              placeholder="claude-opus-5-5"
+                              aria-invalid="false"
+                              value="claude-opus-5-5"
+                            />
+                            <p id="lara-model-hint" class="lc-field__hint">
+                              Standard: claude-opus-5-5.
+                            </p>
+                          </div>
+                          <div class="lc-field">
+                            <label for="lara-key">API-Schlüssel</label>
+                            <div class="key-row">
+                              <input
+                                id="lara-key"
+                                autocomplete="off"
+                                autocapitalize="off"
+                                spellcheck="false"
+                                aria-describedby="lara-key-hint"
+                                class="lc-input"
+                                type="password"
+                                placeholder="sk-ant-…"
+                                aria-invalid="false"
+                                value="sk-ant-demo-0123456789"
+                              /><button
+                                type="button"
+                                data-action="toggle-key"
+                                class="lc-btn lc-btn--icon"
+                                title="Schlüssel zeigen"
+                                aria-pressed="false"
+                                aria-label="Schlüssel zeigen"
+                              >
+                                <lc-icon
+                                  ><svg
+                                    viewBox="0 0 24 24"
+                                    width="24"
+                                    height="24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    <path
+                                      d="M2.5 12C5 7 8.5 5 12 5s7 2 9.5 7c-2.5 5-6 7-9.5 7s-7-2-9.5-7z"
+                                      fill="currentColor"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                      opacity="0.45"
+                                    ></path>
+                                    <path
+                                      d="M8.8 12a3.2 3.2 0 1 0 6.4 0a3.2 3.2 0 1 0 -6.4 0z"
+                                      fill="currentColor"
+                                      stroke="none"
+                                      stroke-width="0"
+                                    ></path></svg
+                                ></lc-icon>
+                              </button>
+                            </div>
+                            <p id="lara-key-hint" class="lc-field__hint">
+                              Beginnt meist mit „sk-“. Wird nie in Bauten oder Exporten gespeichert.
+                            </p>
+                          </div>
+                          <label class="lc-check"
+                            ><input type="checkbox" data-action="remember" checked="" /> Auf diesem
+                            Gerät merken
+                          </label>
+                          <div
+                            role="note"
+                            data-warning="remember"
+                            class="lc-callout lc-tone--orange"
+                          >
+                            <lc-icon name="info"
+                              ><svg
+                                viewBox="0 0 24 24"
+                                width="24"
+                                height="24"
+                                aria-hidden="true"
+                                focusable="false"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              >
+                                <path
+                                  d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0z"
+                                  fill="currentColor"
+                                  stroke="none"
+                                  stroke-width="0"
+                                  opacity="0.45"
+                                ></path>
+                                <path
+                                  d="M12 11v5.5"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  stroke-width="3.5"
+                                ></path>
+                                <path
+                                  d="M10.2 7.5a1.8 1.8 0 1 0 3.6 0a1.8 1.8 0 1 0 -3.6 0z"
+                                  fill="currentColor"
+                                  stroke="none"
+                                  stroke-width="0"
+                                ></path></svg
+                            ></lc-icon>
+                            <p>
+                              Der Schlüssel wird dann unverschlüsselt im Browser gespeichert. Mach
+                              das nur auf deinem eigenen Gerät.
+                            </p>
+                          </div>
+                          <div class="lc-field">
+                            <label for="lara-limit">Tageslimit (Token)</label
+                            ><input
+                              id="lara-limit"
+                              type="number"
+                              inputmode="numeric"
+                              min="1"
+                              step="1000"
+                              aria-describedby="lara-limit-hint"
+                              class="lc-input limit"
+                              placeholder="kein Limit"
+                              aria-invalid="false"
+                              value=""
+                            />
+                            <p id="lara-limit-hint" class="lc-field__hint">
+                              Optional. Lara pausiert, wenn es erreicht ist. Heute verbraucht: 0
+                              Token.
+                            </p>
+                          </div>
+                          <p role="status" class="test-result">
+                            <span data-test="ok" class="lc-pill lc-pill--soft-green"
+                              >Verbindung klappt! Modell: claude-opus-5-5</span
+                            >
+                          </p>
+                          <div class="buttons">
+                            <button
+                              type="submit"
+                              data-action="save"
+                              class="lc-btn lc-btn--primary lc-btn--lg"
+                            >
+                              Speichern</button
+                            ><button
+                              type="button"
+                              data-action="test"
+                              class="lc-btn lc-btn--secondary"
+                            >
+                              Verbindung testen
+                            </button>
+                          </div>
+                          <p role="status" class="status"></p>
+                        </form>
+                        <section aria-labelledby="lara-notes-title" class="notes">
+                          <h2 id="lara-notes-title">Gut zu wissen</h2>
+                          <ul>
+                            <li class="lc-callout lc-tone--yellow">
+                              <lc-icon name="coin"
+                                ><svg
+                                  viewBox="0 0 24 24"
+                                  width="24"
+                                  height="24"
+                                  aria-hidden="true"
+                                  focusable="false"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                >
+                                  <path
+                                    d="M3.5 12a8.5 8.5 0 1 0 17 0a8.5 8.5 0 1 0 -17 0z"
+                                    fill="currentColor"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    opacity="0.45"
+                                  ></path>
+                                  <path
+                                    d="M12 7.5v9M9.5 9.5h4M10.5 14.5h4"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2.5"
+                                  ></path></svg
+                              ></lc-icon>
+                              <p>
+                                <strong>Kosten</strong> Jede Nachricht an Lara kostet beim Anbieter
+                                ein paar Token. Das bezahlst du über dein Konto dort. Unter jeder
+                                Antwort steht, wie viele es waren.
+                              </p>
+                            </li>
+                            <li class="lc-callout lc-tone--blue">
+                              <lc-icon name="send"
+                                ><svg
+                                  viewBox="0 0 24 24"
+                                  width="24"
+                                  height="24"
+                                  aria-hidden="true"
+                                  focusable="false"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                >
+                                  <path
+                                    d="M3.5 11L20.5 3.5 14 20.5l-3-6.5z"
+                                    fill="currentColor"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                  ></path>
+                                  <path
+                                    d="M11 14l9.5-10.5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2.5"
+                                    opacity="0.5"
+                                  ></path></svg
+                              ></lc-icon>
+                              <p>
+                                <strong>Datenschutz</strong> Deine Nachrichten und dein Bau gehen
+                                direkt an den gewählten Anbieter. laracraft hat keinen eigenen
+                                Server und sieht nichts davon.
+                              </p>
+                            </li>
+                            <li class="lc-callout lc-tone--green">
+                              <lc-icon name="key"
+                                ><svg
+                                  viewBox="0 0 24 24"
+                                  width="24"
+                                  height="24"
+                                  aria-hidden="true"
+                                  focusable="false"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                >
+                                  <path
+                                    d="M3.5 12a4.5 4.5 0 1 0 9 0a4.5 4.5 0 1 0 -9 0z"
+                                    fill="currentColor"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    opacity="0.45"
+                                  ></path>
+                                  <path
+                                    d="M12.5 12H21M18 12v3.5M21 12v3"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="3"
+                                  ></path></svg
+                              ></lc-icon>
+                              <p>
+                                <strong>Speicherung</strong> Der Schlüssel bleibt auf diesem Gerät.
+                                Er landet nie in Bau-Dateien, Exporten oder Logs.
+                              </p>
+                            </li>
+                            <li class="lc-callout lc-tone--orange">
+                              <lc-icon name="info"
+                                ><svg
+                                  viewBox="0 0 24 24"
+                                  width="24"
+                                  height="24"
+                                  aria-hidden="true"
+                                  focusable="false"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                >
+                                  <path
+                                    d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0z"
+                                    fill="currentColor"
+                                    stroke="none"
+                                    stroke-width="0"
+                                    opacity="0.45"
+                                  ></path>
+                                  <path
+                                    d="M12 11v5.5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="3.5"
+                                  ></path>
+                                  <path
+                                    d="M10.2 7.5a1.8 1.8 0 1 0 3.6 0a1.8 1.8 0 1 0 -3.6 0z"
+                                    fill="currentColor"
+                                    stroke="none"
+                                    stroke-width="0"
+                                  ></path></svg
+                              ></lc-icon>
+                              <p>
+                                <strong>Alter und Regeln</strong> Es gelten die Nutzungsbedingungen
+                                deines Anbieters, auch zum Mindestalter. Frag im Zweifel deine
+                                Eltern.
+                              </p>
+                            </li>
+                            <li class="lc-callout lc-tone--grey">
+                              <lc-icon name="info"
+                                ><svg
+                                  viewBox="0 0 24 24"
+                                  width="24"
+                                  height="24"
+                                  aria-hidden="true"
+                                  focusable="false"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                >
+                                  <path
+                                    d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0z"
+                                    fill="currentColor"
+                                    stroke="none"
+                                    stroke-width="0"
+                                    opacity="0.45"
+                                  ></path>
+                                  <path
+                                    d="M12 11v5.5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="3.5"
+                                  ></path>
+                                  <path
+                                    d="M10.2 7.5a1.8 1.8 0 1 0 3.6 0a1.8 1.8 0 1 0 -3.6 0z"
+                                    fill="currentColor"
+                                    stroke="none"
+                                    stroke-width="0"
+                                  ></path></svg
+                              ></lc-icon>
+                              <p>
+                                <strong>Eigener Server</strong> Lokale Server wie Ollama oder LM
+                                Studio müssen Anfragen aus dem Browser erlauben (CORS).
+                              </p>
+                            </li>
+                          </ul>
+                        </section></lc-lara-settings-page
+                      >
+                    </main>
+                    <footer class="app-footer">
+                      <p class="disclaimer">
+                        Nicht offiziell. Nicht mit Mojang oder Microsoft verbunden.
+                      </p>
+                      <nav aria-label="Rechtliches">
+                        <a routerlink="/credits" href="#">Credits</a>
+                      </nav>
+                    </footer></lc-root
+                  >
+                </div>
+              </div>
+              <figcaption>
+                <strong>Ansicht: Lara-Einstellungen (oben)</strong
+                ><span
+                  >Anbieter als große Auswahlkarten: Anthropic (empfohlen) oder OpenAI-kompatibel
+                  (dann mit Basis-URL). Modell vorbelegt mit claude-opus-5-5.</span
+                >
+              </figcaption>
+            </figure>
+            <figure class="doc-shot" id="v-lara-settings-2">
+              <div class="doc-device">
+                <div class="doc-screen" data-screen="lara-settings-2">
+                  <lc-root style="margin-top: -690px"
+                    ><button type="button" class="skip-link lc-btn lc-btn--secondary">
+                      Zum Inhalt springen
+                    </button>
+                    <header class="app-header">
+                      <a routerlink="/" class="brand" aria-label="laracraft – Startseite" href="#"
+                        ><lc-lara size="2.5rem" data-mood="happy" style="--lara-size: 2.5rem"
+                          ><svg viewBox="0 0 100 100" aria-hidden="true">
+                            <use href="#lara-happy"></use></svg></lc-lara
+                        ><span class="wordmark">laracraft</span></a
+                      >
+                      <div class="lang-switch">
+                        <label for="lang-select" class="lc-visually-hidden">Sprache</label
+                        ><select id="lang-select" class="lc-select">
+                          <option value="de" lang="de">Deutsch</option>
+                          <option value="en" lang="en">English</option>
+                        </select>
+                      </div>
+                    </header>
+                    <main class="app-main">
+                      <router-outlet></router-outlet
+                      ><lc-lara-settings-page
+                        ><a data-action="back" class="back lc-btn lc-btn--ghost lc-btn--sm" href="#"
+                          ><lc-icon name="back"
+                            ><svg
+                              viewBox="0 0 24 24"
+                              width="24"
+                              height="24"
+                              aria-hidden="true"
+                              focusable="false"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <path
+                                d="M10.5 4.5L3.5 12l7 7.5V15H18a2 2 0 002-2v-2a2 2 0 00-2-2h-7.5z"
+                                fill="currentColor"
+                                stroke="currentColor"
+                                stroke-width="2"
+                              ></path></svg></lc-icon
+                          >Zurück zum Bau</a
+                        >
+                        <div class="hero">
+                          <lc-lara
+                            mood="think"
+                            size="5rem"
+                            data-mood="think"
+                            style="--lara-size: 5rem"
+                            ><svg viewBox="0 0 100 100" aria-hidden="true">
+                              <use href="#lara-think"></use></svg
+                          ></lc-lara>
+                          <div class="lc-bubble lc-bubble--purple">
+                            <h1>Lara einrichten</h1>
+                            <p>
+                              Lara spricht direkt mit dem KI-Anbieter, den du hier auswählst. Du
+                              brauchst dort ein Konto und einen API-Schlüssel.
+                            </p>
+                          </div>
+                        </div>
+                        <form novalidate="" class="lc-card form">
+                          <fieldset class="providers">
+                            <legend class="lc-field__label">Anbieter</legend>
+                            <label class="choice selected"
+                              ><input type="radio" name="kind" value="anthropic" checked="" /><span
+                                class="choice-text"
+                                ><span class="choice-title"
+                                  >Anthropic (Claude)
+                                  <span class="lc-pill lc-pill--soft-green">Empfohlen</span></span
+                                ><span class="lc-field__hint"
+                                  >Laras Bauwerkzeuge funktionieren hier am besten. Schlüssel unter
+                                  console.anthropic.com.</span
+                                ></span
+                              ></label
+                            ><label class="choice"
+                              ><input type="radio" name="kind" value="openai-compatible" /><span
+                                class="choice-text"
+                                ><span class="choice-title">OpenAI-kompatibel</span
+                                ><span class="lc-field__hint"
+                                  >OpenAI, OpenRouter, Azure oder ein eigener Server (Ollama, LM
+                                  Studio, vLLM).</span
+                                ></span
+                              ></label
+                            >
+                          </fieldset>
+                          <div class="lc-field">
+                            <label for="lara-model">Modell</label
+                            ><input
+                              id="lara-model"
+                              autocomplete="off"
+                              autocapitalize="off"
+                              spellcheck="false"
+                              aria-describedby="lara-model-hint"
+                              class="lc-input"
+                              placeholder="claude-opus-5-5"
+                              aria-invalid="false"
+                              value="claude-opus-5-5"
+                            />
+                            <p id="lara-model-hint" class="lc-field__hint">
+                              Standard: claude-opus-5-5.
+                            </p>
+                          </div>
+                          <div class="lc-field">
+                            <label for="lara-key">API-Schlüssel</label>
+                            <div class="key-row">
+                              <input
+                                id="lara-key"
+                                autocomplete="off"
+                                autocapitalize="off"
+                                spellcheck="false"
+                                aria-describedby="lara-key-hint"
+                                class="lc-input"
+                                type="password"
+                                placeholder="sk-ant-…"
+                                aria-invalid="false"
+                                value="sk-ant-demo-0123456789"
+                              /><button
+                                type="button"
+                                data-action="toggle-key"
+                                class="lc-btn lc-btn--icon"
+                                title="Schlüssel zeigen"
+                                aria-pressed="false"
+                                aria-label="Schlüssel zeigen"
+                              >
+                                <lc-icon
+                                  ><svg
+                                    viewBox="0 0 24 24"
+                                    width="24"
+                                    height="24"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  >
+                                    <path
+                                      d="M2.5 12C5 7 8.5 5 12 5s7 2 9.5 7c-2.5 5-6 7-9.5 7s-7-2-9.5-7z"
+                                      fill="currentColor"
+                                      stroke="currentColor"
+                                      stroke-width="2"
+                                      opacity="0.45"
+                                    ></path>
+                                    <path
+                                      d="M8.8 12a3.2 3.2 0 1 0 6.4 0a3.2 3.2 0 1 0 -6.4 0z"
+                                      fill="currentColor"
+                                      stroke="none"
+                                      stroke-width="0"
+                                    ></path></svg
+                                ></lc-icon>
+                              </button>
+                            </div>
+                            <p id="lara-key-hint" class="lc-field__hint">
+                              Beginnt meist mit „sk-“. Wird nie in Bauten oder Exporten gespeichert.
+                            </p>
+                          </div>
+                          <label class="lc-check"
+                            ><input type="checkbox" data-action="remember" checked="" /> Auf diesem
+                            Gerät merken
+                          </label>
+                          <div
+                            role="note"
+                            data-warning="remember"
+                            class="lc-callout lc-tone--orange"
+                          >
+                            <lc-icon name="info"
+                              ><svg
+                                viewBox="0 0 24 24"
+                                width="24"
+                                height="24"
+                                aria-hidden="true"
+                                focusable="false"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              >
+                                <path
+                                  d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0z"
+                                  fill="currentColor"
+                                  stroke="none"
+                                  stroke-width="0"
+                                  opacity="0.45"
+                                ></path>
+                                <path
+                                  d="M12 11v5.5"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  stroke-width="3.5"
+                                ></path>
+                                <path
+                                  d="M10.2 7.5a1.8 1.8 0 1 0 3.6 0a1.8 1.8 0 1 0 -3.6 0z"
+                                  fill="currentColor"
+                                  stroke="none"
+                                  stroke-width="0"
+                                ></path></svg
+                            ></lc-icon>
+                            <p>
+                              Der Schlüssel wird dann unverschlüsselt im Browser gespeichert. Mach
+                              das nur auf deinem eigenen Gerät.
+                            </p>
+                          </div>
+                          <div class="lc-field">
+                            <label for="lara-limit">Tageslimit (Token)</label
+                            ><input
+                              id="lara-limit"
+                              type="number"
+                              inputmode="numeric"
+                              min="1"
+                              step="1000"
+                              aria-describedby="lara-limit-hint"
+                              class="lc-input limit"
+                              placeholder="kein Limit"
+                              aria-invalid="false"
+                              value=""
+                            />
+                            <p id="lara-limit-hint" class="lc-field__hint">
+                              Optional. Lara pausiert, wenn es erreicht ist. Heute verbraucht: 0
+                              Token.
+                            </p>
+                          </div>
+                          <p role="status" class="test-result">
+                            <span data-test="ok" class="lc-pill lc-pill--soft-green"
+                              >Verbindung klappt! Modell: claude-opus-5-5</span
+                            >
+                          </p>
+                          <div class="buttons">
+                            <button
+                              type="submit"
+                              data-action="save"
+                              class="lc-btn lc-btn--primary lc-btn--lg"
+                            >
+                              Speichern</button
+                            ><button
+                              type="button"
+                              data-action="test"
+                              class="lc-btn lc-btn--secondary"
+                            >
+                              Verbindung testen
+                            </button>
+                          </div>
+                          <p role="status" class="status"></p>
+                        </form>
+                        <section aria-labelledby="lara-notes-title" class="notes">
+                          <h2 id="lara-notes-title">Gut zu wissen</h2>
+                          <ul>
+                            <li class="lc-callout lc-tone--yellow">
+                              <lc-icon name="coin"
+                                ><svg
+                                  viewBox="0 0 24 24"
+                                  width="24"
+                                  height="24"
+                                  aria-hidden="true"
+                                  focusable="false"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                >
+                                  <path
+                                    d="M3.5 12a8.5 8.5 0 1 0 17 0a8.5 8.5 0 1 0 -17 0z"
+                                    fill="currentColor"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    opacity="0.45"
+                                  ></path>
+                                  <path
+                                    d="M12 7.5v9M9.5 9.5h4M10.5 14.5h4"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2.5"
+                                  ></path></svg
+                              ></lc-icon>
+                              <p>
+                                <strong>Kosten</strong> Jede Nachricht an Lara kostet beim Anbieter
+                                ein paar Token. Das bezahlst du über dein Konto dort. Unter jeder
+                                Antwort steht, wie viele es waren.
+                              </p>
+                            </li>
+                            <li class="lc-callout lc-tone--blue">
+                              <lc-icon name="send"
+                                ><svg
+                                  viewBox="0 0 24 24"
+                                  width="24"
+                                  height="24"
+                                  aria-hidden="true"
+                                  focusable="false"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                >
+                                  <path
+                                    d="M3.5 11L20.5 3.5 14 20.5l-3-6.5z"
+                                    fill="currentColor"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                  ></path>
+                                  <path
+                                    d="M11 14l9.5-10.5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2.5"
+                                    opacity="0.5"
+                                  ></path></svg
+                              ></lc-icon>
+                              <p>
+                                <strong>Datenschutz</strong> Deine Nachrichten und dein Bau gehen
+                                direkt an den gewählten Anbieter. laracraft hat keinen eigenen
+                                Server und sieht nichts davon.
+                              </p>
+                            </li>
+                            <li class="lc-callout lc-tone--green">
+                              <lc-icon name="key"
+                                ><svg
+                                  viewBox="0 0 24 24"
+                                  width="24"
+                                  height="24"
+                                  aria-hidden="true"
+                                  focusable="false"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                >
+                                  <path
+                                    d="M3.5 12a4.5 4.5 0 1 0 9 0a4.5 4.5 0 1 0 -9 0z"
+                                    fill="currentColor"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    opacity="0.45"
+                                  ></path>
+                                  <path
+                                    d="M12.5 12H21M18 12v3.5M21 12v3"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="3"
+                                  ></path></svg
+                              ></lc-icon>
+                              <p>
+                                <strong>Speicherung</strong> Der Schlüssel bleibt auf diesem Gerät.
+                                Er landet nie in Bau-Dateien, Exporten oder Logs.
+                              </p>
+                            </li>
+                            <li class="lc-callout lc-tone--orange">
+                              <lc-icon name="info"
+                                ><svg
+                                  viewBox="0 0 24 24"
+                                  width="24"
+                                  height="24"
+                                  aria-hidden="true"
+                                  focusable="false"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                >
+                                  <path
+                                    d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0z"
+                                    fill="currentColor"
+                                    stroke="none"
+                                    stroke-width="0"
+                                    opacity="0.45"
+                                  ></path>
+                                  <path
+                                    d="M12 11v5.5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="3.5"
+                                  ></path>
+                                  <path
+                                    d="M10.2 7.5a1.8 1.8 0 1 0 3.6 0a1.8 1.8 0 1 0 -3.6 0z"
+                                    fill="currentColor"
+                                    stroke="none"
+                                    stroke-width="0"
+                                  ></path></svg
+                              ></lc-icon>
+                              <p>
+                                <strong>Alter und Regeln</strong> Es gelten die Nutzungsbedingungen
+                                deines Anbieters, auch zum Mindestalter. Frag im Zweifel deine
+                                Eltern.
+                              </p>
+                            </li>
+                            <li class="lc-callout lc-tone--grey">
+                              <lc-icon name="info"
+                                ><svg
+                                  viewBox="0 0 24 24"
+                                  width="24"
+                                  height="24"
+                                  aria-hidden="true"
+                                  focusable="false"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                >
+                                  <path
+                                    d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0z"
+                                    fill="currentColor"
+                                    stroke="none"
+                                    stroke-width="0"
+                                    opacity="0.45"
+                                  ></path>
+                                  <path
+                                    d="M12 11v5.5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="3.5"
+                                  ></path>
+                                  <path
+                                    d="M10.2 7.5a1.8 1.8 0 1 0 3.6 0a1.8 1.8 0 1 0 -3.6 0z"
+                                    fill="currentColor"
+                                    stroke="none"
+                                    stroke-width="0"
+                                  ></path></svg
+                              ></lc-icon>
+                              <p>
+                                <strong>Eigener Server</strong> Lokale Server wie Ollama oder LM
+                                Studio müssen Anfragen aus dem Browser erlauben (CORS).
+                              </p>
+                            </li>
+                          </ul>
+                        </section></lc-lara-settings-page
+                      >
+                    </main>
+                    <footer class="app-footer">
+                      <p class="disclaimer">
+                        Nicht offiziell. Nicht mit Mojang oder Microsoft verbunden.
+                      </p>
+                      <nav aria-label="Rechtliches">
+                        <a routerlink="/credits" href="#">Credits</a>
+                      </nav>
+                    </footer></lc-root
+                  >
+                </div>
+              </div>
+              <figcaption>
+                <strong>Ansicht: Lara-Einstellungen (weiter unten)</strong
+                ><span
+                  >API-Schlüssel maskiert mit Zeigen/Verbergen; „Auf diesem Gerät merken“ nur im
+                  Web, mit Warnung; optionales Tageslimit; „Verbindung testen“, Speichern, Schlüssel
+                  löschen; danach Hinweise zu Kosten, Datenschutz, Speicherung, Alter und eigenem
+                  Server.</span
+                >
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+
         <section class="doc-sub" id="screens-desktop">
           <h3>Desktop (1440 × 900, verkleinert)</h3>
           <figure class="doc-shot doc-shot--desktop" id="v-editor-desktop">

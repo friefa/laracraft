@@ -13,7 +13,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { TranslocoPipe } from '@jsverse/transloco';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import type {
   ChatMessage,
   LaraErrorInfo,
@@ -73,6 +73,7 @@ export class LaraChat {
   private readonly chats = inject(ChatHistoryStore);
   private readonly loadAgent = inject(LARA_AGENT);
   private readonly language = inject(LanguageService);
+  private readonly transloco = inject(TranslocoService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly injector = inject(Injector);
   private readonly input = viewChild<ElementRef<HTMLTextAreaElement>>('input');
@@ -108,16 +109,20 @@ export class LaraChat {
 
   protected readonly busy = computed(() => this.streaming() !== null);
   protected readonly canSend = computed(() => !this.busy() && this.draft().trim().length > 0);
-  protected readonly lastLaraId = computed(
-    () => this.messages().findLast((m) => m.role === 'lara')?.id ?? null,
-  );
+  protected readonly lastLaraId = computed(() => {
+    const list = this.messages();
+    for (let i = list.length - 1; i >= 0; i--) if (list[i]?.role === 'lara') return list[i]?.id;
+    return null;
+  });
 
   private session: LaraSession | null = null;
+  private destroyed = false;
   private abort: AbortController | null = null;
 
   constructor() {
     afterNextRender(() => void this.init());
     this.destroyRef.onDestroy(() => {
+      this.destroyed = true;
       this.abort?.abort();
       this.host().setBusy(false);
     });
@@ -137,10 +142,11 @@ export class LaraChat {
       this.undone.set(new Set(chat.undone));
     }
     this.ready.set(true);
+    if (this.destroyed) return;
     afterNextRender(
       () => {
         this.scrollToEnd();
-        (this.input() ?? this.setupLink())?.nativeElement.focus();
+        (this.input() ?? this.setupLink())?.nativeElement.focus({ preventScroll: true });
       },
       { injector: this.injector },
     );
@@ -174,8 +180,8 @@ export class LaraChat {
     await this.send(text);
   }
 
-  protected useSuggestion(text: string): void {
-    if (!this.busy()) void this.send(text);
+  protected useSuggestion(key: (typeof SUGGESTIONS)[number]): void {
+    if (!this.busy()) void this.send(this.transloco.translate(`lara.chat.suggestions.${key}`));
   }
 
   protected stop(): void {
@@ -262,8 +268,8 @@ export class LaraChat {
         case 'operation-rejected':
           break;
         case 'usage':
+          // The agent reports usage to the settings' usage store itself.
           usage = event.usage;
-          this.settings.recordUsage(event.usage);
           break;
         case 'turn-end': {
           finished = true;
@@ -295,7 +301,7 @@ export class LaraChat {
           {
             doc: host.doc,
             registry: host.registry,
-            edition: host.doc.metadata.edition === 'bedrock' ? 'bedrock' : 'java',
+            edition: host.doc.metadata.edition,
             language: this.language.lang(),
             selection: host.selection(),
           },
@@ -317,7 +323,9 @@ export class LaraChat {
       host.setBusy(false);
       void this.persist();
       this.scrollToEnd();
-      afterNextRender(() => this.input()?.nativeElement.focus(), { injector: this.injector });
+      if (!this.destroyed) {
+        afterNextRender(() => this.input()?.nativeElement.focus(), { injector: this.injector });
+      }
     }
   }
 
@@ -354,6 +362,7 @@ export class LaraChat {
   }
 
   private scrollToEnd(): void {
+    if (this.destroyed) return;
     afterNextRender(
       () => {
         const el = this.log()?.nativeElement;

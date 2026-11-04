@@ -493,7 +493,7 @@
       "insertModule": "Modul",
       "other": "Änderung"
     },
-    "error": {
+    "errors": {
       "notConfigured": "Lara ist noch nicht eingerichtet.",
       "auth": "Der API-Schlüssel wurde abgelehnt. Prüf ihn in den Einstellungen.",
       "rateLimit": "Der Anbieter bremst gerade (zu viele Anfragen). Warte kurz und versuch es nochmal.",
