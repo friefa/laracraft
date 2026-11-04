@@ -1,4 +1,15 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, model } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Injector,
+  afterNextRender,
+  computed,
+  inject,
+  input,
+  model,
+  viewChild,
+} from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
 import type { BuildStep } from '@laracraft/build-order';
 import type { BlockStateString, Vec3 } from '@laracraft/core-model';
@@ -16,6 +27,8 @@ import { formatItemStacks } from './materials';
 })
 export class GuideStepPanel {
   protected readonly text = inject(GuideText);
+  private readonly injector = inject(Injector);
+  private readonly detailRef = viewChild<ElementRef<HTMLElement>>('detail');
 
   readonly step = input.required<BuildStep>();
   /** Block lookup in the step document (for "click the top of …"). */
@@ -77,6 +90,10 @@ export class GuideStepPanel {
 
   protected select(index: number): void {
     this.selected.set(this.selected() === index ? null : index);
+    // The details sit above the chips: on phones they are often scrolled out of the sheet.
+    afterNextRender(() => this.detailRef()?.nativeElement.scrollIntoView?.({ block: 'nearest' }), {
+      injector: this.injector,
+    });
   }
 
   protected toggleHint(index: number): void {

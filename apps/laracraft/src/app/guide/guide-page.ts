@@ -1,6 +1,9 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DOCUMENT,
+  DestroyRef,
+  ElementRef,
   computed,
   effect,
   inject,
@@ -9,21 +12,38 @@ import {
   resource,
   signal,
   untracked,
+  viewChild,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { AIR, type BlockStateString, type Vec3 } from '@laracraft/core-model';
+import type { ViewInsets } from '@laracraft/renderer';
 import { BuildStore } from '../storage/build-store';
 import { buildStoreErrorCode } from '../storage/build-store.types';
 import { GuideViewport } from './guide-viewport';
 import { GuideOverview } from './overview-panel';
 import { PlanError, PlanService, type PlanProgress } from './plan.service';
 import { StepDocument } from './step-document';
+import { type SheetSnap, nextSnap, sheetHeights, snapAfterDrag } from './sheet';
 import { GuideStepPanel } from './step-panel';
 import { stepVisuals } from './step-visuals';
 
 /** Minimum horizontal travel (px) of a touch swipe that changes the step. */
 const SWIPE_MIN = 50;
+/** Vertical travel (px) after which a press on the sheet handle becomes a drag. */
+const DRAG_SLOP = 6;
+/** Must match the phone breakpoint in `guide-page.scss`. */
+const SHEET_MEDIA = '(max-width: 899.98px)';
+
+interface SheetDrag {
+  readonly pointerId: number;
+  readonly startY: number;
+  readonly startHeight: number;
+  lastY: number;
+  lastT: number;
+  velocity: number;
+  moved: boolean;
+}
 
 const STORAGE_ERROR_KEYS: Record<string, string> = {
   'not-found': 'storage.errors.notFound',
@@ -100,7 +120,35 @@ export class GuidePage {
   protected readonly showNext = signal(false);
   protected readonly layerOnly = signal(false);
   protected readonly tab = signal<'step' | 'overview'>('step');
-  protected readonly sheetOpen = signal(true);
+
+  /**
+   * Phones: the step panel is a bottom sheet with three snap points (desktop ignores them).
+   * The 3D view only uses the space above the sheet, so its gestures are never captured.
+   */
+  protected readonly snap = signal<SheetSnap>('half');
+  private readonly dragHeight = signal<number | null>(null);
+  private readonly layoutHeight = signal(0);
+  private readonly peekHeight = signal(0);
+  private readonly heights = computed(() => sheetHeights(this.layoutHeight(), this.peekHeight()));
+  protected readonly sheetHeight = computed(() => {
+    const drag = this.dragHeight();
+    return drag ?? (this.layoutHeight() > 0 ? this.heights()[this.snap()] : null);
+  });
+  protected readonly dragging = computed(() => this.dragHeight() !== null);
+  /** Phone layout (bottom sheet over the 3D view), see `guide-page.scss`. */
+  private readonly sheetLayout = signal(false);
+  /** The sheet covers the bottom of the canvas; the view centres the build above it. */
+  protected readonly viewInsets = computed<ViewInsets>(() => ({
+    top: 0,
+    right: 0,
+    left: 0,
+    bottom: this.sheetLayout() && this.layoutHeight() > 0 ? this.heights()[this.snap()] : 0,
+  }));
+  private readonly layoutRef = viewChild<ElementRef<HTMLElement>>('layout');
+  private readonly sheetHeadRef = viewChild<ElementRef<HTMLElement>>('sheetHead');
+  private drag: SheetDrag | null = null;
+  /** The click that ends a handle drag must not also cycle the snap point. */
+  private suppressClickUntil = 0;
 
   protected readonly visuals = computed(() => {
     const plan = this.plan();
@@ -128,6 +176,31 @@ export class GuidePage {
       if (!stepper) return;
       stepper.goTo(index);
       untracked(() => this.version.update((v) => v + 1));
+    });
+
+    const media = inject(DOCUMENT).defaultView?.matchMedia?.(SHEET_MEDIA);
+    if (media) {
+      this.sheetLayout.set(media.matches);
+      const onChange = (e: MediaQueryListEvent) => this.sheetLayout.set(e.matches);
+      media.addEventListener('change', onChange);
+      inject(DestroyRef).onDestroy(() => media.removeEventListener('change', onChange));
+    }
+
+    // Measure the sheet container and the sheet head (= peek height).
+    effect((onCleanup) => {
+      const layout = this.layoutRef()?.nativeElement;
+      const head = this.sheetHeadRef()?.nativeElement;
+      if (!layout || !head || typeof ResizeObserver === 'undefined') return;
+      const measure = () => {
+        this.layoutHeight.set(layout.clientHeight);
+        // + 1 px for the sheet's top border.
+        this.peekHeight.set(Math.ceil(head.getBoundingClientRect().height) + 1);
+      };
+      const observer = new ResizeObserver(measure);
+      observer.observe(layout);
+      observer.observe(head);
+      measure();
+      onCleanup(() => observer.disconnect());
     });
   }
 
@@ -177,6 +250,65 @@ export class GuidePage {
     } else if (event.key === 'Escape') {
       this.selected.set(null);
     }
+  }
+
+  protected onHandleClick(): void {
+    if (performance.now() < this.suppressClickUntil) return;
+    this.snap.update(nextSnap);
+  }
+
+  protected onHandleDown(event: PointerEvent): void {
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
+    // A sheet drag is never a step swipe.
+    event.stopPropagation();
+    this.swipeStart = null;
+    const height = this.sheetHeight();
+    if (height === null) return;
+    try {
+      (event.currentTarget as HTMLElement).setPointerCapture(event.pointerId);
+    } catch {
+      /* pointer already gone */
+    }
+    this.drag = {
+      pointerId: event.pointerId,
+      startY: event.clientY,
+      startHeight: height,
+      lastY: event.clientY,
+      lastT: event.timeStamp,
+      velocity: 0,
+      moved: false,
+    };
+  }
+
+  protected onHandleMove(event: PointerEvent): void {
+    const d = this.drag;
+    if (!d || d.pointerId !== event.pointerId) return;
+    const dy = d.startY - event.clientY;
+    if (!d.moved && Math.abs(dy) < DRAG_SLOP) return;
+    d.moved = true;
+    const dt = event.timeStamp - d.lastT;
+    if (dt > 0) d.velocity = (d.lastY - event.clientY) / dt;
+    d.lastY = event.clientY;
+    d.lastT = event.timeStamp;
+    const h = this.heights();
+    this.dragHeight.set(Math.max(h.peek, Math.min(h.full, d.startHeight + dy)));
+  }
+
+  protected onHandleUp(event: PointerEvent): void {
+    const d = this.drag;
+    if (!d || d.pointerId !== event.pointerId) return;
+    event.stopPropagation();
+    this.drag = null;
+    const height = this.dragHeight();
+    this.dragHeight.set(null);
+    if (!d.moved || height === null) return;
+    this.suppressClickUntil = performance.now() + 400;
+    this.snap.set(snapAfterDrag(height, d.velocity, this.heights()));
+  }
+
+  protected onHandleCancel(): void {
+    this.drag = null;
+    this.dragHeight.set(null);
   }
 
   protected onPointerDown(event: PointerEvent): void {

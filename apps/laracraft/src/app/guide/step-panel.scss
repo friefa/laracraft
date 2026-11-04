@@ -98,8 +98,8 @@ ul {
 }
 
 .chip {
-  min-width: 2.25rem;
-  min-height: 2.25rem;
+  min-width: 2.75rem; // touch target
+  min-height: 2.75rem;
   border: 1px solid var(--lc-border);
   border-radius: var(--lc-radius);
   background: var(--lc-bg);
@@ -118,6 +118,8 @@ ul {
 }
 
 .link {
+  min-height: 2.75rem;
+  padding: 0 0.25rem;
   border: 0;
   background: none;
   color: var(--lc-accent);

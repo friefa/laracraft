@@ -27,11 +27,17 @@ export interface StepVisuals {
   readonly layerLimit: number | null;
 }
 
+/**
+ * Opacity of the current step's tint. Low, so block textures stay readable; the outline
+ * carries the "this is new" signal.
+ */
+export const CURRENT_TINT_OPACITY = 0.2;
+
 const above = (p: Vec3): Vec3 => ({ x: p.x, y: p.y + 1, z: p.z });
 
 /**
  * Highlights, ghosts and layer limit for step `index`: the step's placements
- * are filled green, its removals outlined red (with a ghost of the removed
+ * are outlined and lightly tinted green, its removals outlined red (with a ghost of the removed
  * block), the next step optionally shown as ghosts, and the selected action
  * gets markers for itself, the player's stand position and the clicked block.
  */
@@ -45,13 +51,16 @@ export function stepVisuals(
   const placed = step.actions.filter((a): a is PlaceAction => a.kind === 'place');
   const removed = step.actions.filter((a) => a.kind === 'remove');
 
+  const current = placed.map((a) => a.pos);
   const highlights: HighlightGroup[] = [
     {
       id: 'current',
-      positions: placed.map((a) => a.pos),
+      positions: current,
       color: GUIDE_COLORS.current,
       style: 'fill',
+      opacity: CURRENT_TINT_OPACITY,
     },
+    { id: 'current-outline', positions: current, color: GUIDE_COLORS.current, style: 'outline' },
   ];
   if (removed.length > 0) {
     highlights.push({

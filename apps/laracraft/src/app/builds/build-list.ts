@@ -24,9 +24,23 @@ import {
   buildStoreErrorCode,
 } from '../storage/build-store.types';
 import { saveFile } from '../storage/save-file';
+import {
+  EXAMPLE_IDS,
+  EXAMPLE_LOADER,
+  type ExampleId,
+  exampleCopy,
+  exampleDescriptionKey,
+  exampleNameKey,
+} from './examples';
+
+/** An example file could not be fetched or parsed (offline, missing file …). */
+class ExampleLoadError extends Error {
+  override readonly name = 'ExampleLoadError';
+}
 
 type DialogState =
   | { readonly kind: 'create' }
+  | { readonly kind: 'examples' }
   | { readonly kind: 'rename'; readonly build: BuildSummary }
   | { readonly kind: 'delete'; readonly build: BuildSummary };
 
@@ -49,6 +63,7 @@ export class BuildListPage {
   private readonly transloco = inject(TranslocoService);
   private readonly language = inject(LanguageService);
   private readonly document = inject(DOCUMENT);
+  private readonly loadExample = inject(EXAMPLE_LOADER);
 
   private readonly dialogRef = viewChild.required<ElementRef<HTMLDialogElement>>('modal');
   private readonly initialFocus = viewChild<ElementRef<HTMLElement>>('initialFocus');
@@ -62,6 +77,9 @@ export class BuildListPage {
   protected readonly status = signal<Message | null>(null);
   protected readonly error = signal<Message | null>(null);
   protected readonly maxNameLength = MAX_NAME_LENGTH;
+  protected readonly examples = EXAMPLE_IDS;
+  protected readonly exampleNameKey = exampleNameKey;
+  protected readonly exampleDescriptionKey = exampleDescriptionKey;
 
   private readonly dateFormat = computed(
     () =>
@@ -76,6 +94,29 @@ export class BuildListPage {
   protected openCreate(): void {
     this.nameDraft.set(this.transloco.translate('builds.defaultName'));
     this.showDialog({ kind: 'create' });
+  }
+
+  protected openExamples(): void {
+    this.showDialog({ kind: 'examples' });
+  }
+
+  /** Copies an example build into the user's store and opens it in the editor. */
+  protected async openExample(id: ExampleId): Promise<void> {
+    this.closeDialog();
+    await this.act(async () => {
+      let file: Blob;
+      try {
+        file = exampleCopy(await this.loadExample(id), {
+          name: this.transloco.translate(exampleNameKey(id)),
+          description: this.transloco.translate(exampleDescriptionKey(id)),
+          now: new Date(),
+        });
+      } catch (err) {
+        throw new ExampleLoadError(`Example ${id} could not be loaded`, { cause: err });
+      }
+      const buildId = await this.store.importFile(file);
+      await this.router.navigate(['/build', buildId]);
+    });
   }
 
   protected openRename(build: BuildSummary): void {
@@ -207,6 +248,11 @@ export class BuildListPage {
       const message = await action();
       if (message) this.status.set(message);
     } catch (err) {
+      if (err instanceof ExampleLoadError) {
+        console.error(err);
+        this.error.set({ key: 'builds.examples.loadError' });
+        return;
+      }
       const code = buildStoreErrorCode(err);
       if (code === 'unknown') console.error(err);
       this.error.set({

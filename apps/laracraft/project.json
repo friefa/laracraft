@@ -108,7 +108,8 @@
       "executor": "@angular/build:unit-test",
       "options": {
         "watch": false
-      }
+      },
+      "dependsOn": ["examples-check"]
     },
     "serve-static": {
       "continuous": true,
@@ -161,6 +162,29 @@
         "check": {
           "args": "--check"
         }
+      }
+    },
+    "examples": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "command": "tsx --tsconfig tsconfig.base.json libs/build-order/scripts/export-golden.ts apps/laracraft/public/examples"
+      }
+    },
+    "examples-check": {
+      "executor": "nx:run-commands",
+      "cache": true,
+      "inputs": [
+        "{workspaceRoot}/libs/build-order/scripts/export-golden.ts",
+        "{workspaceRoot}/libs/build-order/src/testing/golden/**/*",
+        "{projectRoot}/public/examples/**/*",
+        {
+          "externalDependencies": ["tsx"]
+        },
+        "^production"
+      ],
+      "options": {
+        "command": "tsx --tsconfig tsconfig.base.json libs/build-order/scripts/export-golden.ts apps/laracraft/public/examples --check"
       }
     }
   }

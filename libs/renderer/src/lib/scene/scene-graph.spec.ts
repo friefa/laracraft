@@ -3,7 +3,13 @@ import * as THREE from 'three';
 import type { ChunkMeshOutput, MeshBuffers } from '../mesh/types';
 import { createBlockMaterial, geometryFromBuffers } from './block-material';
 import { ChunkMeshes } from './chunk-meshes';
-import { blockOutlinePositions, boxOutlinePositions, groupGhosts, Overlays } from './overlays';
+import {
+  blockOutlinePositions,
+  boxOutlinePositions,
+  groupGhosts,
+  highlightOpacity,
+  Overlays,
+} from './overlays';
 
 const empty: MeshBuffers = {
   positions: new Float32Array(0),
@@ -179,5 +185,33 @@ describe('Overlays', () => {
     expect(overlays.root.getObjectsByProperty('name', 'grid').length).toBe(1);
     overlays.dispose();
     expect(overlays.root.getObjectByName('grid')).toBeUndefined();
+  });
+
+  it('applies a highlight group opacity (default per style, clamped)', () => {
+    expect(highlightOpacity({ style: 'fill' })).toBe(0.35);
+    expect(highlightOpacity({ style: 'outline' })).toBe(0.95);
+    expect(highlightOpacity({ style: 'fill', opacity: 0.25 })).toBe(0.25);
+    expect(highlightOpacity({ style: 'fill', opacity: 2 })).toBe(1);
+    expect(highlightOpacity({ style: 'fill', opacity: -1 })).toBe(0);
+    expect(highlightOpacity({ style: 'fill', opacity: Number.NaN })).toBe(0.35);
+
+    const o = new Overlays(ghostMat, () => ghostGeometry);
+    const p = [{ x: 0, y: 0, z: 0 }];
+    o.setHighlights([
+      { id: 'tint', positions: p, color: 0x00ff00, style: 'fill', opacity: 0.25 },
+      { id: 'edge', positions: p, color: 0x00ff00, style: 'outline', opacity: 0.6 },
+      { id: 'plain', positions: p, color: 0x00ff00, style: 'fill' },
+    ]);
+    const opacity = (name: string) =>
+      ((o.root.getObjectByName(name) as THREE.Mesh).material as THREE.Material).opacity;
+    expect(opacity('tint')).toBe(0.25);
+    expect(opacity('edge')).toBe(0.6);
+    expect(opacity('plain')).toBe(0.35);
+    // Later groups draw over earlier ones (the selected block over the step outline).
+    const order = ['tint', 'edge', 'plain'].map((n) => o.root.getObjectByName(n)?.renderOrder ?? 0);
+    expect(order[0]).toBeLessThan(order[1] as number);
+    expect(order[1]).toBeLessThan(order[2] as number);
+    expect(order[2]).toBeLessThan(20); // below the selection box
+    o.dispose();
   });
 });

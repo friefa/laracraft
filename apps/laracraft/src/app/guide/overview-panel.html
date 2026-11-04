@@ -32,12 +32,14 @@
       @for (m of totals(); track m.item) {
       <tr [class.done]="m.checked">
         <td class="check">
-          <input
-            type="checkbox"
-            [checked]="m.checked"
-            [attr.aria-label]="'guide.overview.gatheredItem' | transloco: { item: m.name }"
-            (change)="onCheck(m.item, $event)"
-          />
+          <label>
+            <input
+              type="checkbox"
+              [checked]="m.checked"
+              [attr.aria-label]="'guide.overview.gatheredItem' | transloco: { item: m.name }"
+              (change)="onCheck(m.item, $event)"
+            />
+          </label>
         </td>
         <td>{{ m.name }}</td>
         <td class="num" [title]="m.count">{{ m.stacks }}</td>
