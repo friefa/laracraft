@@ -543,6 +543,205 @@ describe('validatePlan', () => {
     });
   });
 
+  describe('jump placements', () => {
+    const wall: Blocks = [
+      [0, 0, 0, S],
+      [0, 1, 0, S],
+      [0, 2, 0, S],
+    ];
+    const lowerRows = [place(v(0, 0, 0), S), place(v(0, 1, 0), S, { standAt: v(0, 0, 2) })];
+
+    it('reaches the top face of a head-high block (third wall row) when jumping', () => {
+      const third = place(v(0, 2, 0), S, { standAt: v(0, 0, 2), jump: true });
+      expect(validate(wall, planOf(step('structure', ...lowerRows, third)))).toEqual([]);
+    });
+
+    it('rejects the third wall row without a jump (top face above the eye)', () => {
+      const third = place(v(0, 2, 0), S, { standAt: v(0, 0, 2) });
+      expect(validate(wall, planOf(step('structure', ...lowerRows, third)))).toEqual([
+        expect.objectContaining({
+          rule: 'reachability',
+          action: 2,
+          message: expect.stringContaining('faces away'),
+        }),
+      ]);
+    });
+
+    it('rejects a jump with a block at standAt+2 (no head room)', () => {
+      const blocks: Blocks = [
+        ...wall,
+        [1, 0, 1, S],
+        [1, 1, 1, S],
+        [1, 2, 1, S],
+        [0, 2, 1, S], // ceiling over the jump position (0, 0, 1)
+      ];
+      const plan = planOf(
+        step(
+          'structure',
+          ...lowerRows,
+          place(v(1, 0, 1), S, { standAt: v(1, 0, 3) }),
+          place(v(1, 1, 1), S, { standAt: v(1, 0, 3) }),
+          place(v(1, 2, 1), S, { standAt: v(1, 0, 3), jump: true }),
+          place(v(0, 2, 1), S, { standAt: v(0, 0, 3), clickOn: { pos: v(1, 2, 1), face: 'west' } }),
+          place(v(0, 2, 0), S, { standAt: v(0, 0, 1), jump: true }),
+        ),
+      );
+      expect(validate(blocks, plan)).toEqual([
+        expect.objectContaining({
+          rule: 'reachability',
+          action: 6,
+          message: expect.stringContaining('head room'),
+        }),
+      ]);
+    });
+
+    it('pillars up 5 blocks by repeated jump placements (landing on each new block)', () => {
+      const blocks: Blocks = [0, 1, 2, 3, 4].map((y) => [0, y, 0, S] as const);
+      const pillar = [0, 1, 2, 3, 4].map((y) =>
+        // Jump from (0, y, 0), place below the feet; the next jump starts one block higher.
+        place(v(0, y, 0), S, {
+          standAt: v(0, y, 0),
+          clickOn: { pos: v(0, y - 1, 0), face: 'up' },
+          jump: true,
+        }),
+      );
+      expect(validate(blocks, planOf(step('structure', ...pillar)))).toEqual([]);
+    });
+
+    it('rejects a pillar step that does not start from the previous block', () => {
+      const blocks: Blocks = [
+        [0, 0, 0, S],
+        [0, 1, 0, S],
+      ];
+      const first = place(v(0, 0, 0), S, {
+        standAt: v(0, 0, 0),
+        clickOn: { pos: v(0, -1, 0), face: 'up' },
+        jump: true,
+      });
+      // Still "standing" at (0, 0, 0), which is now the placed block.
+      const second = place(v(0, 1, 0), S, {
+        standAt: v(0, 0, 0),
+        clickOn: { pos: v(0, 0, 0), face: 'up' },
+        jump: true,
+      });
+      const issues = validate(blocks, planOf(step('structure', first, second)));
+      expect(issues.length).toBeGreaterThan(0);
+      expect(issues.every((i) => i.rule === 'reachability' && i.action === 1)).toBe(true);
+    });
+
+    it('rejects pillaring without a jump', () => {
+      const issues = validate(
+        [[0, 0, 0, S]],
+        planOf(
+          step(
+            'structure',
+            place(v(0, 0, 0), S, {
+              standAt: v(0, 0, 0),
+              clickOn: { pos: v(0, -1, 0), face: 'up' },
+            }),
+          ),
+        ),
+      );
+      expect(issues).toEqual([
+        expect.objectContaining({
+          rule: 'reachability',
+          message: expect.stringContaining('inside'),
+        }),
+      ]);
+    });
+
+    it('allows placing at standAt while jumping only by clicking the block below', () => {
+      const blocks: Blocks = [
+        [0, 0, 0, S],
+        [1, 0, 0, S],
+      ];
+      const issues = validate(
+        blocks,
+        planOf(
+          step(
+            'structure',
+            place(v(1, 0, 0), S, { standAt: v(1, 0, 2) }),
+            place(v(0, 0, 0), S, {
+              standAt: v(0, 0, 0),
+              clickOn: { pos: v(1, 0, 0), face: 'west' },
+              jump: true,
+            }),
+          ),
+        ),
+      );
+      expect(issues).toEqual([
+        expect.objectContaining({
+          rule: 'reachability',
+          action: 1,
+          message: expect.stringContaining('inside'),
+        }),
+      ]);
+    });
+
+    it.each([1, 2])('rejects a full block at standAt+%i while jumping', (dy) => {
+      const blocks: Blocks = [
+        [1, 0, 0, S],
+        [1, 1, 0, S],
+        [1, 2, 0, S],
+        [0, dy, 0, S],
+      ];
+      const issues = validate(
+        blocks,
+        planOf(
+          step(
+            'structure',
+            place(v(1, 0, 0), S, { standAt: v(1, 0, 2) }),
+            place(v(1, 1, 0), S, { standAt: v(1, 0, 2) }),
+            place(v(1, 2, 0), S, { standAt: v(1, 0, 2), jump: true }),
+            place(v(0, dy, 0), S, {
+              standAt: v(0, 0, 0),
+              clickOn: { pos: v(1, dy, 0), face: 'west' },
+              jump: true,
+            }),
+          ),
+        ),
+      );
+      expect(issues).toEqual([
+        expect.objectContaining({
+          rule: 'reachability',
+          action: 3,
+          message: expect.stringContaining('inside'),
+        }),
+      ]);
+    });
+  });
+
+  describe('removal reach', () => {
+    const blocks: Blocks = [[0, 0, 0, S]];
+    const stone = place(v(0, 0, 0), S);
+    const temp = place(v(3, 0, 0), DIRT, { temporary: true });
+    const withRemoval = (standAt: ReturnType<typeof v>) =>
+      validate(
+        blocks,
+        planOf(step('structure', stone, temp), step('cleanup', remove(v(3, 0, 0), DIRT, standAt))),
+      );
+
+    it('accepts a removal within reach of standAt', () => {
+      expect(withRemoval(v(3, 0, 2))).toEqual([]);
+    });
+
+    it('rejects a removal out of reach of standAt', () => {
+      expect(withRemoval(v(3, 0, 7))).toEqual([
+        expect.objectContaining({
+          rule: 'reachability',
+          step: 1,
+          action: 0,
+          message: expect.stringContaining('away'),
+        }),
+      ]);
+    });
+
+    it('rejects a removal stand position inside a block or over air', () => {
+      expect(rules(withRemoval(v(0, 0, 0)))).toEqual(['reachability']);
+      expect(rules(withRemoval(v(3, 1, 2)))).toEqual(['reachability']);
+    });
+  });
+
   describe('redstone-safety', () => {
     const lever = 'minecraft:lever[face=floor,facing=north]';
 

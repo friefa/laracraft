@@ -183,12 +183,12 @@
       class="active-block"
       data-action="palette"
       aria-haspopup="dialog"
-      [attr.aria-label]="'editor.palette.open' | transloco: { name: activeBlock() ? (activeBlock()!.nameKey | transloco) : '' }"
+      [attr.aria-label]="'editor.palette.open' | transloco: { name: activeBlock() ? (blockNameKey(activeBlock()!) | transloco) : '' }"
       (click)="openPalette()"
     >
       @if (activeBlock(); as b) {
       <lc-block-icon [block]="b" />
-      <span class="block-name">{{ b.nameKey | transloco }}</span>
+      <span class="block-name">{{ blockNameKey(b) | transloco }}</span>
       }
     </button>
     <div class="tools" role="toolbar" [attr.aria-label]="'editor.toolbar' | transloco">

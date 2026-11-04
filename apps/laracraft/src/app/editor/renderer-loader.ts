@@ -8,6 +8,14 @@ export type { LookDirection } from '@laracraft/renderer';
 /** Texture atlas served by the app (copied from `dist/assets/textures` at build time). */
 export const ATLAS_URL = 'assets/textures/atlas.json';
 
+/**
+ * Absolute URL of an app asset. Relative URLs would resolve against the current
+ * route (`/build/:id`) in some loaders and return `index.html`.
+ */
+export function assetUrl(doc: Document, path: string): string {
+  return new URL(path, doc.baseURI).href;
+}
+
 /** The renderer as the editor uses it (contract + camera look direction). */
 export type EditorRenderer = SceneBuildRenderer;
 
@@ -63,7 +71,7 @@ export async function loadBuildRenderer(
     return await createBuildRenderer({
       canvas,
       registry,
-      atlasUrl: ATLAS_URL,
+      atlasUrl: assetUrl(doc, ATLAS_URL),
       ...(typeof Worker === 'undefined' ? {} : { createWorker: createMesherWorker }),
     });
   } catch (err) {

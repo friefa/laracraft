@@ -14,8 +14,8 @@ import {
 
 const registry = createJavaBlockRegistry();
 const { blocks, categories } = paletteData(registry);
-const names = (file: { block: Record<string, string> }) => (def: BlockDefinition) =>
-  file.block[def.nameKey.replace(/^block\./, '')] ?? def.id;
+const names = (file: { blocks: Record<string, string> }) => (def: BlockDefinition) =>
+  file.blocks[def.id.replace(/^minecraft:/, '')] ?? def.id;
 const ids = (defs: readonly BlockDefinition[]) => defs.map((d) => d.id);
 
 describe('paletteData', () => {

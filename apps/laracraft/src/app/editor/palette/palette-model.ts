@@ -1,5 +1,13 @@
 import type { BlockCategory, BlockDefinition, BlockRegistry } from '@laracraft/core-model';
 
+/**
+ * i18n key of a block's display name: `blocks.<path>` (generated files
+ * `public/i18n/blocks/<lang>.json`, shared with the instruction mode).
+ */
+export function blockNameKey(def: Pick<BlockDefinition, 'id'>): string {
+  return `blocks.${def.id.replace(/^minecraft:/, '')}`;
+}
+
 /** Blocks the palette never offers (air, moving piston, piston head …). */
 export function isPaletteBlock(def: BlockDefinition): boolean {
   return def.category !== 'technical' && !def.tags?.includes('technical');

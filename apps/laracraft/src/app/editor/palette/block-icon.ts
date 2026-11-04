@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
   Component,
+  DOCUMENT,
   Injectable,
   InjectionToken,
   computed,
@@ -11,7 +12,7 @@ import {
 } from '@angular/core';
 import type { BlockDefinition } from '@laracraft/core-model';
 import { firstValueFrom } from 'rxjs';
-import { ATLAS_URL } from '../renderer-loader';
+import { ATLAS_URL, assetUrl } from '../renderer-loader';
 
 /** The part of `atlas.json` the icons need. */
 export interface AtlasInfo {
@@ -27,7 +28,8 @@ export const ATLAS_LOADER = new InjectionToken<() => Promise<AtlasInfo | null>>(
   providedIn: 'root',
   factory: () => {
     const http = inject(HttpClient);
-    return () => firstValueFrom(http.get<AtlasInfo>(ATLAS_URL));
+    const url = assetUrl(inject(DOCUMENT), ATLAS_URL);
+    return () => firstValueFrom(http.get<AtlasInfo>(url));
   },
 });
 
@@ -67,7 +69,7 @@ export class BlockIconAtlas {
   template: '',
   host: {
     'aria-hidden': 'true',
-    '[style.background-image]': 'sprite() ? "url(assets/textures/atlas.png)" : null',
+    '[style.background-image]': 'sprite() ? imageUrl : null',
     '[style.background-size]': 'sprite()?.size',
     '[style.background-position]': 'sprite()?.position',
   },
@@ -87,6 +89,7 @@ export class BlockIconAtlas {
 })
 export class BlockIcon {
   private readonly icons = inject(BlockIconAtlas);
+  protected readonly imageUrl = `url("${assetUrl(inject(DOCUMENT), 'assets/textures/atlas.png')}")`;
 
   readonly block = input.required<BlockDefinition>();
 

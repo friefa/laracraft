@@ -1,6 +1,7 @@
 /**
  * Generates the block display names `public/i18n/blocks/{en,de}.json` from the
- * Java block registry. Keys are the registry `nameKey`s (`block.<path>`).
+ * Java block registry. Keys are `blocks.<path>` (id without `minecraft:`), see
+ * `blockNameKey` in `src/app/editor/palette/palette-model.ts`.
  *
  *   pnpm exec nx run laracraft:block-names         # write
  *   pnpm exec nx run laracraft:block-names:check   # verify only
@@ -252,9 +253,8 @@ function main(): void {
   const de: Record<string, string> = {};
   const missing: string[] = [];
   for (const def of createJavaBlockRegistry().all()) {
-    const [ns, key] = def.nameKey.split('.');
-    if (ns !== 'block' || !key) throw new Error(`Unexpected nameKey ${def.nameKey}`);
     const path = def.id.replace(/^minecraft:/, '');
+    const key = path;
     en[key] = englishName(path);
     const german = germanName(path);
     if (german) de[key] = german;
@@ -271,7 +271,7 @@ function main(): void {
     ['de', de],
   ] as const) {
     const file = resolve(OUT_DIR, `${lang}.json`);
-    const content = `${JSON.stringify({ block: sorted(names) }, null, 2)}\n`;
+    const content = `${JSON.stringify({ blocks: sorted(names) }, null, 2)}\n`;
     let current = '';
     try {
       current = readFileSync(file, 'utf8');

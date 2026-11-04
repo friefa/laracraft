@@ -1,0 +1,103 @@
+@if (detail(); as d) {
+<section class="detail" aria-live="polite">
+  <div class="detail-head">
+    <h3>{{ d.title }}</h3>
+    <button
+      type="button"
+      class="close"
+      (click)="selected.set(null)"
+      [attr.aria-label]="'guide.step.close' | transloco"
+    >
+      ×
+    </button>
+  </div>
+  <ul class="lines">
+    @for (line of d.lines; track $index) {
+    <li [class]="'line-' + line.kind">
+      @if (line.kind === 'look' && d.bearing !== null) {
+      <span class="arrow" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <g [attr.transform]="'rotate(' + d.bearing + ' 12 12)'">
+            <path d="M12 3 L18 15 L12 12 L6 15 Z" fill="currentColor" />
+          </g>
+        </svg>
+        <span class="compass">{{ d.compass }}</span>
+        @if (d.vertical !== 'level') {
+        <span>{{ d.vertical === 'up' ? '↑' : '↓' }}</span>
+        }
+      </span>
+      } {{ line.text }}
+    </li>
+    }
+  </ul>
+</section>
+} @else {
+<p class="muted">{{ 'guide.step.selectHint' | transloco }}</p>
+}
+
+<section>
+  <h3>{{ 'guide.step.materials' | transloco }}</h3>
+  @if (materials().length === 0) {
+  <p class="muted">{{ 'guide.step.noMaterials' | transloco }}</p>
+  } @else {
+  <ul class="materials">
+    @for (m of materials(); track m.item) {
+    <li>
+      <span>{{ m.name }}</span>
+      <span class="count">{{ m.stacks }}</span>
+    </li>
+    }
+  </ul>
+  }
+</section>
+
+<section>
+  <h3>{{ 'guide.step.actions' | transloco }}</h3>
+  <ul class="groups">
+    @for (g of groups(); track $index) {
+    <li [class.remove]="g.kind === 'remove'">
+      <span class="group-label">
+        {{ g.label }} @if (g.temporary && g.kind === 'place') {
+        <span class="tag">{{ 'guide.step.temporary' | transloco }}</span>
+        }
+      </span>
+      <span class="chips">
+        @for (c of g.chips; track c.index) {
+        <button
+          type="button"
+          class="chip"
+          [attr.aria-pressed]="selected() === c.index"
+          [attr.aria-label]="c.label"
+          [title]="c.label"
+          (click)="select(c.index)"
+        >
+          {{ c.index + 1 }}
+        </button>
+        }
+      </span>
+    </li>
+    }
+  </ul>
+</section>
+
+@if (hints().length > 0) {
+<section>
+  <h3>{{ 'guide.step.hints' | transloco }}</h3>
+  <ul class="hints">
+    @for (h of hints(); track $index) {
+    <li>
+      {{ h.text }} @if (h.hasPositions) {
+      <button
+        type="button"
+        class="link"
+        [attr.aria-pressed]="selectedHint() === $index"
+        (click)="toggleHint($index)"
+      >
+        {{ 'guide.step.showHint' | transloco }}
+      </button>
+      }
+    </li>
+    }
+  </ul>
+</section>
+}

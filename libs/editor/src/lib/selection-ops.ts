@@ -14,6 +14,7 @@ import {
 } from '@laracraft/core-model';
 import { type Clipboard, MAX_EDIT_VOLUME, type SelectionOps } from './api';
 import { boxCells, boxVolume, normalizeBox } from './box';
+import { withShapeUpdates } from './shape-updates';
 
 /** Thrown when an edit would touch more than {@link MAX_EDIT_VOLUME} cells. */
 export class EditVolumeError extends Error {
@@ -112,7 +113,10 @@ function transformContent(
   return diff(doc, targets, label);
 }
 
-/** Default {@link SelectionOps}. All ops are pure: they read `doc` and return a change set. */
+/**
+ * Plain {@link SelectionOps}: pure transforms that read `doc` and return a change set,
+ * without neighbour shape updates (see {@link createSelectionOps}).
+ */
 export const selectionOps: SelectionOps = {
   fill(doc, box, state) {
     checkVolume(boxVolume(box));
@@ -188,6 +192,28 @@ export const selectionOps: SelectionOps = {
     return diff(doc, targets, EDITOR_ACTION.paste);
   },
 };
+
+/**
+ * Shape-aware {@link SelectionOps}: every change set additionally carries the
+ * neighbour shape updates it causes ({@link withShapeUpdates}: fences, walls,
+ * panes, wire, stairs, chests, doors inside the edit and on its border), so an
+ * edit and its consequences undo as one step. `rotate`/`mirror` use the registry
+ * passed to them; `fill`/`replace`/`paste`/`copy` use `registry`.
+ * The plain {@link selectionOps} stay pure transforms without shape updates.
+ */
+export function createSelectionOps(registry: BlockRegistry): SelectionOps {
+  return {
+    fill: (doc, box, state) => withShapeUpdates(doc, registry, selectionOps.fill(doc, box, state)),
+    replace: (doc, box, from, to) =>
+      withShapeUpdates(doc, registry, selectionOps.replace(doc, box, from, to)),
+    rotate: (doc, reg, box, turns) =>
+      withShapeUpdates(doc, reg, selectionOps.rotate(doc, reg, box, turns)),
+    mirror: (doc, reg, box, axis) =>
+      withShapeUpdates(doc, reg, selectionOps.mirror(doc, reg, box, axis)),
+    copy: (doc, box) => selectionOps.copy(doc, box),
+    paste: (doc, clip, at) => withShapeUpdates(doc, registry, selectionOps.paste(doc, clip, at)),
+  };
+}
 
 /** Absolute positions of a clipboard's blocks when pasted with its min corner at `at`. */
 export function clipboardPlacement(

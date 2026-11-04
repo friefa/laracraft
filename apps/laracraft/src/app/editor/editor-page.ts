@@ -45,12 +45,8 @@ import { type EditorCommand, isTextInput, shortcutFor } from './editor-commands'
 import { Icon, type IconName } from './icon';
 import { BlockIcon } from './palette/block-icon';
 import { BlockPalette } from './palette/block-palette';
-import {
-  type EditorRenderer,
-  type LookDirection,
-  RENDERER_FACTORY,
-  RendererLoadError,
-} from './renderer-loader';
+import { blockNameKey } from './palette/palette-model';
+import { type EditorRenderer, RENDERER_FACTORY, RendererLoadError } from './renderer-loader';
 
 /** Quiet period before an autosave (overridable in tests). */
 export const EDITOR_AUTOSAVE_DELAY = new InjectionToken<number>('EDITOR_AUTOSAVE_DELAY', {
@@ -119,11 +115,6 @@ const SAVE_STATE_KEYS = {
   error: 'editor.save.error',
 } as const;
 
-/** Session extension added in parallel (3D look for pistons/observers); optional here. */
-type LookAwareSession = EditorSession & {
-  setLookVertical?(vertical: LookDirection['pitch'] | undefined): void;
-};
-
 /** Mouse buttons with a fixed meaning on desktop (`PointerEvent.button`). */
 const MIDDLE_BUTTON = 1;
 const RIGHT_BUTTON = 2;
@@ -157,7 +148,7 @@ export class EditorPage {
   private readonly palette = viewChild(BlockPalette);
   private readonly menuRoot = viewChild<ElementRef<HTMLElement>>('menuRoot');
 
-  private session: LookAwareSession | null = null;
+  private session: EditorSession | null = null;
   private renderer: EditorRenderer | null = null;
   /** The id the document was loaded from (saving never follows a later route change). */
   private loadedId: string | null = null;
@@ -170,6 +161,7 @@ export class EditorPage {
   protected readonly tools = TOOLS;
   protected readonly selectionActions = SELECTION_ACTIONS;
   protected readonly pasteAction = PASTE_ACTION;
+  protected readonly blockNameKey = blockNameKey;
 
   protected readonly phase = signal<'loading' | 'ready' | 'error'>('loading');
   protected readonly loadError = signal<Message | null>(null);
@@ -341,7 +333,7 @@ export class EditorPage {
     const look = this.renderer?.lookDirection();
     if (look) {
       session.setLookHorizontal(look.facing);
-      if ('setLookVertical' in session) session.setLookVertical?.(look.pitch);
+      session.setLookVertical(look.pitch);
     }
     const mods = {
       shift: event.shiftKey,

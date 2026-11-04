@@ -17,6 +17,7 @@ import { Icon } from '../icon';
 import { BlockIcon } from './block-icon';
 import {
   FAVORITES_KEY,
+  blockNameKey,
   RECENT_KEY,
   paletteData,
   pushRecent,
@@ -81,7 +82,8 @@ export class BlockPalette {
   private readonly names = computed(() => {
     this.lang();
     const map = new Map<string, string>();
-    for (const def of this.data().blocks) map.set(def.id, this.transloco.translate(def.nameKey));
+    for (const def of this.data().blocks)
+      map.set(def.id, this.transloco.translate(blockNameKey(def)));
     return map;
   });
 

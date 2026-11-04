@@ -1,6 +1,7 @@
 import { DIRECTION_OFFSET, type Vec3, addVec3, equalsVec3 } from '@laracraft/core-model';
 import type { Clipboard, EditorTool, Pick, ToolContext } from '../api';
 import { clipboardPlacement, selectionOps } from '../selection-ops';
+import { withShapeUpdates } from '../shape-updates';
 
 /**
  * Paste: a tap sets the paste position (clipboard min corner at the cell in
@@ -37,7 +38,11 @@ export class PasteTool implements EditorTool {
     const clip = this.getClipboard();
     const at = this.anchor;
     if (!clip || !at) return false;
-    const changeSet = selectionOps.paste(ctx.doc, clip, at);
+    const changeSet = withShapeUpdates(
+      ctx.doc,
+      ctx.registry,
+      selectionOps.paste(ctx.doc, clip, at),
+    );
     this.anchor = null;
     ctx.setPreview([]);
     ctx.commit(changeSet);

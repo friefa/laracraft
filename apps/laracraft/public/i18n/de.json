@@ -89,6 +89,147 @@
     "ossLink": "Lizenzen von Drittanbietern",
     "disclaimerHeading": "Hinweis"
   },
+  "guide": {
+    "title": "Bauanleitung",
+    "back": "Zurück zum Bau",
+    "loading": "Bau wird geladen …",
+    "planning": "Baureihenfolge wird berechnet …",
+    "progress": "{{ percent }} %",
+    "pos": "{{ x }} / {{ y }} / {{ z }}",
+    "errors": {
+      "plan": "Die Bauanleitung konnte nicht berechnet werden.",
+      "plannerUnavailable": "Die Bauanleitungs-Engine ist in dieser Version noch nicht verfügbar.",
+      "empty": "Dieser Bau hat noch keine Blöcke – es gibt nichts anzuleiten.",
+      "retry": "Erneut versuchen"
+    },
+    "stepOf": "Schritt {{ current }} von {{ total }}",
+    "stepSlider": "Schritt wählen",
+    "prev": "Vorheriger Schritt",
+    "next": "Nächster Schritt",
+    "navLabel": "Schrittnavigation",
+    "phase": {
+      "label": "Phase",
+      "structure": "Struktur",
+      "redstone": "Redstone",
+      "power": "Stromquellen",
+      "fluids": "Flüssigkeiten",
+      "cleanup": "Aufräumen"
+    },
+    "tabs": {
+      "label": "Bereiche der Anleitung",
+      "step": "Schritt",
+      "overview": "Übersicht"
+    },
+    "sheet": {
+      "expand": "Details anzeigen",
+      "collapse": "Details ausblenden"
+    },
+    "view": {
+      "label": "Ansicht",
+      "showNext": "Nächsten Schritt zeigen",
+      "layerOnly": "Nur bis zu dieser Ebene",
+      "loading": "3D-Ansicht wird geladen …",
+      "unavailable": "Die 3D-Ansicht ist auf diesem Gerät nicht verfügbar.",
+      "canvasLabel": "3D-Ansicht des aktuellen Schritts"
+    },
+    "step": {
+      "materials": "Material für diesen Schritt",
+      "noMaterials": "Kein neues Material in diesem Schritt.",
+      "actions": "Blöcke",
+      "hints": "Hinweise",
+      "place": "{{ count }}× {{ block }}",
+      "remove": "{{ count }}× {{ block }} abbauen",
+      "temporary": "temporär",
+      "actionLabel": "Block {{ n }} bei {{ pos }}",
+      "selectHint": "Tippe auf einen Block, um zu sehen, wo du stehst, wohin du schaust und wo du klickst.",
+      "detailTitle": "Block {{ n }}: {{ block }}",
+      "close": "Details schließen",
+      "showHint": "Positionen zeigen"
+    },
+    "action": {
+      "hold": "Nimm {{ item }} in die Hand",
+      "stand": "Stell dich auf {{ pos }} (Füße)",
+      "click": "Klicke auf die {{ face }} von {{ block }}",
+      "clickGround": "Klicke auf die {{ face }} des Bodens",
+      "half": {
+        "top": "Ziele auf die obere Hälfte der Fläche",
+        "bottom": "Ziele auf die untere Hälfte der Fläche"
+      },
+      "jump": "Im Sprung setzen (am höchsten Punkt)",
+      "sneak": "Beim Platzieren schleichen",
+      "interactions": "Danach {{ count }}× rechtsklicken",
+      "temporary": "Temporärer Block – wird später wieder entfernt",
+      "remove": "Baue {{ block }} bei {{ pos }} ab",
+      "reason": {
+        "temporary-support": "Er war nur eine temporäre Stütze.",
+        "scaffold": "Er war nur ein Gerüst."
+      }
+    },
+    "look": {
+      "text": "{{ direction }}, {{ vertical }}",
+      "horizontal": {
+        "north": "Schau nach Norden",
+        "east": "Schau nach Osten",
+        "south": "Schau nach Süden",
+        "west": "Schau nach Westen"
+      },
+      "vertical": {
+        "level": "geradeaus",
+        "up": "leicht nach oben",
+        "down": "leicht nach unten",
+        "upSteep": "steil nach oben",
+        "downSteep": "steil nach unten"
+      },
+      "compass": {
+        "north": "N",
+        "east": "O",
+        "south": "S",
+        "west": "W"
+      }
+    },
+    "face": {
+      "up": "Oberseite",
+      "down": "Unterseite",
+      "north": "Nordseite",
+      "east": "Ostseite",
+      "south": "Südseite",
+      "west": "Westseite"
+    },
+    "hint": {
+      "temporary-support": "Sand und Kies fallen: Setze zuerst die temporäre Stütze und entferne sie später.",
+      "scaffold": "Manche Blöcke sind außer Reichweite – baue zuerst das temporäre Gerüst.",
+      "remove-temporary": "In diesem Schritt werden temporäre Blöcke entfernt. Baue nur die markierten Blöcke ab.",
+      "keep-circuit-open": "Lass den Stromkreis offen: Schließe noch keine Stromquelle an.",
+      "power-source-last": "Dieser Schritt schließt den Stromkreis – die Schaltung kann jetzt loslaufen.",
+      "observer-order": "Setze Beobachter genau in der angegebenen Reihenfolge, damit sie nicht zu früh auslösen.",
+      "fluids-last": "Wasser und Lava kommen zuletzt, damit sie nicht in den Bau fließen.",
+      "look-direction": "Die Ausrichtung dieser Blöcke hängt von deiner Blickrichtung ab – halte dich genau an die Blickrichtung.",
+      "interaction": "Manche Blöcke musst du nach dem Setzen rechtsklicken (Verzögerung, Modus)."
+    },
+    "overview": {
+      "stats": "{{ blocks }} Blöcke in {{ steps }} Schritten",
+      "totals": "Gesamtmaterial",
+      "item": "Block",
+      "count": "Menge",
+      "gathered": "Gesammelt",
+      "gatheredItem": "{{ item }} gesammelt",
+      "progress": "{{ done }} von {{ total }} gesammelt",
+      "sortBy": "Nach {{ column }} sortieren",
+      "reset": "Checkliste leeren",
+      "temporary": "Temporäres Material",
+      "temporaryInfo": "Für Stützen und Gerüste; du bekommst es beim Abbauen zurück.",
+      "warnings": "Warnungen",
+      "noWarnings": "Keine Warnungen – dieser Bau ist wie geplant im Überlebensmodus baubar.",
+      "none": "Keins",
+      "warningAt": "bei {{ pos }}"
+    },
+    "warning": {
+      "unknown-block": "Unbekannter Block – ohne Regelprüfung platziert.",
+      "unsupported-state": "Dieser Blockzustand lässt sich im Überlebensmodus so nicht setzen.",
+      "unreachable": "Keine Position gefunden, von der aus dieser Block erreichbar ist.",
+      "cycle": "Zirkuläre Abhängigkeit – die Reihenfolge wurde heuristisch gewählt."
+    }
+  },
   "editor": {
     "back": "Zurück zu meinen Bauten",
     "loading": "Bau wird geladen …",

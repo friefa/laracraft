@@ -9,3 +9,4 @@ export * from './lib/tools/basic-tools';
 export * from './lib/tools/select-tool';
 export * from './lib/tools/paste-tool';
 export * from './lib/tools/tall-blocks';
+export * from './lib/shape-updates';

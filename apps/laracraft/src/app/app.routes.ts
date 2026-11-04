@@ -7,6 +7,10 @@ export const appRoutes: Route[] = [
     loadComponent: () => import('./builds/build-list').then((m) => m.BuildListPage),
   },
   {
+    path: 'build/:id/guide',
+    loadComponent: () => import('./guide/guide-page').then((m) => m.GuidePage),
+  },
+  {
     path: 'build/:id',
     loadComponent: () => import('./editor/editor-page').then((m) => m.EditorPage),
   },
