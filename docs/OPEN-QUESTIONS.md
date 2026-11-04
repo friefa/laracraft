@@ -17,7 +17,7 @@ Stand: 2026-11-03. Bis zur Antwort arbeite ich mit dem jeweils genannten **Defau
 5. **Altersgruppe:** Richten wir uns auch an unter 16-Jährige (bzw. unter 13)? Das hat große Auswirkungen auf
    DSGVO-Einwilligung (Art. 8), Store-Einstufung, Moderation und Lara-Inhaltsfilter.
    _Default: ab 13, mit Elternhinweis; Lara mit strengen Inhaltsfiltern._
-6. **Monetarisierung und Lara-Budget:** Kostenlos mit Limit, Abo, In-App-Käufe? Welches monatliche LLM-Budget pro
+6. **Monetarisierung und Lara-Budget:** _(PO 2026-11-04: Anbieter Anthropic API, zusätzlich frei konfigurierbarer OpenAI-kompatibler Endpunkt – ADR-0005. Budget pro Nutzer noch offen.)_ Kostenlos mit Limit, Abo, In-App-Käufe? Welches monatliche LLM-Budget pro
    aktivem Nutzer ist akzeptabel?
    _Default: Free-Tier mit Tageslimit für Lara, Abrechnung vorbereitet, aber nicht gebaut._
 7. **Hosting:** Bevorzugter Cloud-Anbieter (Azure passt zu .NET) und EU-Region verpflichtend?

@@ -1,6 +1,6 @@
 # ADR-0005: LLM-Provider-Abstraktion
 
-- Status: **Vorgeschlagen**
+- Status: **Vorgeschlagen** (überarbeitet 2026-11-04 nach PO-Vorgabe „eigenen OpenAI-kompatiblen Endpunkt angeben können, Anthropic API nutzen“)
 - Datum: 2026-11-03
 
 ## Kontext
@@ -34,8 +34,22 @@ public sealed record Usage(int InputTokens, int OutputTokens, int CachedInputTok
 public sealed record Completed(string StopReason) : LlmStreamEvent;
 ```
 
-- `AnthropicProvider` als erste Implementierung (offizielles Anthropic-.NET-SDK oder HTTP, Streaming, Prompt
-  Caching für Systemprompt und Tool-Definitionen). Modellwahl per Konfiguration, nicht im Code.
+- **Zwei Implementierungen, per Konfiguration wählbar** (nur Backend-Konfiguration bzw. Secrets; Endnutzer geben
+  nie Keys ein, keine Keys im Client):
+  1. `AnthropicProvider` – **Standard für den MVP.** Offizielles Anthropic-.NET-SDK (NuGet-Paket `Anthropic`),
+     native Messages API mit Streaming, Prompt Caching (Systemprompt + Tool-Definitionen), `strict: true` auf den
+     DSL-Tools (schema-treue Tool-Argumente), adaptives Denken mit `effort`. Standardmodell laut Anthropic-Empfehlung
+     `claude-opus-5-5` (4 $/20 $ pro Mio. Token); günstigere Alternative `claude-sonnet-5-5` (2 $/10 $) – Wahl per
+     Konfiguration und Eval, nicht im Code. Hinweis: Diese Modelle unterstützen kein erzwungenes `tool_choice`
+     (`any`/`tool`); Lara nutzt `auto` + Prompt-Anweisung + `strict`.
+  2. `OpenAiCompatibleProvider` – **beliebiger OpenAI-kompatibler Chat-Completions-Endpunkt** (Konfiguration:
+     `BaseUrl`, `ApiKey`, `Model`, optional Header). Damit lassen sich andere Anbieter oder selbst gehostete Modelle
+     anbinden (z. B. vLLM, Ollama, Azure OpenAI, OpenRouter). Ohne Caching-/Thinking-Features; Tool-Argumente werden
+     wie immer serverseitig gegen das DSL-Schema validiert.
+- Anthropics eigener OpenAI-Kompatibilitätsmodus (`https://api.anthropic.com/v1/`) funktioniert technisch über
+  Variante 2, ist aber **nicht** der Weg für Claude: laut Anthropic nur zum Testen/Vergleichen gedacht, `strict`
+  wird ignoriert (kein Schema-Garantie für Tool-Argumente), kein Prompt Caching, kein zurückgegebenes Denken,
+  System-Nachrichten werden zusammengezogen. Für Claude daher immer Variante 1.
 - Darüber eine `LaraSession`, die den Tool-Loop steuert: Tool-Argumente gegen das DSL-Schema validieren,
   ungültige Calls als Tool-Fehler zurück ans Modell geben, gültige Operationen per SSE an den Client streamen.
 - `UsageMeter` schreibt Token und Kosten pro Nutzer und Anfrage in Postgres; Rate-Limits per

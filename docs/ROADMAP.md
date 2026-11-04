@@ -70,6 +70,17 @@ Aus dem fachlichen Review der Registry (P0.3r), vor Start der Build-Order-Engine
   brauchen Biome-/Power-Tinting im Renderer (M1); Animations-Timing (`.mcmeta`) wurde nicht übernommen; DRM-freier
   Download von Texturen + Atlas (CC BY-SA, ADR-0003) bis zum Store-Release (M5).
 
+## Bedrock (ADR-0006, vorgeschlagen)
+
+| Paket | Inhalt                                                                                                                                                                                                    | Lib                | Hängt ab von |
+| ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ | ------------ |
+| B0    | Recherche mit Quellen: Bedrock-IDs/-Zustände der Registry-Blöcke, Reichweite/Augenhöhe/Bridging, Redstone-Unterschiede (Quasi-Konnektivität, Kolben, Observer, Verstärker), Flüssigkeiten, `.mcstructure` | docs/research      | –            |
+| B1    | Ziel-Edition im Format (`edition: 'bedrock'`) + Java→Bedrock-Mapping-Tabelle mit „nicht verfügbar“-Kennzeichnung, Editor-Warnung                                                                          | core-model, editor | B0           |
+| B2    | `EditionProfile` in Planer und Validator (unabhängig umgesetzt), Golden-Tests für beide Profile                                                                                                           | build-order        | B0           |
+| B3    | Anleitung/Texte/Hinweise je Edition, Edition-Wahl in der App                                                                                                                                              | app                | B1, B2       |
+| B4    | Redstone-Module mit Edition-Kompatibilität                                                                                                                                                                | redstone-modules   | M3           |
+| B5    | `.mcstructure` Import/Export                                                                                                                                                                              | formats            | M4           |
+
 ## M2–M5 (Grobplanung)
 
 - **M2 Build-Order-Engine** ✅ (P2.0 Support-Profile, P2.1 Planer, P2.2 Validator + Golden-Builds, P2.3 Anleitungsmodus, P2.4 Sprung/Säulen, P2.5 Politur): Regeln aus Briefing §2, Validator, Golden-Tests (Haus, Turm mit Überhang, Sandstruktur,
