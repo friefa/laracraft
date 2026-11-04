@@ -1,6 +1,6 @@
 # laracraft – Design (Stand 2026-11-04)
 
-Entscheidung PO: **verspielter, freundlicher Lern-App-Stil** (Referenz: Duolingo). Wir übernehmen den _Stil_, nicht die
+Entscheidung PO: **comic-artiger Lern-App-Stil, dunkel als Standard** (Referenz: Duolingo im Dark Mode). Wir übernehmen den _Stil_, nicht die
 Marke: keine Eule/Maskottchen-Kopie, nicht exakt deren Farben, nicht deren (proprietäre) Schrift. Ebenso nichts, was wie
 offizielles Minecraft aussieht (kein Minecraft-Font, keine Mojang-UI, kein Logo-Stil).
 
@@ -10,15 +10,21 @@ Quelle der Wahrheit für Tokens und Basis-Komponenten: `apps/laracraft/src/style
 
 1. **Dick und drückbar.** Buttons und Karten haben 2 px Rand, große Radien (16 px) und eine dunklere Unterkante
    (4 px), die sich beim Drücken „eindrückt“ (`.lc-btn`, `.lc-card`).
-2. **Kräftige Farben mit Bedeutung.** Grün = Hauptaktion/Erfolg/Weiter, Blau = Auswahl/sekundär/Links,
-   Orange = Hinweis/Redstone/Aufpassen, Rot = Entfernen/Fehler, Gelb = Hervorhebung. Viel Weiß, kühle Neutraltöne.
+2. **Dunkel zuerst, flache satte Farben.** Tiefes Blaugrau als Grund (`--lc-bg`), Flächen leicht heller
+   (`--lc-surface`). Grün = Hauptaktion/Erfolg/Weiter, Blau = Auswahl/sekundär/Links, Orange = Hinweis/Redstone,
+   Rot = Entfernen/Fehler, Gelb = Hervorhebung/Strom, Lila = Lara. Keine Verläufe, keine weichen Schatten.
+   Hell nur als explizite Option (`data-theme="light"`).
+   2b. **Comic-Charakter.** Icons gefüllt und knubbelig (keine dünnen Linien), Illustrationen flach mit dunkler
+   Kontur (`--lc-ink`, 2–3 px) und einem helleren Glanzstreifen. Leere Zustände und Erfolgsmomente bekommen eine
+   Illustration. **Lara** ist die eigene Maskottchen-Figur (freundlicher Block-Charakter, lila Akzent) – kein
+   Tier, nichts, das an eine fremde Marke erinnert.
 3. **Runde, fette Schrift.** Nunito (OFL, lokal gebündelt). Fließtext 600, Labels/Buttons 800–900, Buttons in
    Versalien mit Laufweite.
 4. **Eine Sache pro Bildschirm.** Große Haupt-CTA unten (volle Breite auf dem Handy), klare Fortschrittsanzeige.
 5. **Kleine Erfolgsmomente.** Kurze federnde Animationen (`.lc-pop`, `--lc-ease-bounce`) beim Abschließen eines
    Schritts, Speichern, Setzen. Immer `prefers-reduced-motion` respektieren.
 6. **Touch zuerst.** Ziele ≥ 48 px, Abstände großzügig, Daumenzone unten.
-7. **Hell und dunkel.** Alle Farben über Tokens; Dark-Mode über `prefers-color-scheme` und `data-theme`.
+7. **Tokens only.** Alle Farben über Tokens; Dunkel ist Standard, Hell über `data-theme="light"`.
 
 ## Bausteine
 

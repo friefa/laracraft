@@ -1,4 +1,4 @@
-// laracraft design system ("playful builder"): see docs/DESIGN.md.
+// laracraft design system (dark-first comic style): see docs/DESIGN.md.
 // Global tokens, base styles and shared component classes (.lc-*).
 // Components use the --lc-* custom properties; never hard-code colours.
 
@@ -6,34 +6,36 @@
 @use '@fontsource-variable/nunito/wght.css';
 
 :root {
-  color-scheme: light;
+  /* Dark-first comic palette: flat, saturated colours on a deep blue-grey. */
+  color-scheme: dark;
+  --lc-green: #58cc4a;
+  --lc-green-shade: #3d9a33;
+  --lc-green-soft: #1e3b23;
+  --lc-blue: #3fb1f5;
+  --lc-blue-shade: #1f84c4;
+  --lc-blue-soft: #133149;
+  --lc-orange: #ff9f3a;
+  --lc-orange-shade: #c9721a;
+  --lc-orange-soft: #3f2a14;
+  --lc-red: #ff5a5f;
+  --lc-red-shade: #c23a3f;
+  --lc-red-soft: #45201f;
+  --lc-yellow: #ffd23f;
+  --lc-yellow-shade: #c99e17;
+  --lc-purple: #b07cff;
+  --lc-purple-shade: #8053cf;
 
-  /* Palette (own, not a brand copy): grass green primary, sky blue, sunny orange. */
-  --lc-green: #3fb950;
-  --lc-green-shade: #2c8a3a;
-  --lc-green-soft: #e3f7e1;
-  --lc-blue: #2f9bf0;
-  --lc-blue-shade: #1f74b8;
-  --lc-blue-soft: #e1f1fd;
-  --lc-orange: #ff9a2e;
-  --lc-orange-shade: #d27512;
-  --lc-orange-soft: #fff0dc;
-  --lc-red: #f04b4f;
-  --lc-red-shade: #c23236;
-  --lc-red-soft: #fde4e4;
-  --lc-yellow: #ffcd3c;
-  --lc-yellow-shade: #d9a514;
-
-  /* Neutrals (slightly cool) */
-  --lc-bg: #ffffff;
-  --lc-bg-soft: #f4f7f9;
-  --lc-surface: #ffffff;
-  --lc-text: #3b4449;
-  --lc-text-strong: #263035;
-  --lc-muted: #7b868c;
-  --lc-border: #e1e6e9;
-  --lc-border-strong: #cfd6da;
-  --lc-on-color: #ffffff;
+  --lc-bg: #121d23;
+  --lc-bg-soft: #172730;
+  --lc-surface: #1c2d36;
+  --lc-text: #dbe4e9;
+  --lc-text-strong: #f5f9fb;
+  --lc-muted: #8d9ea7;
+  --lc-border: #2f434d;
+  --lc-border-strong: #3e5560;
+  --lc-on-color: #0d1519;
+  /* Comic ink: outline colour for illustrations and outlined elements. */
+  --lc-ink: #0b1216;
 
   /* Legacy aliases used by existing components */
   --lc-accent: var(--lc-green);
@@ -61,60 +63,35 @@
   --lc-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    color-scheme: dark;
-    --lc-green: #58c765;
-    --lc-green-shade: #3c9a49;
-    --lc-green-soft: #1f3a26;
-    --lc-blue: #4aa8f2;
-    --lc-blue-shade: #2b7cc0;
-    --lc-blue-soft: #16324a;
-    --lc-orange: #ffa94d;
-    --lc-orange-shade: #cf7a1c;
-    --lc-orange-soft: #3d2a14;
-    --lc-red: #ff6b6e;
-    --lc-red-shade: #c9474a;
-    --lc-red-soft: #43201f;
-    --lc-yellow: #ffd65c;
-    --lc-yellow-shade: #c9a227;
-    --lc-bg: #121c21;
-    --lc-bg-soft: #18252c;
-    --lc-surface: #1b2a31;
-    --lc-text: #dce4e8;
-    --lc-text-strong: #f2f6f8;
-    --lc-muted: #91a0a8;
-    --lc-border: #2f414a;
-    --lc-border-strong: #3d525c;
-    --lc-on-color: #0f171b;
-  }
-}
-
-:root[data-theme='dark'] {
-  color-scheme: dark;
-  --lc-green: #58c765;
-  --lc-green-shade: #3c9a49;
-  --lc-green-soft: #1f3a26;
-  --lc-blue: #4aa8f2;
-  --lc-blue-shade: #2b7cc0;
-  --lc-blue-soft: #16324a;
-  --lc-orange: #ffa94d;
-  --lc-orange-shade: #cf7a1c;
-  --lc-orange-soft: #3d2a14;
-  --lc-red: #ff6b6e;
-  --lc-red-shade: #c9474a;
-  --lc-red-soft: #43201f;
-  --lc-yellow: #ffd65c;
-  --lc-yellow-shade: #c9a227;
-  --lc-bg: #121c21;
-  --lc-bg-soft: #18252c;
-  --lc-surface: #1b2a31;
-  --lc-text: #dce4e8;
-  --lc-text-strong: #f2f6f8;
-  --lc-muted: #91a0a8;
-  --lc-border: #2f414a;
-  --lc-border-strong: #3d525c;
-  --lc-on-color: #0f171b;
+/* Optional light theme (explicit choice only; dark is the product default). */
+:root[data-theme='light'] {
+  color-scheme: light;
+  --lc-green: #3fb950;
+  --lc-green-shade: #2c8a3a;
+  --lc-green-soft: #e3f7e1;
+  --lc-blue: #2f9bf0;
+  --lc-blue-shade: #1f74b8;
+  --lc-blue-soft: #e1f1fd;
+  --lc-orange: #ff9a2e;
+  --lc-orange-shade: #d27512;
+  --lc-orange-soft: #fff0dc;
+  --lc-red: #f04b4f;
+  --lc-red-shade: #c23236;
+  --lc-red-soft: #fde4e4;
+  --lc-yellow: #ffcd3c;
+  --lc-yellow-shade: #d9a514;
+  --lc-purple: #9b5cf6;
+  --lc-purple-shade: #7038c9;
+  --lc-bg: #ffffff;
+  --lc-bg-soft: #f4f7f9;
+  --lc-surface: #ffffff;
+  --lc-text: #3b4449;
+  --lc-text-strong: #263035;
+  --lc-muted: #7b868c;
+  --lc-border: #e1e6e9;
+  --lc-border-strong: #cfd6da;
+  --lc-on-color: #ffffff;
+  --lc-ink: #263035;
 }
 
 *,
