@@ -8,18 +8,24 @@
 
 <header #topBar class="bar top">
   <a
-    class="icon-button"
+    class="lc-btn lc-btn--icon"
     routerLink="/"
     data-action="back"
     [attr.aria-label]="'editor.back' | transloco"
+    [title]="'editor.back' | transloco"
     ><lc-icon name="back"
   /></a>
   <div class="title">
     <h1>{{ name() || ('editor.loading' | transloco) }}</h1>
     @if (phase() === 'ready') {
-    <p class="save" [attr.data-state]="autosave.state()" role="status">
+    <p
+      class="save lc-pill {{ saveStatePill() }}"
+      [attr.data-state]="autosave.state()"
+      role="status"
+    >
+      <span class="dot" aria-hidden="true"></span>
       {{ saveStateKey() | transloco }} @if (autosave.state() === 'error') {
-      <button type="button" class="link" data-action="retry-save" (click)="retrySave()">
+      <button type="button" class="retry" data-action="retry-save" (click)="retrySave()">
         {{ 'editor.save.retry' | transloco }}
       </button>
       }
@@ -29,7 +35,7 @@
   @if (phase() === 'ready') {
   <button
     type="button"
-    class="icon-button"
+    class="lc-btn lc-btn--icon"
     data-action="undo"
     [disabled]="!canUndo()"
     [attr.aria-label]="'editor.undo' | transloco"
@@ -40,7 +46,7 @@
   </button>
   <button
     type="button"
-    class="icon-button"
+    class="lc-btn lc-btn--icon"
     data-action="redo"
     [disabled]="!canRedo()"
     [attr.aria-label]="'editor.redo' | transloco"
@@ -52,34 +58,36 @@
   <div #menuRoot class="menu-root">
     <button
       type="button"
-      class="icon-button"
+      class="lc-btn lc-btn--icon"
       data-action="more"
       aria-controls="editor-menu"
+      [class.lc-btn--selected]="menuOpen()"
       [attr.aria-expanded]="menuOpen()"
       [attr.aria-label]="'editor.more' | transloco"
+      [title]="'editor.more' | transloco"
       (click)="toggleMenu()"
     >
       <lc-icon name="more" />
     </button>
     @if (menuOpen()) {
-    <ul id="editor-menu" class="menu">
+    <ul id="editor-menu" class="menu lc-card lc-pop">
       <li>
         <button type="button" data-action="export" (click)="exportBuild()">
-          {{ 'editor.menu.export' | transloco }}
+          <lc-icon name="export" />{{ 'editor.menu.export' | transloco }}
         </button>
       </li>
       <li>
         <a data-action="guide" [routerLink]="['/build', id(), 'guide']"
-          >{{ 'editor.menu.guide' | transloco }}</a
+          ><lc-icon name="guide" />{{ 'editor.menu.guide' | transloco }}</a
         >
       </li>
       <li>
         <button type="button" data-action="frame" (click)="frameFromMenu()">
-          {{ 'editor.menu.frame' | transloco }}
+          <lc-icon name="frame" />{{ 'editor.menu.frame' | transloco }}
         </button>
       </li>
       <li>
-        <a routerLink="/credits">{{ 'editor.menu.credits' | transloco }}</a>
+        <a routerLink="/credits"><lc-icon name="info" />{{ 'editor.menu.credits' | transloco }}</a>
       </li>
     </ul>
     }
@@ -92,36 +100,39 @@
     @if (status(); as s) { {{ s.key | transloco: s.params }} }
   </p>
   @if (phase() === 'loading') {
-  <p class="card" role="status">{{ 'editor.loading' | transloco }}</p>
+  <p class="lc-card note" role="status">{{ 'editor.loading' | transloco }}</p>
   } @if (loadError(); as e) {
-  <div class="card error" role="alert" data-error="load">
+  <div class="lc-card note error" role="alert" data-error="load">
     <p>{{ e.key | transloco }}</p>
-    <a routerLink="/">{{ 'editor.back' | transloco }}</a>
+    <a class="lc-btn lc-btn--sm" routerLink="/">{{ 'editor.back' | transloco }}</a>
   </div>
   } @if (rendererError(); as e) {
-  <div class="card error" role="alert" data-error="renderer">
+  <div class="lc-card note error" role="alert" data-error="renderer">
     <p>{{ e.key | transloco }}</p>
   </div>
   } @if (error(); as e) {
-  <div class="card error" role="alert" data-error="action">
+  <div class="lc-card note error" role="alert" data-error="action">
     <p>{{ e.key | transloco: e.params }}</p>
-    <button type="button" class="link" (click)="dismissError()">
+    <button type="button" class="lc-btn lc-btn--sm" (click)="dismissError()">
       {{ 'editor.dismiss' | transloco }}
     </button>
   </div>
   } @if (phase() === 'ready' && firstRunHint()) {
-  <div class="card first-run" data-hint="first-run">
-    <p>{{ firstRunKey | transloco }}</p>
-    <button
-      type="button"
-      class="icon-button"
-      data-action="dismiss-first-run"
-      [attr.aria-label]="'editor.firstRun.dismiss' | transloco"
-      [title]="'editor.firstRun.dismiss' | transloco"
-      (click)="dismissFirstRunHint()"
-    >
-      <lc-icon name="close" />
-    </button>
+  <div class="first-run lc-pop" data-hint="first-run">
+    <lc-lara mood="wave" size="3rem" />
+    <div class="lc-bubble bubble">
+      <p>{{ firstRunKey | transloco }}</p>
+      <button
+        type="button"
+        class="close"
+        data-action="dismiss-first-run"
+        [attr.aria-label]="'editor.firstRun.dismiss' | transloco"
+        [title]="'editor.firstRun.dismiss' | transloco"
+        (click)="dismissFirstRunHint()"
+      >
+        <lc-icon name="close" />
+      </button>
+    </div>
   </div>
   } @if (hint(); as h) {
   <p class="hint">{{ h | transloco }}</p>
@@ -129,34 +140,28 @@
 </div>
 
 @if (phase() === 'ready') { @if (showLayers()) {
-<div #layersPanel class="layers">
-  <lc-icon name="layers" />
-  <input
-    type="range"
-    data-control="layer"
-    [min]="layerMin()"
-    [max]="layerMax()"
-    step="1"
-    [value]="layerValue()"
-    [attr.aria-label]="'editor.layer.label' | transloco"
-    [attr.aria-valuetext]="
-      layer() === null
-        ? ('editor.layer.all' | transloco)
-        : ('editor.layer.value' | transloco: { y: layerValue() })
-    "
-    (input)="onLayerInput($event)"
-  />
-  <span class="layer-value" aria-hidden="true">{{ layer() ?? '∞' }}</span>
-</div>
+<lc-layer-slider
+  #layersPanel
+  class="layers"
+  [min]="layerMin()"
+  [max]="layerMax()"
+  [limit]="layer()"
+  (limitChange)="onLayerChange($event)"
+/>
 }
 
 <footer #bottomBar class="bar bottom">
   @if (hasSelection() || hasClipboard()) {
-  <div class="row actions" role="toolbar" [attr.aria-label]="'editor.selection.label' | transloco">
+  <div
+    class="actions lc-pop"
+    role="toolbar"
+    [attr.aria-label]="'editor.selection.label' | transloco"
+  >
     @if (hasSelection()) { @for (a of selectionActions; track a.label) {
     <button
       type="button"
-      class="icon-button"
+      class="lc-btn lc-btn--icon"
+      [class]="a.tone ? 'lc-btn--tint-' + a.tone : ''"
       [attr.data-command]="a.label"
       [disabled]="isActionDisabled(a)"
       [attr.aria-label]="a.label | transloco"
@@ -168,7 +173,7 @@
     } } @if (pastePending()) {
     <button
       type="button"
-      class="icon-button primary"
+      class="lc-btn lc-btn--icon lc-btn--primary"
       data-command="confirm-paste"
       [attr.aria-label]="'editor.selection.confirmPaste' | transloco"
       [title]="'editor.selection.confirmPaste' | transloco"
@@ -179,7 +184,8 @@
     } @else {
     <button
       type="button"
-      class="icon-button"
+      class="lc-btn lc-btn--icon"
+      [class]="'lc-btn--tint-' + pasteAction.tone"
       [attr.data-command]="pasteAction.label"
       [disabled]="isActionDisabled(pasteAction)"
       [attr.aria-label]="pasteAction.label | transloco"
@@ -194,14 +200,18 @@
   <div class="row">
     <button
       type="button"
-      class="active-block"
+      class="lc-btn active-block"
       data-action="palette"
       aria-haspopup="dialog"
       [attr.aria-label]="'editor.palette.open' | transloco: { name: activeBlock() ? (blockNameKey(activeBlock()!) | transloco) : '' }"
       (click)="openPalette()"
     >
+      <span class="tile">
+        @if (activeBlock(); as b) {
+        <lc-block-icon [block]="b" />
+        }
+      </span>
       @if (activeBlock(); as b) {
-      <lc-block-icon [block]="b" />
       <span class="block-name">{{ blockNameKey(b) | transloco }}</span>
       }
     </button>
@@ -209,7 +219,8 @@
       @for (t of tools; track t.tool) {
       <button
         type="button"
-        class="icon-button tool"
+        class="lc-btn lc-btn--icon"
+        [class.lc-btn--selected]="tool() === t.tool"
         [attr.data-tool]="t.tool"
         [attr.aria-pressed]="tool() === t.tool"
         [attr.aria-label]="t.label | transloco"

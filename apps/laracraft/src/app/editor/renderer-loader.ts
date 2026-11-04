@@ -16,6 +16,27 @@ export function assetUrl(doc: Document, path: string): string {
   return new URL(path, doc.baseURI).href;
 }
 
+/** Fallback 3D backdrop when the `--lc-sky` token is missing (dark night blue). */
+export const DEFAULT_SKY = 0x20364a;
+
+/** Parses a `#rgb`/`#rrggbb` CSS colour to 0xRRGGBB; null for anything else. */
+export function parseHexColor(value: string | null | undefined): number | null {
+  const hex = value?.trim().replace(/^#/, '') ?? '';
+  if (/^[0-9a-f]{3}$/i.test(hex)) return parseInt([...hex].map((c) => c + c).join(''), 16);
+  if (/^[0-9a-f]{6}$/i.test(hex)) return parseInt(hex, 16);
+  return null;
+}
+
+/** The 3D view's backdrop from the `--lc-sky` design token (follows the theme). */
+export function skyColor(doc: Document, el: Element): number {
+  try {
+    const value = doc.defaultView?.getComputedStyle(el).getPropertyValue('--lc-sky');
+    return parseHexColor(value) ?? DEFAULT_SKY;
+  } catch {
+    return DEFAULT_SKY;
+  }
+}
+
 /** The renderer as the editor uses it (contract + camera look direction). */
 export type EditorRenderer = SceneBuildRenderer;
 
@@ -72,6 +93,7 @@ export async function loadBuildRenderer(
       canvas,
       registry,
       atlasUrl: assetUrl(doc, ATLAS_URL),
+      background: skyColor(doc, canvas),
       // Hover/paste previews must read clearly against the build.
       ghostOpacity: 0.75,
       ...(typeof Worker === 'undefined' ? {} : { createWorker: createMesherWorker }),

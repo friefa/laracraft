@@ -368,3 +368,63 @@ textarea {
     transition: none !important;
   }
 }
+
+/* ---------------------------------------------------------------------------
+ * Added by P3.2 (editor): backdrop of the 3D view. A calm, flat night blue just
+ * lighter than --lc-bg so blocks and the ground grid read well; light theme: pale sky.
+ * Read once by the renderer when the editor opens.
+ * ------------------------------------------------------------------------- */
+:root {
+  --lc-sky: #20364a;
+}
+:root[data-theme='light'] {
+  --lc-sky: #d4e7f4;
+}
+
+/* Tinted buttons (P3.2): soft background, coloured icon/text and edge. Colour = meaning
+ * (green adds, blue transforms, red removes). Use together with .lc-btn. */
+.lc-btn--tint-green:not(:disabled) {
+  --btn-bg: var(--lc-green-soft);
+  --btn-fg: var(--lc-green);
+  --btn-edge: var(--lc-green-shade);
+  --btn-border: var(--lc-green-shade);
+}
+.lc-btn--tint-blue:not(:disabled) {
+  --btn-bg: var(--lc-blue-soft);
+  --btn-fg: var(--lc-blue);
+  --btn-edge: var(--lc-blue-shade);
+  --btn-border: var(--lc-blue-shade);
+}
+.lc-btn--tint-red:not(:disabled) {
+  --btn-bg: var(--lc-red-soft);
+  --btn-fg: var(--lc-red);
+  --btn-edge: var(--lc-red-shade);
+  --btn-border: var(--lc-red-shade);
+}
+
+/* Comic speech bubble (P3.2), e.g. Lara talking: purple outline and a tail on the left
+ * pointing at the speaker placed before it. */
+.lc-bubble {
+  position: relative;
+  padding: 0.6rem 0.9rem;
+  color: var(--lc-text-strong);
+  font-weight: var(--lc-fw-bold);
+  line-height: 1.3;
+  background: var(--lc-surface);
+  border: var(--lc-border-w) solid var(--lc-purple);
+  border-radius: var(--lc-radius);
+  box-shadow: 0 var(--lc-depth) 0 var(--lc-purple-shade);
+}
+.lc-bubble::before {
+  content: '';
+  position: absolute;
+  left: -0.45rem;
+  bottom: 0.9rem;
+  width: 0.8rem;
+  height: 0.8rem;
+  background: inherit;
+  border: inherit;
+  border-width: 0 0 var(--lc-border-w) var(--lc-border-w);
+  border-radius: 0 0 0 0.2rem;
+  transform: rotate(45deg);
+}
