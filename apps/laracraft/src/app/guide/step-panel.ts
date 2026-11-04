@@ -11,7 +11,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
-import type { BuildStep } from '@laracraft/build-order';
+import type { BuildPlan, BuildStep } from '@laracraft/build-order';
 import type { BlockStateString, Vec3 } from '@laracraft/core-model';
 import { Lara } from '../shared/lara/lara';
 import { groupActions } from './action-groups';
@@ -19,6 +19,7 @@ import { GuideBlockTile } from './block-tile';
 import { GuideIcon } from './guide-icon';
 import { BEARING, GuideText } from './guide-text';
 import { HINT_STYLE, LINE_STYLE } from './lesson-style';
+import { temporaryBlockAt } from './stand-position';
 import { formatItemStacks } from './materials';
 
 /**
@@ -40,6 +41,8 @@ export class GuideStepPanel {
   readonly step = input.required<BuildStep>();
   /** Block lookup in the step document (for "click the top of …"). */
   readonly blockAt = input.required<(pos: Vec3) => BlockStateString>();
+  /** The whole plan, to tell whether the player stands on a temporary block (scaffold). */
+  readonly plan = input<BuildPlan | null>(null);
   /** Index into `step.actions` of the selected action. */
   readonly selected = model<number | null>(null);
   /** Index into `step.hints` whose positions are highlighted. */
@@ -86,10 +89,19 @@ export class GuideStepPanel {
         action.kind === 'place' ? this.text.t(`guide.look.compass.${action.look.horizontal}`) : '',
       vertical: action.kind === 'place' ? action.look.vertical : 'level',
       lines: this.text
-        .actionLines(action, this.blockAt())
+        .actionLines(action, this.blockAt(), this.standsOnTemporary(index))
         .map((line) => ({ ...line, ...LINE_STYLE[line.kind] })),
     };
   });
+
+  /** Whether the block under the selected action's stand position is temporary right then. */
+  private standsOnTemporary(index: number): boolean {
+    const plan = this.plan();
+    const standAt = this.step().actions[index]?.standAt;
+    if (!plan || !standAt) return false;
+    const below = { x: standAt.x, y: standAt.y - 1, z: standAt.z };
+    return temporaryBlockAt(plan, this.step().index, index, below);
+  }
 
   protected readonly hints = computed(() =>
     this.step().hints.map((h) => ({

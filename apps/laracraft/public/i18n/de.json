@@ -184,7 +184,6 @@
     },
     "action": {
       "hold": "Nimm {{ item }} in die Hand",
-      "stand": "Stell dich auf {{ pos }} (Füße)",
       "click": "Klicke auf die {{ face }} von {{ block }}",
       "clickGround": "Klicke auf die {{ face }} des Bodens",
       "half": {
@@ -195,11 +194,55 @@
       "sneak": "Beim Platzieren schleichen",
       "interactions": "Danach {{ count }}× rechtsklicken",
       "temporary": "Temporärer Block – wird später wieder entfernt",
-      "remove": "Baue {{ block }} bei {{ pos }} ab",
+      "remove": "Baue {{ block }} ab",
       "reason": {
         "temporary-support": "Er war nur eine temporäre Stütze.",
         "scaffold": "Er war nur ein Gerüst."
       }
+    },
+    "stand": {
+      "text": "Stell dich {{ where }}, {{ height }}",
+      "pillar": "Stell dich auf den Block darunter",
+      "pillarScaffold": "Stell dich auf den Block darunter (dein Gerüst)",
+      "onTop": "Stell dich oben drauf",
+      "where": {
+        "above": "genau darüber",
+        "below": "genau darunter",
+        "adjacent": "direkt daneben ({{ direction }})",
+        "diagonal": "schräg daneben ({{ direction }})",
+        "offset1": "{{ a }} davon",
+        "offset2": "{{ a }} und {{ b }} davon"
+      },
+      "axis": "{{ distance }} {{ direction }}",
+      "blocks": {
+        "one": "{{ count }} Block",
+        "other": "{{ count }} Blöcke"
+      },
+      "direction": {
+        "north": "nördlich",
+        "east": "östlich",
+        "south": "südlich",
+        "west": "westlich"
+      },
+      "diagonal": {
+        "north-east": "nordöstlich",
+        "north-west": "nordwestlich",
+        "south-east": "südöstlich",
+        "south-west": "südwestlich"
+      },
+      "height": {
+        "same": "auf gleicher Höhe",
+        "above": {
+          "one": "{{ count }} Block höher",
+          "other": "{{ count }} Blöcke höher"
+        },
+        "below": {
+          "one": "{{ count }} Block tiefer",
+          "other": "{{ count }} Blöcke tiefer"
+        }
+      },
+      "scaffold": "{{ height }} (auf dem Gerüst)",
+      "coords": "Koordinaten relativ zum Bau: {{ pos }}"
     },
     "look": {
       "text": "{{ direction }}, {{ vertical }}",

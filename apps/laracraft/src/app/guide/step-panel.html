@@ -18,7 +18,11 @@
       @for (line of d.lines; track $index) {
       <li class="line" [attr.data-kind]="line.kind" [attr.data-tone]="line.tone">
         <span class="line-icon"><lc-guide-icon [name]="line.icon" /></span>
-        <span class="line-text">{{ line.text }}</span>
+        <span class="line-text"
+          >{{ line.text }} @if (line.detail) {
+          <small class="line-detail">{{ line.detail }}</small>
+          }
+        </span>
         @if (line.kind === 'look' && d.bearing !== null) {
         <span class="compass" aria-hidden="true">
           <svg viewBox="0 0 24 24" width="18" height="18">

@@ -113,6 +113,16 @@ p {
   min-width: 0;
 }
 
+// Secondary detail under a line (raw coordinates for power users).
+.line-detail {
+  display: block;
+  margin-top: 0.125rem;
+  color: var(--lc-muted);
+  font-size: 0.8125rem;
+  font-weight: var(--lc-fw-body);
+  font-variant-numeric: tabular-nums;
+}
+
 .compass {
   display: inline-flex;
   flex: none;
