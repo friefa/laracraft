@@ -1,84 +1,111 @@
-<p class="muted">
+<p class="stats">
   {{ 'guide.overview.stats' | transloco: { blocks: plan().stats.blocks, steps: plan().steps.length }
   }}
 </p>
 
 <section>
   <div class="head">
-    <h3>{{ 'guide.overview.totals' | transloco }}</h3>
-    <span class="progress" role="status">
+    <h3 class="section-title">{{ 'guide.overview.totals' | transloco }}</h3>
+    <div class="sort" role="group" [attr.aria-label]="'guide.overview.sortLabel' | transloco">
+      <button
+        type="button"
+        class="lc-btn lc-btn--sm"
+        [class.lc-btn--selected]="sort().by === 'name'"
+        [attr.aria-pressed]="sort().by === 'name'"
+        [attr.data-dir]="sort().by === 'name' ? sort().dir : null"
+        (click)="sortBy('name')"
+      >
+        {{ 'guide.overview.item' | transloco }}
+      </button>
+      <button
+        type="button"
+        class="lc-btn lc-btn--sm"
+        [class.lc-btn--selected]="sort().by === 'count'"
+        [attr.aria-pressed]="sort().by === 'count'"
+        [attr.data-dir]="sort().by === 'count' ? sort().dir : null"
+        (click)="sortBy('count')"
+      >
+        {{ 'guide.overview.count' | transloco }}
+      </button>
+    </div>
+  </div>
+
+  <div class="gathered">
+    <div
+      class="lc-progress"
+      role="progressbar"
+      aria-valuemin="0"
+      [attr.aria-valuemax]="totals().length"
+      [attr.aria-valuenow]="doneCount()"
+      [attr.aria-label]="'guide.overview.gathered' | transloco"
+      [style.--value]="totals().length ? doneCount() / totals().length : 0"
+    ></div>
+    <span class="progress-text" role="status">
       {{ 'guide.overview.progress' | transloco: { done: doneCount(), total: totals().length } }}
     </span>
   </div>
-  <table>
-    <thead>
-      <tr>
-        <th scope="col" class="check">
-          <span class="sr-only">{{ 'guide.overview.gathered' | transloco }}</span>
-        </th>
-        <th scope="col" [attr.aria-sort]="ariaSort('name')">
-          <button type="button" class="sort" (click)="sortBy('name')">
-            {{ 'guide.overview.item' | transloco }}
-          </button>
-        </th>
-        <th scope="col" class="num" [attr.aria-sort]="ariaSort('count')">
-          <button type="button" class="sort" (click)="sortBy('count')">
-            {{ 'guide.overview.count' | transloco }}
-          </button>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (m of totals(); track m.item) {
-      <tr [class.done]="m.checked">
-        <td class="check">
-          <label>
-            <input
-              type="checkbox"
-              [checked]="m.checked"
-              [attr.aria-label]="'guide.overview.gatheredItem' | transloco: { item: m.name }"
-              (change)="onCheck(m.item, $event)"
-            />
-          </label>
-        </td>
-        <td>{{ m.name }}</td>
-        <td class="num" [title]="m.count">{{ m.stacks }}</td>
-      </tr>
-      }
-    </tbody>
-  </table>
+
+  <ul class="checklist">
+    @for (m of totals(); track m.item) {
+    <li [class.done]="m.checked">
+      <label class="check-row">
+        <input
+          type="checkbox"
+          class="check-input"
+          [checked]="m.checked"
+          [attr.aria-label]="'guide.overview.gatheredItem' | transloco: { item: m.name }"
+          (change)="onCheck(m.item, $event)"
+        />
+        <span class="box" aria-hidden="true"><lc-guide-icon name="check" /></span>
+        <lc-guide-block-tile [item]="m.item" />
+        <span class="name">{{ m.name }}</span>
+        <span class="count" [title]="m.count">{{ m.stacks }}</span>
+      </label>
+    </li>
+    }
+  </ul>
   @if (doneCount() > 0) {
-  <button type="button" class="link" (click)="reset()">
+  <button type="button" class="lc-btn lc-btn--ghost lc-btn--sm reset" (click)="reset()">
     {{ 'guide.overview.reset' | transloco }}
   </button>
   }
 </section>
 
 <section>
-  <h3>{{ 'guide.overview.temporary' | transloco }}</h3>
+  <h3 class="section-title">{{ 'guide.overview.temporary' | transloco }}</h3>
   @if (temporary().length === 0) {
   <p class="muted">{{ 'guide.overview.none' | transloco }}</p>
   } @else {
   <p class="muted">{{ 'guide.overview.temporaryInfo' | transloco }}</p>
   <ul class="list">
     @for (m of temporary(); track m.item) {
-    <li><span>{{ m.name }}</span><span class="num">{{ m.stacks }}</span></li>
+    <li>
+      <lc-guide-block-tile [item]="m.item" />
+      <span class="name">{{ m.name }}</span>
+      <span class="count">{{ m.stacks }}</span>
+    </li>
     }
   </ul>
   }
 </section>
 
 <section>
-  <h3>{{ 'guide.overview.warnings' | transloco }}</h3>
+  <h3 class="section-title">{{ 'guide.overview.warnings' | transloco }}</h3>
   @if (warnings().length === 0) {
-  <p class="muted">{{ 'guide.overview.noWarnings' | transloco }}</p>
+  <p class="lc-callout lc-callout--green">
+    <lc-guide-icon name="check" />
+    <span>{{ 'guide.overview.noWarnings' | transloco }}</span>
+  </p>
   } @else {
-  <ul class="list warnings">
+  <ul class="warnings">
     @for (w of warnings(); track $index) {
-    <li [title]="w.message">
-      {{ w.text }} @if (w.at) {
-      <span class="muted">{{ w.at }}</span>
-      }
+    <li class="lc-callout lc-callout--red" [title]="w.message">
+      <lc-guide-icon name="alert" />
+      <span>
+        {{ w.text }} @if (w.at) {
+        <span class="muted">{{ w.at }}</span>
+        }
+      </span>
     </li>
     }
   </ul>

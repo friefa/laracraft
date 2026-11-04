@@ -1,50 +1,56 @@
-@if (detail(); as d) {
-<section #detail class="detail" aria-live="polite">
-  <div class="detail-head">
-    <h3>{{ d.title }}</h3>
-    <button
-      type="button"
-      class="close"
-      (click)="selected.set(null)"
-      [attr.aria-label]="'guide.step.close' | transloco"
-    >
-      ×
-    </button>
-  </div>
-  <ul class="lines">
-    @for (line of d.lines; track $index) {
-    <li [class]="'line-' + line.kind">
-      @if (line.kind === 'look' && d.bearing !== null) {
-      <span class="arrow" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="24" height="24">
-          <g [attr.transform]="'rotate(' + d.bearing + ' 12 12)'">
-            <path d="M12 3 L18 15 L12 12 L6 15 Z" fill="currentColor" />
-          </g>
-        </svg>
-        <span class="compass">{{ d.compass }}</span>
-        @if (d.vertical !== 'level') {
-        <span>{{ d.vertical === 'up' ? '↑' : '↓' }}</span>
+<div class="coach">
+  <lc-lara class="coach-lara" [mood]="detail() ? 'think' : 'wave'" size="3rem" />
+  @if (detail(); as d) {
+  <section #detail class="detail lc-bubble" aria-live="polite">
+    <div class="detail-head">
+      <lc-guide-block-tile [item]="d.state" />
+      <h3>{{ d.title }}</h3>
+      <button
+        type="button"
+        class="lc-btn lc-btn--ghost lc-btn--icon lc-btn--sm close"
+        (click)="selected.set(null)"
+        [attr.aria-label]="'guide.step.close' | transloco"
+      >
+        <lc-guide-icon name="close" />
+      </button>
+    </div>
+    <ul class="lines">
+      @for (line of d.lines; track $index) {
+      <li class="line" [attr.data-kind]="line.kind" [attr.data-tone]="line.tone">
+        <span class="line-icon"><lc-guide-icon [name]="line.icon" /></span>
+        <span class="line-text">{{ line.text }}</span>
+        @if (line.kind === 'look' && d.bearing !== null) {
+        <span class="compass" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18">
+            <g [attr.transform]="'rotate(' + d.bearing + ' 12 12)'">
+              <path d="M12 2 L20 20 L12 15 L4 20 Z" fill="currentColor" />
+            </g>
+          </svg>
+          {{ d.compass }} @if (d.vertical !== 'level') {
+          <span>{{ d.vertical === 'up' ? '↑' : '↓' }}</span>
+          }
+        </span>
         }
-      </span>
-      } {{ line.text }}
-    </li>
-    }
-  </ul>
-</section>
-} @else {
-<p class="muted">{{ 'guide.step.selectHint' | transloco }}</p>
-}
+      </li>
+      }
+    </ul>
+  </section>
+  } @else {
+  <p class="lc-bubble prompt">{{ 'guide.step.selectHint' | transloco }}</p>
+  }
+</div>
 
 <section>
-  <h3>{{ 'guide.step.materials' | transloco }}</h3>
+  <h3 class="section-title">{{ 'guide.step.materials' | transloco }}</h3>
   @if (materials().length === 0) {
   <p class="muted">{{ 'guide.step.noMaterials' | transloco }}</p>
   } @else {
-  <ul class="materials">
+  <ul class="items">
     @for (m of materials(); track m.item) {
-    <li>
-      <span>{{ m.name }}</span>
-      <span class="count">{{ m.stacks }}</span>
+    <li class="item">
+      <lc-guide-block-tile [item]="m.item" />
+      <span class="item-name">{{ m.name }}</span>
+      <span class="count" [title]="m.count">{{ m.stacks }}</span>
     </li>
     }
   </ul>
@@ -52,16 +58,18 @@
 </section>
 
 <section>
-  <h3>{{ 'guide.step.actions' | transloco }}</h3>
+  <h3 class="section-title">{{ 'guide.step.actions' | transloco }}</h3>
   <ul class="groups">
     @for (g of groups(); track $index) {
-    <li [class.remove]="g.kind === 'remove'">
-      <span class="group-label">
-        {{ g.label }} @if (g.temporary && g.kind === 'place') {
-        <span class="tag">{{ 'guide.step.temporary' | transloco }}</span>
+    <li class="group" [class.remove]="g.kind === 'remove'">
+      <div class="group-head">
+        <lc-guide-block-tile [item]="g.state" />
+        <span class="group-label">{{ g.label }}</span>
+        @if (g.temporary && g.kind === 'place') {
+        <span class="lc-pill lc-pill--grey">{{ 'guide.step.temporary' | transloco }}</span>
         }
-      </span>
-      <span class="chips">
+      </div>
+      <div class="chips">
         @for (c of g.chips; track c.index) {
         <button
           type="button"
@@ -74,7 +82,7 @@
           {{ c.index + 1 }}
         </button>
         }
-      </span>
+      </div>
     </li>
     }
   </ul>
@@ -82,20 +90,25 @@
 
 @if (hints().length > 0) {
 <section>
-  <h3>{{ 'guide.step.hints' | transloco }}</h3>
+  <h3 class="section-title">{{ 'guide.step.hints' | transloco }}</h3>
   <ul class="hints">
     @for (h of hints(); track $index) {
-    <li>
-      {{ h.text }} @if (h.hasPositions) {
-      <button
-        type="button"
-        class="link"
-        [attr.aria-pressed]="selectedHint() === $index"
-        (click)="toggleHint($index)"
-      >
-        {{ 'guide.step.showHint' | transloco }}
-      </button>
-      }
+    <li [class]="'lc-callout lc-callout--' + h.tone">
+      <lc-guide-icon class="hint-icon" [name]="h.icon" />
+      <div>
+        <p>{{ h.text }}</p>
+        @if (h.hasPositions) {
+        <button
+          type="button"
+          class="lc-btn lc-btn--sm"
+          [class.lc-btn--selected]="selectedHint() === $index"
+          [attr.aria-pressed]="selectedHint() === $index"
+          (click)="toggleHint($index)"
+        >
+          {{ 'guide.step.showHint' | transloco }}
+        </button>
+        }
+      </div>
     </li>
     }
   </ul>

@@ -4,6 +4,8 @@ import {
   DOCUMENT,
   DestroyRef,
   ElementRef,
+  Injector,
+  afterNextRender,
   computed,
   effect,
   inject,
@@ -20,7 +22,10 @@ import { AIR, type BlockStateString, type Vec3 } from '@laracraft/core-model';
 import type { ViewInsets } from '@laracraft/renderer';
 import { BuildStore } from '../storage/build-store';
 import { buildStoreErrorCode } from '../storage/build-store.types';
+import { GuideIcon } from './guide-icon';
 import { GuideViewport } from './guide-viewport';
+import { PHASE_TONE, lessonProgress } from './lesson-style';
+import { GuideFinish, GuideSuccess, SUCCESS_BANNER_MS } from './lesson-moments';
 import { GuideOverview } from './overview-panel';
 import { PlanError, PlanService, type PlanProgress } from './plan.service';
 import { StepDocument } from './step-document';
@@ -50,10 +55,22 @@ const STORAGE_ERROR_KEYS: Record<string, string> = {
   unavailable: 'storage.errors.unavailable',
 };
 
-/** Instruction mode (`build/:id/guide`): the build as a survival-safe step-by-step guide. */
+/**
+ * Instruction mode (`build/:id/guide`): the build as a survival-safe step-by-step guide,
+ * presented as a lesson (progress bar, big "continue" button, success moments, finish screen).
+ */
 @Component({
   selector: 'lc-guide-page',
-  imports: [RouterLink, TranslocoPipe, GuideViewport, GuideStepPanel, GuideOverview],
+  imports: [
+    RouterLink,
+    TranslocoPipe,
+    GuideIcon,
+    GuideViewport,
+    GuideStepPanel,
+    GuideOverview,
+    GuideSuccess,
+    GuideFinish,
+  ],
   templateUrl: './guide-page.html',
   styleUrl: './guide-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -62,6 +79,8 @@ const STORAGE_ERROR_KEYS: Record<string, string> = {
 export class GuidePage {
   private readonly store = inject(BuildStore);
   private readonly planner = inject(PlanService);
+  private readonly injector = inject(Injector);
+  private readonly document = inject(DOCUMENT);
 
   /** Route parameter (component input binding). */
   readonly id = input.required<string>();
@@ -100,6 +119,17 @@ export class GuidePage {
   protected readonly total = computed(() => this.plan()?.steps.length ?? 0);
   protected readonly index = linkedSignal({ source: this.stepper, computation: () => 0 });
   protected readonly step = computed(() => this.plan()?.steps[this.index()]);
+  protected readonly isLast = computed(() => this.index() >= this.total() - 1);
+  protected readonly phaseTone = computed(() => PHASE_TONE[this.step()?.phase ?? 'structure']);
+
+  /** Success banner after moving past a step (`done` = completed steps). */
+  protected readonly celebration = signal<{ readonly done: number } | null>(null);
+  /** Finish screen after the last step. */
+  protected readonly finished = signal(false);
+  protected readonly lessonValue = computed(() =>
+    lessonProgress(this.index(), this.total(), this.finished()),
+  );
+  private celebrationTimer: ReturnType<typeof setTimeout> | undefined;
   protected readonly view = computed(() => {
     const plan = this.plan();
     const stepper = this.stepper();
@@ -146,6 +176,7 @@ export class GuidePage {
   }));
   private readonly layoutRef = viewChild<ElementRef<HTMLElement>>('layout');
   private readonly sheetHeadRef = viewChild<ElementRef<HTMLElement>>('sheetHead');
+  private readonly sheetFootRef = viewChild<ElementRef<HTMLElement>>('sheetFoot');
   private drag: SheetDrag | null = null;
   /** The click that ends a handle drag must not also cycle the snap point. */
   private suppressClickUntil = 0;
@@ -178,7 +209,7 @@ export class GuidePage {
       untracked(() => this.version.update((v) => v + 1));
     });
 
-    const media = inject(DOCUMENT).defaultView?.matchMedia?.(SHEET_MEDIA);
+    const media = this.document.defaultView?.matchMedia?.(SHEET_MEDIA);
     if (media) {
       this.sheetLayout.set(media.matches);
       const onChange = (e: MediaQueryListEvent) => this.sheetLayout.set(e.matches);
@@ -186,22 +217,27 @@ export class GuidePage {
       inject(DestroyRef).onDestroy(() => media.removeEventListener('change', onChange));
     }
 
-    // Measure the sheet container and the sheet head (= peek height).
+    // Measure the sheet container, the sheet head and the action bar (head + bar = peek height).
     effect((onCleanup) => {
       const layout = this.layoutRef()?.nativeElement;
       const head = this.sheetHeadRef()?.nativeElement;
-      if (!layout || !head || typeof ResizeObserver === 'undefined') return;
+      const foot = this.sheetFootRef()?.nativeElement;
+      if (!layout || !head || !foot || typeof ResizeObserver === 'undefined') return;
       const measure = () => {
         this.layoutHeight.set(layout.clientHeight);
-        // + 1 px for the sheet's top border.
-        this.peekHeight.set(Math.ceil(head.getBoundingClientRect().height) + 1);
+        const peek = head.getBoundingClientRect().height + foot.getBoundingClientRect().height;
+        // + 2 px for the sheet's top border.
+        this.peekHeight.set(Math.ceil(peek) + 2);
       };
       const observer = new ResizeObserver(measure);
       observer.observe(layout);
       observer.observe(head);
+      observer.observe(foot);
       measure();
       onCleanup(() => observer.disconnect());
     });
+
+    inject(DestroyRef).onDestroy(() => clearTimeout(this.celebrationTimer));
   }
 
   protected storageErrorKey(): string {
@@ -221,15 +257,55 @@ export class GuidePage {
     this.index.set(Math.max(0, Math.min(total - 1, index)));
   }
 
+  /** One step back; also leaves the finish screen. */
   protected prev(): void {
+    this.dismissCelebration();
+    if (this.finished()) {
+      this.finished.set(false);
+      return;
+    }
     this.go(this.index() - 1);
   }
 
+  /**
+   * "Continue": completes the current step. Shows the success banner, or the finish
+   * screen after the last step.
+   */
   protected next(): void {
+    if (this.total() === 0 || this.finished()) return;
+    if (this.isLast()) {
+      this.finish();
+      return;
+    }
     this.go(this.index() + 1);
+    this.celebrate(this.index());
+  }
+
+  protected dismissCelebration(): void {
+    clearTimeout(this.celebrationTimer);
+    this.celebration.set(null);
+  }
+
+  protected closeFinish(): void {
+    this.finished.set(false);
+  }
+
+  private celebrate(done: number): void {
+    clearTimeout(this.celebrationTimer);
+    this.celebration.set({ done });
+    this.celebrationTimer = setTimeout(() => this.celebration.set(null), SUCCESS_BANNER_MS);
+  }
+
+  private finish(): void {
+    this.dismissCelebration();
+    this.finished.set(true);
+    afterNextRender(() => this.document.getElementById('guide-finish-title')?.focus(), {
+      injector: this.injector,
+    });
   }
 
   protected onSlider(event: Event): void {
+    this.dismissCelebration();
     this.go(Number((event.target as HTMLInputElement).value) - 1);
   }
 
@@ -248,6 +324,7 @@ export class GuidePage {
       event.preventDefault();
       this.next();
     } else if (event.key === 'Escape') {
+      this.finished.set(false);
       this.selected.set(null);
     }
   }

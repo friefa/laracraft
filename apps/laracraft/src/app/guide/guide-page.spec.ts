@@ -7,11 +7,13 @@ import type { BuildRenderer, HighlightGroup } from '@laracraft/renderer';
 import { provideI18nTesting } from '../i18n/i18n.testing';
 import { LanguageService } from '../i18n/language.service';
 import { BuildStore } from '../storage/build-store';
+import { ATLAS_LOADER } from '../editor/palette/block-icon';
 import { BuildStoreError } from '../storage/build-store.types';
 import { checklistKey } from './checklist';
 import { FIXTURE_PLAN, fixtureDocument } from './fixture-plan.testing';
 import { GuidePage } from './guide-page';
 import { RENDERER_FACTORY_LOADER } from './guide-viewport';
+import { SUCCESS_BANNER_MS } from './lesson-moments';
 import type { PlannerModule } from './plan-host';
 import { PLANNER_LOADER, PLAN_WORKER_FACTORY } from './plan.service';
 
@@ -55,6 +57,7 @@ describe('GuidePage', () => {
           useValue: { load: vi.fn(options.load ?? (() => Promise.resolve(fixtureDocument()))) },
         },
         { provide: PLAN_WORKER_FACTORY, useValue: () => undefined },
+        { provide: ATLAS_LOADER, useValue: () => Promise.resolve(null) },
         { provide: PLANNER_LOADER, useValue: () => Promise.resolve(planner) },
         {
           provide: RENDERER_FACTORY_LOADER,
@@ -82,17 +85,29 @@ describe('GuidePage', () => {
   const stepOf = () => el.querySelector('.step-of')?.textContent?.trim();
   const button = (label: string) =>
     el.querySelector<HTMLButtonElement>(`button[aria-label="${label}"]`) as HTMLButtonElement;
+  const prevBtn = () => el.querySelector('.prev-btn') as HTMLButtonElement;
+  const nextBtn = () => el.querySelector('.next-btn') as HTMLButtonElement;
   const lastHighlights = () => renderer.setHighlights.mock.calls.at(-1)?.[0] ?? [];
 
   beforeEach(() => localStorage.clear());
 
-  it('shows the first step with phase badge, materials and back link', async () => {
+  it('shows the first step with phase pill, lesson progress, materials and close link', async () => {
     await render();
     expect(stepOf()).toBe('Step 1 of 3');
-    expect(el.querySelector('.badge')?.textContent).toContain('Structure');
+    const phase = el.querySelector('.phase') as HTMLElement;
+    expect(phase.textContent).toContain('Structure');
+    expect(phase.classList).toContain('lc-pill--green');
     expect(el.textContent).toContain('2× Stone');
-    expect(el.querySelector('a[href="/build/b1"]')).not.toBeNull();
-    expect(button('Previous step').disabled).toBe(true);
+    expect(el.querySelector('.item')?.textContent).toContain('Stone');
+    expect(el.querySelector('a[href="/build/b1"]')?.getAttribute('aria-label')).toBe(
+      'Back to the build',
+    );
+    const progress = el.querySelector('.lesson-progress') as HTMLElement;
+    expect(progress.getAttribute('aria-valuenow')).toBe('1');
+    expect(progress.style.getPropertyValue('--value')).toBe(String(1 / 3));
+    expect(prevBtn().disabled).toBe(true);
+    expect(nextBtn().textContent?.trim()).toBe('Continue');
+    expect(el.querySelector('.lc-callout--grey')?.textContent).toContain('Sand and gravel fall');
   });
 
   it('navigates with buttons, arrow keys and the slider and updates the 3D view', async () => {
@@ -101,10 +116,11 @@ describe('GuidePage', () => {
     const doc = renderer.setDocument.mock.calls[0]?.[0] as BuildDocument;
     expect(doc.volume.blockCount).toBe(3);
 
-    button('Next step').click();
+    nextBtn().click();
     await settle();
     expect(stepOf()).toBe('Step 2 of 3');
-    expect(el.querySelector('.badge')?.textContent).toContain('Redstone');
+    expect(el.querySelector('.phase')?.textContent).toContain('Redstone');
+    expect(el.querySelector('.phase')?.classList).toContain('lc-pill--orange');
     expect(doc.volume.blockCount).toBe(7);
     expect(renderer.update).toHaveBeenCalled();
 
@@ -115,7 +131,7 @@ describe('GuidePage', () => {
     expect(lastHighlights().find((h) => h.id === 'removal')?.positions).toEqual([
       { x: 2, y: 0, z: 0 },
     ]);
-    expect(button('Next step').disabled).toBe(true);
+    expect(nextBtn().textContent?.trim()).toBe('Finish');
 
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' }));
     await settle();
@@ -132,7 +148,7 @@ describe('GuidePage', () => {
 
   it('selects an action and shows where to stand, look and click', async () => {
     await render();
-    button('Next step').click();
+    nextBtn().click();
     await settle();
     button('Block 2 at 0 / 1 / 0').click();
     await settle();
@@ -149,7 +165,7 @@ describe('GuidePage', () => {
       'click-target',
     ]);
     // The selection is reset when the step changes.
-    button('Next step').click();
+    nextBtn().click();
     await settle();
     expect(el.querySelector('.detail')).toBeNull();
   });
@@ -171,13 +187,13 @@ describe('GuidePage', () => {
     await render();
     (Array.from(el.querySelectorAll<HTMLButtonElement>('[role="tab"]'))[1] as HTMLElement).click();
     await settle();
-    const rows = Array.from(el.querySelectorAll('tbody tr'));
+    const rows = Array.from(el.querySelectorAll('.checklist li'));
     const cells = rows.map((r) =>
-      Array.from(r.querySelectorAll('td'))
-        .map((td) => td.textContent?.trim())
+      Array.from(r.querySelectorAll('.name, .count'))
+        .map((c) => c.textContent?.trim())
         .join('|'),
     );
-    expect(cells).toContain('|Stone|2×64 + 12');
+    expect(cells).toContain('Stone|2×64 + 12');
     expect(el.textContent).toContain('No position found from which this block can be reached.');
     const stone = el.querySelector<HTMLInputElement>(
       'input[aria-label="Stone gathered"]',
@@ -188,6 +204,10 @@ describe('GuidePage', () => {
       'minecraft:stone',
     ]);
     expect(el.textContent).toContain('1 of 5 gathered');
+    expect(el.querySelector('.checklist li.done .name')?.textContent).toBe('Stone');
+    const gathered = el.querySelector('.gathered [role="progressbar"]') as HTMLElement;
+    expect(gathered.getAttribute('aria-valuenow')).toBe('1');
+    expect(gathered.style.getPropertyValue('--value')).toBe('0.2');
 
     fixture.destroy();
     TestBed.resetTestingModule();
@@ -210,6 +230,7 @@ describe('GuidePage', () => {
         provideI18nTesting(),
         { provide: BuildStore, useValue: { load: () => Promise.resolve(fixtureDocument()) } },
         { provide: PLAN_WORKER_FACTORY, useValue: () => undefined },
+        { provide: ATLAS_LOADER, useValue: () => Promise.resolve(null) },
         {
           provide: PLANNER_LOADER,
           useValue: () => pending.then((plan) => ({ planBuild: () => plan })),
@@ -258,9 +279,86 @@ describe('GuidePage', () => {
     await settle();
     expect(layout.dataset['snap']).toBe('peek');
     expect(handle.getAttribute('aria-label')).toContain('collapsed');
-    // Step navigation stays in the sheet head, so it works in every snap point.
-    button('Next step').click();
+    // Step navigation stays in the pinned action bar, so it works in every snap point.
+    nextBtn().click();
     await settle();
     expect(stepOf()).toBe('Step 2 of 3');
+  });
+
+  it('celebrates a completed step with a banner that can be tapped away', async () => {
+    await render();
+    expect(el.querySelector('lc-guide-success')).toBeNull();
+    nextBtn().click();
+    await settle();
+    const banner = el.querySelector('lc-guide-success') as HTMLElement;
+    expect(banner.textContent).toContain('Step complete!');
+    expect(banner.textContent).toContain('1 of 3 steps done');
+    expect(banner.querySelector('lc-lara')?.getAttribute('data-mood')).toBe('cheer');
+    // The banner never blocks navigation.
+    nextBtn().click();
+    await settle();
+    expect(stepOf()).toBe('Step 3 of 3');
+    expect(el.querySelector('lc-guide-success')?.textContent).toContain('2 of 3 steps done');
+    (el.querySelector('lc-guide-success button') as HTMLButtonElement).click();
+    await settle();
+    expect(el.querySelector('lc-guide-success')).toBeNull();
+    // Going back or jumping with the slider is not a success.
+    prevBtn().click();
+    await settle();
+    expect(el.querySelector('lc-guide-success')).toBeNull();
+  });
+
+  it('dismisses the success banner by itself', async () => {
+    await render();
+    vi.useFakeTimers();
+    try {
+      nextBtn().click();
+      fixture.detectChanges();
+      expect(el.querySelector('lc-guide-success')).not.toBeNull();
+      vi.advanceTimersByTime(SUCCESS_BANNER_MS + 10);
+      fixture.detectChanges();
+      expect(el.querySelector('lc-guide-success')).toBeNull();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('shows the finish screen after the last step and leads back to the editor', async () => {
+    await render();
+    nextBtn().click();
+    await settle();
+    nextBtn().click();
+    await settle();
+    expect(el.querySelector('lc-guide-finish')).toBeNull();
+    nextBtn().click();
+    await settle();
+    const finish = el.querySelector('lc-guide-finish') as HTMLElement;
+    expect(finish.textContent).toContain('Build complete!');
+    expect(el.querySelector('lc-guide-success')).toBeNull();
+    const stats = Array.from(finish.querySelectorAll('.stat')).map(
+      (s) => `${s.querySelector('dt')?.textContent?.trim()}=${s.querySelector('dd')?.textContent}`,
+    );
+    expect(stats).toEqual([`Blocks=${FIXTURE_PLAN.stats.blocks}`, 'Steps=3']);
+    expect(finish.querySelector('a[href="/build/b1"]')?.textContent).toContain(
+      'Back to the editor',
+    );
+    expect(el.querySelector('.lesson-progress')?.getAttribute('aria-valuenow')).toBe('3');
+    expect(
+      (el.querySelector('.lesson-progress') as HTMLElement).style.getPropertyValue('--value'),
+    ).toBe('1');
+
+    // "Review the steps" closes it again; "continue" opens it again.
+    (finish.querySelector('button') as HTMLButtonElement).click();
+    await settle();
+    expect(el.querySelector('lc-guide-finish')).toBeNull();
+    expect(stepOf()).toBe('Step 3 of 3');
+    nextBtn().click();
+    await settle();
+    expect(el.querySelector('lc-guide-finish')).not.toBeNull();
+    // Back (or Escape) also leaves the finish screen without changing the step.
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowLeft' }));
+    await settle();
+    expect(el.querySelector('lc-guide-finish')).toBeNull();
+    expect(stepOf()).toBe('Step 3 of 3');
   });
 });

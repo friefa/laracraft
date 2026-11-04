@@ -136,8 +136,8 @@
     },
     "stepOf": "Schritt {{ current }} von {{ total }}",
     "stepSlider": "Schritt wählen",
-    "prev": "Vorheriger Schritt",
-    "next": "Nächster Schritt",
+    "prev": "Zurück",
+    "next": "Weiter",
     "navLabel": "Schrittnavigation",
     "phase": {
       "label": "Phase",
@@ -255,13 +255,28 @@
       "warnings": "Warnungen",
       "noWarnings": "Keine Warnungen – dieser Bau ist wie geplant im Überlebensmodus baubar.",
       "none": "Keins",
-      "warningAt": "bei {{ pos }}"
+      "warningAt": "bei {{ pos }}",
+      "sortLabel": "Sortieren nach"
     },
     "warning": {
       "unknown-block": "Unbekannter Block – ohne Regelprüfung platziert.",
       "unsupported-state": "Dieser Blockzustand lässt sich im Überlebensmodus so nicht setzen.",
       "unreachable": "Keine Position gefunden, von der aus dieser Block erreichbar ist.",
       "cycle": "Zirkuläre Abhängigkeit – die Reihenfolge wurde heuristisch gewählt."
+    },
+    "lessonProgress": "Fortschritt der Bauanleitung",
+    "success": {
+      "title": "Schritt geschafft!",
+      "progress": "{{ done }} von {{ total }} Schritten erledigt"
+    },
+    "finish": {
+      "button": "Fertig",
+      "title": "Bau fertig!",
+      "text": "„{{ name }}“ steht. Super gemacht!",
+      "blocks": "Blöcke",
+      "steps": "Schritte",
+      "toEditor": "Zurück zum Editor",
+      "review": "Schritte ansehen"
     }
   },
   "editor": {

@@ -368,3 +368,84 @@ textarea {
     transition: none !important;
   }
 }
+
+/* ---------------------------------------------------------------------------
+ * Added in P3.3 (guide lesson): extra pill colours, coloured callouts and a
+ * comic speech bubble (tail on the left, e.g. next to <lc-lara>).
+ * ------------------------------------------------------------------------- */
+.lc-pill--yellow {
+  background: color-mix(in srgb, var(--lc-yellow) 22%, var(--lc-bg));
+  color: var(--lc-yellow-shade);
+}
+.lc-pill--purple {
+  background: color-mix(in srgb, var(--lc-purple) 22%, var(--lc-bg));
+  color: var(--lc-purple-shade);
+}
+.lc-pill--grey {
+  background: var(--lc-bg-soft);
+  color: var(--lc-muted);
+  box-shadow: inset 0 0 0 var(--lc-border-w) var(--lc-border);
+}
+
+/* Callout: <div class="lc-callout lc-callout--orange"><icon/><div>Text</div></div> */
+.lc-callout {
+  --callout: var(--lc-green);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: var(--lc-border-w) solid var(--callout);
+  border-radius: var(--lc-radius);
+  background: color-mix(in srgb, var(--callout) 14%, var(--lc-surface));
+  color: var(--lc-text-strong);
+  font-weight: var(--lc-fw-bold);
+}
+.lc-callout > :first-child {
+  flex: none;
+  color: var(--callout);
+}
+.lc-callout--green {
+  --callout: var(--lc-green);
+}
+.lc-callout--blue {
+  --callout: var(--lc-blue);
+}
+.lc-callout--orange {
+  --callout: var(--lc-orange);
+}
+.lc-callout--yellow {
+  --callout: var(--lc-yellow-shade);
+}
+.lc-callout--purple {
+  --callout: var(--lc-purple);
+}
+.lc-callout--red {
+  --callout: var(--lc-red);
+}
+.lc-callout--grey {
+  --callout: var(--lc-border-strong);
+}
+
+/* Speech bubble card with a tail pointing left (towards the speaker). */
+.lc-bubble {
+  position: relative;
+  margin: 0;
+  padding: 0.875rem 1rem;
+  border: var(--lc-border-w) solid var(--lc-border-strong);
+  border-radius: calc(var(--lc-radius) * 1.25);
+  background: var(--lc-surface);
+  box-shadow: 0 var(--lc-depth) 0 var(--lc-border-strong);
+}
+.lc-bubble::before {
+  content: '';
+  position: absolute;
+  top: 1.1rem;
+  left: calc(-0.5rem - 1px);
+  width: 0.875rem;
+  height: 0.875rem;
+  border: solid var(--lc-border-strong);
+  border-width: 0 0 var(--lc-border-w) var(--lc-border-w);
+  border-bottom-left-radius: 0.2rem;
+  background: inherit;
+  transform: rotate(45deg);
+}

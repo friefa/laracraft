@@ -2,111 +2,176 @@
   display: block;
 }
 
-h3 {
-  margin: 1rem 0 0.5rem;
-  font-size: 1rem;
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+p {
+  margin: 0;
 }
 
 .muted {
   color: var(--lc-muted);
 }
 
+.stats {
+  margin-top: 1rem;
+  color: var(--lc-text-strong);
+  font-weight: var(--lc-fw-black);
+}
+
+.section-title {
+  margin: 1.25rem 0 0.5rem;
+  color: var(--lc-muted);
+  font-size: var(--lc-fs-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .head {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
+  gap: 0.5rem;
+
+  .section-title {
+    margin-bottom: 0;
+  }
+}
+
+.sort {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+
+  .lc-btn {
+    --lc-depth: 3px;
+  }
+
+  [data-dir='asc']::after {
+    content: '↑';
+  }
+  [data-dir='desc']::after {
+    content: '↓';
+  }
+}
+
+.gathered {
+  display: grid;
+  gap: 0.375rem;
+  margin: 0.5rem 0 0.75rem;
+}
+
+.progress-text {
+  color: var(--lc-green);
+  font-size: var(--lc-fs-sm);
+  font-weight: var(--lc-fw-black);
+}
+
+.checklist,
+.list,
+.warnings {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.5rem;
 }
 
-.progress {
-  font-size: 0.875rem;
-  color: var(--lc-muted);
+.check-row,
+.list li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 3.5rem;
+  padding: 0.5rem 0.75rem;
+  border: var(--lc-border-w) solid var(--lc-border);
+  border-radius: var(--lc-radius);
+  background: var(--lc-bg-soft);
 }
 
-table {
+.check-row {
+  position: relative;
+  cursor: pointer;
+
+  &:has(.check-input:focus-visible) {
+    outline: 3px solid var(--lc-blue);
+    outline-offset: 2px;
+  }
+}
+
+// The real checkbox stays in the row (accessible), visually replaced by .box.
+.check-input {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  border-collapse: collapse;
-}
-
-th,
-td {
-  padding: 0.25rem 0.375rem;
-  border-bottom: 1px solid var(--lc-border);
-  text-align: left;
-}
-
-.num {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-.check {
-  width: 3rem;
-  padding: 0;
-
-  label {
-    display: grid;
-    place-items: center;
-    min-width: 2.75rem; // touch target
-    min-height: 2.75rem;
-    cursor: pointer;
-  }
-
-  input {
-    width: 1.25rem;
-    height: 1.25rem;
-    margin: 0;
-  }
-}
-
-.done td:not(.check) {
-  color: var(--lc-muted);
-  text-decoration: line-through;
-}
-
-.sort,
-.link {
-  min-height: 2.75rem;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: inherit;
-  font: inherit;
-  font-weight: 600;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
   cursor: pointer;
 }
 
-.link {
-  margin-top: 0.5rem;
-  color: var(--lc-accent);
-  text-decoration: underline;
+.box {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 3px solid var(--lc-border-strong);
+  border-radius: 50%;
+  background: var(--lc-surface);
+  color: transparent;
+  font-size: 1.125rem;
+  transition:
+    background 150ms ease,
+    transform 200ms var(--lc-ease-bounce);
 }
 
-.list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+.done {
+  .check-row {
+    border-color: var(--lc-green-shade);
+    background: var(--lc-green-soft);
+  }
 
-  li {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 0.5rem;
-    padding: 0.375rem 0;
-    border-bottom: 1px solid var(--lc-border);
+  .box {
+    border-color: var(--lc-green-shade);
+    background: var(--lc-green);
+    color: var(--lc-on-color);
+    transform: scale(1.08);
+  }
+
+  .name {
+    color: var(--lc-muted);
+    text-decoration: line-through;
   }
 }
 
-.warnings li {
-  color: var(--lc-danger);
+.name {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  color: var(--lc-text-strong);
+  font-weight: var(--lc-fw-bold);
 }
 
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
+.count {
+  flex: none;
+  padding: 0.2rem 0.75rem;
+  border-radius: var(--lc-radius-pill);
+  background: var(--lc-blue);
+  color: var(--lc-on-color);
+  font-weight: var(--lc-fw-black);
+  font-variant-numeric: tabular-nums;
   white-space: nowrap;
+}
+
+.reset {
+  margin-top: 0.75rem;
+}
+
+.lc-callout .muted {
+  display: block;
+  font-size: var(--lc-fs-sm);
 }
