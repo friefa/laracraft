@@ -6,7 +6,18 @@ import {
   type BlockStateString,
   type Vec3,
 } from '@laracraft/core-model';
-import type { BuildOrderOptions, BuildPhase, BuildPlan, PlaceAction, StepAction } from '../types';
+import {
+  EYE_HEIGHT,
+  JUMP_HEIGHT,
+  type BuildOrderOptions,
+  type BuildPhase,
+  type BuildPlan,
+  type PlaceAction,
+  type RemoveAction,
+  type StepAction,
+} from '../types';
+import { generateCity } from '../../testing/city';
+import { GOLDEN_BUILDS } from '../../testing/golden';
 import { planBuild } from './plan-build';
 
 const registry = createJavaBlockRegistry();
@@ -50,7 +61,8 @@ const PHASES: readonly BuildPhase[] = ['structure', 'redstone', 'power', 'fluids
 
 /**
  * Minimal independent replay of a plan: checks completeness, click targets,
- * stand positions, reach, phase order and cleanup. (The full validator lives
+ * stand positions (incl. jump placements and pillaring), reach, phase order
+ * and cleanup (incl. the stand position for every removal). (The full validator lives
  * in `validator/`; this guards the planner's own invariants.)
  */
 function replay(doc: BuildDocument, plan: BuildPlan, options: Partial<BuildOrderOptions> = {}) {
@@ -79,6 +91,15 @@ function replay(doc: BuildDocument, plan: BuildPlan, options: Partial<BuildOrder
       if (a.kind === 'remove') {
         const cur = world.get(k);
         if (!cur?.temporary) issues.push(`remove of non-temporary at ${k}`);
+        const f = a.standAt;
+        if (!f) issues.push(`remove without standAt at ${k}`);
+        else {
+          if (occupied(f) || occupied({ ...f, y: f.y + 1 }))
+            issues.push(`remove: stand blocked ${k}`);
+          if (!occupied({ ...f, y: f.y - 1 })) issues.push(`remove: stand floating at ${k}`);
+          const d = Math.hypot(a.pos.x - f.x, a.pos.y + 0.5 - f.y - EYE_HEIGHT, a.pos.z - f.z);
+          if (d > reach + 1e-6) issues.push(`remove out of reach (${d.toFixed(2)}) at ${k}`);
+        }
         world.delete(k);
         continue;
       }
@@ -90,18 +111,29 @@ function replay(doc: BuildDocument, plan: BuildPlan, options: Partial<BuildOrder
       }
       if (!occupied(c)) issues.push(`clickOn missing at ${k}`);
       const f = a.standAt;
-      if (occupied(f) || occupied({ ...f, y: f.y + 1 })) issues.push(`stand blocked at ${k}`);
+      const eye = EYE_HEIGHT + (a.jump ? JUMP_HEIGHT : 0);
+      const body = a.jump ? 3 : 2;
+      for (let h = 0; h < body; h++) {
+        if (occupied({ ...f, y: f.y + h })) issues.push(`stand blocked at ${k}`);
+      }
+      const below = world.get(key({ ...f, y: f.y - 1 }));
       if (!occupied({ ...f, y: f.y - 1 })) issues.push(`stand floating at ${k}`);
-      if (key(f) === k || key({ ...f, y: f.y + 1 }) === k) issues.push(`stand inside target ${k}`);
+      else if (a.jump && below && /water|lava/.test(below.state))
+        issues.push(`jump off fluid ${k}`);
+      // Pillaring: with a jump the target may be the own cell, clicking the top of the block below.
+      const pillar = a.jump === true && key(f) === k && a.clickOn.face === 'up';
+      for (let h = pillar ? 1 : 0; h < body; h++) {
+        if (key({ ...f, y: f.y + h }) === k) issues.push(`stand inside target ${k}`);
+      }
       const fc = {
         x: a.pos.x + 0.5 - off.x / 2,
         y: a.pos.y + 0.5 - off.y / 2,
         z: a.pos.z + 0.5 - off.z / 2,
       };
-      const d = Math.hypot(fc.x - f.x - 0.5, fc.y - f.y - 1.62, fc.z - f.z - 0.5);
+      const d = Math.hypot(fc.x - f.x - 0.5, fc.y - f.y - eye, fc.z - f.z - 0.5);
       if (d > reach + 1e-6) issues.push(`out of reach (${d.toFixed(2)}) at ${k}`);
       const facing =
-        (f.x + 0.5 - fc.x) * off.x + (f.y + 1.62 - fc.y) * off.y + (f.z + 0.5 - fc.z) * off.z;
+        (f.x + 0.5 - fc.x) * off.x + (f.y + eye - fc.y) * off.y + (f.z + 0.5 - fc.z) * off.z;
       if (facing <= 0) issues.push(`clicked face points away from the eye at ${k}`);
       const fluid = /minecraft:(water|lava)/.test(a.state);
       if (fluidSeen && !fluid) issues.push(`solid placement after a fluid at ${k}`);
@@ -521,16 +553,51 @@ describe('rule 5: fluids', () => {
 });
 
 describe('rule 6: reachability', () => {
-  it('builds and removes a scaffold tower for a tall pillar', () => {
+  it('pillars up a tall solid column on its own blocks (jumping, no scaffolding)', () => {
     const blocks: [number, number, number, string][] = [];
     for (let y = 0; y < 20; y++) blocks.push([0, y, 0, 'stone']);
     const doc = makeDoc(blocks);
     const plan = planBuild(doc, registry);
     expectClean(doc, plan);
+    expect(plan.stats.removals).toBe(0);
+    expect(plan.warnings).toEqual([]);
+    // Third block: a jump placement from beside the column (eye above the top face of y=1).
+    const third = finalPlace(plan, 0, 2, 0);
+    expect(third.jump).toBe(true);
+    expect(third.standAt.x !== 0 || third.standAt.z !== 0).toBe(true);
+    // From the fourth block on: pillaring, the block goes into the player's own cell.
+    for (let y = 3; y < 20; y++) {
+      const a = finalPlace(plan, 0, y, 0);
+      expect(a.jump).toBe(true);
+      expect(a.standAt).toEqual(a.pos);
+      expect(a.clickOn).toEqual({ pos: { x: 0, y: y - 1, z: 0 }, face: 'up' });
+    }
+  });
+
+  it('builds a 1-wide scaffold pillar (no 2-wide tower) and removes it top-down from on top', () => {
+    const blocks: [number, number, number, string][] = [];
+    for (let y = 0; y < 14; y++) blocks.push([0, y, 0, 'oak_leaves[persistent=true]']);
+    const doc = makeDoc(blocks);
+    const plan = planBuild(doc, registry);
+    expectClean(doc, plan);
     const temps = places(plan).filter((p) => p.temporary);
     expect(temps.length).toBeGreaterThan(0);
+    for (const t of temps) {
+      expect(t.jump).toBe(true);
+      expect(t.standAt).toEqual(t.pos);
+    }
     expect(plan.stats.removals).toBe(temps.length);
     expect(plan.temporaryMaterials).toEqual([{ item: 'minecraft:dirt', count: temps.length }]);
+    const removals = actions(plan).filter((a): a is RemoveAction => a.kind === 'remove');
+    for (const r of removals) expect(r.standAt).toBeDefined();
+    // Each pillar is taken down in one go, from the top.
+    const columns = removals.map((r) => `${r.pos.x},${r.pos.z}`);
+    const runs = columns.filter((c, i) => i === 0 || columns[i - 1] !== c);
+    expect(new Set(runs).size).toBe(runs.length);
+    for (let i = 1; i < removals.length; i++) {
+      const [a, b] = [removals[i - 1], removals[i]] as [RemoveAction, RemoveAction];
+      if (columns[i - 1] === columns[i]) expect(b.pos.y).toBe(a.pos.y - 1);
+    }
     expect(plan.steps[plan.steps.length - 1]?.phase).toBe('cleanup');
     expect(plan.steps.flatMap((s) => s.hints.map((h) => h.code))).toEqual(
       expect.arrayContaining(['scaffold', 'remove-temporary']),
@@ -538,9 +605,38 @@ describe('rule 6: reachability', () => {
     expect(plan.warnings).toEqual([]);
   });
 
+  it('builds 4-row walls around a floor without scaffolding', () => {
+    const blocks: [number, number, number, string][] = [];
+    for (let x = 0; x < 9; x++) {
+      for (let z = 0; z < 9; z++) {
+        blocks.push([x, 0, z, 'stone']);
+        if (x === 0 || z === 0 || x === 8 || z === 8) {
+          for (let y = 1; y <= 4; y++) blocks.push([x, y, z, 'cobblestone']);
+        }
+      }
+    }
+    const doc = makeDoc(blocks);
+    const plan = planBuild(doc, registry);
+    expectClean(doc, plan);
+    expect(plan.stats.removals).toBe(0);
+    expect(plan.warnings).toEqual([]);
+  });
+
+  it('reuses scaffold pillars for an overhanging stair roof (generated city tower)', () => {
+    const doc = generateCity(registry, 1000);
+    const plan = planBuild(doc, registry);
+    expectClean(doc, plan);
+    expect(plan.warnings).toEqual([]);
+    const temps = places(plan).filter((p) => p.temporary);
+    // 18 roof stairs placed from outside, 24 blocks up: a few pillars, not one tower per stair pair.
+    expect(plan.stats.removals).toBe(temps.length);
+    expect(temps.length).toBeLessThanOrEqual(150);
+    expect(stable(planBuild(doc, registry))).toBe(stable(plan));
+  });
+
   it('honours a custom scaffold block, reach and ground level', () => {
     const blocks: [number, number, number, string][] = [];
-    for (let y = 5; y < 15; y++) blocks.push([0, y, 0, 'stone']);
+    for (let y = 5; y < 15; y++) blocks.push([0, y, 0, 'oak_leaves[persistent=true]']);
     const doc = makeDoc(blocks);
     const options = {
       scaffoldBlock: 'minecraft:cobblestone' as BlockStateString,
@@ -554,5 +650,15 @@ describe('rule 6: reachability', () => {
         .filter((p) => p.temporary)
         .every((p) => p.state === 'minecraft:cobblestone'),
     ).toBe(true);
+    expect(places(plan).some((p) => p.temporary)).toBe(true);
+  });
+});
+
+describe('golden builds (replay with jump/pillar semantics)', () => {
+  it.each(GOLDEN_BUILDS.map((g) => [g.name, g] as const))('%s replays cleanly', (_name, g) => {
+    const doc = g.create(registry);
+    const plan = planBuild(doc, registry);
+    expectClean(doc, plan);
+    expect(plan.warnings).toEqual([]);
   });
 });
