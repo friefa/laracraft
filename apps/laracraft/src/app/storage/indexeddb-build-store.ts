@@ -7,16 +7,14 @@ import {
   deserializeBuild,
   serializeBuild,
   type BuildMetadata,
+  JAVA_DATA_VERSION,
 } from '@laracraft/core-model';
 import type { BuildStore } from './build-store';
 import { BuildStoreError, MAX_IMPORT_BYTES, type BuildSummary } from './build-store.types';
 import { idbRequest, idbTransaction } from './idb';
 
-/**
- * Java data version for new builds.
- * TODO: replace with `JAVA_DATA_VERSION` from `@laracraft/core-model` once it is exported.
- */
-export const DEFAULT_DATA_VERSION = 4189;
+/** Java data version for new builds (the registry's target release). */
+export const DEFAULT_DATA_VERSION = JAVA_DATA_VERSION;
 
 export const DB_NAME = 'laracraft';
 /** Bump on every schema change and add a step to {@link upgradeSchema}. */
