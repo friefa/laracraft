@@ -14,9 +14,64 @@
     "navLabel": "Legal",
     "credits": "Credits"
   },
-  "home": {
-    "title": "laracraft",
-    "tagline": "Plan, view and build Minecraft Java Edition builds – step by step."
+  "builds": {
+    "title": "My builds",
+    "intro": "Plan, view and build Minecraft Java Edition builds – step by step.",
+    "new": "New build",
+    "import": "Import file",
+    "loading": "Loading builds…",
+    "loadError": "Your builds could not be loaded.",
+    "retry": "Try again",
+    "emptyTitle": "No builds yet",
+    "emptyText": "Start your first build or import a build file (.lcb.json).",
+    "emptyAction": "Create your first build",
+    "listLabel": "Builds on this device",
+    "updated": "Changed {{ date }}",
+    "blocks": "Blocks: {{ count }}",
+    "size": "Size: {{ width }} × {{ height }} × {{ length }}",
+    "rename": "Rename",
+    "duplicate": "Duplicate",
+    "export": "Export",
+    "delete": "Delete",
+    "copyName": "{{ name }} (copy)",
+    "defaultName": "My build",
+    "dismiss": "Dismiss",
+    "dialog": {
+      "createTitle": "New build",
+      "renameTitle": "Rename build",
+      "nameLabel": "Name",
+      "create": "Create",
+      "save": "Save",
+      "cancel": "Cancel",
+      "deleteTitle": "Delete build?",
+      "deleteText": "“{{ name }}” will be removed from this device. This cannot be undone.",
+      "deleteConfirm": "Delete"
+    },
+    "status": {
+      "renamed": "Renamed to “{{ name }}”.",
+      "duplicated": "“{{ name }}” created.",
+      "deleted": "“{{ name }}” deleted.",
+      "imported": "“{{ name }}” imported.",
+      "exported": "“{{ name }}” exported."
+    }
+  },
+  "build": {
+    "loading": "Loading build…",
+    "blocks": "Blocks: {{ count }}",
+    "placeholder": "The editor is coming soon.",
+    "back": "Back to my builds"
+  },
+  "storage": {
+    "errors": {
+      "unavailable": "Storage is not available on this device. Private browsing may prevent saving.",
+      "quota": "Not enough storage space. Delete or export some builds and try again.",
+      "notFound": "This build no longer exists.",
+      "invalidName": "Please enter a name (up to 200 characters).",
+      "tooLarge": "The file is too large (maximum {{ max }} MB).",
+      "invalidFile": "This file is not a valid laracraft build.",
+      "unsupportedVersion": "This file was made with a newer version of laracraft. Please update the app.",
+      "unknown": "Something went wrong. Please try again."
+    }
   },
   "credits": {
     "title": "Credits",
