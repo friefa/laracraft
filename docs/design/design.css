@@ -1355,6 +1355,8 @@ textarea {
   :scope {
     --lara-eye: #fff;
     --lara-hair: #f07a3c;
+    --lara-skin: #ffd5b8;
+    --lara-shirt: #fff7e6;
     --lara-hair-shade: #c25520;
     --lara-shine: rgb(255 255 255 / 0.45);
     display: inline-block;

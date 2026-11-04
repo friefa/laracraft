@@ -27,7 +27,7 @@ erst dann **Umsetzung in der App**. Danach Dokument und App wieder abgleichen (T
    Hell nur als explizite Option (`data-theme="light"`).
    2b. **Comic-Charakter.** Icons gefüllt und knubbelig (keine dünnen Linien), Illustrationen flach mit dunkler
    Kontur (`--lc-ink`, 2–3 px) und einem helleren Glanzstreifen. Leere Zustände und Erfolgsmomente bekommen eine
-   Illustration. **Lara** ist die eigene Maskottchen-Figur (freundlicher Block-Charakter, lila Akzent) – kein
+   Illustration. **Lara** ist die eigene Maskottchen-Figur (junge Comic-Frau im Chibi-Stil, orange-roter Pferdeschwanz mit lila Haargummi, lila Latzhose – ohne Helm; Entwurf v2 im Design-Dokument) – kein
    Tier, nichts, das an eine fremde Marke erinnert.
 3. **Runde, fette Schrift.** Nunito (OFL, lokal gebündelt). Fließtext 600, Labels/Buttons 800–900, Buttons in
    Versalien mit Laufweite.
