@@ -66,7 +66,8 @@ describe('Lara session with Anthropic (fake fetch)', () => {
     const tools = body['tools'] as Record<string, unknown>[];
     expect(tools).toHaveLength(13);
     for (const t of tools) {
-      expect(t['strict']).toBe(true);
+      // No strict mode: the combined DSL grammar exceeds the API limit.
+      expect(t).not.toHaveProperty('strict');
       expect(t['eager_input_streaming']).toBe(true);
     }
     const system = body['system'] as { text: string; cache_control?: unknown }[];

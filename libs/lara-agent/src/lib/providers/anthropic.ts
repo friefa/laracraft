@@ -56,9 +56,11 @@ export function supportsEffort(model: string): boolean {
  *
  * - Streaming via `client.beta.messages.stream` (beta namespace only for the server-side
  *   refusal fallback); text deltas are forwarded as they arrive.
- * - Tools: `strict: true` + `eager_input_streaming: true`. Because eager streaming skips the
- *   API's buffering/validation, the raw `input_json_delta` fragments are collected here and
- *   parsed strictly; the agent validates every input with `validateToolCall` anyway.
+ * - Tools: `eager_input_streaming: true`, no `strict`: the 13 DSL schemas together exceed
+ *   the API's grammar size limit for strict tools (400 "compiled grammar is too large",
+ *   verified 2026-11-04). Inputs are not schema-guaranteed; the raw `input_json_delta`
+ *   fragments are collected here and parsed strictly, and the agent validates every input
+ *   with `validateToolCall`, returning invalid calls to the model as tool errors.
  * - Prompt caching: breakpoint on the system prompt (covers tools + system, which render
  *   first) and a moving breakpoint on the last message, so each tool-loop iteration reads
  *   the previous one from cache. The volatile build context sits in the turn's user message,
@@ -85,7 +87,6 @@ export function createAnthropicProvider(opts: AnthropicProviderOptions): ChatPro
       name: t.name,
       description: t.description,
       input_schema: t.inputSchema as Anthropic.Beta.Messages.BetaTool.InputSchema,
-      strict: true,
       eager_input_streaming: true,
     }));
     const params: Anthropic.Beta.Messages.MessageCreateParamsStreaming = {

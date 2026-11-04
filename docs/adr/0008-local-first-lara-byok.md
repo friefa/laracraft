@@ -14,8 +14,9 @@
    über Export/Import-Dateien.
 2. **Lara spricht direkt mit dem vom Nutzer gewählten Anbieter:**
    - **Anthropic (nativ)** – empfohlen. Offizielles TypeScript-SDK `@anthropic-ai/sdk` im Browser-Modus
-     (`dangerouslyAllowBrowser`, sendet den Header für direkten Browserzugriff), Streaming, Tools mit
-     `strict: true`, Prompt Caching. Standardmodell `claude-opus-5-5`, wählbar.
+     (`dangerouslyAllowBrowser`, sendet den Header für direkten Browserzugriff), Streaming, Tools ohne
+     `strict` (die Grammatik aller DSL-Tools zusammen überschreitet Anthropics Limit für strikte Tools, 400
+     „compiled grammar is too large“, Stand 2026-11-04), Prompt Caching. Standardmodell `claude-opus-5-5`, wählbar.
    - **OpenAI-kompatibel** – frei: Basis-URL, Modellname, API-Key (z. B. OpenAI, OpenRouter, Azure, lokale Server wie
      Ollama/LM Studio/vLLM). Chat Completions mit Tool-Aufrufen und Streaming; `strict` nur, wo der Anbieter es kann.
    - Laras Befehle werden **immer** clientseitig mit `@laracraft/lara-dsl` geprüft; ungültige Aufrufe gehen als
