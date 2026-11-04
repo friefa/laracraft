@@ -1,0 +1,188 @@
+:host {
+  display: block;
+}
+
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 1rem;
+
+  h1 {
+    margin: 0.25rem 0 0.75rem;
+    font-size: 1.25rem;
+  }
+}
+
+.name {
+  color: var(--lc-muted);
+  font-weight: 400;
+}
+
+.planning progress {
+  width: min(100%, 24rem);
+}
+
+.layout {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.viewport {
+  height: 45dvh;
+}
+
+// Mobile: bottom sheet that sticks to the screen edge.
+.panel {
+  position: sticky;
+  bottom: 0;
+  max-height: 60dvh;
+  overflow: auto;
+  padding: 0.5rem 0.75rem 0.75rem;
+  background: var(--lc-surface);
+  border: 1px solid var(--lc-border);
+  border-radius: 1rem 1rem 0 0;
+  box-shadow: 0 -4px 16px rgb(0 0 0 / 15%);
+}
+
+.collapsed .sheet-body {
+  display: none;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.25rem 0.5rem;
+}
+
+.nav-btn {
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  border: 1px solid var(--lc-border);
+  border-radius: var(--lc-radius);
+  background: var(--lc-bg);
+  color: inherit;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+}
+
+.step-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem 0.5rem;
+}
+
+.badge {
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  color: #fff;
+  background: #546e7a;
+
+  &[data-phase='structure'] {
+    background: #2e7d32;
+  }
+  &[data-phase='redstone'] {
+    background: #c62828;
+  }
+  &[data-phase='power'] {
+    background: #ef6c00;
+  }
+  &[data-phase='fluids'] {
+    background: #1565c0;
+  }
+}
+
+.slider {
+  grid-column: 1 / -1;
+  width: 100%;
+  accent-color: var(--lc-accent);
+}
+
+.sheet-toggle {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  padding: 0.375rem;
+  border: 0;
+  background: none;
+  color: var(--lc-muted);
+  font: inherit;
+  cursor: pointer;
+}
+
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  margin: 0.25rem 0 0.5rem;
+  padding: 0;
+  border: 0;
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--lc-border);
+
+  button {
+    flex: 1;
+    min-height: 2.75rem;
+    border: 0;
+    border-bottom: 3px solid transparent;
+    background: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+
+    &[aria-selected='true'] {
+      border-bottom-color: var(--lc-accent);
+      font-weight: 600;
+    }
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+// Desktop: side panel next to the 3D view.
+@media (min-width: 900px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr) 24rem;
+    align-items: start;
+  }
+
+  .viewport {
+    height: calc(100dvh - 14rem);
+    min-height: 24rem;
+  }
+
+  .panel {
+    position: static;
+    max-height: calc(100dvh - 14rem);
+    border-radius: var(--lc-radius);
+    box-shadow: none;
+  }
+
+  .sheet-toggle {
+    display: none;
+  }
+
+  .collapsed .sheet-body {
+    display: block;
+  }
+}
