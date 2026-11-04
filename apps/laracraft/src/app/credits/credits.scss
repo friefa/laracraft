@@ -1,31 +1,59 @@
-.group {
-  margin-bottom: var(--lc-space);
-  padding: var(--lc-space);
-  background: var(--lc-surface);
-  border: 1px solid var(--lc-border);
-  border-radius: var(--lc-radius);
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
 
-  h3 {
-    margin-top: 0;
+.hero {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+
+  h1 {
+    margin: 0 0 0.25rem;
+    font-size: var(--lc-fs-xl);
+  }
+
+  p {
+    margin: 0;
+    color: var(--lc-muted);
   }
 }
 
-.version,
-.count {
-  color: var(--lc-muted);
-  font-size: 0.875rem;
-  font-weight: normal;
+h2 {
+  margin: 0 0 0.75rem;
+  font-size: var(--lc-fs-lg);
+}
+
+section.lc-card p:last-child {
+  margin-bottom: 0;
+}
+
+.group {
+  margin-bottom: 1rem;
+
+  h3 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 0.75rem;
+    font-size: var(--lc-fs-md);
+    overflow-wrap: anywhere;
+  }
 }
 
 dl {
   display: grid;
   grid-template-columns: max-content 1fr;
-  gap: 0.25rem 0.75rem;
+  gap: 0.35rem 0.75rem;
   margin: 0;
+  font-size: var(--lc-fs-sm);
 }
 
 dt {
-  font-weight: 600;
+  color: var(--lc-muted);
+  font-weight: var(--lc-fw-black);
 }
 
 dd {
@@ -33,18 +61,33 @@ dd {
   overflow-wrap: anywhere;
 }
 
+// Touch target ≥ 48 px without spreading the rows apart.
+dd a {
+  display: inline-block;
+  min-width: 3rem;
+  padding: 0.85rem 0;
+  margin: -0.7rem 0;
+}
+
+.count {
+  margin: 0.75rem 0 0;
+}
+
 .share-alike {
-  margin-bottom: 0;
-  padding-left: 0.75rem;
-  border-left: 3px solid var(--lc-accent);
+  margin: 0.75rem 0 0;
+  padding: 0.6rem 0.9rem;
+  border-radius: var(--lc-radius-sm);
+  background: var(--lc-green-soft);
+  color: var(--lc-text-strong);
+  font-size: var(--lc-fs-sm);
 }
 
-.state.error {
-  color: var(--lc-danger);
-}
+.notice {
+  border-color: var(--lc-orange);
+  box-shadow: 0 var(--lc-depth) 0 var(--lc-orange-shade);
 
-button {
-  min-height: 2.75rem;
-  padding: 0 1rem;
-  font: inherit;
+  .disclaimer {
+    color: var(--lc-text-strong);
+    font-weight: var(--lc-fw-bold);
+  }
 }

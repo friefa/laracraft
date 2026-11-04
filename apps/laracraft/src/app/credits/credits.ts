@@ -1,11 +1,12 @@
 import { httpResource } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, computed } from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { Lara } from '../shared/lara/lara';
 import { CREDITS_URL, THIRD_PARTY_LICENSES_URL, parseCredits } from './credits.model';
 
 @Component({
   selector: 'lc-credits',
-  imports: [TranslocoPipe],
+  imports: [TranslocoPipe, Lara],
   templateUrl: './credits.html',
   styleUrl: './credits.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

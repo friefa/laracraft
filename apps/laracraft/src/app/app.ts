@@ -3,9 +3,10 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { isLang } from './i18n/lang';
 import { LanguageService } from './i18n/language.service';
+import { Lara } from './shared/lara/lara';
 
 @Component({
-  imports: [RouterOutlet, RouterLink, TranslocoPipe],
+  imports: [RouterOutlet, RouterLink, TranslocoPipe, Lara],
   selector: 'lc-root',
   templateUrl: './app.html',
   styleUrl: './app.scss',
