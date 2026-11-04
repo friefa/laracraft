@@ -502,7 +502,8 @@
       "refusal": "I would rather not build that. Ask me something else!",
       "limit": "Your daily Lara limit is reached. You can change it in the settings.",
       "cancelled": "Stopped.",
-      "unknown": "Something went wrong. Try again."
+      "unknown": "Something went wrong. Try again.",
+      "networkPreview": "In this preview the browser blocks the connection to the provider. Open the app directly to build with Lara."
     },
     "onboarding": {
       "title": "Set up Lara",
@@ -569,7 +570,8 @@
         "age": "Your provider's terms of use apply, including the minimum age. If unsure, ask your parents.",
         "localTitle": "Own server",
         "local": "Local servers like Ollama or LM Studio must allow requests from the browser (CORS)."
-      }
+      },
+      "previewBlocked": "In this preview Lara cannot reach an AI provider – the browser blocks the connection. Open the app directly (web version or app) and your key will work."
     }
   }
 }

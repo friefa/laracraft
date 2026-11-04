@@ -1,4 +1,5 @@
 import type { ChatMessage, LaraErrorCode, Usage } from '@laracraft/lara-agent';
+import { environment } from '../../environments/environment';
 
 /** DSL operations with their own chip label (`lara.op.<name>`); others use `lara.op.other`. */
 const KNOWN_OPS = new Set([
@@ -27,6 +28,8 @@ export function blocksKey(count: number): string {
 
 /** Translation key for an agent error (`lara.errors.*`). */
 export function errorKey(code: LaraErrorCode): string {
+  // In the hosted preview the browser blocks provider requests; "are you online?" would mislead.
+  if (code === 'network' && environment.sandboxedPreview) return 'lara.errors.networkPreview';
   return `lara.errors.${code === 'not-configured' ? 'notConfigured' : code === 'rate-limit' ? 'rateLimit' : code}`;
 }
 

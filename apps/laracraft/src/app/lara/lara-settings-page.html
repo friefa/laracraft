@@ -11,6 +11,12 @@
   </div>
 </div>
 
+@if (sandboxedPreview) {
+<p class="lc-callout lc-tone--orange" role="note" data-warning="preview">
+  {{ 'lara.settings.previewBlocked' | transloco }}
+</p>
+}
+
 <form class="lc-card form" novalidate (submit)="save($event)">
   <fieldset class="providers">
     <legend class="lc-field__label">{{ 'lara.settings.provider' | transloco }}</legend>

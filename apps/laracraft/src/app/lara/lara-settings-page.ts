@@ -23,6 +23,7 @@ import {
   toProviderConfig,
   validatePrefs,
 } from './lara-settings';
+import { environment } from '../../environments/environment';
 
 type TestState =
   | { readonly kind: 'idle' }
@@ -53,6 +54,7 @@ export class LaraSettingsPage {
   readonly from = input<string | undefined>(undefined);
 
   protected readonly errorKey = errorKey;
+  protected readonly sandboxedPreview = environment.sandboxedPreview;
   protected readonly secretKind = this.settings.secretKind;
   protected readonly hasKey = this.settings.hasKey;
   protected readonly tokensToday = computed(() =>

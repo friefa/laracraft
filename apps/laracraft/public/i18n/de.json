@@ -502,7 +502,8 @@
       "refusal": "Das möchte ich lieber nicht bauen. Frag mich etwas anderes!",
       "limit": "Dein Tageslimit für Lara ist erreicht. Du kannst es in den Einstellungen ändern.",
       "cancelled": "Gestoppt.",
-      "unknown": "Da ist etwas schiefgelaufen. Versuch es nochmal."
+      "unknown": "Da ist etwas schiefgelaufen. Versuch es nochmal.",
+      "networkPreview": "Hier in der Vorschau blockiert der Browser die Verbindung zum Anbieter. Starte die App direkt, um mit Lara zu bauen."
     },
     "onboarding": {
       "title": "Lara einrichten",
@@ -569,7 +570,8 @@
         "age": "Es gelten die Nutzungsbedingungen deines Anbieters, auch zum Mindestalter. Frag im Zweifel deine Eltern.",
         "localTitle": "Eigener Server",
         "local": "Lokale Server wie Ollama oder LM Studio müssen Anfragen aus dem Browser erlauben (CORS)."
-      }
+      },
+      "previewBlocked": "In dieser Vorschau kann Lara keinen KI-Anbieter erreichen – der Browser blockiert die Verbindung. Starte die App direkt (Web-Version oder App), dann funktioniert dein Schlüssel."
     }
   }
 }
