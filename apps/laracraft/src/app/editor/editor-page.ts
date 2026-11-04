@@ -51,6 +51,8 @@ import {
   writeFlag,
 } from './editor-chrome';
 import { Icon, type IconName } from './icon';
+import { LayerSlider } from './layer-slider';
+import { Lara } from '../shared/lara/lara';
 import { BlockIcon } from './palette/block-icon';
 import { BlockPalette } from './palette/block-palette';
 import { blockNameKey } from './palette/palette-model';
@@ -85,6 +87,8 @@ interface ActionButton {
   readonly icon: IconName;
   readonly label: string;
   readonly needsClipboard?: boolean;
+  /** Colour meaning: green = adds blocks, blue = transforms, red = removes. */
+  readonly tone?: 'green' | 'blue' | 'red';
 }
 
 const TOOLS: readonly ToolButton[] = [
@@ -95,23 +99,35 @@ const TOOLS: readonly ToolButton[] = [
 ];
 
 const SELECTION_ACTIONS: readonly ActionButton[] = [
-  { command: { kind: 'fill' }, icon: 'fill', label: 'editor.selection.fill' },
+  { command: { kind: 'fill' }, icon: 'fill', label: 'editor.selection.fill', tone: 'green' },
   { command: { kind: 'replace' }, icon: 'replace', label: 'editor.selection.replace' },
   {
     command: { kind: 'rotate', turns: 3 },
     icon: 'rotateLeft',
     label: 'editor.selection.rotateLeft',
+    tone: 'blue',
   },
   {
     command: { kind: 'rotate', turns: 1 },
     icon: 'rotateRight',
     label: 'editor.selection.rotateRight',
+    tone: 'blue',
   },
-  { command: { kind: 'mirror', axis: 'x' }, icon: 'mirrorX', label: 'editor.selection.mirrorX' },
-  { command: { kind: 'mirror', axis: 'z' }, icon: 'mirrorZ', label: 'editor.selection.mirrorZ' },
+  {
+    command: { kind: 'mirror', axis: 'x' },
+    icon: 'mirrorX',
+    label: 'editor.selection.mirrorX',
+    tone: 'blue',
+  },
+  {
+    command: { kind: 'mirror', axis: 'z' },
+    icon: 'mirrorZ',
+    label: 'editor.selection.mirrorZ',
+    tone: 'blue',
+  },
   { command: { kind: 'copy' }, icon: 'copy', label: 'editor.selection.copy' },
   { command: { kind: 'cut' }, icon: 'cut', label: 'editor.selection.cut' },
-  { command: { kind: 'delete' }, icon: 'delete', label: 'editor.selection.delete' },
+  { command: { kind: 'delete' }, icon: 'delete', label: 'editor.selection.delete', tone: 'red' },
 ];
 
 const PASTE_ACTION: ActionButton = {
@@ -119,7 +135,17 @@ const PASTE_ACTION: ActionButton = {
   icon: 'paste',
   label: 'editor.selection.paste',
   needsClipboard: true,
+  tone: 'green',
 };
+
+/** Save status pill colour: green = saved, blue = pending, red = failed. */
+const SAVE_STATE_PILLS = {
+  idle: '',
+  saved: '',
+  dirty: 'lc-pill--blue',
+  saving: 'lc-pill--blue',
+  error: 'lc-pill--red',
+} as const;
 
 const SAVE_STATE_KEYS = {
   idle: 'editor.save.saved',
@@ -143,7 +169,7 @@ const javaRegistry = () => (sharedRegistry ??= createJavaBlockRegistry());
  */
 @Component({
   selector: 'lc-editor-page',
-  imports: [RouterLink, TranslocoPipe, Icon, BlockIcon, BlockPalette],
+  imports: [RouterLink, TranslocoPipe, Icon, BlockIcon, BlockPalette, LayerSlider, Lara],
   templateUrl: './editor-page.html',
   styleUrl: './editor-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -164,7 +190,9 @@ export class EditorPage {
   private readonly menuRoot = viewChild<ElementRef<HTMLElement>>('menuRoot');
   private readonly topBar = viewChild<ElementRef<HTMLElement>>('topBar');
   private readonly bottomBar = viewChild<ElementRef<HTMLElement>>('bottomBar');
-  private readonly layersPanel = viewChild<ElementRef<HTMLElement>>('layersPanel');
+  private readonly layersPanel = viewChild('layersPanel', {
+    read: ElementRef<HTMLElement>,
+  });
   private readonly storage = safeLocalStorage(this.document);
 
   private session: EditorSession | null = null;
@@ -210,7 +238,6 @@ export class EditorPage {
   protected readonly layerMin = computed(() => this.bounds()?.min.y ?? 0);
   protected readonly layerMax = computed(() => this.bounds()?.max.y ?? 0);
   protected readonly showLayers = computed(() => this.layerMax() > this.layerMin());
-  protected readonly layerValue = computed(() => this.layer() ?? this.layerMax());
 
   /** One-line "how to start" hint, shown until dismissed once (persisted). */
   protected readonly firstRunHint = signal(!readFlag(this.storage, FIRST_RUN_HINT_KEY));
@@ -240,6 +267,7 @@ export class EditorPage {
     onError: (err) => console.error('Autosave failed', err),
   });
   protected readonly saveStateKey = computed(() => SAVE_STATE_KEYS[this.autosave.state()]);
+  protected readonly saveStatePill = computed(() => SAVE_STATE_PILLS[this.autosave.state()]);
 
   constructor() {
     afterNextRender(() => void this.init());
@@ -555,9 +583,7 @@ export class EditorPage {
     });
   }
 
-  protected onLayerInput(event: Event): void {
-    const value = Number((event.target as HTMLInputElement).value);
-    const limit = value >= this.layerMax() ? null : value;
+  protected onLayerChange(limit: number | null): void {
     this.layer.set(limit);
     this.renderer?.setLayerLimit(limit);
   }
