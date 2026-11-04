@@ -9,7 +9,7 @@
     "build": {
       "executor": "@angular/build:application",
       "outputs": ["{options.outputPath}"],
-      "dependsOn": ["^build", "textures:credits", "textures:atlas"],
+      "dependsOn": ["^build", "textures:credits", "textures:atlas", "textures:guard-no-local"],
       "inputs": [
         "production",
         "^production",
@@ -59,6 +59,28 @@
           "optimization": false,
           "extractLicenses": false,
           "sourceMap": true
+        },
+        "local-textures": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "assets": [
+            {
+              "glob": "**/*",
+              "input": "apps/laracraft/public"
+            },
+            {
+              "glob": "**/*",
+              "input": "dist/assets/textures",
+              "output": "assets/textures",
+              "ignore": ["atlas.png", "atlas.json"]
+            },
+            {
+              "glob": "**/*",
+              "input": "dist/assets/textures-local",
+              "output": "assets/textures"
+            }
+          ]
         }
       }
     },
@@ -75,8 +97,12 @@
         },
         "development": {
           "buildTarget": "laracraft:build:development"
+        },
+        "local-textures": {
+          "buildTarget": "laracraft:build:local-textures"
         }
-      }
+      },
+      "dependsOn": ["textures:credits", "textures:atlas"]
     },
     "test": {
       "executor": "@angular/build:unit-test",
@@ -103,7 +129,7 @@
       "cache": false,
       "options": {
         "cwd": "apps/laracraft",
-        "command": "cap sync"
+        "command": "tsx ../../tools/textures/src/cli.ts guard --strict --dir dist/apps/laracraft && cap sync"
       }
     },
     "android-build": {

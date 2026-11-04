@@ -52,6 +52,10 @@ jobs:
         if: github.event_name != 'pull_request'
         run: pnpm exec nx run-many -t lint typecheck test build validate
 
+      # P1.11: Mojang textures from the local developer mode must never be built or uploaded.
+      - name: Guard against local textures
+        run: pnpm exec tsx tools/textures/src/cli.ts guard --ci --dir dist
+
       - name: Upload web build
         uses: actions/upload-artifact@v5
         with:

@@ -11,6 +11,8 @@ Texture pipeline with license manifest. Pure TypeScript, run with `tsx`, PNG I/O
 | `nx run textures:placeholders`   | Regenerates the CC0 programmer-art PNGs in `assets/textures/placeholder/` (deterministic).                                                                                     |
 | `nx run textures:test` / `:lint` | Vitest / ESLint.                                                                                                                                                               |
 | `nx run textures:import-ppl`     | Imports the needed block textures from Pixel Perfection Legacy, see below.                                                                                                     |
+| `nx run textures:import-local`   | Local developer mode only: extracts textures from your own `client.jar` into `.local-textures/`, see below.                                                                    |
+| `nx run textures:guard-no-local` | Fails if a local (Mojang) atlas would be shipped. Runs before every `laracraft:build`.                                                                                         |
 
 Options (pass after `--`, e.g. `nx run textures:atlas -- --packs placeholder`):
 
@@ -20,6 +22,10 @@ Options (pass after `--`, e.g. `nx run textures:atlas -- --packs placeholder`):
   (`DEFAULT_PACK_PRIORITY` in `src/lib/manifest.ts`).
 - `--padding n` – edge extrusion in pixels (default 2, `atlas` only).
 - `--out dir` – output directory relative to the workspace root (default `dist/assets/textures`).
+- `--local` – `atlas` only: local developer texture mode, see below.
+
+`atlas` is not cached by Nx (it takes about a second), so a local-mode atlas never ends up in
+a (possibly remote) Nx cache.
 
 ## Manifest (`assets/textures/manifest.json`)
 
@@ -162,3 +168,54 @@ Rutland ("Renamed"). Everything else – changed pixels, files missing from the 
 blocks added after 1.11 (the reference already contains community updates for 1.14/1.15) –
 is credited to "Nova_Wostra, Pixel Perfection Legacy contributors, Hugh "XSSheep" Rutland
 (original)" ("Renamed; adapted/extended by Pixel Perfection Legacy contributors").
+
+## Local developer texture mode (P1.11, local only)
+
+Developers who own Minecraft Java Edition can render laracraft with the original textures
+of **their own installation**. Mojang's textures are not licensed for redistribution, so
+the hard rules are (ADR-0003): no Mojang file is ever committed, uploaded as a CI artifact,
+cached remotely, bundled into a production or native build, or downloaded by our tooling.
+The tool only reads a `client.jar` you already have.
+
+```sh
+# 1. Extract the block textures we need (path to your own jar, e.g.
+#    ~/.minecraft/versions/1.21.4/1.21.4.jar on Linux/macOS,
+#    %APPDATA%\.minecraft\versions\<version>\<version>.jar on Windows).
+pnpm exec nx run textures:import-local -- --jar <path to client.jar>
+# 2. Build the local atlas (or: LARACRAFT_LOCAL_TEXTURES=1 pnpm exec nx run textures:atlas).
+pnpm exec nx run textures:atlas -- --local
+# 3. Run the dev server with it (builds the local atlas itself).
+pnpm exec nx serve laracraft --configuration=local-textures
+```
+
+How it works:
+
+- `import-local` reads only the PNGs in `VANILLA_TEXTURE_MAP` (`src/local/local-textures.ts`):
+  every registry texture name plus the extra model textures of `PPL_TEXTURE_MAP`, mapped to
+  `assets/minecraft/textures/block/<file>` (PPL uses the vanilla layout, so its file names are
+  reused, e.g. `redstone_dust` → `redstone_dust_dot.png`; differences go into
+  `VANILLA_OVERRIDES`). They are re-encoded (pixels unchanged) to `.local-textures/<name>.png`
+  at the workspace root. That folder is git-, Prettier- and ESLint-ignored, carries its own
+  `.gitignore`, is outside `assets/textures/` (so the validator never sees it) and is never in
+  the manifest, `credits.json` or `LICENSES.md`. Textures the atlas does not accept (e.g.
+  animation strips with more than 32 frames) are skipped and fall back to the packs.
+- `atlas --local` (or `LARACRAFT_LOCAL_TEXTURES=1`) gives `.local-textures/` the highest
+  priority (atlas pack id `local`) and writes **only** to `dist/assets/textures-local/`; the
+  normal output `dist/assets/textures/` is never touched, and `--out` must contain a
+  `textures-local` folder. The generated `atlas.json` has the marker `"local": true`.
+- `laracraft:build:local-textures` (development options) serves the normal
+  `dist/assets/textures/` minus `atlas.*` plus `dist/assets/textures-local/` as
+  `assets/textures/`. Credits stay those of the packs. Nx runs `textures:atlas:local-textures`
+  for it automatically (`laracraft:serve:local-textures` uses this build configuration).
+
+Guards (tests in `src/local/*.spec.ts`, using a synthetic jar built in the test):
+
+- `textures:guard-no-local` (`cli.ts guard --strict`) runs before every `laracraft:build`,
+  including `nx build laracraft` and the build behind `cap-sync`. It fails if
+  `LARACRAFT_LOCAL_TEXTURES` is set or `dist/assets/textures/` contains a local atlas or local
+  path. Only its `local-textures` configuration (used by `laracraft:build:local-textures`)
+  skips the environment check.
+- `laracraft:cap-sync` runs `guard --strict --dir dist/apps/laracraft` before `cap sync`, so a
+  web build containing a `"local": true` atlas never reaches the native projects.
+- CI runs `guard --ci --dir dist` before uploading artifacts: it also fails if
+  `.local-textures/` or `dist/assets/textures-local/` exist at all.

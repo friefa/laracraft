@@ -13,18 +13,46 @@
         "{workspaceRoot}/assets/LICENSES.md",
         "{projectRoot}/src/**/*.ts"
       ],
-      "options": { "command": "tsx tools/textures/src/cli.ts validate" }
+      "options": {
+        "command": "tsx tools/textures/src/cli.ts validate"
+      }
     },
     "atlas": {
       "executor": "nx:run-commands",
       "dependsOn": ["validate"],
-      "cache": true,
-      "inputs": ["{workspaceRoot}/assets/textures/**/*", "{projectRoot}/src/**/*.ts"],
+      "cache": false,
+      "inputs": [
+        "{workspaceRoot}/assets/textures/**/*",
+        "{projectRoot}/src/**/*.ts",
+        {
+          "env": "LARACRAFT_LOCAL_TEXTURES"
+        }
+      ],
       "outputs": [
         "{workspaceRoot}/dist/assets/textures/atlas.png",
         "{workspaceRoot}/dist/assets/textures/atlas.json"
       ],
-      "options": { "command": "tsx tools/textures/src/cli.ts atlas" }
+      "options": {
+        "command": "tsx tools/textures/src/cli.ts atlas"
+      },
+      "configurations": {
+        "local-textures": {
+          "command": "tsx tools/textures/src/cli.ts atlas --local"
+        }
+      }
+    },
+    "guard-no-local": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["atlas", "credits"],
+      "cache": false,
+      "options": {
+        "command": "tsx tools/textures/src/cli.ts guard --strict --dir dist/assets/textures"
+      },
+      "configurations": {
+        "local-textures": {
+          "command": "tsx tools/textures/src/cli.ts guard --dir dist/assets/textures"
+        }
+      }
     },
     "credits": {
       "executor": "nx:run-commands",
@@ -33,16 +61,27 @@
         "{workspaceRoot}/dist/assets/textures/credits.json",
         "{workspaceRoot}/assets/LICENSES.md"
       ],
-      "options": { "command": "tsx tools/textures/src/cli.ts credits" }
+      "options": {
+        "command": "tsx tools/textures/src/cli.ts credits"
+      }
     },
     "placeholders": {
       "executor": "nx:run-commands",
-      "options": { "command": "tsx tools/textures/src/cli.ts placeholders" }
+      "options": {
+        "command": "tsx tools/textures/src/cli.ts placeholders"
+      }
     },
     "import-ppl": {
       "executor": "nx:run-commands",
       "options": {
         "command": "tsx --tsconfig tools/textures/tsconfig.lib.json tools/textures/src/import/import-ppl.ts"
+      }
+    },
+    "import-local": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "command": "tsx --tsconfig tools/textures/tsconfig.lib.json tools/textures/src/local/import-local.ts"
       }
     }
   }
