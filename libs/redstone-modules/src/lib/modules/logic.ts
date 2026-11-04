@@ -10,6 +10,9 @@ const BEDROCK_LOGIC_NOTE =
   'Built only from torches, repeaters (incl. repeater locking) and dust, which Bedrock also ' +
   'has; timing and dust connection details are not verified there.';
 
+/** Shortest input pulse (game ticks) the {@link T_FLIP_FLOP} reacts to. */
+export const T_FLIP_FLOP_MIN_PULSE_TICKS = 4;
+
 /**
  * T flip-flop: master–slave D flip-flop from two lockable repeaters (Java Edition).
  *
@@ -20,13 +23,23 @@ const BEDROCK_LOGIC_NOTE =
  * locks S while the input is off. On a rising edge M locks first (1 rt), then S unlocks
  * (2 rt) and copies M → Q toggles at 3 rt; the new NOT Q reaches M at 4 rt, when M is
  * already locked. On the falling edge S locks (2 rt) before M's new value arrives (3 rt,
- * thanks to M's delay 2). Edge-triggered, any input pulse ≥ 2 game ticks works; no items,
- * no pistons, no quasi-connectivity. Layout is laracraft's own.
+ * thanks to M's delay 2). Edge-triggered; no items, no pistons, no quasi-connectivity.
+ * Layout is laracraft's own.
+ *
+ * Input requirement: pulses of at least {@link T_FLIP_FLOP_MIN_PULSE_TICKS} game ticks
+ * (2 rt), e.g. a button (stone 20 gt, wooden 30 gt) or a lever. A 2 gt pulse (e.g. an
+ * observer) is too short and is ignored: S unlocks 4 gt after the rising edge and its
+ * switch would happen at 6 gt, but the falling edge relocks S at 6 gt first, because L2
+ * (a repeater facing into a diode's side) has tick priority −3 and S only −1
+ * (https://minecraft.wiki/w/Tick#Scheduled_tick); a locked repeater ignores its tick.
+ * M is unlocked again with an unchanged input, so the 2 gt pulse leaves no trace.
  *
  * References:
  * - https://minecraft.wiki/w/Redstone_circuits/Memory (D and T flip-flops, master–slave)
  * - https://minecraft.wiki/w/Redstone_Repeater (locking by a powered repeater pointing into its side)
  * - https://minecraft.wiki/w/Redstone_Torch
+ * - https://minecraft.wiki/w/Tick#Scheduled_tick (tick priorities of repeaters)
+ * - https://minecraft.wiki/w/Button (button pulse lengths)
  *
  * Local layout (y = 0), facing north = output block B at the −Z edge:
  *
@@ -48,11 +61,13 @@ export const T_FLIP_FLOP = defineModule({
   size: { x: 4, y: 1, z: 4 },
   anchor: { x: 0, y: 0, z: 0 },
   design:
-    'Master–slave flip-flop from two locked repeaters with NOT Q feedback; toggles on every rising edge.',
+    'Master–slave flip-flop from two locked repeaters with NOT Q feedback; toggles on every input pulse of at least 4 game ticks (button, lever).',
   references: [
     'https://minecraft.wiki/w/Redstone_circuits/Memory',
     'https://minecraft.wiki/w/Redstone_Repeater',
     'https://minecraft.wiki/w/Redstone_Torch',
+    'https://minecraft.wiki/w/Tick#Scheduled_tick',
+    'https://minecraft.wiki/w/Button',
   ],
   ports: [
     { name: 'toggle', kind: 'input', pos: { x: 3, y: 0, z: 3 }, side: 'south', signal: 'pulse' },
@@ -61,19 +76,26 @@ export const T_FLIP_FLOP = defineModule({
   behaviour: {
     status: 'specified',
     notes:
-      'After building, Q may settle in either state while the torches are placed; one pulse sets it as wanted.',
+      'After building, Q may settle in either state while the torches are placed; one pulse sets it as wanted. ' +
+      `Input pulses must last at least ${T_FLIP_FLOP_MIN_PULSE_TICKS} game ticks; 2 gt pulses are ignored.`,
     initial: { outputs: { q: false } },
     steps: [
       {
-        description: 'Short pulse: Q toggles on (3 rt after the rising edge).',
+        description: 'A 2 gt pulse (observer) is too short: Q stays off.',
         pulse: { port: 'toggle', ticks: 2 },
+        waitTicks: 12,
+        expect: { outputs: { q: false } },
+      },
+      {
+        description: 'Shortest valid pulse (4 gt): Q toggles on 3 rt after the rising edge.',
+        pulse: { port: 'toggle', ticks: T_FLIP_FLOP_MIN_PULSE_TICKS },
         waitTicks: 12,
         expect: { outputs: { q: true } },
       },
       {
-        description: 'Next pulse: Q toggles off.',
-        pulse: { port: 'toggle', ticks: 4 },
-        waitTicks: 12,
+        description: 'Stone button pulse (20 gt): Q toggles off.',
+        pulse: { port: 'toggle', ticks: 20 },
+        waitTicks: 30,
         expect: { outputs: { q: false } },
       },
       {
