@@ -2,10 +2,10 @@
 
 Stand: 2026-11-03. Bis zur Antwort arbeite ich mit dem jeweils genannten **Default** weiter.
 
-1. **Minecraft-Version:** Seit 2026 nummeriert Mojang Java-Releases nach Jahr (26.1, 26.2, 26.3 …); die letzte
-   1.x-Version war 1.21.11. Die Registry ist aktuell gegen **1.21.x** geprüft. Sollen wir auf die aktuelle 26.x
-   heben (Vorschlag: ja, als M1-Paket P1.10) und neuen Releases jeweils zeitnah folgen?
-   _Default: 1.21.11 als stabile Basis, Upgrade auf aktuelle 26.x in M1._
+1. ~~**Minecraft-Version**~~ — **Entschieden (PO, 2026-11-04):** immer die aktuellste Version. Java und Bedrock
+   teilen seit 2026 die Jahres-Nummerierung (26.x). Umsetzung: Registry auf die aktuelle Java-26.x-Version heben
+   (P1.10) und jedem Release zeitnah folgen. Bedrock bleibt laut Briefing ein späterer Hinweis-Layer auf derselben
+   Versionsbasis.
 2. **Texturen (ADR-0003):** Gibst du Pixel Perfection (CC BY-SA 4.0, vorbehaltlich Recherche) frei, inklusive der
    Share-Alike-Pflicht für Texturen, Atlas und abgeleitete eigene Texturen?
    _Default: nur eigene Platzhalter-Texturen, bis du freigibst._

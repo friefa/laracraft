@@ -38,7 +38,8 @@ Leitprinzipien:
    keine Block-IDs.
 3. **Ein Dokument, eine Undo-Historie.** Editor-Werkzeuge und Lara erzeugen beide `ChangeSet`s auf demselben
    `BuildDocument`.
-4. **Java Edition only.** Blockstates sind Java-Strings. Bedrock-Unterschiede kommen später als separater
+4. **Java Edition only, immer aktuell.** Ziel ist die jeweils neueste Java-Version (26.x, Entscheidung PO
+   2026-11-04). Blockstates sind Java-Strings. Bedrock-Unterschiede kommen später als separater
    Hinweis-Layer, nie vermischt.
 5. **Rechtlich sauber.** Keine Mojang-Assets. Jedes Asset im Manifest mit Quelle und Lizenz (ADR-0003).
 
