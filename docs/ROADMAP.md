@@ -87,8 +87,9 @@ Aus dem fachlichen Review der Registry (P0.3r), vor Start der Build-Order-Engine
   2×2-Kolbentür, Observer-Takt, Wasserfall), Anleitungsmodus in der UI.
 - **M3 Lara** (Teilstand 2026-11-04, ohne Backend nach ADR-0008):
   - ✅ M3.1 DSL – 13 Tools, Schema `libs/lara-dsl/schema/`, Interpreter, Property-Tests.
-  - ✅ M3.2 10 Redstone-Module (Java), strukturell + baubar getestet; Verhalten im Simulator: 7/10 grün, 3 Modulfehler
-    in Arbeit (`observer_clock` 6 gt statt 4 gt und Start, `t_flip_flop` Mindestpuls, `item_sorter` Sperr-Trichter).
+  - ✅ M3.2 10 Redstone-Module (Java), strukturell + baubar getestet und im Simulator verhaltensgeprüft (10/10).
+    `observer_clock` = 6 gt (Start durch Neusetzen eines Observers), `t_flip_flop` ab 4-gt-Puls, `item_sorter` mit
+    Sperr-Trichter und Verstärker gegen Fackel-Burnout.
   - ✅ M3.3 Lara-Agent im Client (`libs/lara-agent`): Anthropic nativ + OpenAI-kompatibel, Tool-Loop, Tageslimit.
   - ✅ M3.4 Chat-Oberfläche, Einstellungen `settings/lara`, Schlüssel im sicheren Speicher, Verlauf pro Bau,
     ein Rückgängig-Schritt pro Turn; Mocks im Design-Dokument (PO-Abnahme offen).
