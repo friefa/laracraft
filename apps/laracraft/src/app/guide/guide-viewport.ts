@@ -1,3 +1,4 @@
+import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -83,6 +84,7 @@ type ViewportStatus = 'loading' | 'ready' | 'unavailable';
 })
 export class GuideViewport {
   private readonly loadFactory = inject(RENDERER_FACTORY_LOADER);
+  private readonly document = inject(DOCUMENT);
   private readonly canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
 
   /** The step document; mutated in place, `version` signals each change. */
@@ -134,7 +136,8 @@ export class GuideViewport {
       const renderer = await create({
         canvas: this.canvas().nativeElement,
         registry: createJavaBlockRegistry(),
-        atlasUrl: 'assets/textures/atlas.json',
+        // Resolve against <base href>, not the current route (/build/:id/guide).
+        atlasUrl: new URL('assets/textures/atlas.json', this.document.baseURI).href,
       });
       if (this.destroyed) {
         renderer.dispose();
