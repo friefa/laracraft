@@ -132,21 +132,23 @@ describe('effort support', () => {
 });
 
 describe('testProvider', () => {
-  it('checks an Anthropic key and model with the Models API', async () => {
+  it('checks an Anthropic key and model with free token counting (CORS-enabled)', async () => {
+    const f = fakeFetch([{ status: 200, json: { input_tokens: 8 } }]);
+    const r = await testProvider(ANTHROPIC, undefined, { fetch: f.fetch, maxRetries: 0 });
+    expect(r).toEqual({ ok: true, model: 'claude-opus-5-5' });
+    expect(f.requests[0]?.url).toBe('https://api.anthropic.com/v1/messages/count_tokens');
+    expect(f.requests[0]?.body).toMatchObject({ model: 'claude-opus-5-5' });
+  });
+
+  it('reports an unknown Anthropic model as a provider error', async () => {
     const f = fakeFetch([
       {
-        status: 200,
-        json: {
-          id: 'claude-opus-5-5',
-          type: 'model',
-          display_name: 'Claude Opus 5.5',
-          created_at: '2026-01-01T00:00:00Z',
-        },
+        status: 404,
+        json: { type: 'error', error: { type: 'not_found_error', message: 'model: nope' } },
       },
     ]);
     const r = await testProvider(ANTHROPIC, undefined, { fetch: f.fetch, maxRetries: 0 });
-    expect(r).toEqual({ ok: true, model: 'claude-opus-5-5' });
-    expect(f.requests[0]?.url).toBe('https://api.anthropic.com/v1/models/claude-opus-5-5');
+    expect(r).toMatchObject({ ok: false });
   });
 
   it('reports an invalid Anthropic key as auth', async () => {

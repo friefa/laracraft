@@ -133,9 +133,13 @@ export function createAnthropicProvider(opts: AnthropicProviderOptions): ChatPro
     stream,
     async test(signal) {
       try {
-        // Models API: no tokens spent, validates key and model id.
-        const info = await client.models.retrieve(model, {}, { signal });
-        return { model: info.id };
+        // Token counting: free, validates key and model id. Not the Models API: its
+        // responses carry no CORS headers, so browsers block it (verified 2026-11-04).
+        await client.messages.countTokens(
+          { model, messages: [{ role: 'user', content: 'ping' }] },
+          { signal },
+        );
+        return { model };
       } catch (e) {
         throw mapAnthropicError(e, signal);
       }
