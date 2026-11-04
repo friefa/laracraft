@@ -1,5 +1,6 @@
 import {
   JAVA_BLOCKS,
+  JAVA_DATA_VERSION,
   JAVA_REGISTRY_VERSION,
   collectTextureNames,
   createJavaBlockRegistry,
@@ -51,6 +52,12 @@ describe('Java block registry', () => {
     expect(registry.version).toBe(JAVA_REGISTRY_VERSION);
     expect(registry.all().length).toBe(JAVA_BLOCKS.length);
     expect(registry.all().length).toBeGreaterThanOrEqual(140);
+  });
+
+  it('targets the latest Java release with its data version', () => {
+    expect(JAVA_REGISTRY_VERSION).toBe('26.3');
+    expect(JAVA_DATA_VERSION).toBe(5023);
+    expect(Number.isSafeInteger(JAVA_DATA_VERSION)).toBe(true);
   });
 
   it('contains every required block', () => {
@@ -332,6 +339,31 @@ describe('Java block registry', () => {
       );
       expect(values(get('note_block'), 'note')).toHaveLength(25);
       expect(source('note_block', 'note')).toBe('interaction');
+      // 26.1: copper below the note block plays a trumpet.
+      expect(values(get('note_block'), 'instrument')).toEqual(
+        expect.arrayContaining([
+          'trumpet',
+          'trumpet_exposed',
+          'trumpet_weathered',
+          'trumpet_oxidized',
+        ]),
+      );
+      expect(values(get('note_block'), 'instrument')).toHaveLength(27);
+    });
+
+    it('wool and concrete stairs/slabs (26.3)', () => {
+      for (const base of ['white_wool', 'light_gray_concrete']) {
+        const st = get(`${base}_stairs`);
+        expect(defaultState(st)).toBe(
+          `minecraft:${base}_stairs[facing=north,half=bottom,shape=straight,waterlogged=false]`,
+        );
+        expect(st.render.textures).toEqual({ all: base });
+        const sl = get(`${base}_slab`);
+        expect(defaultState(sl)).toBe(`minecraft:${base}_slab[type=bottom,waterlogged=false]`);
+        expect(sl.item?.countByProperty?.counts['double']).toBe(2);
+        expect(sl.render.textures).toEqual({ all: base });
+      }
+      expect(get('red_wool_slab').tags).toEqual(['red', 'wool', 'slab']);
     });
 
     it('rails', () => {

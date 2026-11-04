@@ -17,7 +17,8 @@ import type {
  *
  * Conventions used throughout `data/**`:
  * - Property names, values and defaults are copied from the Java Edition
- *   blockstate definitions (1.21.x). Value order follows Java where practical.
+ *   blockstate definitions of the targeted release (`JAVA_REGISTRY_VERSION`).
+ *   Value order follows Java where practical.
  * - Texture names are our own manifest names: `<block>`, `<block>_top`,
  *   `<block>_side`, `<block>_front`, … (not Mojang paths).
  * - Directional full blocks (furnace, observer, dispenser, …) use
