@@ -47,6 +47,9 @@ importers:
       '@jsverse/transloco':
         specifier: ^8.4.0
         version: 8.4.0(@angular/core@22.2.4(@angular/compiler@22.2.4)(rxjs@7.8.2))(rxjs@7.8.2)(typescript@6.0.3)
+      capacitor-secure-storage-plugin:
+        specifier: 0.13.0
+        version: 0.13.0(@capacitor/core@8.6.0)
       fflate:
         specifier: ^0.8.3
         version: 0.8.3
@@ -2662,6 +2665,11 @@ packages:
 
   caniuse-lite@1.0.30001820:
     resolution: {integrity: sha512-gfWD6MxqVCqAOwmODfZf7DchWvlrA+SRdNX7ceLfg3xRqe5ssjjpF7EgslC/0tiLiNTajdaNN/q8c/5u/7Gz8w==}
+
+  capacitor-secure-storage-plugin@0.13.0:
+    resolution: {integrity: sha512-+rLC/9Z0LTaRRt6L6HjBwcDh5gqgI3NPmDSwo4hk41XQOy3EBrRo81VleIqFsowsMA3oMT+E59Bl8/HiWk0nhQ==}
+    peerDependencies:
+      '@capacitor/core': '>=8.0.0'
 
   chai@6.3.0:
     resolution: {integrity: sha512-XWAtwJ6OHO+tj0EKCs0Y2UamnyOxseZWltU4x2U2wh8g4AigdjwvtUjvLP2tqkA/avxHEtzxNaqGq/YGNwckKg==}
@@ -7170,6 +7178,10 @@ snapshots:
   callsites@3.1.0: {}
 
   caniuse-lite@1.0.30001820: {}
+
+  capacitor-secure-storage-plugin@0.13.0(@capacitor/core@8.6.0):
+    dependencies:
+      '@capacitor/core': 8.6.0
 
   chai@6.3.0: {}
 

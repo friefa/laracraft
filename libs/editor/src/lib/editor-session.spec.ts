@@ -47,6 +47,45 @@ describe('EditorSession', () => {
     expect(events.at(-1)?.kind).toBe('history');
   });
 
+  it('records an externally applied change set as one undo step', () => {
+    const s = newSession();
+    const events: EditorEvent[] = [];
+    s.subscribe((e) => events.push(e));
+    // Simulates Lara's live preview: two operations applied directly to the document.
+    s.doc.apply({ changes: [{ pos: v(0, 0, 0), before: AIR, after: STONE }], origin: 'lara' });
+    s.doc.apply({ changes: [{ pos: v(1, 0, 0), before: AIR, after: STONE }], origin: 'lara' });
+    expect(events).toHaveLength(0);
+
+    const merged = {
+      changes: [
+        { pos: v(0, 0, 0), before: AIR, after: STONE },
+        { pos: v(1, 0, 0), before: AIR, after: STONE },
+      ],
+      origin: 'lara' as const,
+      label: 'Lara',
+    };
+    expect(s.recordExternal(merged)).toBe(merged);
+    expect(events).toEqual([
+      { kind: 'document', changeSet: merged, cause: 'external' },
+      { kind: 'history' },
+    ]);
+    expect(s.history).toEqual([{ label: 'Lara', origin: 'lara' }]);
+    // Not applied a second time; one undo reverts the whole turn.
+    expect(s.doc.volume.blockCount).toBe(2);
+    s.undo();
+    expect(s.doc.getBlock(0, 0, 0)).toBe(AIR);
+    expect(s.doc.getBlock(1, 0, 0)).toBe(AIR);
+    expect(s.canUndo).toBe(false);
+    s.redo();
+    expect(s.doc.volume.blockCount).toBe(2);
+
+    // Empty change sets create no step and no events.
+    const count = events.length;
+    s.recordExternal({ changes: [], origin: 'lara' });
+    expect(events).toHaveLength(count);
+    expect(s.history).toHaveLength(1);
+  });
+
   it('respects the configured undo depth', () => {
     const s = new EditorSession({ doc: newDoc(), registry, maxUndoDepth: 2 });
     for (let x = 0; x < 4; x++) {

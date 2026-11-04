@@ -1,0 +1,229 @@
+// Lara chat panel: fills the editor's sheet / side panel (positioned by the editor).
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0.5rem 0 0.875rem;
+  border-bottom: var(--lc-border-w) solid var(--lc-border);
+
+  .lc-btn {
+    flex: none;
+  }
+}
+
+.who {
+  flex: 1;
+  min-width: 0;
+  margin-left: 0.25rem;
+
+  h2 {
+    margin: 0;
+    font-size: var(--lc-fs-lg);
+    color: var(--lc-purple-text);
+    line-height: 1.1;
+  }
+}
+
+.model {
+  margin: 0;
+  overflow: hidden;
+  font-size: var(--lc-fs-xs);
+  color: var(--lc-muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// The size toggle only makes sense in the phone bottom sheet.
+@media (min-width: 48rem) {
+  .size-toggle {
+    display: none;
+  }
+}
+
+.state {
+  padding: 1rem;
+  color: var(--lc-muted);
+}
+
+.log {
+  flex: 1;
+  min-height: 0;
+  padding: 0.875rem 0.875rem 0.5rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.messages {
+  display: grid;
+  gap: 0.875rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.msg {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+
+  &.user {
+    justify-content: flex-end;
+  }
+
+  &.undone .bubble {
+    opacity: 0.7;
+  }
+}
+
+.bubble {
+  flex: 1;
+  min-width: 0;
+  padding: 0.625rem 0.875rem;
+  font-weight: var(--lc-fw-body);
+  overflow-wrap: anywhere;
+
+  p {
+    margin: 0;
+  }
+}
+
+.failed .bubble {
+  border-color: var(--lc-red);
+  box-shadow: 0 var(--lc-depth) 0 var(--lc-red-shade);
+
+  &::before {
+    border-color: var(--lc-red);
+  }
+}
+
+.user-bubble {
+  max-width: 85%;
+  margin: 0;
+  padding: 0.625rem 0.875rem;
+  border: var(--lc-border-w) solid var(--lc-blue);
+  border-radius: calc(var(--lc-radius) * 1.25) calc(var(--lc-radius) * 1.25) 0.25rem;
+  background: var(--lc-blue-soft);
+  color: var(--lc-text-strong);
+  font-weight: var(--lc-fw-bold);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.error {
+  margin-top: 0.375rem;
+  color: var(--lc-red-text);
+  font-weight: var(--lc-fw-bold);
+}
+
+.stopped {
+  margin-top: 0.375rem;
+  color: var(--lc-muted);
+}
+
+.actions,
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.5rem;
+  margin-top: 0.5rem;
+
+  &:empty {
+    display: none;
+  }
+
+  .lc-btn {
+    gap: 0.375rem;
+    margin-bottom: 0;
+    --lc-icon: 1.125rem;
+  }
+}
+
+.usage,
+.undone-label {
+  font-size: var(--lc-fs-xs);
+  color: var(--lc-muted);
+}
+
+.undo {
+  margin-left: auto;
+}
+
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.875rem 0 0 3rem;
+}
+
+.composer {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  padding: 0.625rem 0.75rem calc(env(safe-area-inset-bottom) + 0.375rem);
+  border-top: var(--lc-border-w) solid var(--lc-border);
+
+  textarea {
+    flex: 1;
+    max-height: 10rem;
+    margin-bottom: var(--lc-depth);
+    font: inherit;
+    font-weight: var(--lc-fw-bold);
+    resize: none;
+  }
+}
+
+.onboarding {
+  display: grid;
+  gap: 0.875rem;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.intro {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+
+  h3 {
+    margin: 0 0 0.25rem;
+    font-size: var(--lc-fs-lg);
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+.facts {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  p {
+    margin: 0;
+    font-weight: var(--lc-fw-body);
+  }
+
+  strong {
+    display: block;
+  }
+}

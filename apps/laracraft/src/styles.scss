@@ -728,3 +728,130 @@ textarea {
   flex: none;
   color: var(--tone, var(--lc-green));
 }
+
+/* ---------------------------------------------------------------------------
+ * L2 additions (Lara chat and settings).
+ * ------------------------------------------------------------------------- */
+
+/* Lara's colour: purple button (open the chat, send, set up Lara). */
+.lc-btn--lara {
+  --btn-bg: var(--lc-purple);
+  --btn-fg: var(--lc-on-color);
+  --btn-edge: var(--lc-purple-shade);
+  --btn-border: var(--lc-purple);
+}
+
+/* Small chip: one build operation of a Lara turn ("Wand · 48 Blöcke") or a suggestion. */
+.lc-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 1.75rem;
+  padding: 0.15rem 0.65rem 0.15rem 0.4rem;
+  border: var(--lc-border-w) solid var(--lc-border-strong);
+  border-radius: var(--lc-radius-pill);
+  background: var(--lc-bg-soft);
+  color: var(--lc-text-strong);
+  font-size: var(--lc-fs-xs);
+  font-weight: var(--lc-fw-black);
+}
+/* Mini block in front of an operation chip. */
+.lc-chip .cube {
+  width: 0.85rem;
+  height: 0.85rem;
+  border: var(--lc-border-w) solid var(--lc-ink);
+  border-radius: 0.2rem;
+  background: var(--lc-green);
+  box-shadow: inset 0 -0.2rem 0 var(--lc-green-shade);
+}
+/* Tappable chip (suggestions): 48 px target, blue like links. */
+.lc-chip--action {
+  min-height: 3rem;
+  padding: 0.5rem 1rem;
+  border-color: var(--lc-blue);
+  color: var(--lc-blue-text);
+  font: inherit;
+  font-size: var(--lc-fs-sm);
+  font-weight: var(--lc-fw-bold);
+  box-shadow: 0 3px 0 var(--lc-blue-shade);
+  cursor: pointer;
+}
+.lc-chip--action:active {
+  transform: translateY(3px);
+  box-shadow: none;
+}
+
+/* Typing indicator: three bouncing dots (Lara is writing). */
+.lc-typing {
+  display: inline-flex;
+  gap: 0.3rem;
+  padding: 0.5rem 0 0.25rem;
+}
+.lc-typing i {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--lc-purple);
+  animation: lc-typing 900ms ease-in-out infinite;
+}
+.lc-typing i:nth-child(2) {
+  animation-delay: 150ms;
+}
+.lc-typing i:nth-child(3) {
+  animation-delay: 300ms;
+}
+@keyframes lc-typing {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  30% {
+    transform: translateY(-0.3rem);
+    opacity: 1;
+  }
+}
+
+/* Form field: label, control, hint and error stacked. */
+.lc-field {
+  display: grid;
+  gap: 0.35rem;
+}
+.lc-field > label,
+.lc-field__label {
+  color: var(--lc-text-strong);
+  font-weight: var(--lc-fw-black);
+}
+.lc-field__hint {
+  margin: 0;
+  color: var(--lc-muted);
+  font-size: var(--lc-fs-xs);
+}
+.lc-field__error {
+  margin: 0;
+  color: var(--lc-red-text);
+  font-size: var(--lc-fs-xs);
+  font-weight: var(--lc-fw-bold);
+}
+.lc-input[aria-invalid='true'] {
+  border-color: var(--lc-red);
+}
+
+/* Chunky checkbox row (48 px target). */
+.lc-check {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 3rem;
+  color: var(--lc-text-strong);
+  font-weight: var(--lc-fw-bold);
+  cursor: pointer;
+}
+.lc-check input {
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: 0;
+  accent-color: var(--lc-purple);
+}

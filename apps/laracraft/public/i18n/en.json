@@ -87,7 +87,8 @@
           "description": "Stone cliff with a water trough that falls into a basin."
         }
       }
-    }
+    },
+    "laraSettings": "Set up Lara"
   },
   "storage": {
     "errors": {
@@ -339,7 +340,8 @@
       "export": "Export file",
       "guide": "Instruction mode",
       "frame": "Show whole build",
-      "credits": "Credits and disclaimer"
+      "credits": "Credits and disclaimer",
+      "lara": "Lara settings"
     },
     "tool": {
       "place": "Place",
@@ -436,6 +438,138 @@
       "text": "Tap a face to place a block.",
       "textMouse": "Click a face to place a block.",
       "dismiss": "Hide hint"
+    }
+  },
+  "lara": {
+    "name": "Lara",
+    "open": "Build with Lara",
+    "chat": {
+      "title": "Lara",
+      "loading": "Lara is coming …",
+      "close": "Close chat",
+      "expand": "Bigger chat",
+      "collapse": "Smaller chat",
+      "settings": "Lara settings",
+      "log": "Conversation with Lara",
+      "welcome": "Hi! Tell me what to build or change. You see everything in 3D right away.",
+      "suggestionsLabel": "Suggestions",
+      "suggestions": {
+        "house": "Build a small house",
+        "taller": "Make the build 2 blocks taller",
+        "wall": "Build a wall in front"
+      },
+      "you": "You",
+      "operations": "Changes to the build",
+      "inputLabel": "Message to Lara",
+      "placeholder": "What should I build?",
+      "send": "Send",
+      "stop": "Stop",
+      "typing": "Lara is writing …",
+      "usage": "{{ input }} tokens in · {{ output }} out",
+      "undo": "Undo",
+      "undone": "Undone",
+      "retry": "Retry",
+      "openSettings": "Settings",
+      "stopped": "Stopped. The changes of this answer were taken back.",
+      "loadError": "The previous chat could not be loaded."
+    },
+    "chip": {
+      "block": "1 block",
+      "blocks": "{{ count }} blocks"
+    },
+    "op": {
+      "fill": "Fill",
+      "hollowBox": "Hollow box",
+      "line": "Line",
+      "wall": "Wall",
+      "floor": "Floor",
+      "roof": "Roof",
+      "placeBlock": "Block",
+      "replace": "Replace",
+      "clear": "Clear",
+      "mirror": "Mirror",
+      "rotate": "Rotate",
+      "copy": "Copy",
+      "insertModule": "Module",
+      "other": "Change"
+    },
+    "error": {
+      "notConfigured": "Lara is not set up yet.",
+      "auth": "The API key was rejected. Check it in the settings.",
+      "rateLimit": "The provider is slowing down requests. Wait a moment and try again.",
+      "network": "No connection to the provider. Are you online?",
+      "provider": "The provider reported an error. Try again in a moment.",
+      "refusal": "I would rather not build that. Ask me something else!",
+      "limit": "Your daily Lara limit is reached. You can change it in the settings.",
+      "cancelled": "Stopped.",
+      "unknown": "Something went wrong. Try again."
+    },
+    "onboarding": {
+      "title": "Set up Lara",
+      "text": "I can build for you! For that I need a key from an AI provider, for example Anthropic.",
+      "costsTitle": "Costs",
+      "costs": "Lara uses your own account with the provider. They bill you directly.",
+      "dataTitle": "Data",
+      "data": "What you write and your build go to the provider you choose. Nowhere else.",
+      "keyTitle": "Key",
+      "key": "Your key stays on this device.",
+      "action": "Set up Lara"
+    },
+    "settings": {
+      "title": "Set up Lara",
+      "intro": "Lara talks directly to the AI provider you choose here. You need an account and an API key there.",
+      "back": "To my builds",
+      "backToBuild": "Back to the build",
+      "provider": "Provider",
+      "anthropic": "Anthropic (Claude)",
+      "recommended": "Recommended",
+      "anthropicHint": "Lara's build tools work best here. Get a key at console.anthropic.com.",
+      "openai": "OpenAI-compatible",
+      "openaiHint": "OpenAI, OpenRouter, Azure or your own server (Ollama, LM Studio, vLLM).",
+      "model": "Model",
+      "modelHintAnthropic": "Default: claude-opus-5-5.",
+      "modelHintOpenai": "The provider's model name, e.g. gpt-… or llama3.1.",
+      "baseUrl": "Base URL",
+      "baseUrlHint": "The API address, e.g. https://api.openai.com/v1 or http://localhost:11434/v1.",
+      "apiKey": "API key",
+      "apiKeyHint": "Usually starts with “sk-”. Never stored in builds or exports.",
+      "apiKeyStored": "A key is stored. Leave empty to keep it.",
+      "showKey": "Show key",
+      "hideKey": "Hide key",
+      "remember": "Remember on this device",
+      "rememberWarning": "The key is then stored unencrypted in the browser. Only do this on your own device.",
+      "sessionOnly": "Without the tick the key only lasts until you close the tab.",
+      "nativeStorage": "The key is kept in your device's secure storage (keychain).",
+      "limit": "Daily limit (tokens)",
+      "limitNone": "no limit",
+      "limitHint": "Optional. Lara pauses when it is reached. Used today: {{ used }} tokens.",
+      "save": "Save",
+      "test": "Test connection",
+      "testing": "Testing connection …",
+      "testOk": "Connection works! Model: {{ model }}",
+      "clearKey": "Delete key",
+      "saved": "Saved.",
+      "saveError": "Could not be saved.",
+      "cleared": "Key deleted.",
+      "errors": {
+        "model": "Please enter a model.",
+        "baseUrl": "Please enter an address starting with https:// or http://.",
+        "apiKey": "Please enter your API key.",
+        "limit": "Please enter a whole number above 0, or leave it empty."
+      },
+      "notes": {
+        "title": "Good to know",
+        "costsTitle": "Costs",
+        "costs": "Every message to Lara costs a few tokens at the provider. You pay for them through your account there. Each answer shows how many it used.",
+        "privacyTitle": "Privacy",
+        "privacy": "Your messages and your build go directly to the chosen provider. laracraft has no server of its own and sees none of it.",
+        "storageTitle": "Storage",
+        "storage": "The key stays on this device. It never ends up in build files, exports or logs.",
+        "ageTitle": "Age and rules",
+        "age": "Your provider's terms of use apply, including the minimum age. If unsure, ask your parents.",
+        "localTitle": "Own server",
+        "local": "Local servers like Ollama or LM Studio must allow requests from the browser (CORS)."
+      }
     }
   }
 }

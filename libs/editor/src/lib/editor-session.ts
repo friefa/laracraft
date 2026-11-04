@@ -35,7 +35,8 @@ export type EditorEvent =
       readonly kind: 'document';
       /** Positions changed; for `undo` this is the change set that was reverted. */
       readonly changeSet: ChangeSet;
-      readonly cause: 'commit' | 'undo' | 'redo';
+      /** `external`: applied outside the session and recorded via {@link EditorSession.recordExternal}. */
+      readonly cause: 'commit' | 'external' | 'undo' | 'redo';
     }
   | { readonly kind: 'history' }
   | { readonly kind: 'selection' }
@@ -196,6 +197,21 @@ export class EditorSession implements ToolContext {
     this.emit({ kind: 'document', changeSet: applied, cause: 'commit' });
     this.emit({ kind: 'history' });
     return applied;
+  }
+
+  /**
+   * Records a change set that was ALREADY applied to the document by someone else
+   * (e.g. Lara's live preview, which mutates the document operation by operation while
+   * streaming) as ONE undo step, without applying it again. `changeSet.before` must be
+   * the state before the whole external edit, `after` the current state. Empty change
+   * sets are ignored. Emits a `document` event (cause `external`) and a `history` event.
+   */
+  recordExternal(changeSet: ChangeSet): ChangeSet {
+    if (changeSet.changes.length === 0) return changeSet;
+    this.undoStack.push(changeSet);
+    this.emit({ kind: 'document', changeSet, cause: 'external' });
+    this.emit({ kind: 'history' });
+    return changeSet;
   }
 
   // --- tools ---------------------------------------------------------------
