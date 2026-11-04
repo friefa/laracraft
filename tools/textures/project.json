@@ -28,14 +28,22 @@
     },
     "credits": {
       "executor": "nx:run-commands",
-      "dependsOn": ["validate"],
-      "inputs": ["{workspaceRoot}/assets/textures/manifest.json", "{projectRoot}/src/**/*.ts"],
-      "outputs": ["{workspaceRoot}/dist/assets/textures/credits.json"],
+      "inputs": ["{workspaceRoot}/assets/textures/**/*", "{projectRoot}/src/**/*.ts"],
+      "outputs": [
+        "{workspaceRoot}/dist/assets/textures/credits.json",
+        "{workspaceRoot}/assets/LICENSES.md"
+      ],
       "options": { "command": "tsx tools/textures/src/cli.ts credits" }
     },
     "placeholders": {
       "executor": "nx:run-commands",
       "options": { "command": "tsx tools/textures/src/cli.ts placeholders" }
+    },
+    "import-ppl": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsx --tsconfig tools/textures/tsconfig.lib.json tools/textures/src/import/import-ppl.ts"
+      }
     }
   }
 }

@@ -134,6 +134,33 @@ export function validate(manifest: unknown, files: readonly DiskFile[]): Issue[]
       if (!isNonEmptyString(p['description'])) {
         report('manifest-shape', `packs.${id}: needs a non-empty "description"`);
       }
+      const release = p['release'];
+      if (release !== undefined) {
+        const ok =
+          isObj(release) &&
+          typeof release['url'] === 'string' &&
+          /^https:\/\//.test(release['url']) &&
+          typeof release['downloadUrl'] === 'string' &&
+          /^https:\/\//.test(release['downloadUrl']) &&
+          isNonEmptyString(release['versionId']) &&
+          typeof release['sha512'] === 'string' &&
+          /^[0-9a-f]{128}$/.test(release['sha512']);
+        if (!ok) {
+          report(
+            'manifest-shape',
+            `packs.${id}.release: needs https "url" and "downloadUrl", "versionId" and a hex "sha512"`,
+          );
+        }
+        for (const key of ['url', 'downloadUrl']) {
+          const u = isObj(release) ? release[key] : undefined;
+          if (typeof u === 'string' && isForbiddenUrl(u)) {
+            report(
+              'forbidden-source',
+              `packs.${id}.release.${key} points to Mojang/Minecraft assets`,
+            );
+          }
+        }
+      }
       packDirs.set(id, p['dir']);
     }
   }

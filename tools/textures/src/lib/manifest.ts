@@ -64,6 +64,19 @@ export interface PackInfo {
   /** Directory relative to assets/textures that holds this pack's files. */
   dir: string;
   homepage?: string;
+  /** Pinned upstream release the files were imported from (third-party packs). */
+  release?: PackRelease;
+}
+
+export interface PackRelease {
+  /** Release / version page (https). */
+  url: string;
+  /** Upstream version id, e.g. a Modrinth version id. */
+  versionId: string;
+  /** Direct download URL of the archive (https). */
+  downloadUrl: string;
+  /** Lowercase hex SHA-512 of the downloaded archive. */
+  sha512: string;
 }
 
 export interface TextureManifest {
@@ -74,13 +87,25 @@ export interface TextureManifest {
 }
 
 /**
+ * Default pack priority for atlas/credits: the real texture pack first, the CC0
+ * placeholders as fallback. Declared packs not listed here follow in manifest order.
+ */
+export const DEFAULT_PACK_PRIORITY: readonly string[] = ['pixel_perfection_legacy', 'placeholder'];
+
+export function defaultPackOrder(manifest: TextureManifest): string[] {
+  const declared = Object.keys(manifest.packs);
+  const preferred = DEFAULT_PACK_PRIORITY.filter((p) => declared.includes(p));
+  return [...preferred, ...declared.filter((p) => !preferred.includes(p))];
+}
+
+/**
  * Pick one entry per texture name for the given pack priority order: the first
  * pack that provides a name wins, so a partial third-party pack can fall back to
  * placeholders. Result is sorted by name.
  */
 export function selectTextures(
   manifest: TextureManifest,
-  packOrder: readonly string[] = Object.keys(manifest.packs),
+  packOrder: readonly string[] = defaultPackOrder(manifest),
 ): TextureEntry[] {
   for (const p of packOrder) {
     if (!(p in manifest.packs)) throw new Error(`unknown pack "${p}"`);

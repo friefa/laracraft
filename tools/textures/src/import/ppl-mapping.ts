@@ -1,0 +1,269 @@
+/**
+ * Import data for Pixel Perfection Legacy (ADR-0003). Checked in so that
+ * `nx run textures:import-ppl` is reproducible; see tools/textures/README.md.
+ *
+ * Nothing in here is executed from or copied out of the third-party archive:
+ * the importer only reads the PNG files named in PPL_TEXTURE_MAP.
+ */
+
+/** The pinned upstream release (verified against the Modrinth API). */
+export const PPL_RELEASE = {
+  packId: 'pixel_perfection_legacy',
+  packName: 'Pixel Perfection Legacy',
+  modrinthProjectId: '6w3F4SEu',
+  homepage: 'https://modrinth.com/resourcepack/pixel-perfection-legacy',
+  versionId: 'UT4foa3M',
+  version: '26.3-97.2',
+  /** Modrinth version page; used as `source.url` of every imported texture. */
+  url: 'https://modrinth.com/resourcepack/pixel-perfection-legacy/version/UT4foa3M',
+  downloadUrl:
+    'https://cdn.modrinth.com/data/6w3F4SEu/versions/UT4foa3M/Pixel%20Perfection%2026.3-97.2.zip',
+  sha512:
+    'ea6a690ac750c01e836ce28c141faa30b0e7b90e4f6236c5873a32ee6c2bf3f290e9cddd5246ff93c3fd01ef42a6f82fb3476fb0dccc5f276e9b67781bcbca86',
+  /** Folder inside the zip that holds the block textures. */
+  blockDir: 'assets/minecraft/textures/block',
+} as const;
+
+/**
+ * Reference for XSSheep's original files: the first commit of Pixel Perfection CE,
+ * which imported the last community-maintained build of XSSheep's pack.
+ * NOTE: that build ("shoddily ported for 1.15") already contains community
+ * updates for 1.14/1.15, so pixel identity alone is not proof of XSSheep's
+ * authorship; see INTRODUCED_AFTER_XSSHEEP.
+ */
+export const XSSHEEP_REFERENCE = {
+  name: 'Pixel Perfection CE (initial commit)',
+  repo: 'https://github.com/Athemis/PixelPerfectionCE',
+  commit: 'acbdb5612acddf998188fc268116508105b44d90',
+  blockDir: 'assets/minecraft/textures/block',
+} as const;
+
+export const XSSHEEP_AUTHORS = ['Hugh "XSSheep" Rutland'] as const;
+export const ADAPTED_AUTHORS = [
+  'Nova_Wostra',
+  'Pixel Perfection Legacy contributors',
+  'Hugh "XSSheep" Rutland (original)',
+] as const;
+export const XSSHEEP_MODIFICATIONS = 'Renamed';
+export const ADAPTED_MODIFICATIONS =
+  'Renamed; adapted/extended by Pixel Perfection Legacy contributors';
+
+/**
+ * Textures of blocks added to Java Edition after 1.11, the last version XSSheep's
+ * Pixel Perfection is documented to cover (ADR-0003). Even when the PPL file is
+ * pixel-identical to the reference, these were drawn by later contributors, so
+ * they are credited to the adapted/extended group. Value: Java version that
+ * introduced the texture.
+ */
+export const INTRODUCED_AFTER_XSSHEEP: Readonly<Record<string, string>> = {
+  ...Object.fromEntries(
+    ['black', 'blue', 'gray', 'green', 'light_gray', 'red', 'white', 'yellow'].flatMap((c) => [
+      [`${c}_concrete`, '1.12'],
+      [`${c}_concrete_powder`, '1.12'],
+    ]),
+  ),
+  birch_trapdoor: '1.13',
+  dark_oak_trapdoor: '1.13',
+  spruce_trapdoor: '1.13',
+  barrel_bottom: '1.14',
+  barrel_side: '1.14',
+  barrel_top: '1.14',
+  lantern: '1.14',
+  honey_block_bottom: '1.15',
+  honey_block_side: '1.15',
+  honey_block_top: '1.15',
+  target_side: '1.16',
+  target_top: '1.16',
+  cobbled_deepslate: '1.17',
+  deepslate: '1.17',
+  deepslate_bricks: '1.17',
+  deepslate_tiles: '1.17',
+  deepslate_top: '1.17',
+  polished_deepslate: '1.17',
+};
+
+/**
+ * laracraft texture name -> PNG file name in the pack's block folder (and in the
+ * XSSheep reference). `null`: the pack has no block texture for it; the atlas
+ * falls back to the placeholder / `missing` texture.
+ */
+export const PPL_TEXTURE_MAP: Readonly<Record<string, string | null>> = {
+  activator_rail: 'activator_rail.png',
+  andesite: 'andesite.png',
+  barrel_bottom: 'barrel_bottom.png',
+  barrel_side: 'barrel_side.png',
+  barrel_top: 'barrel_top.png',
+  birch_door_bottom: 'birch_door_bottom.png',
+  birch_door_top: 'birch_door_top.png',
+  birch_leaves: 'birch_leaves.png',
+  birch_log: 'birch_log.png',
+  birch_log_top: 'birch_log_top.png',
+  birch_planks: 'birch_planks.png',
+  birch_trapdoor: 'birch_trapdoor.png',
+  black_concrete: 'black_concrete.png',
+  black_concrete_powder: 'black_concrete_powder.png',
+  black_stained_glass: 'black_stained_glass.png',
+  black_stained_glass_pane_top: 'black_stained_glass_pane_top.png',
+  black_terracotta: 'black_terracotta.png',
+  black_wool: 'black_wool.png',
+  blue_concrete: 'blue_concrete.png',
+  blue_concrete_powder: 'blue_concrete_powder.png',
+  blue_stained_glass: 'blue_stained_glass.png',
+  blue_stained_glass_pane_top: 'blue_stained_glass_pane_top.png',
+  blue_terracotta: 'blue_terracotta.png',
+  blue_wool: 'blue_wool.png',
+  bookshelf: 'bookshelf.png',
+  bricks: 'bricks.png',
+  // Chests are rendered from an entity texture, not a block texture; ADR-0003
+  // only allows block textures from this pack.
+  chest: null,
+  chiseled_sandstone: 'chiseled_sandstone.png',
+  chiseled_stone_bricks: 'chiseled_stone_bricks.png',
+  clay: 'clay.png',
+  coarse_dirt: 'coarse_dirt.png',
+  cobbled_deepslate: 'cobbled_deepslate.png',
+  cobblestone: 'cobblestone.png',
+  comparator: 'comparator.png',
+  cracked_stone_bricks: 'cracked_stone_bricks.png',
+  crafting_table_front: 'crafting_table_front.png',
+  crafting_table_side: 'crafting_table_side.png',
+  crafting_table_top: 'crafting_table_top.png',
+  cut_sandstone: 'cut_sandstone.png',
+  dark_oak_door_bottom: 'dark_oak_door_bottom.png',
+  dark_oak_door_top: 'dark_oak_door_top.png',
+  dark_oak_leaves: 'dark_oak_leaves.png',
+  dark_oak_log: 'dark_oak_log.png',
+  dark_oak_log_top: 'dark_oak_log_top.png',
+  dark_oak_planks: 'dark_oak_planks.png',
+  dark_oak_trapdoor: 'dark_oak_trapdoor.png',
+  daylight_detector_side: 'daylight_detector_side.png',
+  daylight_detector_top: 'daylight_detector_top.png',
+  deepslate: 'deepslate.png',
+  deepslate_bricks: 'deepslate_bricks.png',
+  deepslate_tiles: 'deepslate_tiles.png',
+  deepslate_top: 'deepslate_top.png',
+  detector_rail: 'detector_rail.png',
+  diamond_block: 'diamond_block.png',
+  diorite: 'diorite.png',
+  dirt: 'dirt.png',
+  dispenser_front: 'dispenser_front.png',
+  dropper_front: 'dropper_front.png',
+  furnace_front: 'furnace_front.png',
+  furnace_side: 'furnace_side.png',
+  furnace_top: 'furnace_top.png',
+  glass: 'glass.png',
+  glass_pane_top: 'glass_pane_top.png',
+  glowstone: 'glowstone.png',
+  gold_block: 'gold_block.png',
+  granite: 'granite.png',
+  grass_block_side: 'grass_block_side.png',
+  grass_block_top: 'grass_block_top.png',
+  gravel: 'gravel.png',
+  gray_concrete: 'gray_concrete.png',
+  gray_concrete_powder: 'gray_concrete_powder.png',
+  gray_terracotta: 'gray_terracotta.png',
+  gray_wool: 'gray_wool.png',
+  green_concrete: 'green_concrete.png',
+  green_concrete_powder: 'green_concrete_powder.png',
+  green_terracotta: 'green_terracotta.png',
+  green_wool: 'green_wool.png',
+  honey_block_bottom: 'honey_block_bottom.png',
+  honey_block_side: 'honey_block_side.png',
+  honey_block_top: 'honey_block_top.png',
+  hopper_outside: 'hopper_outside.png',
+  hopper_top: 'hopper_top.png',
+  ice: 'ice.png',
+  iron_bars: 'iron_bars.png',
+  iron_block: 'iron_block.png',
+  iron_door_bottom: 'iron_door_bottom.png',
+  iron_door_top: 'iron_door_top.png',
+  iron_trapdoor: 'iron_trapdoor.png',
+  ladder: 'ladder.png',
+  lantern: 'lantern.png',
+  lava_flow: 'lava_flow.png',
+  lava_still: 'lava_still.png',
+  lever: 'lever.png',
+  light_blue_stained_glass: 'light_blue_stained_glass.png',
+  light_blue_stained_glass_pane_top: 'light_blue_stained_glass_pane_top.png',
+  light_gray_concrete: 'light_gray_concrete.png',
+  light_gray_concrete_powder: 'light_gray_concrete_powder.png',
+  light_gray_terracotta: 'light_gray_terracotta.png',
+  light_gray_wool: 'light_gray_wool.png',
+  mossy_cobblestone: 'mossy_cobblestone.png',
+  mossy_stone_bricks: 'mossy_stone_bricks.png',
+  note_block: 'note_block.png',
+  oak_door_bottom: 'oak_door_bottom.png',
+  oak_door_top: 'oak_door_top.png',
+  oak_leaves: 'oak_leaves.png',
+  oak_log: 'oak_log.png',
+  oak_log_top: 'oak_log_top.png',
+  oak_planks: 'oak_planks.png',
+  oak_trapdoor: 'oak_trapdoor.png',
+  observer_back: 'observer_back.png',
+  observer_front: 'observer_front.png',
+  observer_side: 'observer_side.png',
+  observer_top: 'observer_top.png',
+  obsidian: 'obsidian.png',
+  piston_bottom: 'piston_bottom.png',
+  piston_side: 'piston_side.png',
+  piston_top: 'piston_top.png',
+  piston_top_sticky: 'piston_top_sticky.png',
+  polished_andesite: 'polished_andesite.png',
+  polished_deepslate: 'polished_deepslate.png',
+  polished_diorite: 'polished_diorite.png',
+  polished_granite: 'polished_granite.png',
+  powered_rail: 'powered_rail.png',
+  quartz_block_side: 'quartz_block_side.png',
+  quartz_block_top: 'quartz_block_top.png',
+  rail: 'rail.png',
+  red_concrete: 'red_concrete.png',
+  red_concrete_powder: 'red_concrete_powder.png',
+  red_sand: 'red_sand.png',
+  red_stained_glass: 'red_stained_glass.png',
+  red_stained_glass_pane_top: 'red_stained_glass_pane_top.png',
+  red_terracotta: 'red_terracotta.png',
+  red_wool: 'red_wool.png',
+  redstone_block: 'redstone_block.png',
+  // The single-texture wire uses the dot (cross) sprite; grayscale, tinted by power.
+  redstone_dust: 'redstone_dust_dot.png',
+  redstone_lamp: 'redstone_lamp.png',
+  redstone_torch: 'redstone_torch.png',
+  repeater: 'repeater.png',
+  sand: 'sand.png',
+  sandstone: 'sandstone.png',
+  sandstone_bottom: 'sandstone_bottom.png',
+  sandstone_top: 'sandstone_top.png',
+  sea_lantern: 'sea_lantern.png',
+  slime_block: 'slime_block.png',
+  smooth_stone: 'smooth_stone.png',
+  smooth_stone_slab_side: 'smooth_stone_slab_side.png',
+  snow: 'snow.png',
+  spruce_door_bottom: 'spruce_door_bottom.png',
+  spruce_door_top: 'spruce_door_top.png',
+  spruce_leaves: 'spruce_leaves.png',
+  spruce_log: 'spruce_log.png',
+  spruce_log_top: 'spruce_log_top.png',
+  spruce_planks: 'spruce_planks.png',
+  spruce_trapdoor: 'spruce_trapdoor.png',
+  stone: 'stone.png',
+  stone_bricks: 'stone_bricks.png',
+  target_side: 'target_side.png',
+  target_top: 'target_top.png',
+  terracotta: 'terracotta.png',
+  tnt_bottom: 'tnt_bottom.png',
+  tnt_side: 'tnt_side.png',
+  tnt_top: 'tnt_top.png',
+  torch: 'torch.png',
+  water_flow: 'water_flow.png',
+  water_still: 'water_still.png',
+  white_concrete: 'white_concrete.png',
+  white_concrete_powder: 'white_concrete_powder.png',
+  white_stained_glass: 'white_stained_glass.png',
+  white_stained_glass_pane_top: 'white_stained_glass_pane_top.png',
+  white_terracotta: 'white_terracotta.png',
+  white_wool: 'white_wool.png',
+  yellow_concrete: 'yellow_concrete.png',
+  yellow_concrete_powder: 'yellow_concrete_powder.png',
+  yellow_terracotta: 'yellow_terracotta.png',
+  yellow_wool: 'yellow_wool.png',
+};
