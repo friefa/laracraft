@@ -8,4 +8,4 @@ export * from './lib/mesh/worker-handler';
 export * from './lib/models';
 export * from './lib/scene/create-build-renderer';
 export * from './lib/scene/mesher-worker';
-export type { LookDirection } from './lib/scene/orbit-camera';
+export type { LookDirection, ViewInsets } from './lib/scene/orbit-camera';

@@ -5,6 +5,7 @@ import {
   DestroyRef,
   ElementRef,
   InjectionToken,
+  Injector,
   PendingTasks,
   afterNextRender,
   computed,
@@ -42,6 +43,13 @@ import {
 } from '../storage/build-store.types';
 import { saveFile } from '../storage/save-file';
 import { type EditorCommand, isTextInput, shortcutFor } from './editor-commands';
+import {
+  FIRST_RUN_HINT_KEY,
+  chromeInsets,
+  readFlag,
+  safeLocalStorage,
+  writeFlag,
+} from './editor-chrome';
 import { Icon, type IconName } from './icon';
 import { BlockIcon } from './palette/block-icon';
 import { BlockPalette } from './palette/block-palette';
@@ -144,9 +152,14 @@ export class EditorPage {
   private readonly pendingTasks = inject(PendingTasks);
   private readonly document = inject(DOCUMENT);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly injector = inject(Injector);
   private readonly canvas = viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
   private readonly palette = viewChild(BlockPalette);
   private readonly menuRoot = viewChild<ElementRef<HTMLElement>>('menuRoot');
+  private readonly topBar = viewChild<ElementRef<HTMLElement>>('topBar');
+  private readonly bottomBar = viewChild<ElementRef<HTMLElement>>('bottomBar');
+  private readonly layersPanel = viewChild<ElementRef<HTMLElement>>('layersPanel');
+  private readonly storage = safeLocalStorage(this.document);
 
   private session: EditorSession | null = null;
   private renderer: EditorRenderer | null = null;
@@ -191,6 +204,14 @@ export class EditorPage {
   protected readonly showLayers = computed(() => this.layerMax() > this.layerMin());
   protected readonly layerValue = computed(() => this.layer() ?? this.layerMax());
 
+  /** One-line "how to start" hint, shown until dismissed once (persisted). */
+  protected readonly firstRunHint = signal(!readFlag(this.storage, FIRST_RUN_HINT_KEY));
+  /** "Click" with a mouse, "tap" on touch screens. */
+  protected readonly firstRunKey = this.document.defaultView?.matchMedia?.('(pointer: fine)')
+    .matches
+    ? 'editor.firstRun.textMouse'
+    : 'editor.firstRun.text';
+
   protected readonly hint = computed(() => {
     if (this.phase() !== 'ready') return null;
     switch (this.tool()) {
@@ -201,7 +222,8 @@ export class EditorPage {
       case 'select':
         return this.hasSelection() ? null : 'editor.hint.select';
       default:
-        return this.bounds() ? null : 'editor.hint.empty';
+        // The first-run hint already says how to place a block.
+        return this.bounds() || this.firstRunHint() ? null : 'editor.hint.empty';
     }
   });
 
@@ -213,7 +235,10 @@ export class EditorPage {
 
   constructor() {
     afterNextRender(() => void this.init());
+    const onResize = () => this.updateViewInsets();
+    this.document.defaultView?.addEventListener('resize', onResize);
     this.destroyRef.onDestroy(() => {
+      this.document.defaultView?.removeEventListener('resize', onResize);
       this.destroyed = true;
       this.renderer?.dispose();
       this.renderer = null;
@@ -276,6 +301,8 @@ export class EditorPage {
       return;
     }
     this.renderer = renderer;
+    // Before setDocument: it frames the build in the part of the canvas the UI leaves free.
+    this.updateViewInsets();
     renderer.setDocument(session.doc);
     renderer.setLayerLimit(this.layer());
     renderer.setSelectionBox(session.selection);
@@ -289,6 +316,8 @@ export class EditorPage {
       case 'document':
         this.renderer?.update();
         this.bounds.set(session.doc.volume.bounds());
+        // The layer slider appears once the build has more than one layer.
+        afterNextRender(() => this.updateViewInsets(), { injector: this.injector });
         this.autosave.markDirty();
         break;
       case 'history':
@@ -521,5 +550,25 @@ export class EditorPage {
 
   protected dismissError(): void {
     this.error.set(null);
+  }
+
+  protected dismissFirstRunHint(): void {
+    this.firstRunHint.set(false);
+    writeFlag(this.storage, FIRST_RUN_HINT_KEY);
+  }
+
+  /** Tells the renderer which canvas edges the toolbars and the layer slider cover. */
+  private updateViewInsets(): void {
+    const renderer = this.renderer;
+    if (!renderer) return;
+    const rect = (ref: ElementRef<HTMLElement> | undefined) =>
+      ref?.nativeElement.getBoundingClientRect();
+    renderer.setViewInsets(
+      chromeInsets(this.canvas().nativeElement.getBoundingClientRect(), {
+        top: rect(this.topBar()),
+        bottom: rect(this.bottomBar()),
+        right: rect(this.layersPanel()),
+      }),
+    );
   }
 }

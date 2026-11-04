@@ -53,6 +53,38 @@
       "deleted": "“{{ name }}” deleted.",
       "imported": "“{{ name }}” imported.",
       "exported": "“{{ name }}” exported."
+    },
+    "examples": {
+      "open": "Open an example",
+      "title": "Open an example",
+      "intro": "Pick an example build. A copy is added to your builds.",
+      "loadError": "The example could not be loaded. Check your connection and try again.",
+      "items": {
+        "house": {
+          "name": "House",
+          "description": "Small oak house with a door, a stair roof, glass windows and torches."
+        },
+        "tower": {
+          "name": "Tower",
+          "description": "Stone brick tower with a ladder and a top floor that overhangs by 3 blocks."
+        },
+        "sand-arch": {
+          "name": "Sand arch",
+          "description": "Sand and gravel pillars with a floating lintel – needs a temporary support."
+        },
+        "piston-door": {
+          "name": "Piston door 2×2",
+          "description": "Sticky piston door that one lever opens and closes."
+        },
+        "observer-clock": {
+          "name": "Observer clock",
+          "description": "Two observers blink a lamp and push a piston."
+        },
+        "waterfall": {
+          "name": "Waterfall",
+          "description": "Stone cliff with a water trough that falls into a basin."
+        }
+      }
     }
   },
   "storage": {
@@ -121,8 +153,10 @@
       "overview": "Overview"
     },
     "sheet": {
-      "expand": "Show details",
-      "collapse": "Hide details"
+      "handle": "Resize the guide panel",
+      "peek": "collapsed",
+      "half": "half open",
+      "full": "fully open"
     },
     "view": {
       "label": "View options",
@@ -335,6 +369,11 @@
       "paste": "Paste",
       "delete": "Delete",
       "cut": "Cut"
+    },
+    "firstRun": {
+      "text": "Tap a face to place a block.",
+      "textMouse": "Click a face to place a block.",
+      "dismiss": "Hide hint"
     }
   }
 }

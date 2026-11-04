@@ -10,6 +10,7 @@ import { EDITOR_AUTOSAVE_DELAY, EditorPage } from './editor-page';
 import { ATLAS_LOADER } from './palette/block-icon';
 import { FAVORITES_KEY } from './palette/palette-model';
 import { RENDERER_FACTORY, RendererLoadError } from './renderer-loader';
+import { FIRST_RUN_HINT_KEY, chromeInsets } from './editor-chrome';
 import { FakeRenderer } from './testing/fake-renderer';
 
 const STONE = 'minecraft:stone' as BlockStateString;
@@ -312,5 +313,65 @@ describe('EditorPage', () => {
     expect(JSON.parse(localStorage.getItem(FAVORITES_KEY) ?? '[]')).toEqual([
       'minecraft:oak_planks',
     ]);
+  });
+
+  it('shows a first-run hint until it is dismissed', async () => {
+    const first = await setup();
+    expect(first.el.querySelector('[data-hint="first-run"]')?.textContent).toContain(
+      'a face to place a block',
+    );
+    await click(first.fixture, q(first.el, '[data-action="dismiss-first-run"]'));
+    expect(first.el.querySelector('[data-hint="first-run"]')).toBeNull();
+    expect(localStorage.getItem(FIRST_RUN_HINT_KEY)).toBe('1');
+    first.fixture.destroy();
+    TestBed.resetTestingModule();
+    // setup() clears localStorage: dismiss again through the stored flag.
+    localStorage.setItem(FIRST_RUN_HINT_KEY, '1');
+    const clear = vi.spyOn(Storage.prototype, 'clear').mockImplementation(() => undefined);
+    const second = await setup();
+    clear.mockRestore();
+    expect(second.el.querySelector('[data-hint="first-run"]')).toBeNull();
+  });
+
+  it('keeps working when localStorage throws', async () => {
+    const get = vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
+      throw new Error('blocked');
+    });
+    const set = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new Error('blocked');
+    });
+    try {
+      const { el, fixture } = await setup();
+      await click(fixture, q(el, '[data-action="dismiss-first-run"]'));
+      expect(el.querySelector('[data-hint="first-run"]')).toBeNull();
+    } finally {
+      get.mockRestore();
+      set.mockRestore();
+    }
+  });
+
+  it('tells the renderer which canvas edges the toolbars cover before framing', async () => {
+    const { renderer } = await setup();
+    expect(renderer.insets.length).toBeGreaterThan(0);
+  });
+});
+
+describe('chromeInsets', () => {
+  const rect = (top: number, right: number, bottom: number, left: number) => ({
+    top,
+    right,
+    bottom,
+    left,
+  });
+  it('measures the bars and the layer slider against the canvas', () => {
+    const canvas = rect(0, 390, 844, 0);
+    expect(
+      chromeInsets(canvas, {
+        top: rect(0, 390, 53, 0),
+        bottom: rect(790, 390, 844, 0),
+        right: rect(260, 386, 584, 334),
+      }),
+    ).toEqual({ top: 53, right: 56, bottom: 54, left: 0 });
+    expect(chromeInsets(canvas, {})).toEqual({ top: 0, right: 0, bottom: 0, left: 0 });
   });
 });

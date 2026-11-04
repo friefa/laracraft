@@ -13,6 +13,58 @@ export interface LookDirection {
   readonly pitchDegrees: number;
 }
 
+/**
+ * Canvas edges covered by UI (toolbars, sliders, bottom sheets) in CSS pixels. The camera
+ * centres and frames the build in the uncovered part of the canvas.
+ */
+export interface ViewInsets {
+  readonly top: number;
+  readonly right: number;
+  readonly bottom: number;
+  readonly left: number;
+}
+
+export const NO_INSETS: ViewInsets = { top: 0, right: 0, bottom: 0, left: 0 };
+
+/** The uncovered part of a canvas: its size as fractions of the canvas and its centre offset. */
+export interface VisibleRegion {
+  /** Visible width / canvas width, in (0, 1]. */
+  readonly widthFraction: number;
+  /** Visible height / canvas height, in (0, 1]. */
+  readonly heightFraction: number;
+  /** Offset (CSS px) of the visible centre from the canvas centre; +x right, +y down. */
+  readonly shiftX: number;
+  readonly shiftY: number;
+}
+
+/** Never shrink the framing area below this fraction of the canvas (huge insets, tiny canvas). */
+const MIN_VISIBLE_FRACTION = 0.25;
+
+/** Uncovered region of a `width` × `height` canvas (CSS px) with the given insets. */
+export function visibleRegion(width: number, height: number, insets: ViewInsets): VisibleRegion {
+  const w = Math.max(1, width);
+  const h = Math.max(1, height);
+  const axis = (size: number, lo: number, hi: number) => {
+    let a = Math.max(0, lo || 0);
+    let b = Math.max(0, hi || 0);
+    const max = size * (1 - MIN_VISIBLE_FRACTION);
+    if (a + b > max) {
+      const k = max / (a + b);
+      a *= k;
+      b *= k;
+    }
+    return { fraction: (size - a - b) / size, shift: (a - b) / 2 };
+  };
+  const x = axis(w, insets.left, insets.right);
+  const y = axis(h, insets.top, insets.bottom);
+  return {
+    widthFraction: x.fraction,
+    heightFraction: y.fraction,
+    shiftX: x.shift,
+    shiftY: y.shift,
+  };
+}
+
 const DEG = Math.PI / 180;
 const MAX_PITCH = 89 * DEG;
 
@@ -66,8 +118,19 @@ export class OrbitCamera {
     this.distance = clamp(this.distance * factor, this.minDistance, this.maxDistance);
   }
 
-  /** Fit an inclusive block box into the view (keeps yaw/pitch). */
-  frame(box: Box3, aspect: number): void {
+  /**
+   * Fit an inclusive block box into the view (keeps yaw/pitch). `region` limits the fit to
+   * the uncovered part of the canvas (see {@link visibleRegion}); the renderer shifts the
+   * projection centre into that part, so the box appears centred there.
+   */
+  frame(
+    box: Box3,
+    aspect: number,
+    region: Pick<VisibleRegion, 'widthFraction' | 'heightFraction'> = {
+      widthFraction: 1,
+      heightFraction: 1,
+    },
+  ): void {
     const sx = box.max.x - box.min.x + 1;
     const sy = box.max.y - box.min.y + 1;
     const sz = box.max.z - box.min.z + 1;
@@ -77,8 +140,9 @@ export class OrbitCamera {
       z: box.min.z + sz / 2,
     };
     const radius = 0.5 * Math.hypot(sx, sy, sz);
-    const vHalf = (this.fov * DEG) / 2;
-    const hHalf = Math.atan(Math.tan(vHalf) * Math.max(1e-3, aspect));
+    const tanHalf = Math.tan((this.fov * DEG) / 2);
+    const vHalf = Math.atan(tanHalf * region.heightFraction);
+    const hHalf = Math.atan(tanHalf * Math.max(1e-3, aspect) * region.widthFraction);
     const half = Math.min(vHalf, hHalf);
     this.distance = clamp((radius / Math.sin(half)) * 1.05, this.minDistance, this.maxDistance);
   }

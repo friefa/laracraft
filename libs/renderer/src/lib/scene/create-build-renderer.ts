@@ -12,10 +12,17 @@ import { buildModelGeometry } from '../models';
 import type { BuildRenderer, GhostBlock, HighlightGroup, RendererOptions, VoxelPick } from './api';
 import { sliceAtlas } from './atlas-slicing';
 import { createBlockMaterial, geometryFromBuffers } from './block-material';
+import { syncCamera } from './camera-sync';
 import { ChunkMeshes } from './chunk-meshes';
 import { ChunkScheduler, createWorkerBackend, type ChunkSink } from './chunk-scheduler';
 import { GestureController, type PointerSample } from './gestures';
-import { OrbitCamera, type LookDirection } from './orbit-camera';
+import {
+  NO_INSETS,
+  OrbitCamera,
+  visibleRegion,
+  type LookDirection,
+  type ViewInsets,
+} from './orbit-camera';
 import { Overlays } from './overlays';
 import { chunkBounds, lowestBlockY, pickVoxel } from './picking';
 import { createTextureArray, loadAtlas } from './texture-array';
@@ -32,6 +39,11 @@ export interface ExtraRendererOptions {
 export interface SceneBuildRenderer extends BuildRenderer {
   /** Camera view direction for placement rules (horizontal facing + pitch class). */
   lookDirection(): LookDirection;
+  /**
+   * Canvas edges covered by UI. The view centre moves into the uncovered part and
+   * `frame()` fits the build there, so the build does not sit under (translucent) toolbars.
+   */
+  setViewInsets(insets: ViewInsets): void;
 }
 
 const DEFAULT_BACKGROUND = 0xa9cbe8;
@@ -69,6 +81,7 @@ class ThreeBuildRenderer implements SceneBuildRenderer {
   private doc: BuildDocument | null = null;
   private bounds: Box3 | null = null;
   private groundY = 0;
+  private insets: ViewInsets = NO_INSETS;
   private rafId = 0;
   private frameRequested = false;
   private disposed = false;
@@ -217,7 +230,7 @@ class ThreeBuildRenderer implements SceneBuildRenderer {
         min: { x: -8, y: 0, z: -8 },
         max: { x: 7, y: 3, z: 7 },
       };
-    this.cameraChanged(() => this.orbit.frame(target, this.aspect()));
+    this.cameraChanged(() => this.orbit.frame(target, this.aspect(), this.region()));
   }
 
   stats(): { fps: number; drawCalls: number; triangles: number; chunks: number } {
@@ -234,6 +247,20 @@ class ThreeBuildRenderer implements SceneBuildRenderer {
 
   lookDirection(): LookDirection {
     return this.orbit.lookDirection();
+  }
+
+  setViewInsets(insets: ViewInsets): void {
+    const i = this.insets;
+    if (
+      i.top === insets.top &&
+      i.right === insets.right &&
+      i.bottom === insets.bottom &&
+      i.left === insets.left
+    ) {
+      return;
+    }
+    this.insets = { ...insets };
+    this.invalidate();
   }
 
   dispose(): void {
@@ -278,13 +305,20 @@ class ThreeBuildRenderer implements SceneBuildRenderer {
     for (const h of [...this.tapHandlers]) h(pick, event);
   }
 
+  private region() {
+    return visibleRegion(this.viewWidth(), this.viewHeight(), this.insets);
+  }
+
+  private viewWidth(): number {
+    return this.canvas.clientWidth || this.canvas.width || 1;
+  }
+
   private viewHeight(): number {
     return this.canvas.clientHeight || this.canvas.height || 1;
   }
 
   private aspect(): number {
-    const w = this.canvas.clientWidth || this.canvas.width || 1;
-    return w / this.viewHeight();
+    return this.viewWidth() / this.viewHeight();
   }
 
   private cameraChanged(fn: () => void): void {
@@ -293,17 +327,7 @@ class ThreeBuildRenderer implements SceneBuildRenderer {
   }
 
   private applyCamera(): void {
-    const o = this.orbit;
-    const p = o.position();
-    const { near, far } = o.clipPlanes();
-    this.camera.fov = o.fov;
-    this.camera.aspect = this.aspect();
-    this.camera.near = near;
-    this.camera.far = far;
-    this.camera.position.set(p.x, p.y, p.z);
-    this.camera.lookAt(o.target.x, o.target.y, o.target.z);
-    this.camera.updateProjectionMatrix();
-    this.camera.updateMatrixWorld();
+    syncCamera(this.camera, this.orbit, this.viewWidth(), this.viewHeight(), this.insets);
   }
 
   private resize(): void {

@@ -143,6 +143,7 @@ describe('GuidePage', () => {
     expect(detail).toContain('Aim at the lower half of that face');
     expect(lastHighlights().map((h) => h.id)).toEqual([
       'current',
+      'current-outline',
       'selected',
       'stand',
       'click-target',
@@ -242,5 +243,24 @@ describe('GuidePage', () => {
     expect(el.querySelector('[role="alert"]')?.textContent).toContain(
       'This build no longer exists.',
     );
+  });
+
+  it('cycles the phone bottom sheet through its snap points from the handle', async () => {
+    await render();
+    const layout = el.querySelector('.layout') as HTMLElement;
+    const handle = el.querySelector('.handle') as HTMLButtonElement;
+    expect(layout.dataset['snap']).toBe('half');
+    expect(handle.getAttribute('aria-label')).toBe('Resize the guide panel: half open');
+    handle.click();
+    await settle();
+    expect(layout.dataset['snap']).toBe('full');
+    handle.click();
+    await settle();
+    expect(layout.dataset['snap']).toBe('peek');
+    expect(handle.getAttribute('aria-label')).toContain('collapsed');
+    // Step navigation stays in the sheet head, so it works in every snap point.
+    button('Next step').click();
+    await settle();
+    expect(stepOf()).toBe('Step 2 of 3');
   });
 });

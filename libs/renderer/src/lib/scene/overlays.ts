@@ -53,6 +53,19 @@ export function boxOutlinePositions(box: Box3, inset = 0.01): Float32Array {
   return out;
 }
 
+/** Base render order of highlights (ghosts: 5, selection box: 20). */
+const HIGHLIGHT_RENDER_ORDER = 10;
+
+/** Default highlight opacity per style. */
+export const HIGHLIGHT_OPACITY = { fill: 0.35, outline: 0.95 } as const;
+
+/** Effective opacity of a highlight group: its `opacity` clamped to [0, 1], else the style default. */
+export function highlightOpacity(group: Pick<HighlightGroup, 'style' | 'opacity'>): number {
+  const o = group.opacity;
+  if (o === undefined || !Number.isFinite(o)) return HIGHLIGHT_OPACITY[group.style];
+  return Math.min(1, Math.max(0, o));
+}
+
 /** Groups ghost blocks by state (one instanced draw per state). */
 export function groupGhosts(blocks: readonly GhostBlock[]): Map<BlockStateString, Vec3[]> {
   const map = new Map<BlockStateString, Vec3[]>();
@@ -113,8 +126,11 @@ export class Overlays {
 
   setHighlights(groups: readonly HighlightGroup[]): void {
     this.clearGroup(this.highlights);
-    for (const g of groups) {
+    for (const [i, g] of groups.entries()) {
       if (g.positions.length === 0) continue;
+      // Later groups draw over earlier ones (e.g. a selected block over the step outline);
+      // transparent objects are otherwise sorted by distance only.
+      const renderOrder = HIGHLIGHT_RENDER_ORDER + i * 0.01;
       if (g.style === 'outline') {
         const geometry = new THREE.BufferGeometry();
         geometry.setAttribute(
@@ -123,16 +139,20 @@ export class Overlays {
         );
         const lines = new THREE.LineSegments(
           geometry,
-          new THREE.LineBasicMaterial({ color: g.color, transparent: true, opacity: 0.95 }),
+          new THREE.LineBasicMaterial({
+            color: g.color,
+            transparent: true,
+            opacity: highlightOpacity(g),
+          }),
         );
         lines.name = g.id;
-        lines.renderOrder = 10;
+        lines.renderOrder = renderOrder;
         this.highlights.add(lines);
       } else {
         const material = new THREE.MeshBasicMaterial({
           color: g.color,
           transparent: true,
-          opacity: 0.35,
+          opacity: highlightOpacity(g),
           depthWrite: false,
           polygonOffset: true,
           polygonOffsetFactor: -1,
@@ -144,7 +164,7 @@ export class Overlays {
         mesh.instanceMatrix.needsUpdate = true;
         mesh.computeBoundingSphere();
         mesh.name = g.id;
-        mesh.renderOrder = 10;
+        mesh.renderOrder = renderOrder;
         this.highlights.add(mesh);
       }
     }

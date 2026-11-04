@@ -53,6 +53,38 @@
       "deleted": "„{{ name }}“ gelöscht.",
       "imported": "„{{ name }}“ importiert.",
       "exported": "„{{ name }}“ exportiert."
+    },
+    "examples": {
+      "open": "Beispiel öffnen",
+      "title": "Beispiel öffnen",
+      "intro": "Wähle einen Beispielbau. Eine Kopie landet in deinen Bauten.",
+      "loadError": "Das Beispiel konnte nicht geladen werden. Prüfe deine Verbindung und versuche es erneut.",
+      "items": {
+        "house": {
+          "name": "Haus",
+          "description": "Kleines Eichenholzhaus mit Tür, Treppendach, Glasfenstern und Fackeln."
+        },
+        "tower": {
+          "name": "Turm",
+          "description": "Steinziegelturm mit Leiter und einem Obergeschoss, das 3 Blöcke übersteht."
+        },
+        "sand-arch": {
+          "name": "Sandbogen",
+          "description": "Sand- und Kiessäulen mit schwebendem Sturz – braucht eine temporäre Stütze."
+        },
+        "piston-door": {
+          "name": "Kolbentür 2×2",
+          "description": "Tür aus klebrigen Kolben, die ein Hebel öffnet und schließt."
+        },
+        "observer-clock": {
+          "name": "Beobachter-Takt",
+          "description": "Zwei Beobachter lassen eine Lampe blinken und bewegen einen Kolben."
+        },
+        "waterfall": {
+          "name": "Wasserfall",
+          "description": "Steinklippe mit Wasserrinne, die in ein Becken fällt."
+        }
+      }
     }
   },
   "storage": {
@@ -121,8 +153,10 @@
       "overview": "Übersicht"
     },
     "sheet": {
-      "expand": "Details anzeigen",
-      "collapse": "Details ausblenden"
+      "handle": "Größe des Anleitungsbereichs ändern",
+      "peek": "eingeklappt",
+      "half": "halb geöffnet",
+      "full": "ganz geöffnet"
     },
     "view": {
       "label": "Ansicht",
@@ -335,6 +369,11 @@
       "paste": "Einfügen",
       "delete": "Löschen",
       "cut": "Ausschneiden"
+    },
+    "firstRun": {
+      "text": "Tippe auf eine Fläche, um einen Block zu setzen.",
+      "textMouse": "Klicke auf eine Fläche, um einen Block zu setzen.",
+      "dismiss": "Hinweis ausblenden"
     }
   }
 }

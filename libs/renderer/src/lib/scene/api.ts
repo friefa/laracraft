@@ -26,6 +26,11 @@ export interface HighlightGroup {
   /** 0xRRGGBB */
   readonly color: number;
   readonly style: 'outline' | 'fill';
+  /**
+   * Opacity in [0, 1] (default: 0.35 for `fill`, 0.95 for `outline`). A low fill opacity
+   * tints blocks without hiding their textures.
+   */
+  readonly opacity?: number;
 }
 
 export interface GhostBlock {

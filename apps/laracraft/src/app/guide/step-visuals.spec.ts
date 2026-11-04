@@ -1,24 +1,28 @@
 import { groupActions } from './action-groups';
 import { DIRT, FIXTURE_PLAN, SAND, STONE } from './fixture-plan.testing';
-import { GUIDE_COLORS, stepVisuals } from './step-visuals';
+import { CURRENT_TINT_OPACITY, GUIDE_COLORS, stepVisuals } from './step-visuals';
 
 const opts = { showNext: false, layerOnly: false };
 
 describe('stepVisuals', () => {
-  it('fills the current step placements', () => {
+  it('outlines and lightly tints the current step placements (textures stay visible)', () => {
     const v = stepVisuals(FIXTURE_PLAN, 0, opts);
+    const positions = [
+      { x: 0, y: 0, z: 0 },
+      { x: 1, y: 0, z: 0 },
+      { x: 2, y: 0, z: 0 },
+    ];
     expect(v.highlights).toEqual([
       {
         id: 'current',
-        positions: [
-          { x: 0, y: 0, z: 0 },
-          { x: 1, y: 0, z: 0 },
-          { x: 2, y: 0, z: 0 },
-        ],
+        positions,
         color: GUIDE_COLORS.current,
         style: 'fill',
+        opacity: CURRENT_TINT_OPACITY,
       },
+      { id: 'current-outline', positions, color: GUIDE_COLORS.current, style: 'outline' },
     ]);
+    expect(CURRENT_TINT_OPACITY).toBeLessThanOrEqual(0.25);
     expect(v.ghosts).toEqual([]);
     expect(v.layerLimit).toBeNull();
   });
@@ -45,12 +49,12 @@ describe('stepVisuals', () => {
     const action = FIXTURE_PLAN.steps[0]?.actions[1];
     const v = stepVisuals(FIXTURE_PLAN, 0, { ...opts, selected: action });
     const ids = v.highlights.map((h) => h.id);
-    expect(ids).toEqual(['current', 'selected', 'stand', 'click-target']);
-    expect(v.highlights[2]?.positions).toEqual([
+    expect(ids).toEqual(['current', 'current-outline', 'selected', 'stand', 'click-target']);
+    expect(v.highlights[3]?.positions).toEqual([
       { x: 1, y: 0, z: 2 },
       { x: 1, y: 1, z: 2 },
     ]);
-    expect(v.highlights[3]?.positions).toEqual([{ x: 1, y: -1, z: 0 }]);
+    expect(v.highlights[4]?.positions).toEqual([{ x: 1, y: -1, z: 0 }]);
   });
 
   it('marks the stand position of a selected removal', () => {

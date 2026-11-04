@@ -19,49 +19,72 @@
   <button type="button" (click)="planRes.reload()">{{ 'guide.errors.retry' | transloco }}</button>
 </div>
 } @else if (view(); as v) {
-<div class="layout">
+<div
+  #layout
+  class="layout"
+  [attr.data-snap]="snap()"
+  [class.dragging]="dragging()"
+  [style.--sheet-h.px]="sheetHeight()"
+>
   <lc-guide-viewport
     class="viewport"
     [doc]="v.stepper.doc"
     [version]="version()"
     [visuals]="visuals()"
+    [insets]="viewInsets()"
   />
 
   <section
     class="panel"
-    [class.collapsed]="!sheetOpen()"
     (pointerdown)="onPointerDown($event)"
     (pointerup)="onPointerUp($event)"
     (pointercancel)="onPointerDown($event)"
   >
-    <nav class="controls" [attr.aria-label]="'guide.navLabel' | transloco">
+    <div #sheetHead class="sheet-head">
       <button
         type="button"
-        class="nav-btn"
-        [disabled]="index() === 0"
-        [attr.aria-label]="'guide.prev' | transloco"
-        (click)="prev()"
+        class="handle"
+        [attr.aria-label]="('guide.sheet.handle' | transloco) + ': ' + ('guide.sheet.' + snap() | transloco)"
+        (click)="onHandleClick()"
+        (pointerdown)="onHandleDown($event)"
+        (pointermove)="onHandleMove($event)"
+        (pointerup)="onHandleUp($event)"
+        (pointercancel)="onHandleCancel()"
       >
-        ‹
+        <span class="grip" aria-hidden="true"></span>
       </button>
-      <div class="step-info">
-        <strong class="step-of" aria-live="polite">
-          {{ 'guide.stepOf' | transloco: { current: index() + 1, total: total() } }}
-        </strong>
-        <span class="badge" [attr.data-phase]="v.step.phase">
-          <span class="sr-only">{{ 'guide.phase.label' | transloco }}: </span>
-          {{ 'guide.phase.' + v.step.phase | transloco }}
-        </span>
-      </div>
-      <button
-        type="button"
-        class="nav-btn"
-        [disabled]="index() >= total() - 1"
-        [attr.aria-label]="'guide.next' | transloco"
-        (click)="next()"
-      >
-        ›
-      </button>
+      <nav class="controls" [attr.aria-label]="'guide.navLabel' | transloco">
+        <button
+          type="button"
+          class="nav-btn"
+          [disabled]="index() === 0"
+          [attr.aria-label]="'guide.prev' | transloco"
+          (click)="prev()"
+        >
+          ‹
+        </button>
+        <div class="step-info">
+          <strong class="step-of" aria-live="polite">
+            {{ 'guide.stepOf' | transloco: { current: index() + 1, total: total() } }}
+          </strong>
+          <span class="badge" [attr.data-phase]="v.step.phase">
+            <span class="sr-only">{{ 'guide.phase.label' | transloco }}: </span>
+            {{ 'guide.phase.' + v.step.phase | transloco }}
+          </span>
+        </div>
+        <button
+          type="button"
+          class="nav-btn"
+          [disabled]="index() >= total() - 1"
+          [attr.aria-label]="'guide.next' | transloco"
+          (click)="next()"
+        >
+          ›
+        </button>
+      </nav>
+    </div>
+
+    <div class="sheet-body">
       <input
         class="slider"
         type="range"
@@ -71,18 +94,6 @@
         [attr.aria-label]="'guide.stepSlider' | transloco"
         (input)="onSlider($event)"
       />
-    </nav>
-
-    <button
-      type="button"
-      class="sheet-toggle"
-      [attr.aria-expanded]="sheetOpen()"
-      (click)="sheetOpen.set(!sheetOpen())"
-    >
-      {{ (sheetOpen() ? 'guide.sheet.collapse' : 'guide.sheet.expand') | transloco }}
-    </button>
-
-    <div class="sheet-body">
       <fieldset class="options">
         <legend class="sr-only">{{ 'guide.view.label' | transloco }}</legend>
         <label>

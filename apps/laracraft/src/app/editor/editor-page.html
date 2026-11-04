@@ -6,7 +6,7 @@
   [attr.aria-label]="'editor.canvasLabel' | transloco: { name: name() }"
 ></canvas>
 
-<header class="bar top">
+<header #topBar class="bar top">
   <a
     class="icon-button"
     routerLink="/"
@@ -109,13 +109,27 @@
       {{ 'editor.dismiss' | transloco }}
     </button>
   </div>
+  } @if (phase() === 'ready' && firstRunHint()) {
+  <div class="card first-run" data-hint="first-run">
+    <p>{{ firstRunKey | transloco }}</p>
+    <button
+      type="button"
+      class="icon-button"
+      data-action="dismiss-first-run"
+      [attr.aria-label]="'editor.firstRun.dismiss' | transloco"
+      [title]="'editor.firstRun.dismiss' | transloco"
+      (click)="dismissFirstRunHint()"
+    >
+      <lc-icon name="close" />
+    </button>
+  </div>
   } @if (hint(); as h) {
   <p class="hint">{{ h | transloco }}</p>
   }
 </div>
 
 @if (phase() === 'ready') { @if (showLayers()) {
-<div class="layers">
+<div #layersPanel class="layers">
   <lc-icon name="layers" />
   <input
     type="range"
@@ -136,7 +150,7 @@
 </div>
 }
 
-<footer class="bar bottom">
+<footer #bottomBar class="bar bottom">
   @if (hasSelection() || hasClipboard()) {
   <div class="row actions" role="toolbar" [attr.aria-label]="'editor.selection.label' | transloco">
     @if (hasSelection()) { @for (a of selectionActions; track a.label) {

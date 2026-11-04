@@ -1,5 +1,5 @@
 import type { Box3, BuildDocument } from '@laracraft/core-model';
-import type { GhostBlock, HighlightGroup, VoxelPick } from '@laracraft/renderer';
+import type { GhostBlock, HighlightGroup, ViewInsets, VoxelPick } from '@laracraft/renderer';
 import type { EditorRenderer, LookDirection } from '../renderer-loader';
 
 type TapHandler = (pick: VoxelPick | null, event: PointerEvent) => void;
@@ -16,6 +16,7 @@ export class FakeRenderer implements EditorRenderer {
   disposed = false;
   look: LookDirection = { facing: 'north', pitch: 'level', yawDegrees: 0, pitchDegrees: 0 };
   lookQueries = 0;
+  insets: ViewInsets[] = [];
   private readonly handlers = new Set<TapHandler>();
 
   setDocument(doc: BuildDocument): void {
@@ -51,6 +52,9 @@ export class FakeRenderer implements EditorRenderer {
   }
   dispose(): void {
     this.disposed = true;
+  }
+  setViewInsets(insets: ViewInsets): void {
+    this.insets.push(insets);
   }
   lookDirection(): LookDirection {
     this.lookQueries++;

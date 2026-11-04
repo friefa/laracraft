@@ -10,11 +10,17 @@ import {
   inject,
   input,
   signal,
+  untracked,
   viewChild,
 } from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { createJavaBlockRegistry, type BuildDocument } from '@laracraft/core-model';
-import type { BuildRenderer, CreateBuildRendererFn } from '@laracraft/renderer';
+import type {
+  BuildRenderer,
+  CreateBuildRendererFn,
+  SceneBuildRenderer,
+  ViewInsets,
+} from '@laracraft/renderer';
 import type { StepVisuals } from './step-visuals';
 
 /**
@@ -91,6 +97,8 @@ export class GuideViewport {
   readonly doc = input<BuildDocument>();
   readonly version = input(0);
   readonly visuals = input<StepVisuals>();
+  /** Canvas edges covered by overlay UI (the phone bottom sheet). */
+  readonly insets = input<ViewInsets>();
 
   protected readonly status = signal<ViewportStatus>('loading');
   private readonly renderer = signal<BuildRenderer | undefined>(undefined);
@@ -110,6 +118,8 @@ export class GuideViewport {
       this.version();
       if (!r || !doc) return;
       if (doc !== this.shownDoc) {
+        // Before setDocument: it frames the build in the uncovered part of the canvas.
+        untracked(() => this.applyInsets(r));
         r.setDocument(doc);
         this.shownDoc = doc;
         r.frame();
@@ -124,6 +134,17 @@ export class GuideViewport {
       r.setGhosts(v.ghosts);
       r.setLayerLimit(v.layerLimit);
     });
+    effect(() => {
+      this.insets();
+      const r = this.renderer();
+      if (r) this.applyInsets(r);
+    });
+  }
+
+  /** Insets are an addition of the three.js renderer, not part of the `BuildRenderer` contract. */
+  private applyInsets(r: BuildRenderer): void {
+    const insets = this.insets();
+    if (insets) (r as Partial<SceneBuildRenderer>).setViewInsets?.(insets);
   }
 
   private async init(): Promise<void> {

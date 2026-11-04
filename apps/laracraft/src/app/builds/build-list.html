@@ -14,6 +14,9 @@
     <button type="button" data-action="import" [disabled]="busy()" (click)="fileInput.click()">
       {{ 'builds.import' | transloco }}
     </button>
+    <button type="button" data-action="examples" [disabled]="busy()" (click)="openExamples()">
+      {{ 'builds.examples.open' | transloco }}
+    </button>
     <input
       #fileInput
       class="file-input"
@@ -45,9 +48,14 @@
   <div class="empty">
     <h2>{{ 'builds.emptyTitle' | transloco }}</h2>
     <p>{{ 'builds.emptyText' | transloco }}</p>
-    <button type="button" class="primary" data-action="empty-new" (click)="openCreate()">
-      {{ 'builds.emptyAction' | transloco }}
-    </button>
+    <div class="empty-actions">
+      <button type="button" class="primary" data-action="empty-new" (click)="openCreate()">
+        {{ 'builds.emptyAction' | transloco }}
+      </button>
+      <button type="button" data-action="empty-examples" (click)="openExamples()">
+        {{ 'builds.examples.open' | transloco }}
+      </button>
+    </div>
   </div>
   } @else {
   <ul class="build-list">
@@ -125,6 +133,29 @@
       </button>
     </div>
   </form>
+  } @else if (d?.kind === 'examples') {
+  <h2 id="build-dialog-title">{{ 'builds.examples.title' | transloco }}</h2>
+  <p class="dialog-intro">{{ 'builds.examples.intro' | transloco }}</p>
+  <ul class="examples">
+    @for (ex of examples; track ex) {
+    <li>
+      <button
+        #initialFocus
+        type="button"
+        class="example"
+        [attr.data-example]="ex"
+        [disabled]="busy()"
+        (click)="openExample(ex)"
+      >
+        <span class="example-name">{{ exampleNameKey(ex) | transloco }}</span>
+        <span class="example-description">{{ exampleDescriptionKey(ex) | transloco }}</span>
+      </button>
+    </li>
+    }
+  </ul>
+  <div class="dialog-actions">
+    <button type="button" (click)="closeDialog()">{{ 'builds.dialog.cancel' | transloco }}</button>
+  </div>
   } @else if (d) {
   <h2 id="build-dialog-title">
     {{ (d.kind === 'create' ? 'builds.dialog.createTitle' : 'builds.dialog.renameTitle') | transloco

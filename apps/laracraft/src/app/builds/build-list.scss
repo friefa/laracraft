@@ -78,6 +78,43 @@ button {
   }
 }
 
+.empty-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.dialog-intro {
+  margin-top: 0;
+  color: var(--lc-muted);
+}
+
+.examples {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0 0 var(--lc-space);
+  padding: 0;
+  list-style: none;
+}
+
+.example {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  text-align: start;
+}
+
+.example-name {
+  font-weight: 600;
+}
+
+.example-description {
+  font-size: 0.875rem;
+  color: var(--lc-muted);
+}
+
 .build-list {
   display: grid;
   gap: var(--lc-space);
