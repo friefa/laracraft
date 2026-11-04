@@ -19,7 +19,8 @@ import type {
   ToolId,
 } from './api';
 import { normalizeBox } from './box';
-import { EDITOR_ACTION, rotatedBox, selectionOps } from './selection-ops';
+import type { LookVertical } from './placement';
+import { EDITOR_ACTION, createSelectionOps, rotatedBox } from './selection-ops';
 import { fillTool, pickBlockTool, removeTool, replaceTool } from './tools/basic-tools';
 import { PasteTool } from './tools/paste-tool';
 import { placeTool } from './tools/place-tool';
@@ -59,7 +60,7 @@ export interface EditorSessionOptions {
   readonly activeState?: string;
   readonly maxUndoDepth?: number;
   readonly initialTool?: ToolId;
-  /** Replaceable for tests; defaults to {@link selectionOps}. */
+  /** Replaceable for tests; defaults to the shape-aware `createSelectionOps(registry)`. */
   readonly ops?: SelectionOps;
 }
 
@@ -91,11 +92,12 @@ export class EditorSession implements ToolContext {
   private _preview: readonly PreviewBlock[] = [];
   private _clipboard: Clipboard | null = null;
   private _lookHorizontal: HorizontalDirection | undefined;
+  private _lookVertical: LookVertical | undefined;
 
   constructor(options: EditorSessionOptions) {
     this.doc = options.doc;
     this.registry = options.registry;
-    this.ops = options.ops ?? selectionOps;
+    this.ops = options.ops ?? createSelectionOps(options.registry);
     this.undoStack = new ChangeSetUndoStack(options.maxUndoDepth ?? DEFAULT_UNDO_DEPTH);
     this.tools = {
       place: placeTool,
@@ -132,6 +134,10 @@ export class EditorSession implements ToolContext {
   }
   get lookHorizontal(): HorizontalDirection | undefined {
     return this._lookHorizontal;
+  }
+
+  get lookVertical(): LookVertical | undefined {
+    return this._lookVertical;
   }
   get canUndo(): boolean {
     return this.undoStack.canUndo;
@@ -202,6 +208,16 @@ export class EditorSession implements ToolContext {
   setLookHorizontal(dir: HorizontalDirection | undefined): void {
     if (dir === this._lookHorizontal) return;
     this._lookHorizontal = dir;
+    this.emit({ kind: 'look' });
+  }
+
+  /**
+   * Camera pitch class from the app (`up`/`down` when looking steeply up or
+   * down), used for 3D-facing blocks such as pistons and observers.
+   */
+  setLookVertical(pitch: LookVertical | undefined): void {
+    if (pitch === this._lookVertical) return;
+    this._lookVertical = pitch;
     this.emit({ kind: 'look' });
   }
 
