@@ -15,6 +15,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import type { ChangeSet } from '@laracraft/core-model';
 import { TranslocoPipe } from '@jsverse/transloco';
 import {
   type BlockDefinition,
@@ -53,6 +54,8 @@ import {
 import { Icon, type IconName } from './icon';
 import { LayerSlider } from './layer-slider';
 import { Lara } from '../shared/lara/lara';
+import { type ChatSize, LaraChat } from '../lara/lara-chat';
+import type { LaraChatHost } from '../lara/lara-chat-host';
 import { BlockIcon } from './palette/block-icon';
 import { BlockPalette } from './palette/block-palette';
 import { blockNameKey } from './palette/palette-model';
@@ -169,11 +172,12 @@ const javaRegistry = () => (sharedRegistry ??= createJavaBlockRegistry());
  */
 @Component({
   selector: 'lc-editor-page',
-  imports: [RouterLink, TranslocoPipe, Icon, BlockIcon, BlockPalette, LayerSlider, Lara],
+  imports: [RouterLink, TranslocoPipe, Icon, BlockIcon, BlockPalette, LayerSlider, Lara, LaraChat],
   templateUrl: './editor-page.html',
   styleUrl: './editor-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
+    '[class.lc-dock-open]': 'chatOpen()',
     '(document:keydown)': 'onKeydown($event)',
     '(document:pointerdown)': 'onDocumentPointerDown($event)',
   },
@@ -193,6 +197,8 @@ export class EditorPage {
   private readonly layersPanel = viewChild('layersPanel', {
     read: ElementRef<HTMLElement>,
   });
+  private readonly chatPanel = viewChild<ElementRef<HTMLElement>>('chatPanel');
+  private readonly laraFab = viewChild<ElementRef<HTMLElement>>('laraFab');
   private readonly storage = safeLocalStorage(this.document);
 
   private session: EditorSession | null = null;
@@ -229,6 +235,23 @@ export class EditorPage {
   protected readonly canRedo = signal(false);
   protected readonly bounds = signal<Box3 | undefined>(undefined);
   protected readonly layer = signal<number | null>(null);
+
+  // --- Lara chat (L2) ---
+  protected readonly chatOpen = signal(false);
+  protected readonly chatSize = signal<ChatSize>('half');
+  /** Lara is streaming into the document: the editor's own edits wait meanwhile. */
+  protected readonly laraBusy = signal(false);
+  protected readonly laraHost = signal<LaraChatHost | null>(null);
+  /** Undo depth right after the last recorded Lara turn (null = none in this session). */
+  private readonly laraStep = signal<number | null>(null);
+  private readonly historyTop = signal<{ depth: number; origin: string | undefined }>({
+    depth: 0,
+    origin: undefined,
+  });
+  private readonly canUndoLaraTurn = computed(() => {
+    const top = this.historyTop();
+    return this.laraStep() === top.depth && top.origin === 'lara';
+  });
 
   protected readonly activeBlock = computed<BlockDefinition | undefined>(() => {
     const state = this.activeState();
@@ -318,6 +341,40 @@ export class EditorPage {
     this.bounds.set(session.doc.volume.bounds());
     const unsubscribe = session.subscribe((event) => this.onSessionEvent(session, event));
     this.destroyRef.onDestroy(unsubscribe);
+    if (this.loadedId) this.laraHost.set(this.createLaraHost(session, this.loadedId));
+  }
+
+  /** The editor side of the Lara chat: live preview, one undo step per turn, busy lock. */
+  private createLaraHost(session: EditorSession, buildId: string): LaraChatHost {
+    // Bounds before Lara's turn: frame the view at the end when the build grew.
+    let turnStartBounds: Box3 | undefined;
+    return {
+      buildId,
+      doc: session.doc,
+      registry: this.registry,
+      selection: () => session.selection,
+      previewChanged: () => {
+        this.renderer?.update();
+        this.bounds.set(session.doc.volume.bounds());
+      },
+      recordTurn: (changeSet: ChangeSet) => {
+        const before = turnStartBounds;
+        session.recordExternal(changeSet);
+        this.laraStep.set(session.history.length);
+        // Show what Lara built when it reaches outside the previous build.
+        if (grew(before, this.bounds())) this.renderer?.frame();
+      },
+      canUndoTurn: this.canUndoLaraTurn,
+      undoTurn: () => {
+        if (!this.canUndoLaraTurn() || this.laraBusy()) return false;
+        session.undo();
+        return true;
+      },
+      setBusy: (busy: boolean) => {
+        if (busy && !this.laraBusy()) turnStartBounds = session.doc.volume.bounds();
+        this.laraBusy.set(busy);
+      },
+    };
   }
 
   private async startRenderer(): Promise<void> {
@@ -364,6 +421,10 @@ export class EditorPage {
       case 'history':
         this.canUndo.set(session.canUndo);
         this.canRedo.set(session.canRedo);
+        this.historyTop.set({
+          depth: session.history.length,
+          origin: session.history.at(-1)?.origin,
+        });
         break;
       case 'selection':
         this.hasSelection.set(session.selection !== null);
@@ -435,7 +496,7 @@ export class EditorPage {
 
   private onTap(pick: Pick | null, event: PointerEvent): void {
     const session = this.session;
-    if (!session) return;
+    if (!session || this.laraBusy()) return;
     this.menuOpen.set(false);
     const look = this.renderer?.lookDirection();
     if (look) {
@@ -493,6 +554,8 @@ export class EditorPage {
   protected run(command: EditorCommand): void {
     const session = this.session;
     if (!session) return;
+    // While Lara streams into the document only view commands run.
+    if (this.laraBusy() && command.kind !== 'frame' && command.kind !== 'cancel') return;
     this.guard(() => {
       switch (command.kind) {
         case 'tool':
@@ -588,6 +651,28 @@ export class EditorPage {
     this.renderer?.setLayerLimit(limit);
   }
 
+  protected openChat(): void {
+    this.menuOpen.set(false);
+    this.chatOpen.set(true);
+    afterNextRender(() => this.updateViewInsets(), { injector: this.injector });
+  }
+
+  protected closeChat(): void {
+    this.chatOpen.set(false);
+    afterNextRender(
+      () => {
+        this.updateViewInsets();
+        this.laraFab()?.nativeElement.focus();
+      },
+      { injector: this.injector },
+    );
+  }
+
+  protected setChatSize(size: ChatSize): void {
+    this.chatSize.set(size);
+    afterNextRender(() => this.updateViewInsets(), { injector: this.injector });
+  }
+
   protected toggleMenu(): void {
     this.menuOpen.update((open) => !open);
   }
@@ -639,12 +724,30 @@ export class EditorPage {
     if (!renderer) return;
     const rect = (ref: ElementRef<HTMLElement> | undefined) =>
       ref?.nativeElement.getBoundingClientRect();
+    const canvas = this.canvas().nativeElement.getBoundingClientRect();
+    const chat = rect(this.chatPanel());
+    // Phone: the chat is a bottom sheet; desktop: a side panel on the right.
+    const chatIsSheet = !!chat && chat.left <= canvas.left + 1;
     renderer.setViewInsets(
-      chromeInsets(this.canvas().nativeElement.getBoundingClientRect(), {
+      chromeInsets(canvas, {
         top: rect(this.topBar()),
-        bottom: rect(this.bottomBar()),
-        right: rect(this.layersPanel()),
+        bottom: chat && chatIsSheet ? chat : rect(this.bottomBar()),
+        right: chat && !chatIsSheet ? chat : rect(this.layersPanel()),
       }),
     );
   }
+}
+
+/** True when `after` reaches outside `before` (or the build was empty). */
+function grew(before: Box3 | undefined, after: Box3 | undefined): boolean {
+  if (!after) return false;
+  if (!before) return true;
+  return (
+    after.min.x < before.min.x ||
+    after.min.y < before.min.y ||
+    after.min.z < before.min.z ||
+    after.max.x > before.max.x ||
+    after.max.y > before.max.y ||
+    after.max.z > before.max.z
+  );
 }

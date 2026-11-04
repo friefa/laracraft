@@ -1,0 +1,261 @@
+<a class="back lc-btn lc-btn--ghost lc-btn--sm" data-action="back" [routerLink]="backLink()"
+  ><lc-icon name="back" />{{ (from() ? 'lara.settings.backToBuild' : 'lara.settings.back') |
+  transloco }}</a
+>
+
+<div class="hero">
+  <lc-lara mood="think" size="5rem" />
+  <div class="lc-bubble lc-bubble--purple">
+    <h1>{{ 'lara.settings.title' | transloco }}</h1>
+    <p>{{ 'lara.settings.intro' | transloco }}</p>
+  </div>
+</div>
+
+<form class="lc-card form" novalidate (submit)="save($event)">
+  <fieldset class="providers">
+    <legend class="lc-field__label">{{ 'lara.settings.provider' | transloco }}</legend>
+    <label class="choice" [class.selected]="kind() === 'anthropic'">
+      <input
+        type="radio"
+        name="kind"
+        value="anthropic"
+        [checked]="kind() === 'anthropic'"
+        (change)="setKind('anthropic')"
+      />
+      <span class="choice-text">
+        <span class="choice-title"
+          >{{ 'lara.settings.anthropic' | transloco }}
+          <span class="lc-pill lc-pill--soft-green"
+            >{{ 'lara.settings.recommended' | transloco }}</span
+          ></span
+        >
+        <span class="lc-field__hint">{{ 'lara.settings.anthropicHint' | transloco }}</span>
+      </span>
+    </label>
+    <label class="choice" [class.selected]="kind() === 'openai-compatible'">
+      <input
+        type="radio"
+        name="kind"
+        value="openai-compatible"
+        [checked]="kind() === 'openai-compatible'"
+        (change)="setKind('openai-compatible')"
+      />
+      <span class="choice-text">
+        <span class="choice-title">{{ 'lara.settings.openai' | transloco }}</span>
+        <span class="lc-field__hint">{{ 'lara.settings.openaiHint' | transloco }}</span>
+      </span>
+    </label>
+  </fieldset>
+
+  <div class="lc-field">
+    <label for="lara-model">{{ 'lara.settings.model' | transloco }}</label>
+    <input
+      id="lara-model"
+      class="lc-input"
+      autocomplete="off"
+      autocapitalize="off"
+      spellcheck="false"
+      aria-describedby="lara-model-hint"
+      [placeholder]="kind() === 'anthropic' ? 'claude-opus-5-5' : 'gpt-…, llama3.1, …'"
+      [attr.aria-invalid]="showError('model')"
+      [value]="model()"
+      (input)="model.set(value($event))"
+    />
+    @if (showError('model')) {
+    <p class="lc-field__error">{{ 'lara.settings.errors.model' | transloco }}</p>
+    }
+    <p id="lara-model-hint" class="lc-field__hint">
+      {{ (kind() === 'anthropic' ? 'lara.settings.modelHintAnthropic' :
+      'lara.settings.modelHintOpenai') | transloco }}
+    </p>
+  </div>
+
+  @if (kind() === 'openai-compatible') {
+  <div class="lc-field">
+    <label for="lara-base-url">{{ 'lara.settings.baseUrl' | transloco }}</label>
+    <input
+      id="lara-base-url"
+      class="lc-input"
+      type="url"
+      inputmode="url"
+      autocomplete="off"
+      autocapitalize="off"
+      spellcheck="false"
+      placeholder="https://api.openai.com/v1"
+      aria-describedby="lara-base-url-hint"
+      [attr.aria-invalid]="showError('baseUrl')"
+      [value]="baseUrl()"
+      (input)="baseUrl.set(value($event))"
+    />
+    @if (showError('baseUrl')) {
+    <p class="lc-field__error">{{ 'lara.settings.errors.baseUrl' | transloco }}</p>
+    }
+    <p id="lara-base-url-hint" class="lc-field__hint">
+      {{ 'lara.settings.baseUrlHint' | transloco }}
+    </p>
+  </div>
+  }
+
+  <div class="lc-field">
+    <label for="lara-key">{{ 'lara.settings.apiKey' | transloco }}</label>
+    <div class="key-row">
+      <input
+        id="lara-key"
+        class="lc-input"
+        autocomplete="off"
+        autocapitalize="off"
+        spellcheck="false"
+        aria-describedby="lara-key-hint"
+        [type]="showKey() ? 'text' : 'password'"
+        [placeholder]="hasKey() ? '••••••••••••' : (kind() === 'anthropic' ? 'sk-ant-…' : 'sk-…')"
+        [attr.aria-invalid]="showError('apiKey')"
+        [value]="apiKey()"
+        (input)="apiKey.set(value($event))"
+      />
+      <button
+        type="button"
+        class="lc-btn lc-btn--icon"
+        data-action="toggle-key"
+        [attr.aria-pressed]="showKey()"
+        [attr.aria-label]="(showKey() ? 'lara.settings.hideKey' : 'lara.settings.showKey') | transloco"
+        [title]="(showKey() ? 'lara.settings.hideKey' : 'lara.settings.showKey') | transloco"
+        (click)="showKey.set(!showKey())"
+      >
+        <lc-icon [name]="showKey() ? 'eyeOff' : 'eye'" />
+      </button>
+    </div>
+    @if (showError('apiKey')) {
+    <p class="lc-field__error">{{ 'lara.settings.errors.apiKey' | transloco }}</p>
+    }
+    <p id="lara-key-hint" class="lc-field__hint">
+      {{ (hasKey() ? 'lara.settings.apiKeyStored' : 'lara.settings.apiKeyHint') | transloco }}
+    </p>
+  </div>
+
+  @if (secretKind === 'web') {
+  <label class="lc-check">
+    <input
+      type="checkbox"
+      data-action="remember"
+      [checked]="remember()"
+      (change)="remember.set(checked($event))"
+    />
+    {{ 'lara.settings.remember' | transloco }}
+  </label>
+  @if (remember()) {
+  <div class="lc-callout lc-tone--orange" role="note" data-warning="remember">
+    <lc-icon name="info" />
+    <p>{{ 'lara.settings.rememberWarning' | transloco }}</p>
+  </div>
+  } @else {
+  <p class="lc-field__hint">{{ 'lara.settings.sessionOnly' | transloco }}</p>
+  } } @else {
+  <p class="lc-field__hint">{{ 'lara.settings.nativeStorage' | transloco }}</p>
+  }
+
+  <div class="lc-field">
+    <label for="lara-limit">{{ 'lara.settings.limit' | transloco }}</label>
+    <input
+      id="lara-limit"
+      class="lc-input limit"
+      type="number"
+      inputmode="numeric"
+      min="1"
+      step="1000"
+      aria-describedby="lara-limit-hint"
+      [placeholder]="'lara.settings.limitNone' | transloco"
+      [attr.aria-invalid]="showError('limit')"
+      [value]="limit()"
+      (input)="limit.set(value($event))"
+    />
+    @if (showError('limit')) {
+    <p class="lc-field__error">{{ 'lara.settings.errors.limit' | transloco }}</p>
+    }
+    <p id="lara-limit-hint" class="lc-field__hint">
+      {{ 'lara.settings.limitHint' | transloco: { used: tokensToday() } }}
+    </p>
+  </div>
+
+  <p class="test-result" role="status">
+    @if (test().kind === 'testing') {
+    <span class="lc-pill lc-pill--soft-blue">{{ 'lara.settings.testing' | transloco }}</span>
+    } @else if (testOkModel(); as model) {
+    <span class="lc-pill lc-pill--soft-green" data-test="ok"
+      >{{ 'lara.settings.testOk' | transloco: { model } }}</span
+    >
+    } @else if (testError(); as code) {
+    <span class="lc-pill lc-pill--red" data-test="failed">{{ errorKey(code) | transloco }}</span>
+    }
+  </p>
+
+  <div class="buttons">
+    <button type="submit" class="lc-btn lc-btn--primary lc-btn--lg" data-action="save">
+      {{ 'lara.settings.save' | transloco }}
+    </button>
+    <button
+      type="button"
+      class="lc-btn lc-btn--secondary"
+      data-action="test"
+      [disabled]="test().kind === 'testing'"
+      (click)="testConnection()"
+    >
+      {{ 'lara.settings.test' | transloco }}
+    </button>
+    @if (hasKey()) {
+    <button
+      type="button"
+      class="lc-btn lc-btn--ghost clear"
+      data-action="clear-key"
+      (click)="clearKey()"
+    >
+      {{ 'lara.settings.clearKey' | transloco }}
+    </button>
+    }
+  </div>
+  <p class="status" role="status">
+    @if (status(); as s) {
+    <span class="lc-toast lc-pop">{{ s | transloco }}</span>
+    }
+  </p>
+</form>
+
+<section class="notes" aria-labelledby="lara-notes-title">
+  <h2 id="lara-notes-title">{{ 'lara.settings.notes.title' | transloco }}</h2>
+  <ul>
+    <li class="lc-callout lc-tone--yellow">
+      <lc-icon name="coin" />
+      <p>
+        <strong>{{ 'lara.settings.notes.costsTitle' | transloco }}</strong>
+        {{ 'lara.settings.notes.costs' | transloco }}
+      </p>
+    </li>
+    <li class="lc-callout lc-tone--blue">
+      <lc-icon name="send" />
+      <p>
+        <strong>{{ 'lara.settings.notes.privacyTitle' | transloco }}</strong>
+        {{ 'lara.settings.notes.privacy' | transloco }}
+      </p>
+    </li>
+    <li class="lc-callout lc-tone--green">
+      <lc-icon name="key" />
+      <p>
+        <strong>{{ 'lara.settings.notes.storageTitle' | transloco }}</strong>
+        {{ 'lara.settings.notes.storage' | transloco }}
+      </p>
+    </li>
+    <li class="lc-callout lc-tone--orange">
+      <lc-icon name="info" />
+      <p>
+        <strong>{{ 'lara.settings.notes.ageTitle' | transloco }}</strong>
+        {{ 'lara.settings.notes.age' | transloco }}
+      </p>
+    </li>
+    <li class="lc-callout lc-tone--grey">
+      <lc-icon name="info" />
+      <p>
+        <strong>{{ 'lara.settings.notes.localTitle' | transloco }}</strong>
+        {{ 'lara.settings.notes.local' | transloco }}
+      </p>
+    </li>
+  </ul>
+</section>

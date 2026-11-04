@@ -748,6 +748,201 @@ textarea {
   color: var(--tone, var(--lc-green));
 }
 
+/* ---------------------------------------------------------------------------
+ * L2 additions (Lara chat and settings).
+ * ------------------------------------------------------------------------- */
+
+/* Lara's colour: purple button (open the chat, send, set up Lara). */
+.lc-btn--lara {
+  --btn-bg: var(--lc-purple);
+  --btn-fg: var(--lc-on-color);
+  --btn-edge: var(--lc-purple-shade);
+  --btn-border: var(--lc-purple);
+}
+
+/* Small chip: one build operation of a Lara turn ("Wand · 48 Blöcke") or a suggestion. */
+.lc-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 1.75rem;
+  padding: 0.15rem 0.65rem 0.15rem 0.4rem;
+  border: var(--lc-border-w) solid var(--lc-border-strong);
+  border-radius: var(--lc-radius-pill);
+  background: var(--lc-bg-soft);
+  color: var(--lc-text-strong);
+  font-size: var(--lc-fs-xs);
+  font-weight: var(--lc-fw-black);
+}
+/* Mini block in front of an operation chip. */
+.lc-chip .cube {
+  width: 0.85rem;
+  height: 0.85rem;
+  border: var(--lc-border-w) solid var(--lc-ink);
+  border-radius: 0.2rem;
+  background: var(--lc-green);
+  box-shadow: inset 0 -0.2rem 0 var(--lc-green-shade);
+}
+/* Tappable chip (suggestions): 48 px target, blue like links. */
+.lc-chip--action {
+  min-height: 3rem;
+  padding: 0.5rem 1rem;
+  border-color: var(--lc-blue);
+  color: var(--lc-blue-text);
+  font: inherit;
+  font-size: var(--lc-fs-sm);
+  font-weight: var(--lc-fw-bold);
+  box-shadow: 0 3px 0 var(--lc-blue-shade);
+  cursor: pointer;
+}
+.lc-chip--action:active {
+  transform: translateY(3px);
+  box-shadow: none;
+}
+
+/* Typing indicator: three bouncing dots (Lara is writing). */
+.lc-typing {
+  display: inline-flex;
+  gap: 0.3rem;
+  padding: 0.5rem 0 0.25rem;
+}
+.lc-typing i {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--lc-purple);
+  animation: lc-typing 900ms ease-in-out infinite;
+}
+.lc-typing i:nth-child(2) {
+  animation-delay: 150ms;
+}
+.lc-typing i:nth-child(3) {
+  animation-delay: 300ms;
+}
+@keyframes lc-typing {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  30% {
+    transform: translateY(-0.3rem);
+    opacity: 1;
+  }
+}
+
+/* Form field: label, control, hint and error stacked. */
+.lc-field {
+  display: grid;
+  gap: 0.35rem;
+}
+.lc-field > label,
+.lc-field__label {
+  color: var(--lc-text-strong);
+  font-weight: var(--lc-fw-black);
+}
+.lc-field__hint {
+  margin: 0;
+  color: var(--lc-muted);
+  font-size: var(--lc-fs-xs);
+}
+.lc-field__error {
+  margin: 0;
+  color: var(--lc-red-text);
+  font-size: var(--lc-fs-xs);
+  font-weight: var(--lc-fw-bold);
+}
+.lc-input[aria-invalid='true'] {
+  border-color: var(--lc-red);
+}
+
+/* Chunky checkbox row (48 px target). */
+.lc-check {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 3rem;
+  color: var(--lc-text-strong);
+  font-weight: var(--lc-fw-bold);
+  cursor: pointer;
+}
+.lc-check input {
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: 0;
+  accent-color: var(--lc-purple);
+}
+
+/* Lara button with her avatar in a round frame (opens the chat). Use with .lc-btn--lara. */
+.lc-lara-btn {
+  gap: 0.5rem;
+  padding: 0.25rem 1.125rem 0.25rem 0.25rem;
+  border-radius: var(--lc-radius-pill);
+}
+/* Floating variant: sits above the top edge of its positioned parent (a toolbar), right. */
+.lc-lara-btn--float {
+  position: absolute;
+  right: calc(env(safe-area-inset-right) + 0.625rem);
+  bottom: calc(100% + 0.625rem);
+}
+.lc-lara-btn__avatar {
+  display: grid;
+  overflow: hidden;
+  border: var(--lc-border-w) solid var(--lc-ink);
+  border-radius: 50%;
+  background: var(--lc-surface);
+}
+
+/* Dock: bottom sheet on phones (half height, .lc-dock--full taller; the 3D view stays
+ * visible above), side panel on the right from 48rem. Place inside a positioned screen. */
+:root {
+  --lc-dock-width: 25rem;
+}
+.lc-dock {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 4;
+  height: 52%;
+  background: var(--lc-surface);
+  border-top: var(--lc-border-w) solid var(--lc-purple);
+  border-radius: calc(var(--lc-radius) * 1.5) calc(var(--lc-radius) * 1.5) 0 0;
+  box-shadow: 0 calc(var(--lc-depth) * -1) 0 var(--lc-purple-shade);
+}
+.lc-dock--full {
+  top: calc(env(safe-area-inset-top) + 11rem);
+  height: auto;
+}
+@media (min-width: 48rem) {
+  .lc-dock,
+  .lc-dock--full {
+    top: calc(env(safe-area-inset-top) + 4.25rem);
+    left: auto;
+    width: var(--lc-dock-width);
+    height: auto;
+    border-top: 0;
+    border-left: var(--lc-border-w) solid var(--lc-purple);
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+/* Screens with a dock: add .lc-dock-open to the screen and .lc-dock-avoid to absolutely
+ * positioned bars that must stay visible next to the side panel (desktop). */
+@media (min-width: 48rem) {
+  .lc-dock-open .lc-dock-avoid.lc-dock-avoid {
+    right: var(--lc-dock-width);
+    margin-right: 0.5rem;
+  }
+  .lc-dock-open .lc-dock-avoid.bar {
+    margin-right: 0;
+  }
+}
+.lc-dock__loading {
+  padding: 1rem;
+  color: var(--lc-muted);
+}
+
 /* ===========================================================================
  * Part 2 – design document only (page layout, device frames, state helpers).
  * Not part of the app. Everything here is prefixed .doc-* / .mock-* / .is-*.
@@ -1266,12 +1461,47 @@ textarea {
   margin: 0.25rem 0;
 }
 
+/* Static mocks cannot scroll: show the end of a scrolling list (Lara chat log). */
+.mock-scroll-end {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+/* .lc-dock / .lc-dock-avoid (L2) switch to the desktop side panel with a viewport media query
+ * in the app; inside the phone frames the bottom sheet must win (container query). */
+@container (max-width: 47.99rem) {
+  .doc-screen .lc-dock,
+  .doc-screen .lc-dock--full {
+    top: auto;
+    left: 0;
+    width: auto;
+    height: 52%;
+    border-top: var(--lc-border-w) solid var(--lc-purple);
+    border-left: 0;
+    border-radius: calc(var(--lc-radius) * 1.5) calc(var(--lc-radius) * 1.5) 0 0;
+    box-shadow: 0 calc(var(--lc-depth) * -1) 0 var(--lc-purple-shade);
+  }
+  .doc-screen .lc-dock--full {
+    top: 11rem;
+    height: auto;
+  }
+  .doc-screen .lc-dock-open .lc-dock-avoid.lc-dock-avoid.bar {
+    right: 0;
+    margin-right: 0;
+  }
+  .doc-screen .lc-dock-open .lc-dock-avoid.lc-dock-avoid.layers {
+    right: 0.5rem;
+    margin-right: 0;
+  }
+}
+
 /* ===========================================================================
  * Part 3 – screen component styles (copy of the app's component styles)
  * ========================================================================= */
 
 /* <lc-root> */
-@scope (lc-root) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *) {
+@scope (lc-root) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *, lc-lara-chat > *, lc-lara-markdown > *, lc-lara-settings-page > *) {
   :scope {
     display: flex;
     flex-direction: column;
@@ -1355,7 +1585,7 @@ textarea {
 }
 
 /* <lc-lara> */
-@scope (lc-lara) to (lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *) {
+@scope (lc-lara) to (lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *, lc-lara-chat > *, lc-lara-markdown > *, lc-lara-settings-page > *) {
   :scope {
     --lara-eye: #fff;
     --lara-hair: #f07a3c;
@@ -1433,7 +1663,7 @@ textarea {
 }
 
 /* <lc-icon> */
-@scope (lc-icon) to (lc-lara > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *) {
+@scope (lc-icon) to (lc-lara > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *, lc-lara-chat > *, lc-lara-markdown > *, lc-lara-settings-page > *) {
   :scope {
     display: inline-flex;
     flex: none;
@@ -1446,7 +1676,7 @@ textarea {
 }
 
 /* <lc-guide-icon> */
-@scope (lc-guide-icon) to (lc-lara > *, lc-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *) {
+@scope (lc-guide-icon) to (lc-lara > *, lc-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *, lc-lara-chat > *, lc-lara-markdown > *, lc-lara-settings-page > *) {
   :scope {
     display: inline-flex;
     flex: none;
@@ -1461,7 +1691,7 @@ textarea {
 }
 
 /* <lc-block-icon> */
-@scope (lc-block-icon) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *) {
+@scope (lc-block-icon) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *, lc-lara-chat > *, lc-lara-markdown > *, lc-lara-settings-page > *) {
   :scope {
     display: inline-block;
     flex: none;
@@ -1475,7 +1705,7 @@ textarea {
 }
 
 /* <lc-guide-block-tile> */
-@scope (lc-guide-block-tile) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *) {
+@scope (lc-guide-block-tile) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *, lc-lara-chat > *, lc-lara-markdown > *, lc-lara-settings-page > *) {
   :scope {
     --lc-icon-size: 100%;
     display: inline-grid;
@@ -1497,7 +1727,7 @@ textarea {
 }
 
 /* <lc-build-list> */
-@scope (lc-build-list) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *) {
+@scope (lc-build-list) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *, lc-lara-chat > *, lc-lara-markdown > *, lc-lara-settings-page > *) {
   :scope p {
     margin: 0;
   }
@@ -1735,7 +1965,7 @@ textarea {
 }
 
 /* <lc-credits> */
-@scope (lc-credits) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *) {
+@scope (lc-credits) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *, lc-lara-chat > *, lc-lara-markdown > *, lc-lara-settings-page > *) {
   :scope {
     display: flex;
     flex-direction: column;
@@ -1816,7 +2046,7 @@ textarea {
 }
 
 /* <lc-editor-page> */
-@scope (lc-editor-page) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *) {
+@scope (lc-editor-page) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *, lc-lara-chat > *, lc-lara-markdown > *, lc-lara-settings-page > *) {
   :scope {
     position: fixed;
     inset: 0;
@@ -2079,7 +2309,7 @@ textarea {
 }
 
 /* <lc-layer-slider> */
-@scope (lc-layer-slider) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *) {
+@scope (lc-layer-slider) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *, lc-lara-chat > *, lc-lara-markdown > *, lc-lara-settings-page > *) {
   :scope {
     --thumb: 2.25rem;
     display: flex;
@@ -2168,7 +2398,7 @@ textarea {
 }
 
 /* <lc-block-palette> */
-@scope (lc-block-palette) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *) {
+@scope (lc-block-palette) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *, lc-lara-chat > *, lc-lara-markdown > *, lc-lara-settings-page > *) {
   :scope .sheet {
     position: fixed;
     inset: auto 0 0;
@@ -2362,7 +2592,7 @@ textarea {
 }
 
 /* <lc-guide-page> */
-@scope (lc-guide-page) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *) {
+@scope (lc-guide-page) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *, lc-lara-chat > *, lc-lara-markdown > *, lc-lara-settings-page > *) {
   :scope {
     position: fixed;
     inset: 0;
@@ -2623,7 +2853,7 @@ textarea {
 }
 
 /* <lc-guide-viewport> */
-@scope (lc-guide-viewport) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *) {
+@scope (lc-guide-viewport) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *, lc-lara-chat > *, lc-lara-markdown > *, lc-lara-settings-page > *) {
   :scope {
     position: relative;
     display: block;
@@ -2652,7 +2882,7 @@ textarea {
 }
 
 /* <lc-guide-step-panel> */
-@scope (lc-guide-step-panel) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *) {
+@scope (lc-guide-step-panel) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *, lc-lara-chat > *, lc-lara-markdown > *, lc-lara-settings-page > *) {
   :scope {
     display: block;
   }
@@ -2857,7 +3087,7 @@ textarea {
 }
 
 /* <lc-guide-overview> */
-@scope (lc-guide-overview) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-success > *, lc-guide-finish > *) {
+@scope (lc-guide-overview) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-success > *, lc-guide-finish > *, lc-lara-chat > *, lc-lara-markdown > *, lc-lara-settings-page > *) {
   :scope {
     display: block;
   }
@@ -3010,7 +3240,7 @@ textarea {
 }
 
 /* <lc-guide-success> */
-@scope (lc-guide-success) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-finish > *) {
+@scope (lc-guide-success) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-finish > *, lc-lara-chat > *, lc-lara-markdown > *, lc-lara-settings-page > *) {
   :scope {
     display: block;
     pointer-events: none;
@@ -3044,7 +3274,7 @@ textarea {
 }
 
 /* <lc-guide-finish> */
-@scope (lc-guide-finish) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *) {
+@scope (lc-guide-finish) to (lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-lara-chat > *, lc-lara-markdown > *, lc-lara-settings-page > *) {
   :scope {
     display: grid;
     place-items: center;
@@ -3095,5 +3325,404 @@ textarea {
     color: var(--lc-text-strong);
     font-size: var(--lc-fs-xl);
     font-weight: var(--lc-fw-black);
+  }
+}
+
+/* <lc-lara-chat> */
+@scope (lc-lara-chat) to (lc-root > *, lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *, lc-lara-markdown > *, lc-lara-settings-page > *) {
+  :scope {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+  }
+
+  :scope .head {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.5rem 0.5rem 0 0.875rem;
+    border-bottom: var(--lc-border-w) solid var(--lc-border);
+  }
+  :scope .head .lc-btn {
+    flex: none;
+  }
+
+  :scope .who {
+    flex: 1;
+    min-width: 0;
+    margin-left: 0.25rem;
+  }
+  :scope .who h2 {
+    margin: 0;
+    font-size: var(--lc-fs-lg);
+    color: var(--lc-purple-text);
+    line-height: 1.1;
+  }
+
+  :scope .model {
+    margin: 0;
+    overflow: hidden;
+    font-size: var(--lc-fs-xs);
+    color: var(--lc-muted);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  @container (min-width:48rem) {
+    :scope .size-toggle {
+      display: none;
+    }
+  }
+  :scope .state {
+    padding: 1rem;
+    color: var(--lc-muted);
+  }
+
+  :scope .log {
+    flex: 1;
+    min-height: 0;
+    padding: 0.875rem 0.875rem 0.5rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  :scope .messages {
+    display: grid;
+    gap: 0.875rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  :scope .msg {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  :scope .msg.user {
+    justify-content: flex-end;
+  }
+  :scope .msg.undone .bubble {
+    opacity: 0.7;
+  }
+
+  :scope .bubble {
+    flex: 1;
+    min-width: 0;
+    padding: 0.625rem 0.875rem;
+    font-weight: var(--lc-fw-body);
+    overflow-wrap: anywhere;
+  }
+  :scope .bubble p {
+    margin: 0;
+  }
+
+  :scope .failed .bubble {
+    border-color: var(--lc-red);
+    box-shadow: 0 var(--lc-depth) 0 var(--lc-red-shade);
+  }
+  :scope .failed .bubble::before {
+    border-color: var(--lc-red);
+  }
+
+  :scope .user-bubble {
+    max-width: 85%;
+    margin: 0;
+    padding: 0.625rem 0.875rem;
+    border: var(--lc-border-w) solid var(--lc-blue);
+    border-radius: calc(var(--lc-radius) * 1.25) calc(var(--lc-radius) * 1.25) 0.25rem;
+    background: var(--lc-blue-soft);
+    color: var(--lc-text-strong);
+    font-weight: var(--lc-fw-bold);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  :scope .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    margin: 0.5rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  :scope .error {
+    margin-top: 0.375rem;
+    color: var(--lc-red-text);
+    font-weight: var(--lc-fw-bold);
+  }
+
+  :scope .stopped {
+    margin-top: 0.375rem;
+    color: var(--lc-muted);
+  }
+
+  :scope .actions,
+  :scope .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 0.5rem;
+    margin-top: 0.5rem;
+  }
+  :scope .actions:empty,
+  :scope .meta:empty {
+    display: none;
+  }
+  :scope .actions .lc-btn,
+  :scope .meta .lc-btn {
+    gap: 0.375rem;
+    margin-bottom: 0;
+    --lc-icon: 1.125rem;
+  }
+
+  :scope .usage,
+  :scope .undone-label {
+    font-size: var(--lc-fs-xs);
+    color: var(--lc-muted);
+  }
+
+  :scope .undo {
+    margin-left: auto;
+  }
+
+  :scope .suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0.875rem 0 0 3rem;
+  }
+
+  :scope .composer {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5rem;
+    padding: 0.625rem 0.75rem calc(env(safe-area-inset-bottom) + 0.375rem);
+    border-top: var(--lc-border-w) solid var(--lc-border);
+  }
+  :scope .composer textarea {
+    flex: 1;
+    max-height: 10rem;
+    margin-bottom: var(--lc-depth);
+    font: inherit;
+    font-weight: var(--lc-fw-bold);
+    resize: none;
+  }
+
+  :scope .onboarding {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    align-content: start;
+    gap: 0.875rem;
+    padding: 1rem;
+    overflow-y: auto;
+  }
+
+  :scope .intro {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  :scope .intro h3 {
+    margin: 0 0 0.25rem;
+    font-size: var(--lc-fs-lg);
+  }
+  :scope .intro p {
+    margin: 0;
+  }
+
+  :scope .facts {
+    display: grid;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  :scope .facts p {
+    margin: 0;
+    font-weight: var(--lc-fw-body);
+  }
+  :scope .facts strong {
+    display: block;
+  }
+}
+
+/* <lc-lara-markdown> */
+@scope (lc-lara-markdown) to (lc-root > *, lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *, lc-lara-chat > *, lc-lara-settings-page > *) {
+  :scope {
+    display: block;
+  }
+
+  :scope p,
+  :scope ul,
+  :scope ol {
+    margin: 0 0 0.5rem;
+  }
+
+  :scope :is(p, ul, ol):last-child {
+    margin-bottom: 0;
+  }
+
+  :scope ul,
+  :scope ol {
+    padding-left: 1.25rem;
+  }
+
+  :scope strong {
+    font-weight: var(--lc-fw-black);
+    color: var(--lc-text-strong);
+  }
+}
+
+/* <lc-lara-settings-page> */
+@scope (lc-lara-settings-page) to (lc-root > *, lc-lara > *, lc-icon > *, lc-guide-icon > *, lc-block-icon > *, lc-guide-block-tile > *, lc-build-list > *, lc-credits > *, lc-editor-page > *, lc-layer-slider > *, lc-block-palette > *, lc-guide-page > *, lc-guide-viewport > *, lc-guide-step-panel > *, lc-guide-overview > *, lc-guide-success > *, lc-guide-finish > *, lc-lara-chat > *, lc-lara-markdown > *) {
+  :scope {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    max-width: 40rem;
+  }
+
+  :scope .back {
+    align-self: flex-start;
+    gap: 0.375rem;
+    margin-bottom: 0;
+    --lc-icon: 1.125rem;
+  }
+
+  :scope .hero {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
+  :scope .hero h1 {
+    margin: 0 0 0.25rem;
+    font-size: var(--lc-fs-xl);
+  }
+  :scope .hero p {
+    margin: 0;
+    font-weight: var(--lc-fw-body);
+  }
+
+  :scope .form {
+    display: grid;
+    gap: 1.125rem;
+  }
+
+  :scope .providers {
+    display: grid;
+    gap: 0.625rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  :scope .providers legend {
+    margin-bottom: 0.5rem;
+    padding: 0;
+  }
+
+  :scope .choice {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border: var(--lc-border-w) solid var(--lc-border);
+    border-radius: var(--lc-radius);
+    background: var(--lc-bg-soft);
+    box-shadow: 0 var(--lc-depth) 0 var(--lc-border);
+    cursor: pointer;
+  }
+  :scope .choice.selected {
+    border-color: var(--lc-blue);
+    background: var(--lc-blue-soft);
+    box-shadow: 0 var(--lc-depth) 0 var(--lc-blue-shade);
+  }
+  :scope .choice input {
+    flex: none;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin: 0.1rem 0 0;
+    accent-color: var(--lc-blue);
+  }
+
+  :scope .choice-text {
+    display: grid;
+    gap: 0.2rem;
+  }
+
+  :scope .choice-title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--lc-text-strong);
+    font-weight: var(--lc-fw-black);
+  }
+
+  :scope .key-row {
+    display: flex;
+    gap: 0.5rem;
+  }
+  :scope .key-row .lc-input {
+    flex: 1;
+    min-width: 0;
+    font-family: ui-monospace, monospace;
+  }
+  :scope .key-row .lc-btn {
+    margin-bottom: 0;
+  }
+
+  :scope .limit {
+    max-width: 14rem;
+  }
+
+  :scope .lc-callout p {
+    margin: 0;
+  }
+
+  :scope .test-result,
+  :scope .status {
+    margin: 0;
+  }
+  :scope .test-result:empty,
+  :scope .status:empty {
+    display: none;
+  }
+
+  :scope .buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  :scope .buttons > [type='submit'] {
+    flex: 1 1 100%;
+  }
+  :scope .buttons > .lc-btn {
+    flex: 1 1 auto;
+  }
+
+  :scope .clear {
+    --btn-fg: var(--lc-red-text);
+  }
+
+  :scope .notes h2 {
+    margin: 0 0 0.75rem;
+    font-size: var(--lc-fs-lg);
+  }
+  :scope .notes ul {
+    display: grid;
+    gap: 0.625rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  :scope .notes p {
+    font-weight: var(--lc-fw-body);
+  }
+  :scope .notes strong {
+    display: block;
   }
 }

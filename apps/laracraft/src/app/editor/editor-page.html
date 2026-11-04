@@ -37,7 +37,7 @@
     type="button"
     class="lc-btn lc-btn--icon"
     data-action="undo"
-    [disabled]="!canUndo()"
+    [disabled]="!canUndo() || laraBusy()"
     [attr.aria-label]="'editor.undo' | transloco"
     [title]="'editor.undo' | transloco"
     (click)="run({ kind: 'undo' })"
@@ -48,7 +48,7 @@
     type="button"
     class="lc-btn lc-btn--icon"
     data-action="redo"
-    [disabled]="!canRedo()"
+    [disabled]="!canRedo() || laraBusy()"
     [attr.aria-label]="'editor.redo' | transloco"
     [title]="'editor.redo' | transloco"
     (click)="run({ kind: 'redo' })"
@@ -85,6 +85,11 @@
         <button type="button" data-action="frame" (click)="frameFromMenu()">
           <lc-icon name="frame" />{{ 'editor.menu.frame' | transloco }}
         </button>
+      </li>
+      <li>
+        <a routerLink="/settings/lara" [queryParams]="{ from: id() }" data-action="lara-settings"
+          ><lc-icon name="settings" />{{ 'editor.menu.lara' | transloco }}</a
+        >
       </li>
       <li>
         <a routerLink="/credits"><lc-icon name="info" />{{ 'editor.menu.credits' | transloco }}</a>
@@ -142,7 +147,7 @@
 @if (phase() === 'ready') { @if (showLayers()) {
 <lc-layer-slider
   #layersPanel
-  class="layers"
+  class="layers lc-dock-avoid"
   [min]="layerMin()"
   [max]="layerMax()"
   [limit]="layer()"
@@ -150,7 +155,21 @@
 />
 }
 
-<footer #bottomBar class="bar bottom">
+<footer #bottomBar class="bar bottom lc-dock-avoid">
+  <button
+    #laraFab
+    type="button"
+    class="lc-btn lc-btn--lara lc-lara-btn lc-lara-btn--float"
+    data-action="lara"
+    aria-controls="lara-chat"
+    [attr.aria-expanded]="chatOpen()"
+    [attr.aria-label]="'lara.open' | transloco"
+    [title]="'lara.open' | transloco"
+    (click)="chatOpen() ? closeChat() : openChat()"
+  >
+    <span class="lc-lara-btn__avatar"><lc-lara mood="happy" size="2.5rem" /></span>
+    {{ 'lara.name' | transloco }}
+  </button>
   @if (hasSelection() || hasClipboard()) {
   <div
     class="actions lc-pop"
@@ -234,6 +253,21 @@
     </div>
   </div>
 </footer>
+
+@if (chatOpen() && laraHost(); as host) {
+<div #chatPanel id="lara-chat" class="lc-dock" [class.lc-dock--full]="chatSize() === 'full'">
+  @defer (on immediate) {
+  <lc-lara-chat
+    [host]="host"
+    [size]="chatSize()"
+    (sizeChange)="setChatSize($event)"
+    (closed)="closeChat()"
+  />
+  } @loading {
+  <p class="lc-dock__loading">{{ 'lara.chat.loading' | transloco }}</p>
+  }
+</div>
+}
 
 <lc-block-palette
   [registry]="registry"

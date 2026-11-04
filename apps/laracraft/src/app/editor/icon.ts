@@ -131,6 +131,41 @@ const ICONS = {
     { d: 'M12 11v5.5', line: true, w: 3.5 },
     { d: circle(12, 7.5, 1.8), w: 0 },
   ],
+  // Lara chat and settings (L2).
+  send: [
+    { d: 'M3.5 11L20.5 3.5 14 20.5l-3-6.5z' },
+    { d: 'M11 14l9.5-10.5', line: true, w: 2.5, o: 0.5 },
+  ],
+  stop: [{ d: 'M7 7h10v10H7z', w: 3 }],
+  settings: [
+    {
+      d: 'M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.2 2.2M16.2 16.2l2.2 2.2M5.6 18.4l2.2-2.2M16.2 7.8l2.2-2.2',
+      line: true,
+      w: 3.5,
+    },
+    {
+      d: 'M5.5 12a6.5 6.5 0 1 0 13 0a6.5 6.5 0 1 0-13 0zM9.5 12a2.5 2.5 0 1 1 5 0a2.5 2.5 0 1 1-5 0z',
+    },
+  ],
+  expand: [{ d: 'M5 15l7-7 7 7', line: true, w: 4 }],
+  collapse: [{ d: 'M5 9l7 7 7-7', line: true, w: 4 }],
+  eye: [
+    { d: 'M2.5 12C5 7 8.5 5 12 5s7 2 9.5 7c-2.5 5-6 7-9.5 7s-7-2-9.5-7z', o: 0.45 },
+    { d: circle(12, 12, 3.2), w: 0 },
+  ],
+  eyeOff: [
+    { d: 'M2.5 12C5 7 8.5 5 12 5s7 2 9.5 7c-2.5 5-6 7-9.5 7s-7-2-9.5-7z', o: 0.45 },
+    { d: 'M4.5 4.5l15 15', line: true, w: 3.5 },
+  ],
+  coin: [
+    { d: circle(12, 12, 8.5), o: 0.45 },
+    { d: 'M12 7.5v9M9.5 9.5h4M10.5 14.5h4', line: true, w: 2.5 },
+  ],
+  key: [
+    { d: circle(8, 12, 4.5), o: 0.45 },
+    { d: 'M12.5 12H21M18 12v3.5M21 12v3', line: true, w: 3 },
+  ],
+  retry: [{ d: 'M19 12a7 7 0 11-2.05-4.95', line: true, w: 3.5 }, { d: 'M20.5 3.5v6.5H14z' }],
 } as const satisfies Record<string, readonly Shape[]>;
 
 export type IconName = keyof typeof ICONS;

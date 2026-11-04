@@ -15,6 +15,10 @@ export const appRoutes: Route[] = [
     loadComponent: () => import('./editor/editor-page').then((m) => m.EditorPage),
   },
   {
+    path: 'settings/lara',
+    loadComponent: () => import('./lara/lara-settings-page').then((m) => m.LaraSettingsPage),
+  },
+  {
     path: 'credits',
     loadComponent: () => import('./credits/credits').then((m) => m.CreditsPage),
   },

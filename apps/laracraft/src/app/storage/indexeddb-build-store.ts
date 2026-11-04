@@ -18,9 +18,11 @@ export const DEFAULT_DATA_VERSION = JAVA_DATA_VERSION;
 
 export const DB_NAME = 'laracraft';
 /** Bump on every schema change and add a step to {@link upgradeSchema}. */
-export const DB_VERSION = 1;
+export const DB_VERSION = 2;
 const SUMMARIES = 'summaries';
 const BUILDS = 'builds';
+/** Lara chat history per build (v2); written by `IndexedDbChatHistoryStore`. */
+export const CHATS = 'chats';
 
 /** Row in the `builds` store: the build as a format v1 JSON string. */
 interface BuildRecord {
@@ -116,11 +118,13 @@ export class IndexedDbBuildStore implements BuildStore {
     return copyId;
   }
 
+  /** Deletes the build and its Lara chat history in one transaction. */
   async delete(id: string): Promise<void> {
     return this.run(async (db) => {
-      const tx = db.transaction([SUMMARIES, BUILDS], 'readwrite');
+      const tx = db.transaction([SUMMARIES, BUILDS, CHATS], 'readwrite');
       tx.objectStore(SUMMARIES).delete(id);
       tx.objectStore(BUILDS).delete(id);
+      tx.objectStore(CHATS).delete(id);
       await idbTransaction(tx);
     });
   }
@@ -262,26 +266,40 @@ export class IndexedDbBuildStore implements BuildStore {
   }
 
   private async openDb(): Promise<IDBDatabase> {
-    if (!this.factory) throw new BuildStoreError('unavailable', 'IndexedDB is not available');
-    const request = this.factory.open(this.dbName, DB_VERSION);
-    request.onupgradeneeded = (event) => {
-      upgradeSchema(request.result, event.oldVersion);
-    };
-    request.onblocked = () => {
-      console.warn('laracraft storage upgrade is blocked by another open tab');
-    };
-    const db = await idbRequest(request);
-    // Another tab wants to upgrade the schema: step aside, reopen lazily next time.
-    db.onversionchange = () => {
-      db.close();
+    const db = await openLaracraftDb(this.factory, this.dbName, () => {
       this.dbPromise = undefined;
-    };
-    db.onclose = () => {
-      this.dbPromise = undefined;
-    };
+    });
     void requestPersistence();
     return db;
   }
+}
+
+/**
+ * Opens (and migrates) the app database. Shared by the build store and the chat history
+ * store so both agree on the schema. `onLost` runs when the connection closes or another
+ * tab upgrades the schema (the caller reopens lazily next time).
+ */
+export async function openLaracraftDb(
+  factory: IDBFactory | undefined,
+  dbName: string,
+  onLost: () => void,
+): Promise<IDBDatabase> {
+  if (!factory) throw new BuildStoreError('unavailable', 'IndexedDB is not available');
+  const request = factory.open(dbName, DB_VERSION);
+  request.onupgradeneeded = (event) => {
+    upgradeSchema(request.result, event.oldVersion);
+  };
+  request.onblocked = () => {
+    console.warn('laracraft storage upgrade is blocked by another open tab');
+  };
+  const db = await idbRequest(request);
+  // Another tab wants to upgrade the schema: step aside, reopen lazily next time.
+  db.onversionchange = () => {
+    db.close();
+    onLost();
+  };
+  db.onclose = onLost;
+  return db;
 }
 
 /** Schema migrations; each step runs once, in order, inside the upgrade transaction. */
@@ -291,7 +309,10 @@ function upgradeSchema(db: IDBDatabase, oldVersion: number): void {
     summaries.createIndex('updatedAt', 'updatedAt');
     db.createObjectStore(BUILDS, { keyPath: 'id' });
   }
-  // if (oldVersion < 2) { … }
+  if (oldVersion < 2) {
+    db.createObjectStore(CHATS, { keyPath: 'id' });
+  }
+  // if (oldVersion < 3) { … }
 }
 
 function validName(name: string): string {
@@ -302,7 +323,7 @@ function validName(name: string): string {
   return clean;
 }
 
-function toStoreError(err: unknown, fallback: 'unknown' | 'unavailable' = 'unknown') {
+export function toStoreError(err: unknown, fallback: 'unknown' | 'unavailable' = 'unknown') {
   if (err instanceof BuildStoreError) return err;
   const name = (err as { name?: unknown } | null)?.name;
   if (name === 'QuotaExceededError') {

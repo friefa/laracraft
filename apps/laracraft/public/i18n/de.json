@@ -87,7 +87,8 @@
           "description": "Steinklippe mit Wasserrinne, die in ein Becken fällt."
         }
       }
-    }
+    },
+    "laraSettings": "Lara einrichten"
   },
   "storage": {
     "errors": {
@@ -339,7 +340,8 @@
       "export": "Datei exportieren",
       "guide": "Anleitungsmodus",
       "frame": "Ganzen Bau zeigen",
-      "credits": "Credits und Hinweis"
+      "credits": "Credits und Hinweis",
+      "lara": "Lara-Einstellungen"
     },
     "tool": {
       "place": "Setzen",
@@ -436,6 +438,138 @@
       "text": "Tippe auf eine Fläche, um einen Block zu setzen.",
       "textMouse": "Klicke auf eine Fläche, um einen Block zu setzen.",
       "dismiss": "Hinweis ausblenden"
+    }
+  },
+  "lara": {
+    "name": "Lara",
+    "open": "Mit Lara bauen",
+    "chat": {
+      "title": "Lara",
+      "loading": "Lara kommt …",
+      "close": "Chat schließen",
+      "expand": "Chat größer",
+      "collapse": "Chat kleiner",
+      "settings": "Lara-Einstellungen",
+      "log": "Unterhaltung mit Lara",
+      "welcome": "Hi! Sag mir, was ich bauen oder ändern soll. Du siehst alles sofort in 3D.",
+      "suggestionsLabel": "Vorschläge",
+      "suggestions": {
+        "house": "Bau ein kleines Haus",
+        "taller": "Mach den Bau 2 Blöcke höher",
+        "wall": "Bau eine Mauer davor"
+      },
+      "you": "Du",
+      "operations": "Änderungen am Bau",
+      "inputLabel": "Nachricht an Lara",
+      "placeholder": "Was soll ich bauen?",
+      "send": "Senden",
+      "stop": "Stoppen",
+      "typing": "Lara schreibt …",
+      "usage": "{{ input }} Token rein · {{ output }} raus",
+      "undo": "Rückgängig",
+      "undone": "Rückgängig gemacht",
+      "retry": "Nochmal",
+      "openSettings": "Einstellungen",
+      "stopped": "Gestoppt. Die Änderungen dieser Antwort wurden zurückgenommen.",
+      "loadError": "Der bisherige Chat konnte nicht geladen werden."
+    },
+    "chip": {
+      "block": "1 Block",
+      "blocks": "{{ count }} Blöcke"
+    },
+    "op": {
+      "fill": "Füllen",
+      "hollowBox": "Hohlkasten",
+      "line": "Linie",
+      "wall": "Wand",
+      "floor": "Boden",
+      "roof": "Dach",
+      "placeBlock": "Block",
+      "replace": "Ersetzen",
+      "clear": "Leeren",
+      "mirror": "Spiegeln",
+      "rotate": "Drehen",
+      "copy": "Kopieren",
+      "insertModule": "Modul",
+      "other": "Änderung"
+    },
+    "errors": {
+      "notConfigured": "Lara ist noch nicht eingerichtet.",
+      "auth": "Der API-Schlüssel wurde abgelehnt. Prüf ihn in den Einstellungen.",
+      "rateLimit": "Der Anbieter bremst gerade (zu viele Anfragen). Warte kurz und versuch es nochmal.",
+      "network": "Keine Verbindung zum Anbieter. Bist du online?",
+      "provider": "Der Anbieter hat einen Fehler gemeldet. Versuch es gleich nochmal.",
+      "refusal": "Das möchte ich lieber nicht bauen. Frag mich etwas anderes!",
+      "limit": "Dein Tageslimit für Lara ist erreicht. Du kannst es in den Einstellungen ändern.",
+      "cancelled": "Gestoppt.",
+      "unknown": "Da ist etwas schiefgelaufen. Versuch es nochmal."
+    },
+    "onboarding": {
+      "title": "Lara einrichten",
+      "text": "Ich kann für dich bauen! Dafür brauche ich einen Schlüssel von einem KI-Anbieter, zum Beispiel Anthropic.",
+      "costsTitle": "Kosten",
+      "costs": "Lara nutzt dein eigenes Konto beim Anbieter. Er rechnet direkt mit dir ab.",
+      "dataTitle": "Daten",
+      "data": "Was du schreibst und dein Bau gehen an den Anbieter, den du auswählst. Sonst nirgendwohin.",
+      "keyTitle": "Schlüssel",
+      "key": "Dein Schlüssel bleibt auf diesem Gerät.",
+      "action": "Lara einrichten"
+    },
+    "settings": {
+      "title": "Lara einrichten",
+      "intro": "Lara spricht direkt mit dem KI-Anbieter, den du hier auswählst. Du brauchst dort ein Konto und einen API-Schlüssel.",
+      "back": "Zu meinen Bauten",
+      "backToBuild": "Zurück zum Bau",
+      "provider": "Anbieter",
+      "anthropic": "Anthropic (Claude)",
+      "recommended": "Empfohlen",
+      "anthropicHint": "Laras Bauwerkzeuge funktionieren hier am besten. Schlüssel unter console.anthropic.com.",
+      "openai": "OpenAI-kompatibel",
+      "openaiHint": "OpenAI, OpenRouter, Azure oder ein eigener Server (Ollama, LM Studio, vLLM).",
+      "model": "Modell",
+      "modelHintAnthropic": "Standard: claude-opus-5-5.",
+      "modelHintOpenai": "Der Modellname beim Anbieter, z. B. gpt-… oder llama3.1.",
+      "baseUrl": "Basis-URL",
+      "baseUrlHint": "Die Adresse der API, z. B. https://api.openai.com/v1 oder http://localhost:11434/v1.",
+      "apiKey": "API-Schlüssel",
+      "apiKeyHint": "Beginnt meist mit „sk-“. Wird nie in Bauten oder Exporten gespeichert.",
+      "apiKeyStored": "Ein Schlüssel ist gespeichert. Leer lassen, um ihn zu behalten.",
+      "showKey": "Schlüssel zeigen",
+      "hideKey": "Schlüssel verbergen",
+      "remember": "Auf diesem Gerät merken",
+      "rememberWarning": "Der Schlüssel wird dann unverschlüsselt im Browser gespeichert. Mach das nur auf deinem eigenen Gerät.",
+      "sessionOnly": "Ohne Häkchen gilt der Schlüssel nur, bis du den Tab schließt.",
+      "nativeStorage": "Der Schlüssel liegt im sicheren Speicher deines Geräts (Schlüsselbund).",
+      "limit": "Tageslimit (Token)",
+      "limitNone": "kein Limit",
+      "limitHint": "Optional. Lara pausiert, wenn es erreicht ist. Heute verbraucht: {{ used }} Token.",
+      "save": "Speichern",
+      "test": "Verbindung testen",
+      "testing": "Teste Verbindung …",
+      "testOk": "Verbindung klappt! Modell: {{ model }}",
+      "clearKey": "Schlüssel löschen",
+      "saved": "Gespeichert.",
+      "saveError": "Konnte nicht gespeichert werden.",
+      "cleared": "Schlüssel gelöscht.",
+      "errors": {
+        "model": "Bitte gib ein Modell an.",
+        "baseUrl": "Bitte gib eine Adresse an, die mit https:// oder http:// beginnt.",
+        "apiKey": "Bitte gib deinen API-Schlüssel ein.",
+        "limit": "Bitte eine ganze Zahl größer als 0 – oder leer lassen."
+      },
+      "notes": {
+        "title": "Gut zu wissen",
+        "costsTitle": "Kosten",
+        "costs": "Jede Nachricht an Lara kostet beim Anbieter ein paar Token. Das bezahlst du über dein Konto dort. Unter jeder Antwort steht, wie viele es waren.",
+        "privacyTitle": "Datenschutz",
+        "privacy": "Deine Nachrichten und dein Bau gehen direkt an den gewählten Anbieter. laracraft hat keinen eigenen Server und sieht nichts davon.",
+        "storageTitle": "Speicherung",
+        "storage": "Der Schlüssel bleibt auf diesem Gerät. Er landet nie in Bau-Dateien, Exporten oder Logs.",
+        "ageTitle": "Alter und Regeln",
+        "age": "Es gelten die Nutzungsbedingungen deines Anbieters, auch zum Mindestalter. Frag im Zweifel deine Eltern.",
+        "localTitle": "Eigener Server",
+        "local": "Lokale Server wie Ollama oder LM Studio müssen Anfragen aus dem Browser erlauben (CORS)."
+      }
     }
   }
 }

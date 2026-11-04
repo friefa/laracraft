@@ -1,0 +1,265 @@
+<header class="head">
+  <lc-lara mood="happy" size="2.75rem" />
+  <div class="who">
+    <h2 id="lara-chat-title">{{ 'lara.chat.title' | transloco }}</h2>
+    @if (configured()) {
+    <p class="model">{{ modelLabel() }}</p>
+    }
+  </div>
+  <button
+    type="button"
+    class="lc-btn lc-btn--icon lc-btn--ghost size-toggle"
+    data-action="chat-size"
+    [attr.aria-expanded]="size() === 'full'"
+    [attr.aria-label]="(size() === 'half' ? 'lara.chat.expand' : 'lara.chat.collapse') | transloco"
+    [title]="(size() === 'half' ? 'lara.chat.expand' : 'lara.chat.collapse') | transloco"
+    (click)="toggleSize()"
+  >
+    <lc-icon [name]="size() === 'half' ? 'expand' : 'collapse'" />
+  </button>
+  <a
+    class="lc-btn lc-btn--icon lc-btn--ghost"
+    data-action="lara-settings"
+    routerLink="/settings/lara"
+    [queryParams]="{ from: host().buildId }"
+    [attr.aria-label]="'lara.chat.settings' | transloco"
+    [title]="'lara.chat.settings' | transloco"
+    ><lc-icon name="settings"
+  /></a>
+  <button
+    type="button"
+    class="lc-btn lc-btn--icon lc-btn--ghost"
+    data-action="chat-close"
+    [attr.aria-label]="'lara.chat.close' | transloco"
+    [title]="'lara.chat.close' | transloco"
+    (click)="close()"
+  >
+    <lc-icon name="close" />
+  </button>
+</header>
+
+<p class="lc-visually-hidden" role="status" aria-live="polite">
+  @if (announcement().key; as key) { {{ key | transloco }} } @else { {{ announcement().text }} }
+</p>
+
+@if (!ready()) {
+<p class="state">{{ 'lara.chat.loading' | transloco }}</p>
+} @else if (!configured()) {
+<div class="onboarding" data-state="onboarding">
+  <div class="intro">
+    <lc-lara mood="wave" size="4.5rem" />
+    <div class="lc-bubble lc-bubble--purple">
+      <h3>{{ 'lara.onboarding.title' | transloco }}</h3>
+      <p>{{ 'lara.onboarding.text' | transloco }}</p>
+    </div>
+  </div>
+  <ul class="facts">
+    <li class="lc-callout lc-tone--yellow">
+      <lc-icon name="coin" />
+      <p>
+        <strong>{{ 'lara.onboarding.costsTitle' | transloco }}</strong>
+        {{ 'lara.onboarding.costs' | transloco }}
+      </p>
+    </li>
+    <li class="lc-callout lc-tone--blue">
+      <lc-icon name="send" />
+      <p>
+        <strong>{{ 'lara.onboarding.dataTitle' | transloco }}</strong>
+        {{ 'lara.onboarding.data' | transloco }}
+      </p>
+    </li>
+    <li class="lc-callout lc-tone--green">
+      <lc-icon name="key" />
+      <p>
+        <strong>{{ 'lara.onboarding.keyTitle' | transloco }}</strong>
+        {{ 'lara.onboarding.key' | transloco }}
+      </p>
+    </li>
+  </ul>
+  <a
+    #setupLink
+    class="lc-btn lc-btn--lara lc-btn--lg lc-btn--block"
+    data-action="lara-setup"
+    routerLink="/settings/lara"
+    [queryParams]="{ from: host().buildId }"
+    >{{ 'lara.onboarding.action' | transloco }}</a
+  >
+</div>
+} @else {
+<div
+  #log
+  class="log"
+  role="log"
+  aria-live="off"
+  tabindex="0"
+  [attr.aria-label]="'lara.chat.log' | transloco"
+  [attr.aria-busy]="busy()"
+>
+  @if (loadFailed()) {
+  <p class="lc-alert">{{ 'lara.chat.loadError' | transloco }}</p>
+  } @if (messages().length === 0 && !busy()) {
+  <div class="msg lara">
+    <lc-lara mood="wave" size="2.25rem" />
+    <div class="lc-bubble lc-bubble--purple bubble">
+      <p>{{ 'lara.chat.welcome' | transloco }}</p>
+    </div>
+  </div>
+  <div
+    class="suggestions"
+    role="group"
+    [attr.aria-label]="'lara.chat.suggestionsLabel' | transloco"
+  >
+    @for (s of suggestions; track s) {
+    <button
+      type="button"
+      class="lc-chip lc-chip--action"
+      [attr.data-suggestion]="s"
+      (click)="useSuggestion(s)"
+    >
+      {{ 'lara.chat.suggestions.' + s | transloco }}
+    </button>
+    }
+  </div>
+  }
+  <ol class="messages">
+    @for (m of messages(); track m.id) { @if (m.role === 'user') {
+    <li class="msg user">
+      <span class="lc-visually-hidden">{{ 'lara.chat.you' | transloco }}:</span>
+      <p class="user-bubble">{{ m.text }}</p>
+    </li>
+    } @else {
+    <li
+      class="msg lara"
+      [class.failed]="!!m.error"
+      [class.undone]="undone().has(m.id)"
+      [attr.data-message]="m.id"
+    >
+      <lc-lara [mood]="m.error ? 'think' : 'happy'" size="2.25rem" />
+      <div class="lc-bubble lc-bubble--purple bubble">
+        <span class="lc-visually-hidden">{{ 'lara.chat.title' | transloco }}:</span>
+        @if (m.text) {
+        <lc-lara-markdown [text]="m.text" />
+        } @if (m.operations.length) {
+        <ul class="chips" [attr.aria-label]="'lara.chat.operations' | transloco">
+          @for (o of m.operations; track $index) {
+          <li class="lc-chip">
+            <span class="cube" aria-hidden="true"></span>{{ opLabelKey(o.op) | transloco }} · {{
+            blocksKey(o.changed) | transloco: { count: o.changed } }}
+          </li>
+          }
+        </ul>
+        } @if (m.error; as e) { @if (e.code === 'cancelled') {
+        <p class="stopped" data-error="cancelled">{{ 'lara.chat.stopped' | transloco }}</p>
+        } @else {
+        <p class="error" [attr.data-error]="e.code">{{ errorKey(e.code) | transloco }}</p>
+        }
+        <div class="actions">
+          @if (needsSettings(e.code)) {
+          <a
+            class="lc-btn lc-btn--sm lc-btn--lara"
+            routerLink="/settings/lara"
+            [queryParams]="{ from: host().buildId }"
+            >{{ 'lara.chat.openSettings' | transloco }}</a
+          >
+          } @if (m.id === lastLaraId() && e.code !== 'limit') {
+          <button
+            type="button"
+            class="lc-btn lc-btn--sm"
+            data-action="retry"
+            [disabled]="busy()"
+            (click)="retry(m.id)"
+          >
+            <lc-icon name="retry" />{{ 'lara.chat.retry' | transloco }}
+          </button>
+          }
+        </div>
+        } @else {
+        <div class="meta">
+          @if (m.usage; as u) {
+          <span class="usage"
+            >{{ 'lara.chat.usage' | transloco: { input: fmt(u.inputTokens), output:
+            fmt(u.outputTokens) } }}</span
+          >
+          } @if (undone().has(m.id)) {
+          <span class="undone-label">{{ 'lara.chat.undone' | transloco }}</span>
+          } @else if (m.id === undoableId() && host().canUndoTurn()) {
+          <button
+            type="button"
+            class="lc-btn lc-btn--sm lc-btn--ghost undo"
+            data-action="undo-turn"
+            [disabled]="busy()"
+            (click)="undoTurn(m.id)"
+          >
+            <lc-icon name="undo" />{{ 'lara.chat.undo' | transloco }}
+          </button>
+          }
+        </div>
+        }
+      </div>
+    </li>
+    } } @if (streaming(); as s) {
+    <li class="msg lara streaming" data-state="streaming">
+      <lc-lara mood="think" size="2.25rem" />
+      <div class="lc-bubble lc-bubble--purple bubble">
+        @if (s.text) {
+        <lc-lara-markdown [text]="s.text" />
+        } @if (s.operations.length) {
+        <ul class="chips" [attr.aria-label]="'lara.chat.operations' | transloco">
+          @for (o of s.operations; track $index) {
+          <li class="lc-chip lc-pop">
+            <span class="cube" aria-hidden="true"></span>{{ opLabelKey(o.op) | transloco }} · {{
+            blocksKey(o.changed) | transloco: { count: o.changed } }}
+          </li>
+          }
+        </ul>
+        }
+        <span class="lc-typing" [attr.aria-label]="'lara.chat.typing' | transloco" role="img"
+          ><i></i><i></i><i></i
+        ></span>
+      </div>
+    </li>
+    }
+  </ol>
+</div>
+
+<form class="composer" (submit)="submit($event)">
+  <label class="lc-visually-hidden" for="lara-input"
+    >{{ 'lara.chat.inputLabel' | transloco }}</label
+  >
+  <textarea
+    #input
+    id="lara-input"
+    class="lc-input"
+    rows="1"
+    maxlength="2000"
+    enterkeyhint="send"
+    [placeholder]="'lara.chat.placeholder' | transloco"
+    [value]="draft()"
+    (input)="onInput($event)"
+    (keydown)="onComposerKeydown($event)"
+  ></textarea>
+  @if (busy()) {
+  <button
+    type="button"
+    class="lc-btn lc-btn--icon lc-btn--danger"
+    data-action="stop"
+    [attr.aria-label]="'lara.chat.stop' | transloco"
+    [title]="'lara.chat.stop' | transloco"
+    (click)="stop()"
+  >
+    <lc-icon name="stop" />
+  </button>
+  } @else {
+  <button
+    type="submit"
+    class="lc-btn lc-btn--icon lc-btn--lara"
+    data-action="send"
+    [disabled]="!canSend()"
+    [attr.aria-label]="'lara.chat.send' | transloco"
+    [title]="'lara.chat.send' | transloco"
+  >
+    <lc-icon name="send" />
+  </button>
+  }
+</form>
+}
