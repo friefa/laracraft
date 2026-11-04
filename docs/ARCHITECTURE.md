@@ -95,10 +95,12 @@ Wer eine Änderung an diesen Verträgen braucht, meldet sie im Paket-Report; der
 
 Eingabe: `BuildDocument` + Registry. Ausgabe: `BuildPlan { steps: Step[]; materials; warnings }`.
 
-1. **Abhängigkeitsgraph**: Kanten aus `physics.support` (Träger vor Anbauteil), Schwerkraft (Untergrund vor
-   Sand/Kies; sonst temporäre Stütze + späterer Abbau-Schritt), Erreichbarkeit/„Klickfläche“ (ein Nachbar muss
-   existieren; sonst Gerüst), Redstone-Sicherheit (Quellen zuletzt, `triggersOnPlace`-Bauteile nach ihrer Umgebung,
-   Hinweis „Kreis offen lassen“), Flüssigkeiten ganz am Ende.
+1. **Abhängigkeitsgraph**: Kanten aus `physics.support` + Support-Profilen (Träger vor Anbauteil, Tragfähigkeit
+   pro Fläche), Schwerkraft (Untergrund vor Sand/Kies). **Temporäre Blöcke nie direkt unter Schwerkraftblöcken**
+   (beim Abbau würde der Sand fallen); temporäre Blöcke dienen nur als Klickfläche und Gerüst und werden im
+   Cleanup abgebaut. Erreichbarkeit (Reichweite 4,5, sichtbare Klickfläche, Augenhöhe 1,62), Redstone-Sicherheit
+   (Quellen in Phase `power`, Observer nach dem beobachteten Block, Hinweis „Kreis offen lassen“), Flüssigkeiten
+   ganz am Ende.
 2. **Topologische Sortierung** mit Priorität: Y-Ebene, dann räumliche Nähe (Cluster).
 3. **Schritt-Bildung**: 10–30 Blöcke, Materialliste pro Schritt und gesamt, Crafting-Baum optional.
 4. **Ausrichtung**: pro Block Spielerposition + Blickrichtung + Klickfläche, abgeleitet aus `placement`.
@@ -106,6 +108,8 @@ Eingabe: `BuildDocument` + Registry. Ausgabe: `BuildPlan { steps: Step[]; materi
    Turm mit Überhang, Sandstruktur, 2×2-Kolbentür, Observer-Takt, Wasserfall.
 
 Läuft im Web Worker; Schnittstelle zum UI über `postMessage` mit serialisiertem Dokument (Format v1).
+**Qualitäts-Gate:** `libs/build-order/src/lib/integration.spec.ts` prüft den Plan jedes Referenzbaus mit dem
+unabhängig geschriebenen Validator (0 Befunde Pflicht).
 
 ## 5. Rendering (M1)
 
