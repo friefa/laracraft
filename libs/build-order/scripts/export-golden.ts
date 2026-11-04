@@ -1,8 +1,8 @@
-/** Dev helper: writes every golden build as a `.lcb.json` file. Usage: tsx export-golden.ts <outDir> */
+/** Dev helper: writes every golden build as a `.lcb.json` file. Usage: pnpm exec tsx --tsconfig tsconfig.base.json libs/build-order/scripts/export-golden.ts <outDir> */
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { createJavaBlockRegistry, serializeBuildToString } from '@laracraft/core-model';
-import { GOLDEN_BUILDS } from './golden';
+import { GOLDEN_BUILDS } from '../src/testing/golden';
 
 const out = process.argv[2] ?? '.';
 const registry = createJavaBlockRegistry();
