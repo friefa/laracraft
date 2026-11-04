@@ -13,6 +13,11 @@ export interface VoxelPick {
   readonly pos: Vec3;
   /** Face of `pos` that was hit; `pos + DIRECTION_OFFSET[face]` is where a new block goes. */
   readonly face: Direction;
+  /**
+   * Hit point within the block, each component in [0,1] (0 = min corner). Lets tools
+   * tell the upper from the lower half of a side face (stairs, slabs, trapdoors).
+   */
+  readonly hit?: { readonly x: number; readonly y: number; readonly z: number };
 }
 
 export interface HighlightGroup {

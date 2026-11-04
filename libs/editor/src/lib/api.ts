@@ -19,6 +19,11 @@ import type {
 export interface Pick {
   readonly pos: Vec3;
   readonly face: Direction;
+  /**
+   * Hit point within the block, each component in [0,1] (0 = min corner). Lets tools
+   * tell the upper from the lower half of a side face (stairs, slabs, trapdoors).
+   */
+  readonly hit?: { readonly x: number; readonly y: number; readonly z: number };
 }
 
 export interface PointerModifiers {
@@ -54,6 +59,8 @@ export interface ToolContext {
    * placed blocks like Java (stairs, furnaces …). Undefined: palette state is kept.
    */
   readonly lookHorizontal?: HorizontalDirection;
+  /** Camera pitch class for 3D-facing blocks (piston, observer, dispenser). */
+  readonly lookVertical?: 'up' | 'level' | 'down';
 }
 
 export interface EditorTool {
