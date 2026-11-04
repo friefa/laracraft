@@ -83,7 +83,72 @@ describe('place tool', () => {
   });
 });
 
+describe('place tool: Java-like placement', () => {
+  it('places torches on walls, on floors, never on ceilings', () => {
+    const s = sessionWithFloor();
+    s.setActiveState('minecraft:torch');
+    s.tap(pick(2, 0, 0, 'east'));
+    expect(s.doc.getBlock(3, 0, 0)).toBe(st('minecraft:wall_torch[facing=east]'));
+    s.tap(pick(0, 0, 0, 'north'));
+    expect(s.doc.getBlock(0, 0, -1)).toBe(st('minecraft:wall_torch[facing=north]'));
+    s.tap(pick(1, 0, 0, 'up'));
+    expect(s.doc.getBlock(1, 1, 0)).toBe(st('minecraft:torch'));
+    s.tap(pick(0, 0, 0, 'down'));
+    expect(s.doc.getBlock(0, -1, 0)).toBe(AIR);
+    expect(s.history).toHaveLength(3);
+  });
+
+  it('uses the hit point for the half and the pitch for 3D blocks', () => {
+    const s = sessionWithFloor();
+    const events: string[] = [];
+    s.subscribe((e) => events.push(e.kind));
+    s.setActiveState('minecraft:oak_stairs');
+    s.setLookHorizontal('west');
+    s.tap({ pos: v(2, 0, 0), face: 'east', hit: { x: 1, y: 0.75, z: 0.5 } });
+    expect(s.doc.getBlock(3, 0, 0)).toBe(st('minecraft:oak_stairs[facing=west,half=top]'));
+    s.setLookVertical('down');
+    s.setLookVertical('down');
+    expect(s.lookVertical).toBe('down');
+    expect(events.filter((k) => k === 'look')).toHaveLength(2);
+    s.setActiveState('minecraft:piston');
+    s.tap(pick(0, 0, 0, 'up'));
+    expect(s.doc.getBlock(0, 1, 0)).toBe(st('minecraft:piston[facing=up]'));
+    s.setActiveState('minecraft:observer');
+    s.tap(pick(1, 0, 0, 'up'));
+    expect(s.doc.getBlock(1, 1, 0)).toBe(st('minecraft:observer[facing=down]'));
+    s.setLookVertical('level');
+    s.tap(pick(2, 0, 0, 'up'));
+    expect(s.doc.getBlock(2, 1, 0)).toBe(st('minecraft:observer[facing=west]'));
+  });
+
+  it('one undo step reverts the placed block and its neighbour updates', () => {
+    const s = sessionWithFloor();
+    s.setActiveState('minecraft:oak_fence');
+    s.tap(pick(0, 0, 0, 'up'));
+    s.tap(pick(1, 0, 0, 'up'));
+    expect(s.doc.getBlock(0, 1, 0)).toBe(st('minecraft:oak_fence[east=true]'));
+    expect(s.history).toHaveLength(2);
+    s.undo();
+    expect(s.doc.getBlock(0, 1, 0)).toBe(st('minecraft:oak_fence'));
+    expect(s.doc.getBlock(1, 1, 0)).toBe(AIR);
+    s.redo();
+    expect(s.doc.getBlock(0, 1, 0)).toBe(st('minecraft:oak_fence[east=true]'));
+  });
+});
+
 describe('remove tool', () => {
+  it('keeps attachments when their support is removed (creative-like)', () => {
+    const s = sessionWithFloor();
+    s.setActiveState('minecraft:torch');
+    s.tap(pick(2, 0, 0, 'east'));
+    s.tap(pick(1, 0, 0, 'up'));
+    s.setTool('remove');
+    s.tap(pick(2, 0, 0));
+    s.tap(pick(1, 0, 0));
+    expect(s.doc.getBlock(3, 0, 0)).toBe(st('minecraft:wall_torch[facing=east]'));
+    expect(s.doc.getBlock(1, 1, 0)).toBe(st('minecraft:torch'));
+  });
+
   it('removes the picked block, ignores air and empty space', () => {
     const s = sessionWithFloor();
     s.setTool('remove');
