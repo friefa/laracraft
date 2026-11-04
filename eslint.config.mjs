@@ -53,6 +53,9 @@ export default [
       'libs/lara-dsl/**/*.ts',
       'libs/redstone-modules/**/*.ts',
       'libs/formats/**/*.ts',
+      'libs/editor/**/*.ts',
+      'libs/renderer/src/lib/mesh/**/*.ts',
+      'libs/renderer/src/lib/models/**/*.ts',
     ],
     rules: {
       'no-restricted-imports': [

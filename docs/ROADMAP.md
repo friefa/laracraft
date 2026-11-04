@@ -23,6 +23,13 @@ Ziel: Monorepo, CI für Web/iOS/Android, Core-Model, Blockregistry (~150 Blöcke
 **Schnittstellen M0:** `libs/core-model/src/index.ts` (Lead), `assets/textures/manifest.json` + `atlas.json` (P0.4),
 `credits.json` (P0.4 → P0.6).
 
+## MVP (Entscheidung PO 2026-11-04: „MVP fertig bauen“)
+
+MVP = **M1 + M2**: selbst bauen (Web, iOS, Android, lokal gespeichert) und automatische, validierte
+Survival-Bauanleitung im Anleitungsmodus. Lara (M3) und Teilen (M4) folgen danach.
+Verträge (Lead, ✅): `libs/core-model` Support-Profile (P2.0), `libs/build-order/src/lib/{types,api}.ts`,
+`libs/renderer/src/lib/{mesh/types,scene/api}.ts`, `libs/editor/src/lib/api.ts`.
+
 ## M1 – Viewer und Editor
 
 Ziel: Bau laden, flüssig rendern, mit Touch und Maus bearbeiten, Undo/Redo, lokal speichern.

@@ -27,7 +27,8 @@
       "@laracraft/lara-dsl": ["./libs/lara-dsl/src/index.ts"],
       "@laracraft/redstone-modules": ["./libs/redstone-modules/src/index.ts"],
       "@laracraft/formats": ["./libs/formats/src/index.ts"],
-      "@laracraft/renderer": ["./libs/renderer/src/index.ts"]
+      "@laracraft/renderer": ["./libs/renderer/src/index.ts"],
+      "@laracraft/editor": ["./libs/editor/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
