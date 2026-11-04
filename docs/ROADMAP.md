@@ -42,6 +42,7 @@ Ziel: Bau laden, flüssig rendern, mit Touch und Maus bearbeiten, Undo/Redo, lok
 | P1.r  | Unabhängiger Review: Mesher (Korrektheit Face-Culling/Greedy) und Blockstate-Transformationen                                                                              | Review-Agent      | P1.1, P1.5       | –           |
 
 | P1.10 | Registry auf die **aktuellste** Java-Version heben (26.x, Version bei Paketstart verifizieren; neue Blöcke/Properties seit 1.21.11), `dataVersion` aktualisieren, Review; danach Update-Pflege pro Release | core-model | P0.3 | alle |
+| P1.11 | Lokaler Dev-Texturmodus: `textures:import-local --jar <eigene client.jar>` entpackt Texturen der eigenen Minecraft-Installation in ein git-ignoriertes Verzeichnis (`.local-textures/`), Atlas nutzt sie als höchste Priorität. Schutz: Prod-Build, CI und Capacitor-Sync brechen ab, wenn dieser Modus aktiv ist; nie im Repo, nie im Artefakt | tools/textures + renderer | P0.4 | P1.1 |
 
 Kritischer Pfad M1: P1.0 → P1.1 → P1.3 → P1.7 (Touch-Risiko so früh wie möglich auf Geräte bringen).
 
