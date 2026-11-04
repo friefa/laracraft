@@ -1,0 +1,155 @@
+<div class="page-head">
+  <h1>{{ 'builds.title' | transloco }}</h1>
+  <p class="intro">{{ 'builds.intro' | transloco }}</p>
+  <div class="toolbar">
+    <button
+      type="button"
+      class="primary"
+      data-action="new"
+      [disabled]="busy()"
+      (click)="openCreate()"
+    >
+      {{ 'builds.new' | transloco }}
+    </button>
+    <button type="button" data-action="import" [disabled]="busy()" (click)="fileInput.click()">
+      {{ 'builds.import' | transloco }}
+    </button>
+    <input
+      #fileInput
+      class="file-input"
+      type="file"
+      accept=".lcb.json,.json,application/json"
+      tabindex="-1"
+      aria-hidden="true"
+      (change)="onImport($event)"
+    />
+  </div>
+</div>
+
+<p class="status" role="status">@if (status(); as s) { {{ s.key | transloco: s.params }} }</p>
+
+@if (error(); as e) {
+<div class="banner error" role="alert">
+  <p>{{ e.key | transloco: e.params }}</p>
+  <button type="button" (click)="dismissError()">{{ 'builds.dismiss' | transloco }}</button>
+</div>
+}
+
+<section [attr.aria-label]="'builds.listLabel' | transloco" [attr.aria-busy]="builds.isLoading()">
+  @if (builds.error()) {
+  <div class="state error" role="alert">
+    <p>{{ 'builds.loadError' | transloco }}</p>
+    <button type="button" (click)="builds.reload()">{{ 'builds.retry' | transloco }}</button>
+  </div>
+  } @else if (builds.hasValue()) { @if (builds.value().length === 0) {
+  <div class="empty">
+    <h2>{{ 'builds.emptyTitle' | transloco }}</h2>
+    <p>{{ 'builds.emptyText' | transloco }}</p>
+    <button type="button" class="primary" data-action="empty-new" (click)="openCreate()">
+      {{ 'builds.emptyAction' | transloco }}
+    </button>
+  </div>
+  } @else {
+  <ul class="build-list">
+    @for (b of builds.value(); track b.id) {
+    <li class="build" [attr.data-id]="b.id">
+      <h2 class="name" [id]="'build-name-' + b.id">
+        <a [routerLink]="['/build', b.id]">{{ b.name }}</a>
+      </h2>
+      <p class="meta">
+        <span>{{ 'builds.updated' | transloco: { date: formatDate(b.updatedAt) } }}</span>
+        <span>{{ 'builds.blocks' | transloco: { count: b.blockCount } }}</span>
+        <span
+          >{{ 'builds.size' | transloco: { width: b.size[0], height: b.size[1], length: b.size[2] }
+          }}</span
+        >
+      </p>
+      <div class="actions">
+        <button
+          type="button"
+          data-action="rename"
+          [disabled]="busy()"
+          [attr.aria-describedby]="'build-name-' + b.id"
+          (click)="openRename(b)"
+        >
+          {{ 'builds.rename' | transloco }}
+        </button>
+        <button
+          type="button"
+          data-action="duplicate"
+          [disabled]="busy()"
+          [attr.aria-describedby]="'build-name-' + b.id"
+          (click)="duplicate(b)"
+        >
+          {{ 'builds.duplicate' | transloco }}
+        </button>
+        <button
+          type="button"
+          data-action="export"
+          [disabled]="busy()"
+          [attr.aria-describedby]="'build-name-' + b.id"
+          (click)="exportBuild(b)"
+        >
+          {{ 'builds.export' | transloco }}
+        </button>
+        <button
+          type="button"
+          class="danger"
+          data-action="delete"
+          [disabled]="busy()"
+          [attr.aria-describedby]="'build-name-' + b.id"
+          (click)="openDelete(b)"
+        >
+          {{ 'builds.delete' | transloco }}
+        </button>
+      </div>
+    </li>
+    }
+  </ul>
+  } } @else {
+  <p class="state" role="status">{{ 'builds.loading' | transloco }}</p>
+  }
+</section>
+
+<dialog #modal aria-labelledby="build-dialog-title" (close)="onDialogClosed()">
+  @let d = dialog(); @if (d?.kind === 'delete') {
+  <h2 id="build-dialog-title">{{ 'builds.dialog.deleteTitle' | transloco }}</h2>
+  <form (submit)="submitDialog($event)">
+    <p>{{ 'builds.dialog.deleteText' | transloco: { name: d.build.name } }}</p>
+    <div class="dialog-actions">
+      <button #initialFocus type="button" (click)="closeDialog()">
+        {{ 'builds.dialog.cancel' | transloco }}
+      </button>
+      <button type="submit" class="danger" data-action="confirm">
+        {{ 'builds.dialog.deleteConfirm' | transloco }}
+      </button>
+    </div>
+  </form>
+  } @else if (d) {
+  <h2 id="build-dialog-title">
+    {{ (d.kind === 'create' ? 'builds.dialog.createTitle' : 'builds.dialog.renameTitle') | transloco
+    }}
+  </h2>
+  <form (submit)="submitDialog($event)">
+    <label for="build-name-input">{{ 'builds.dialog.nameLabel' | transloco }}</label>
+    <input
+      #initialFocus
+      id="build-name-input"
+      type="text"
+      autocomplete="off"
+      required
+      [maxLength]="maxNameLength"
+      [value]="nameDraft()"
+      (input)="onNameInput($event)"
+    />
+    <div class="dialog-actions">
+      <button type="button" (click)="closeDialog()">
+        {{ 'builds.dialog.cancel' | transloco }}
+      </button>
+      <button type="submit" class="primary" data-action="confirm" [disabled]="!nameDraft().trim()">
+        {{ (d.kind === 'create' ? 'builds.dialog.create' : 'builds.dialog.save') | transloco }}
+      </button>
+    </div>
+  </form>
+  }
+</dialog>

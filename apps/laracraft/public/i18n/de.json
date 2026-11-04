@@ -14,9 +14,64 @@
     "navLabel": "Rechtliches",
     "credits": "Credits"
   },
-  "home": {
-    "title": "laracraft",
-    "tagline": "Bauwerke für die Minecraft Java Edition planen, ansehen und Schritt für Schritt nachbauen."
+  "builds": {
+    "title": "Meine Bauten",
+    "intro": "Bauwerke für die Minecraft Java Edition planen, ansehen und Schritt für Schritt nachbauen.",
+    "new": "Neuer Bau",
+    "import": "Datei importieren",
+    "loading": "Bauten werden geladen …",
+    "loadError": "Deine Bauten konnten nicht geladen werden.",
+    "retry": "Erneut versuchen",
+    "emptyTitle": "Noch keine Bauten",
+    "emptyText": "Starte deinen ersten Bau oder importiere eine Baudatei (.lcb.json).",
+    "emptyAction": "Ersten Bau anlegen",
+    "listLabel": "Bauten auf diesem Gerät",
+    "updated": "Geändert {{ date }}",
+    "blocks": "Blöcke: {{ count }}",
+    "size": "Größe: {{ width }} × {{ height }} × {{ length }}",
+    "rename": "Umbenennen",
+    "duplicate": "Duplizieren",
+    "export": "Exportieren",
+    "delete": "Löschen",
+    "copyName": "{{ name }} (Kopie)",
+    "defaultName": "Mein Bau",
+    "dismiss": "Schließen",
+    "dialog": {
+      "createTitle": "Neuer Bau",
+      "renameTitle": "Bau umbenennen",
+      "nameLabel": "Name",
+      "create": "Anlegen",
+      "save": "Speichern",
+      "cancel": "Abbrechen",
+      "deleteTitle": "Bau löschen?",
+      "deleteText": "„{{ name }}“ wird von diesem Gerät entfernt. Das kann nicht rückgängig gemacht werden.",
+      "deleteConfirm": "Löschen"
+    },
+    "status": {
+      "renamed": "Umbenannt in „{{ name }}“.",
+      "duplicated": "„{{ name }}“ angelegt.",
+      "deleted": "„{{ name }}“ gelöscht.",
+      "imported": "„{{ name }}“ importiert.",
+      "exported": "„{{ name }}“ exportiert."
+    }
+  },
+  "build": {
+    "loading": "Bau wird geladen …",
+    "blocks": "Blöcke: {{ count }}",
+    "placeholder": "Der Editor kommt bald.",
+    "back": "Zurück zu meinen Bauten"
+  },
+  "storage": {
+    "errors": {
+      "unavailable": "Auf diesem Gerät steht kein Speicher zur Verfügung. Im privaten Modus kann das Speichern blockiert sein.",
+      "quota": "Nicht genug Speicherplatz. Lösche oder exportiere einige Bauten und versuche es erneut.",
+      "notFound": "Diesen Bau gibt es nicht mehr.",
+      "invalidName": "Bitte gib einen Namen ein (bis zu 200 Zeichen).",
+      "tooLarge": "Die Datei ist zu groß (höchstens {{ max }} MB).",
+      "invalidFile": "Diese Datei ist kein gültiger laracraft-Bau.",
+      "unsupportedVersion": "Diese Datei stammt aus einer neueren laracraft-Version. Bitte aktualisiere die App.",
+      "unknown": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
+    }
   },
   "credits": {
     "title": "Credits",
