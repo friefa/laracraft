@@ -1,0 +1,62 @@
+{
+  "redstoneModule": {
+    "piston_door_2x2": {
+      "name": "2×2 piston door",
+      "description": "Four sticky pistons close a 2×2 doorway flush with the wall. Lever on: closed, lever off: open.",
+      "port": { "lever": "Lever" },
+      "param": { "doorBlock": "Door block" }
+    },
+    "piston_door_1x2": {
+      "name": "1×2 piston door",
+      "description": "Two sticky pistons close a doorway one block wide and two blocks high. Lever on: closed.",
+      "port": { "lever": "Lever" },
+      "param": { "doorBlock": "Door block" }
+    },
+    "observer_clock": {
+      "name": "Observer clock",
+      "description": "Two observers facing each other. Very fast clock that starts as soon as it is built; break an observer to stop it.",
+      "port": { "out": "Output (front)", "outBack": "Output (back)" }
+    },
+    "repeater_clock": {
+      "name": "Repeater clock",
+      "description": "Adjustable clock from a redstone torch and two repeaters. It runs as soon as it is built; switch the lever on top on to stop it.",
+      "port": { "stop": "Stop lever", "out": "Clock output" },
+      "param": { "delay": "Repeater delay (1–4 redstone ticks each)" }
+    },
+    "t_flip_flop": {
+      "name": "T flip-flop",
+      "description": "Every input pulse toggles the output between on and off – turns a button into a switch.",
+      "port": { "toggle": "Toggle input", "q": "Output" }
+    },
+    "rs_nor_latch": {
+      "name": "RS latch",
+      "description": "Memory cell: a signal on “set” turns the output on, a signal on “reset” turns it off.",
+      "port": { "set": "Set", "reset": "Reset", "q": "Output" }
+    },
+    "and_gate": {
+      "name": "AND gate",
+      "description": "The output is on only while both inputs are on.",
+      "port": { "a": "Input A", "b": "Input B", "out": "Output" }
+    },
+    "pulse_extender": {
+      "name": "Pulse extender",
+      "description": "Makes short signals longer: every input pulse is extended by three times the repeater delay.",
+      "port": { "in": "Input", "out": "Output" },
+      "param": { "delay": "Repeater delay (1–4 redstone ticks)" }
+    },
+    "item_sorter": {
+      "name": "Item sorter",
+      "description": "Filters one item type out of a hopper line into a chest; all other items go on into the overflow chest. Load the filter hopper before use.",
+      "port": { "itemsIn": "Items in", "sorted": "Sorted items", "overflow": "Other items" },
+      "param": {
+        "stackSize": "Stack size of the sorted item (64: 41 in the filter, 16: 10 in the filter)"
+      }
+    },
+    "hidden_lamp_array": {
+      "name": "Hidden ceiling lights",
+      "description": "Four redstone lamps with the wiring hidden above them, switched by one lever. Build it into a ceiling.",
+      "port": { "lever": "Lever" },
+      "param": { "cover": "Cover block above the wiring" }
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "redstoneModule": {
+    "piston_door_2x2": {
+      "name": "2×2-Kolbentür",
+      "description": "Vier klebrige Kolben schließen eine 2×2-Öffnung bündig mit der Wand. Hebel an: zu, Hebel aus: offen.",
+      "port": { "lever": "Hebel" },
+      "param": { "doorBlock": "Türblock" }
+    },
+    "piston_door_1x2": {
+      "name": "1×2-Kolbentür",
+      "description": "Zwei klebrige Kolben schließen eine Öffnung, einen Block breit und zwei Blöcke hoch. Hebel an: zu.",
+      "port": { "lever": "Hebel" },
+      "param": { "doorBlock": "Türblock" }
+    },
+    "observer_clock": {
+      "name": "Beobachter-Takt",
+      "description": "Zwei Beobachter, die sich ansehen. Sehr schneller Taktgeber, der sofort nach dem Bauen läuft; zum Anhalten einen Beobachter abbauen.",
+      "port": { "out": "Ausgang (vorne)", "outBack": "Ausgang (hinten)" }
+    },
+    "repeater_clock": {
+      "name": "Verstärker-Takt",
+      "description": "Einstellbarer Taktgeber aus einer Redstone-Fackel und zwei Verstärkern. Er läuft sofort nach dem Bauen; den Hebel oben einschalten, um ihn anzuhalten.",
+      "port": { "stop": "Stopp-Hebel", "out": "Taktausgang" },
+      "param": { "delay": "Verzögerung der Verstärker (je 1–4 Redstone-Ticks)" }
+    },
+    "t_flip_flop": {
+      "name": "T-Flipflop",
+      "description": "Jeder Eingangsimpuls schaltet den Ausgang um – aus einem Knopf wird ein Schalter.",
+      "port": { "toggle": "Umschalt-Eingang", "q": "Ausgang" }
+    },
+    "rs_nor_latch": {
+      "name": "RS-Speicher",
+      "description": "Speicherzelle: Ein Signal an „Setzen“ schaltet den Ausgang ein, ein Signal an „Zurücksetzen“ aus.",
+      "port": { "set": "Setzen", "reset": "Zurücksetzen", "q": "Ausgang" }
+    },
+    "and_gate": {
+      "name": "UND-Gatter",
+      "description": "Der Ausgang ist nur an, solange beide Eingänge an sind.",
+      "port": { "a": "Eingang A", "b": "Eingang B", "out": "Ausgang" }
+    },
+    "pulse_extender": {
+      "name": "Impulsverlängerer",
+      "description": "Macht kurze Signale länger: Jeder Eingangsimpuls wird um die dreifache Verstärker-Verzögerung verlängert.",
+      "port": { "in": "Eingang", "out": "Ausgang" },
+      "param": { "delay": "Verzögerung der Verstärker (1–4 Redstone-Ticks)" }
+    },
+    "item_sorter": {
+      "name": "Item-Sortierer",
+      "description": "Filtert eine Item-Sorte aus einer Trichterkette in eine Truhe; alle anderen Items laufen weiter in die Überlauf-Truhe. Vor dem Benutzen den Filtertrichter befüllen.",
+      "port": {
+        "itemsIn": "Items hinein",
+        "sorted": "Sortierte Items",
+        "overflow": "Andere Items"
+      },
+      "param": {
+        "stackSize": "Stapelgröße des sortierten Items (64: 41 im Filter, 16: 10 im Filter)"
+      }
+    },
+    "hidden_lamp_array": {
+      "name": "Versteckte Deckenlampen",
+      "description": "Vier Redstone-Lampen mit verdeckter Verkabelung darüber, geschaltet mit einem Hebel. In eine Decke einbauen.",
+      "port": { "lever": "Hebel" },
+      "param": { "cover": "Abdeckblock über der Verkabelung" }
+    }
+  }
+}
