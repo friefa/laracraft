@@ -85,7 +85,7 @@ export interface RemoveAction {
 
 export type StepAction = PlaceAction | RemoveAction;
 
-/** Machine-readable hint; UI renders it via i18n key `buildOrder.hint.<code>`. */
+/** Machine-readable hint; UI renders it via i18n key `guide.hint.<code>`. */
 export type HintCode =
   | 'temporary-support' // gravity block needs a support that is removed later
   | 'scaffold' // scaffolding needed to reach blocks
