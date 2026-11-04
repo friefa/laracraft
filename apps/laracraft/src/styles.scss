@@ -1,27 +1,120 @@
-// Global tokens and base styles. Component styles use the --lc-* custom properties.
+// laracraft design system ("playful builder"): see docs/DESIGN.md.
+// Global tokens, base styles and shared component classes (.lc-*).
+// Components use the --lc-* custom properties; never hard-code colours.
+
+// Nunito (OFL-1.1), self-hosted so the native apps work offline. Latin subsets only.
+@use '@fontsource-variable/nunito/wght.css';
+
 :root {
-  color-scheme: light dark;
-  --lc-bg: #f7f7f5;
+  color-scheme: light;
+
+  /* Palette (own, not a brand copy): grass green primary, sky blue, sunny orange. */
+  --lc-green: #3fb950;
+  --lc-green-shade: #2c8a3a;
+  --lc-green-soft: #e3f7e1;
+  --lc-blue: #2f9bf0;
+  --lc-blue-shade: #1f74b8;
+  --lc-blue-soft: #e1f1fd;
+  --lc-orange: #ff9a2e;
+  --lc-orange-shade: #d27512;
+  --lc-orange-soft: #fff0dc;
+  --lc-red: #f04b4f;
+  --lc-red-shade: #c23236;
+  --lc-red-soft: #fde4e4;
+  --lc-yellow: #ffcd3c;
+  --lc-yellow-shade: #d9a514;
+
+  /* Neutrals (slightly cool) */
+  --lc-bg: #ffffff;
+  --lc-bg-soft: #f4f7f9;
   --lc-surface: #ffffff;
-  --lc-text: #1c1c1e;
-  --lc-muted: #5a5a60;
-  --lc-border: #d8d8dc;
-  --lc-accent: #2f7d32;
-  --lc-danger: #b3261e;
+  --lc-text: #3b4449;
+  --lc-text-strong: #263035;
+  --lc-muted: #7b868c;
+  --lc-border: #e1e6e9;
+  --lc-border-strong: #cfd6da;
+  --lc-on-color: #ffffff;
+
+  /* Legacy aliases used by existing components */
+  --lc-accent: var(--lc-green);
+  --lc-danger: var(--lc-red);
+
+  /* Shape & rhythm */
   --lc-space: 1rem;
-  --lc-radius: 0.5rem;
+  --lc-radius: 1rem;
+  --lc-radius-sm: 0.75rem;
+  --lc-radius-pill: 999px;
+  --lc-border-w: 2px;
+  --lc-depth: 4px; /* "pressable" bottom edge of buttons and cards */
+
+  /* Type */
+  --lc-font: 'Nunito Variable', 'Nunito', ui-rounded, 'SF Pro Rounded', system-ui, sans-serif;
+  --lc-fs-xs: 0.8125rem;
+  --lc-fs-sm: 0.9375rem;
+  --lc-fs-md: 1.0625rem;
+  --lc-fs-lg: 1.375rem;
+  --lc-fs-xl: 1.875rem;
+  --lc-fw-body: 600;
+  --lc-fw-bold: 800;
+  --lc-fw-black: 900;
+
+  --lc-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --lc-bg: #121214;
-    --lc-surface: #1c1c1f;
-    --lc-text: #ececf0;
-    --lc-muted: #a4a4ad;
-    --lc-border: #34343a;
-    --lc-accent: #7cc47f;
-    --lc-danger: #f2b8b5;
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --lc-green: #58c765;
+    --lc-green-shade: #3c9a49;
+    --lc-green-soft: #1f3a26;
+    --lc-blue: #4aa8f2;
+    --lc-blue-shade: #2b7cc0;
+    --lc-blue-soft: #16324a;
+    --lc-orange: #ffa94d;
+    --lc-orange-shade: #cf7a1c;
+    --lc-orange-soft: #3d2a14;
+    --lc-red: #ff6b6e;
+    --lc-red-shade: #c9474a;
+    --lc-red-soft: #43201f;
+    --lc-yellow: #ffd65c;
+    --lc-yellow-shade: #c9a227;
+    --lc-bg: #121c21;
+    --lc-bg-soft: #18252c;
+    --lc-surface: #1b2a31;
+    --lc-text: #dce4e8;
+    --lc-text-strong: #f2f6f8;
+    --lc-muted: #91a0a8;
+    --lc-border: #2f414a;
+    --lc-border-strong: #3d525c;
+    --lc-on-color: #0f171b;
   }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --lc-green: #58c765;
+  --lc-green-shade: #3c9a49;
+  --lc-green-soft: #1f3a26;
+  --lc-blue: #4aa8f2;
+  --lc-blue-shade: #2b7cc0;
+  --lc-blue-soft: #16324a;
+  --lc-orange: #ffa94d;
+  --lc-orange-shade: #cf7a1c;
+  --lc-orange-soft: #3d2a14;
+  --lc-red: #ff6b6e;
+  --lc-red-shade: #c9474a;
+  --lc-red-soft: #43201f;
+  --lc-yellow: #ffd65c;
+  --lc-yellow-shade: #c9a227;
+  --lc-bg: #121c21;
+  --lc-bg-soft: #18252c;
+  --lc-surface: #1b2a31;
+  --lc-text: #dce4e8;
+  --lc-text-strong: #f2f6f8;
+  --lc-muted: #91a0a8;
+  --lc-border: #2f414a;
+  --lc-border-strong: #3d525c;
+  --lc-on-color: #0f171b;
 }
 
 *,
@@ -37,30 +130,259 @@ html {
 
 body {
   margin: 0;
-  font-family:
-    system-ui,
-    -apple-system,
-    'Segoe UI',
-    Roboto,
-    sans-serif;
+  font-family: var(--lc-font);
+  font-size: var(--lc-fs-md);
+  font-weight: var(--lc-fw-body);
   line-height: 1.5;
   color: var(--lc-text);
   background: var(--lc-bg);
-}
-
-a {
-  color: var(--lc-accent);
-}
-
-:focus-visible {
-  outline: 2px solid var(--lc-accent);
-  outline-offset: 2px;
+  -webkit-font-smoothing: antialiased;
 }
 
 h1,
 h2,
 h3 {
+  color: var(--lc-text-strong);
+  font-weight: var(--lc-fw-black);
   line-height: 1.2;
+  text-wrap: balance;
+  letter-spacing: -0.01em;
+}
+
+a {
+  color: var(--lc-blue);
+  font-weight: var(--lc-fw-bold);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+:focus-visible {
+  outline: 3px solid var(--lc-blue);
+  outline-offset: 2px;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+/* ---------------------------------------------------------------------------
+ * Buttons: chunky, rounded, with a darker bottom edge that "presses in".
+ *   <button class="lc-btn lc-btn--primary">Weiter</button>
+ * Variants: --primary (green), --secondary (blue), --warn (orange), --danger (red),
+ * --ghost (white with border). Sizes: --sm, --lg, --block (full width), --icon.
+ * ------------------------------------------------------------------------- */
+.lc-btn {
+  --btn-bg: var(--lc-surface);
+  --btn-fg: var(--lc-text);
+  --btn-edge: var(--lc-border-strong);
+  --btn-border: var(--lc-border-strong);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 3rem;
+  padding: 0.6rem 1.25rem;
+  border: var(--lc-border-w) solid var(--btn-border);
+  border-radius: var(--lc-radius);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  box-shadow: 0 var(--lc-depth) 0 var(--btn-edge);
+  font-size: var(--lc-fs-sm);
+  font-weight: var(--lc-fw-black);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    transform 80ms ease,
+    box-shadow 80ms ease,
+    filter 120ms ease;
+  margin-bottom: var(--lc-depth);
+}
+
+.lc-btn:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+
+.lc-btn:active:not(:disabled) {
+  transform: translateY(var(--lc-depth));
+  box-shadow: 0 0 0 var(--btn-edge);
+}
+
+.lc-btn:disabled {
+  --btn-bg: var(--lc-bg-soft);
+  --btn-fg: var(--lc-muted);
+  --btn-edge: var(--lc-border);
+  --btn-border: var(--lc-border);
+  cursor: not-allowed;
+}
+
+.lc-btn--primary {
+  --btn-bg: var(--lc-green);
+  --btn-fg: var(--lc-on-color);
+  --btn-edge: var(--lc-green-shade);
+  --btn-border: var(--lc-green);
+}
+.lc-btn--secondary {
+  --btn-bg: var(--lc-blue);
+  --btn-fg: var(--lc-on-color);
+  --btn-edge: var(--lc-blue-shade);
+  --btn-border: var(--lc-blue);
+}
+.lc-btn--warn {
+  --btn-bg: var(--lc-orange);
+  --btn-fg: var(--lc-on-color);
+  --btn-edge: var(--lc-orange-shade);
+  --btn-border: var(--lc-orange);
+}
+.lc-btn--danger {
+  --btn-bg: var(--lc-red);
+  --btn-fg: var(--lc-on-color);
+  --btn-edge: var(--lc-red-shade);
+  --btn-border: var(--lc-red);
+}
+.lc-btn--ghost {
+  --btn-fg: var(--lc-blue);
+}
+.lc-btn--selected {
+  --btn-bg: var(--lc-blue-soft);
+  --btn-fg: var(--lc-blue);
+  --btn-edge: var(--lc-blue);
+  --btn-border: var(--lc-blue);
+}
+.lc-btn--sm {
+  min-height: 2.75rem;
+  padding: 0.4rem 0.9rem;
+  font-size: var(--lc-fs-xs);
+}
+.lc-btn--lg {
+  min-height: 3.5rem;
+  padding: 0.8rem 1.75rem;
+  font-size: var(--lc-fs-md);
+}
+.lc-btn--block {
+  display: flex;
+  width: 100%;
+}
+.lc-btn--icon {
+  min-width: 3rem;
+  padding: 0.5rem;
+  letter-spacing: 0;
+}
+
+/* Cards / panels: white, 2px border, soft bottom edge. Interactive cards lift on hover. */
+.lc-card {
+  background: var(--lc-surface);
+  border: var(--lc-border-w) solid var(--lc-border);
+  border-radius: calc(var(--lc-radius) * 1.25);
+  box-shadow: 0 var(--lc-depth) 0 var(--lc-border);
+  padding: 1rem 1.25rem;
+}
+.lc-card--interactive {
+  cursor: pointer;
+  transition: transform 120ms var(--lc-ease-bounce);
+}
+.lc-card--interactive:hover {
+  transform: translateY(-2px);
+}
+
+/* Thick rounded progress bar with a highlight stripe. Set --value: 0..1 inline. */
+.lc-progress {
+  --value: 0;
+  position: relative;
+  height: 1rem;
+  border-radius: var(--lc-radius-pill);
+  background: var(--lc-border);
+  overflow: hidden;
+}
+.lc-progress::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--value) * 100%);
+  min-width: 1rem;
+  border-radius: inherit;
+  background: var(--lc-green);
+  transition: width 300ms var(--lc-ease-bounce);
+}
+.lc-progress::after {
+  content: '';
+  position: absolute;
+  top: 0.22rem;
+  left: 0.5rem;
+  width: calc(max(var(--value) * 100% - 1rem, 0px));
+  height: 0.22rem;
+  border-radius: var(--lc-radius-pill);
+  background: rgb(255 255 255 / 0.35);
+  transition: width 300ms var(--lc-ease-bounce);
+}
+
+/* Pills / badges */
+.lc-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.7rem;
+  border-radius: var(--lc-radius-pill);
+  background: var(--lc-green-soft);
+  color: var(--lc-green-shade);
+  font-size: var(--lc-fs-xs);
+  font-weight: var(--lc-fw-black);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.lc-pill--blue {
+  background: var(--lc-blue-soft);
+  color: var(--lc-blue-shade);
+}
+.lc-pill--orange {
+  background: var(--lc-orange-soft);
+  color: var(--lc-orange-shade);
+}
+.lc-pill--red {
+  background: var(--lc-red-soft);
+  color: var(--lc-red-shade);
+}
+
+/* Text inputs */
+.lc-input {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.6rem 1rem;
+  border: var(--lc-border-w) solid var(--lc-border);
+  border-radius: var(--lc-radius);
+  background: var(--lc-bg-soft);
+  color: var(--lc-text-strong);
+  font-weight: var(--lc-fw-bold);
+}
+.lc-input:focus {
+  outline: none;
+  border-color: var(--lc-blue);
+  background: var(--lc-surface);
+}
+
+/* Small celebration: add .lc-pop to an element to bounce it in once. */
+@keyframes lc-pop {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.lc-pop {
+  animation: lc-pop 320ms var(--lc-ease-bounce) both;
 }
 
 @media (prefers-reduced-motion: reduce) {
