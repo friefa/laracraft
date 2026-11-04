@@ -85,7 +85,17 @@ Aus dem fachlichen Review der Registry (P0.3r), vor Start der Build-Order-Engine
 
 - **M2 Build-Order-Engine** ✅ (P2.0 Support-Profile, P2.1 Planer, P2.2 Validator + Golden-Builds, P2.3 Anleitungsmodus, P2.4 Sprung/Säulen, P2.5 Politur): Regeln aus Briefing §2, Validator, Golden-Tests (Haus, Turm mit Überhang, Sandstruktur,
   2×2-Kolbentür, Observer-Takt, Wasserfall), Anleitungsmodus in der UI.
-- **M3 Lara** (Teilstand 2026-11-04: ✅ M3.1 DSL – 13 Tools, Schema `libs/lara-dsl/schema/`, Interpreter, Property-Tests; ✅ M3.2 10 Redstone-Module, Java strukturell + baubar getestet, Verhalten nur spezifiziert (Simulator fehlt); offen: Backend nach ADR-0007, Streaming-Vorschau in der App, Redstone-Simulator, DSL-Lücken: Shed-Richtung `highSide`, Modul-Parameter als Liste, OpenAI-strict ohne optionale Felder): `apps/api` (.NET), ILlmProvider + Anthropic, DSL + Interpreter + Property-Based-Tests, SSE-Streaming,
-  erste 10 Redstone-Module.
+- **M3 Lara** (Teilstand 2026-11-04, ohne Backend nach ADR-0008):
+  - ✅ M3.1 DSL – 13 Tools, Schema `libs/lara-dsl/schema/`, Interpreter, Property-Tests.
+  - ✅ M3.2 10 Redstone-Module (Java), strukturell + baubar getestet; Verhalten im Simulator: 7/10 grün, 3 Modulfehler
+    in Arbeit (`observer_clock` 6 gt statt 4 gt und Start, `t_flip_flop` Mindestpuls, `item_sorter` Sperr-Trichter).
+  - ✅ M3.3 Lara-Agent im Client (`libs/lara-agent`): Anthropic nativ + OpenAI-kompatibel, Tool-Loop, Tageslimit.
+  - ✅ M3.4 Chat-Oberfläche, Einstellungen `settings/lara`, Schlüssel im sicheren Speicher, Verlauf pro Bau,
+    ein Rückgängig-Schritt pro Turn; Mocks im Design-Dokument (PO-Abnahme offen).
+  - ✅ M3.5 Redstone-Simulator Java (`libs/redstone-sim`), tick-genau; 91 unabhängige Szenarien grün.
+  - Offen: Vertragslücken Simulator (geplante Ticks im Dokument laden, `getEmittedPower` = Java `getSignal`,
+    Effekte wie Notenblock/TNT, Projektil-/Lore-Stimuli); Simulator in der App (Redstone-Vorschau im Worker);
+    DSL-Lücken: Shed-Richtung `highSide`, Modul-Parameter als Liste, OpenAI-strict ohne optionale Felder;
+    Top-Bar-Überlappung „Ungespeicherte Änderungen“ auf 390 px.
 - **M4 Teilen**: Accounts, Veröffentlichen, Feed/Suche, Remix, `.schem`/`.litematic`, PDF-Anleitung, Moderation.
 - **M5 Store-Release**: Performance-Härtung, Accessibility, DSGVO, Store-Assets, TestFlight/Play-Beta.
