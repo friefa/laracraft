@@ -293,6 +293,11 @@ export const REDSTONE_BLOCKS: readonly BlockDefinition[] = [
           'bit',
           'banjo',
           'pling',
+          // 26.1: copper below → trumpet, one value per oxidation stage.
+          'trumpet',
+          'trumpet_exposed',
+          'trumpet_weathered',
+          'trumpet_oxidized',
           'zombie',
           'skeleton',
           'creeper',

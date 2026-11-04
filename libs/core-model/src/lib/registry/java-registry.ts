@@ -9,8 +9,19 @@ import { STONE_BLOCKS } from './data/stone';
 import { LIGHTING_BLOCKS, UTILITY_BLOCKS } from './data/utility';
 import { WOOD_BLOCKS } from './data/wood';
 
-/** Targeted Java Edition version of the bundled block data. */
-export const JAVA_REGISTRY_VERSION = '1.21.x';
+/**
+ * Targeted Java Edition release of the bundled block data. Policy: always the
+ * latest stable release (docs/OPEN-QUESTIONS.md, item 1). Verified against
+ * Mojang's version manifest (latest release 26.3, 2026-09-15).
+ */
+export const JAVA_REGISTRY_VERSION = '26.3';
+
+/**
+ * Java data version (world version) of {@link JAVA_REGISTRY_VERSION}; new
+ * documents store it in `metadata.dataVersion`. Source: minecraft.wiki
+ * "Data version" (26.3 → 5023; 1.21.11 was 4671).
+ */
+export const JAVA_DATA_VERSION = 5023;
 
 /** All bundled Java Edition block definitions (pure data). */
 export const JAVA_BLOCKS: readonly BlockDefinition[] = Object.freeze([
