@@ -52,7 +52,7 @@
     "@nx/workspace": "24.0.3",
     "@schematics/angular": "~22.2.0",
     "@swc/helpers": "~0.5.18",
-    "@types/node": "^24.0.0",
+    "@types/node": "^26.6.6",
     "@types/pngjs": "^6.0.5",
     "@types/three": "^0.187.0",
     "@typescript-eslint/utils": "^8.58.0",
