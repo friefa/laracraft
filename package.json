@@ -50,7 +50,7 @@
     "@nx/vitest": "24.0.3",
     "@nx/web": "24.0.3",
     "@nx/workspace": "24.0.3",
-    "@schematics/angular": "~22.2.0",
+    "@schematics/angular": "~22.2.6",
     "@swc/helpers": "~0.5.18",
     "@types/node": "^24.0.0",
     "@types/pngjs": "^6.0.5",
